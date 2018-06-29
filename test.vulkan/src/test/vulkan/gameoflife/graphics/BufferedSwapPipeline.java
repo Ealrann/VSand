@@ -38,7 +38,8 @@ public class BufferedSwapPipeline extends AbstractSwapPipeline
 	@Override
 	protected FrameSubmission buildFrameSubmission()
 	{
-		return new FrameSubmission(logicalDevice, swapChainManager, VK_PIPELINE_STAGE_TRANSFER_BIT);
+		return new FrameSubmission(logicalDevice, swapChainManager, waitForSignals,
+				VK_PIPELINE_STAGE_TRANSFER_BIT);
 	}
 
 	public void bind(AbstractCommandBuffer commandBuffer)
