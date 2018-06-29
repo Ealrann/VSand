@@ -28,12 +28,4 @@ public class LifeComputerPipeline extends ComputePipeline
 
 		super.load();
 	}
-
-	@Override
-	public void free()
-	{
-		computer.free();
-
-		super.free();
-	}
 }

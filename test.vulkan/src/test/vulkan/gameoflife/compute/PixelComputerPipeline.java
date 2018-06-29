@@ -30,14 +30,6 @@ public class PixelComputerPipeline extends ComputePipeline
 		super.load();
 	}
 
-	@Override
-	public void free()
-	{
-		computer.free();
-
-		super.free();
-	}
-
 	public Image getImage()
 	{
 		return computer.getImage();
