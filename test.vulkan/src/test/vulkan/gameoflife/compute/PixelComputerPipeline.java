@@ -12,11 +12,11 @@ public class PixelComputerPipeline extends ComputePipeline
 {
 	private PixelComputer computer;
 
-	public PixelComputerPipeline(LogicalDevice logicalDevice, CommandPool commandPool, Board board)
+	public PixelComputerPipeline(LogicalDevice logicalDevice, CommandPool commandPool, BoardBuffer boardBuffer)
 	{
 		super(logicalDevice, commandPool, Collections.emptyList());
 
-		computer = new PixelComputer(logicalDevice, commandPool, board);
+		computer = new PixelComputer(logicalDevice, commandPool, boardBuffer);
 	}
 
 	@Override

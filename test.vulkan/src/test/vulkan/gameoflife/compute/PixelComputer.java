@@ -1,6 +1,7 @@
 package test.vulkan.gameoflife.compute;
 
-import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.vulkan.VK10.VK_FORMAT_R8G8B8A8_UNORM;
+import static org.lwjgl.vulkan.VK10.VK_SHADER_STAGE_COMPUTE_BIT;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +28,7 @@ public class PixelComputer implements IComputer
 
 	private List<IDescriptor> descriptors;
 
-	public PixelComputer(LogicalDevice logicalDevice, CommandPool commandPool, Board board)
+	public PixelComputer(LogicalDevice logicalDevice, CommandPool commandPool, BoardBuffer board)
 	{
 		this.logicalDevice = logicalDevice;
 

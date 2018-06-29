@@ -6,13 +6,12 @@ import org.sheepy.lily.game.vulkan.VulkanApplication;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
 
-import test.vulkan.gameoflife.compute.Board;
 import test.vulkan.gameoflife.pipelinepool.BoardPool;
 import test.vulkan.gameoflife.pipelinepool.RenderPipelinePool;
 
 public class GameOfLifeApplication extends VulkanApplication
 {
-	private IPipelinePool boardPool;
+	private BoardPool boardPool;
 	private IPipelinePool renderPool;
 
 	public GameOfLifeApplication(int width, int height)
@@ -24,7 +23,7 @@ public class GameOfLifeApplication extends VulkanApplication
 		Board board = createBoard(logicalDevice, width, height);
 
 		boardPool = new BoardPool(logicalDevice, board);
-		renderPool = new RenderPipelinePool(logicalDevice, board);
+		renderPool = new RenderPipelinePool(logicalDevice, boardPool.getBoardBuffer());
 
 		attachPipelinePool(boardPool);
 		attachPipelinePool(renderPool);
@@ -32,7 +31,7 @@ public class GameOfLifeApplication extends VulkanApplication
 
 	private Board createBoard(LogicalDevice logicalDevice, int width, int height)
 	{
-		Board board = new Board(logicalDevice, width, height);
+		Board board = new Board(width, height);
 
 		// Create little spaceshift
 		board.activate(0, 0);

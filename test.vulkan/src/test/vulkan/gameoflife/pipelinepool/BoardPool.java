@@ -1,11 +1,15 @@
 package test.vulkan.gameoflife.pipelinepool;
 
+import static org.lwjgl.vulkan.VK10.VK_NULL_HANDLE;
+import static org.lwjgl.vulkan.VK10.vkQueueSubmit;
+
 import org.lwjgl.system.MemoryStack;
 import org.sheepy.lily.game.vulkan.command.CommandPool;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
 
-import test.vulkan.gameoflife.compute.Board;
+import test.vulkan.gameoflife.Board;
+import test.vulkan.gameoflife.compute.BoardBuffer;
 import test.vulkan.gameoflife.compute.LifeComputerPipeline;
 
 public class BoardPool implements IPipelinePool
@@ -45,8 +49,8 @@ public class BoardPool implements IPipelinePool
 	@Override
 	public void execute()
 	{
-		// vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
-		// lifePipeline.getSubmitInfo(), VK_NULL_HANDLE);
+		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
+				lifePipeline.getSubmitInfo(), VK_NULL_HANDLE);
 	}
 
 	@Override
@@ -64,6 +68,11 @@ public class BoardPool implements IPipelinePool
 	public CommandPool getCommandPool()
 	{
 		return commandPool;
+	}
+
+	public BoardBuffer getBoardBuffer()
+	{
+		return lifePipeline.getBoardBuffer();
 	}
 
 }

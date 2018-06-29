@@ -7,6 +7,8 @@ import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.compute.ComputePipeline;
 import org.sheepy.lily.game.vulkan.pipeline.compute.ComputerPool;
 
+import test.vulkan.gameoflife.Board;
+
 public class LifeComputerPipeline extends ComputePipeline
 {
 	private LifeComputer computer;
@@ -27,5 +29,10 @@ public class LifeComputerPipeline extends ComputePipeline
 		attachComputerPool(pool);
 
 		super.load();
+	}
+
+	public BoardBuffer getBoardBuffer()
+	{
+		return computer.getBuffer();
 	}
 }
