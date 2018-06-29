@@ -41,6 +41,7 @@ public class LifeComputer implements IComputer
 	public void free()
 	{
 		board.free();
+		shader.destroy();
 	}
 
 	@Override

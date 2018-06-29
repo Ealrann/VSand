@@ -56,6 +56,7 @@ public class BoardPool implements IPipelinePool
 	@Override
 	public void free()
 	{
+		lifePipeline.free();
 		commandPool.free();
 	}
 
