@@ -6,3 +6,4 @@ bin/
 .classpath
 build/
 .settings/
+hs_err*.log
