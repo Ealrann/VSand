@@ -1,7 +1,6 @@
 package test.vulkan.gameoflife.pipelinepool;
 
-import static org.lwjgl.vulkan.VK10.VK_NULL_HANDLE;
-import static org.lwjgl.vulkan.VK10.vkQueueSubmit;
+import static org.lwjgl.vulkan.VK10.*;
 
 import org.lwjgl.system.MemoryStack;
 import org.sheepy.lily.game.vulkan.command.CommandPool;
@@ -19,7 +18,8 @@ public class BoardPool implements IPipelinePool
 
 	private CommandPool commandPool;
 
-	private LifeComputerPipeline lifePipeline;
+	private LifeComputerPipeline lifePipeline1;
+	private LifeComputerPipeline lifePipeline2;
 
 	public BoardPool(LogicalDevice logicalDevice, Board board)
 	{
@@ -29,7 +29,7 @@ public class BoardPool implements IPipelinePool
 		try (MemoryStack stack = MemoryStack.stackPush())
 		{
 			commandPool = CommandPool.alloc(stack, logicalDevice,
-					logicalDevice.getQueueManager().getGraphicQueueIndex());
+					logicalDevice.getQueueManager().getComputeQueueIndex());
 		}
 
 		buildPipelines();
@@ -37,20 +37,38 @@ public class BoardPool implements IPipelinePool
 
 	public void buildPipelines()
 	{
-		lifePipeline = new LifeComputerPipeline(logicalDevice, commandPool, board);
+		lifePipeline1 = new LifeComputerPipeline(logicalDevice, commandPool, board);
+		lifePipeline2 = new LifeComputerPipeline(logicalDevice, commandPool, board);
+
+		lifePipeline1.attachSourcePipeline(lifePipeline2);
+		lifePipeline2.attachSourcePipeline(lifePipeline1);
 	}
 
 	@Override
 	public void load(MemoryStack stack, long surface, int width, int height)
 	{
-		lifePipeline.load();
+		lifePipeline1.load();
+		lifePipeline2.load();
 	}
 
 	@Override
 	public void execute()
 	{
+//		VkSemaphore firstSemaphore = lifePipeline1.getSubmission().getWaitSemaphores().get(0);
+//		vkQueueWaitSemaphore(logicalDevice.getQueueManager().getComputeQueue(), firstSemaphore.getId());
+		
+		vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
+		
+		if (vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
+				lifePipeline1.getSubmitInfo(), VK_NULL_HANDLE) != VK_SUCCESS)
+		{
+			System.err.println("bad...");
+		}
+
+		vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
+		
 		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
-				lifePipeline.getSubmitInfo(), VK_NULL_HANDLE);
+				lifePipeline2.getSubmitInfo(), VK_NULL_HANDLE);
 	}
 
 	@Override
@@ -60,7 +78,8 @@ public class BoardPool implements IPipelinePool
 	@Override
 	public void free()
 	{
-		lifePipeline.free();
+		lifePipeline1.free();
+		lifePipeline2.free();
 		commandPool.free();
 	}
 
@@ -72,7 +91,7 @@ public class BoardPool implements IPipelinePool
 
 	public BoardBuffer getBoardBuffer()
 	{
-		return lifePipeline.getBoardBuffer();
+		return lifePipeline1.getBoardBuffer();
 	}
 
 }

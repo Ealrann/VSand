@@ -16,16 +16,18 @@ public class LifeComputer implements IComputer
 {
 	private static final String SHADER_LOCATION = "test/vulkan/gameoflife/life.comp.spv";
 
+	private LogicalDevice logicalDevice;
+
 	private int width;
 	private int height;
 
-	private BoardBuffer[] buffers = new BoardBuffer[2];
+	private BoardBuffer buffer;
+	private BoardBuffer sourceBuffer;
 
 	private Shader shader;
 
 	public static LifeComputer alloc(LogicalDevice logicalDevice, Board board)
 	{
-
 		LifeComputer res = new LifeComputer(logicalDevice, board);
 		res.load();
 		return res;
@@ -33,20 +35,24 @@ public class LifeComputer implements IComputer
 
 	public LifeComputer(LogicalDevice logicalDevice, Board board)
 	{
-		buffers[0] = new BoardBuffer(logicalDevice, board);
-		buffers[1] = new BoardBuffer(logicalDevice, board);
-
-		shader = new Shader(logicalDevice, SHADER_LOCATION, VK_SHADER_STAGE_COMPUTE_BIT);
+		this.logicalDevice = logicalDevice;
+		buffer = new BoardBuffer(logicalDevice, board);
 	}
 
 	public void load()
-	{}
+	{
+		shader = new Shader(logicalDevice, SHADER_LOCATION, VK_SHADER_STAGE_COMPUTE_BIT);
+	}
+
+	public void attachSourceBuffer(BoardBuffer boardBuffer)
+	{
+		this.sourceBuffer = boardBuffer;
+	}
 
 	@Override
 	public void free()
 	{
-		buffers[0].free();
-		buffers[1].free();
+		buffer.free();
 		shader.destroy();
 	}
 
@@ -76,15 +82,17 @@ public class LifeComputer implements IComputer
 
 	public BoardBuffer getBuffer()
 	{
-		return buffers[0];
+		return buffer;
 	}
 
 	@Override
 	public List<IDescriptor> getDescriptors()
 	{
 		List<IDescriptor> res = new ArrayList<>();
-		res.add(buffers[0]);
-		res.add(buffers[1]);
+
+		res.add(sourceBuffer);
+		res.add(buffer);
+
 		return res;
 	}
 }
