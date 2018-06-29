@@ -1,0 +1,32 @@
+plugins {
+	id 'java-library'
+	id 'application'
+	id 'eclipse'
+	//id 'org.gradle.java.experimental-jigsaw' version '0.1.1'
+}
+
+sourceSets {
+    main {
+        java.srcDirs = ['src/']
+        resources.srcDirs = ['resources/']
+    }
+}
+
+mainClassName = 'test.vulkan.triangle.Main'
+
+project.ext.lwjglVersion = "3.1.6"
+project.ext.jomlVersion = "1.9.9"
+project.ext.lwjglNatives = "natives-linux"
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+
+	api 'com.google.guava:guava:24.1-jre'
+
+	api project(':org.sheepy.lily.game.vulkan')
+}
+
