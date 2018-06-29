@@ -10,7 +10,7 @@ import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
 import org.sheepy.lily.game.vulkan.pipeline.swap.SwapConfiguration;
 
-import test.vulkan.gameoflife.compute.Board;
+import test.vulkan.gameoflife.compute.BoardBuffer;
 import test.vulkan.gameoflife.compute.PixelComputerPipeline;
 import test.vulkan.gameoflife.graphics.BufferedSwapPipeline;
 
@@ -18,17 +18,17 @@ public class RenderPipelinePool implements IPipelinePool
 {
 
 	private LogicalDevice logicalDevice;
-	private Board board;
+	private BoardBuffer boardBuffer;
 
 	private CommandPool commandPool;
 
 	private PixelComputerPipeline computerPipeline;
 	private BufferedSwapPipeline renderPipeline;
 
-	public RenderPipelinePool(LogicalDevice logicalDevice, Board board)
+	public RenderPipelinePool(LogicalDevice logicalDevice, BoardBuffer boardBuffer)
 	{
 		this.logicalDevice = logicalDevice;
-		this.board = board;
+		this.boardBuffer = boardBuffer;
 
 		try (MemoryStack stack = MemoryStack.stackPush())
 		{
@@ -46,7 +46,7 @@ public class RenderPipelinePool implements IPipelinePool
 		// We will fill the framebuffer manually.
 		configuration.renderPipeline = false;
 
-		computerPipeline = new PixelComputerPipeline(logicalDevice, commandPool, board);
+		computerPipeline = new PixelComputerPipeline(logicalDevice, commandPool, boardBuffer);
 
 		// We will use the swap image as a target transfer
 		configuration.swapImageUsages |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;

@@ -15,78 +15,35 @@ import org.sheepy.lily.game.vulkan.buffer.Buffer;
 import org.sheepy.lily.game.vulkan.descriptor.IDescriptor;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 
-public class Board implements IDescriptor
+import test.vulkan.gameoflife.Board;
+
+public class BoardBuffer implements IDescriptor
 {
+	private Buffer buffer;
+	
 	private int width;
 	private int height;
-
-	private int size;
-	private int xOrigin;
-	private int yOrigin;
-
-	private boolean[] values;
-
-	private Buffer buffer;
-
-	public Board(LogicalDevice logicalDevice, int width, int height)
+	
+	public BoardBuffer(LogicalDevice logicalDevice, Board board)
 	{
-		this.width = width;
-		this.height = height;
-
-		size = width * height;
-		xOrigin = (int) (width / 2f);
-		yOrigin = (int) (height / 2f);
-
-		values = new boolean[size];
-
-		long sizeBuffer = size * Integer.BYTES;
+		this.width = board.getWidth();
+		this.height = board.getHeight();
+		
+		long size = board.getWidth() * board.getHeight();
+		long sizeBuffer = board.getWidth() * board.getHeight() * Integer.BYTES;
 		
 		buffer = Buffer.alloc(logicalDevice, sizeBuffer,
 				VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
 				VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-	}
-
-	public void load()
-	{
-		long sizeBuffer = size * Integer.BYTES;
-
 		ByteBuffer byteBuffer = MemoryUtil.memAlloc((int) sizeBuffer);
 		IntBuffer intBufferView = byteBuffer.asIntBuffer();
 		for (int i = 0; i < size; i++)
 		{
-			intBufferView.put(values[i] == false ? (int) 0 : 1);
+			intBufferView.put(board.isActivated(i)? 1 : 0);
 		}
 		intBufferView.flip();
 
 		buffer.fillWithBuffer(byteBuffer, sizeBuffer);
-	}
-
-	public void setValue(int x, int y, boolean value)
-	{
-		x += xOrigin;
-		y += yOrigin;
-
-		values[y * width + x] = value;
-	}
-
-	public void activate(int x, int y)
-	{
-		setValue(x, y, true);
-	}
-
-	public int getWidth()
-	{
-		return width;
-	}
-
-	public int getHeight()
-	{
-		return height;
-	}
-
-	public boolean[] getValues()
-	{
-		return values;
 	}
 
 	@Override
@@ -130,10 +87,20 @@ public class Board implements IDescriptor
 	{
 		return buffer;
 	}
-
+	
 	@Override
 	public void free()
 	{
 		buffer.free();
+	}
+	
+	public int getWidth()
+	{
+		return width;
+	}
+	
+	public int getHeight()
+	{
+		return height;
 	}
 }
