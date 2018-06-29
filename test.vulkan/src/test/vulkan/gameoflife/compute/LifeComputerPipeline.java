@@ -19,6 +19,12 @@ public class LifeComputerPipeline extends ComputePipeline
 
 		computer = new LifeComputer(logicalDevice, board);
 	}
+	
+	public void attachSourcePipeline(LifeComputerPipeline source)
+	{
+		computer.attachSourceBuffer(source.computer.getBuffer());
+//		submission.addEmitterToWait(source);
+	}
 
 	@Override
 	public void load()
