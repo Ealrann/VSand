@@ -66,7 +66,7 @@ public class RenderPipelinePool implements IPipelinePool
 	{
 		int imageIndex = renderPipeline.acquireNextImage();
 
-		if (vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
+		if (vkQueueSubmit(logicalDevice.getQueueManager().getGraphicQueue(),
 				computerPipeline.getSubmitInfo(), VK_NULL_HANDLE) != VK_SUCCESS)
 		{
 			throw new AssertionError("failed to submit draw command buffer!");

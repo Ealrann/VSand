@@ -11,6 +11,10 @@ import test.vulkan.gameoflife.pipelinepool.RenderPipelinePool;
 
 public class GameOfLifeApplication extends VulkanApplication
 {
+
+	private static final int TARGET_FPS = 60;
+	private static final int FRAME_TIME_STEP_MS = (int) ((1f / TARGET_FPS) * 1000);
+	
 	private BoardPool boardPool;
 	private IPipelinePool renderPool;
 
@@ -44,30 +48,22 @@ public class GameOfLifeApplication extends VulkanApplication
 		board.activate(2, 3);
 		board.activate(3, 3);
 
-		// board.activate(0, 0);
-		// board.activate(0, 1);
-		// board.activate(0, 2);
-		// board.activate(0, 4);
-		// board.activate(1, 5);
-		// board.activate(2, 6);
-		// board.activate(3, 7);
-		// board.activate(4, 8);
-		//
-		// board.activate(-width / 2, -height / 2);
-		// board.activate((width / 2) - 1, (height / 2) - 1);
-
 		return board;
 	}
+
+	private long nextRenderDate = 0;
 
 	@Override
 	public void drawFrame()
 	{
-		vkQueueWaitIdle(logicalDevice.getQueueManager().getPresentQueue());
-
-		for (IPipelinePool iPipelinePool : pipelinePools)
+		while (nextRenderDate > System.currentTimeMillis())
 		{
-			iPipelinePool.execute();
+			vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
+			boardPool.execute();
 		}
+
+		nextRenderDate = System.currentTimeMillis() + FRAME_TIME_STEP_MS;
+		renderPool.execute();
 	}
 
 }

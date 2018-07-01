@@ -59,20 +59,11 @@ public class BoardPool implements IPipelinePool
 	@Override
 	public void execute()
 	{
-		// vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
-
-		if (vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
-				lifePipeline1.getSubmitInfo(), VK_NULL_HANDLE) != VK_SUCCESS)
-		{
-			System.err.println("bad...");
-		}
-
-		// vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
+		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
+				lifePipeline1.getSubmitInfo(), VK_NULL_HANDLE);
 
 		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
 				lifePipeline2.getSubmitInfo(), VK_NULL_HANDLE);
-
-		vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
 	}
 
 	@Override
