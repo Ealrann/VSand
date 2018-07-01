@@ -36,6 +36,8 @@ public class LifeComputer implements IComputer
 	public LifeComputer(LogicalDevice logicalDevice, Board board)
 	{
 		this.logicalDevice = logicalDevice;
+		this.width = board.getWidth();
+		this.height = board.getHeight();
 		buffer = new BoardBuffer(logicalDevice, board);
 	}
 

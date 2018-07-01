@@ -27,7 +27,7 @@ void main() {
   vec4 value;
 
   // store the target color into a storage buffer:
-  if(inArray.boardData[arrayLocation] != 0) {
+  if(inArray.boardData[arrayLocation] == 1) {
   	value = WHITE;
   }  else { 
     value = BLACK;

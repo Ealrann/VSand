@@ -49,26 +49,30 @@ public class BoardPool implements IPipelinePool
 	{
 		lifePipeline1.load();
 		lifePipeline2.load();
+
+		// The lifePipeline1 wait for the lifePipeline2. But it can't be
+		// signaled until we run it once. So we need to do it manually now.
+		lifePipeline1.getSubmission().getWaitSemaphores().get(0).signalSemaphore(getCommandPool(),
+				logicalDevice.getQueueManager().getComputeQueue());
 	}
 
 	@Override
 	public void execute()
 	{
-//		VkSemaphore firstSemaphore = lifePipeline1.getSubmission().getWaitSemaphores().get(0);
-//		vkQueueWaitSemaphore(logicalDevice.getQueueManager().getComputeQueue(), firstSemaphore.getId());
-		
-		vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
-		
+		// vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
+
 		if (vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
 				lifePipeline1.getSubmitInfo(), VK_NULL_HANDLE) != VK_SUCCESS)
 		{
 			System.err.println("bad...");
 		}
 
-		vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
-		
+		// vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
+
 		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
 				lifePipeline2.getSubmitInfo(), VK_NULL_HANDLE);
+
+		vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
 	}
 
 	@Override

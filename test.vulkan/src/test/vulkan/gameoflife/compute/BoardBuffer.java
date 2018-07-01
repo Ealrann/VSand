@@ -24,10 +24,13 @@ public class BoardBuffer implements IDescriptor
 	private int width;
 	private int height;
 	
+	private Board board;
+	
 	public BoardBuffer(LogicalDevice logicalDevice, Board board)
 	{
 		this.width = board.getWidth();
 		this.height = board.getHeight();
+		this.board = board;
 		
 		long size = board.getWidth() * board.getHeight();
 		long sizeBuffer = board.getWidth() * board.getHeight() * Integer.BYTES;
@@ -43,7 +46,29 @@ public class BoardBuffer implements IDescriptor
 		}
 		intBufferView.flip();
 
-		buffer.fillWithBuffer(byteBuffer, sizeBuffer);
+		buffer.fillWithBuffer(byteBuffer);
+	}
+	
+	public boolean compareWithBoard()
+	{
+		boolean res = true;
+
+		int size = width * height;
+		long sizeBuffer = size * Integer.BYTES;
+		ByteBuffer bBuffer = MemoryUtil.memAlloc((int) sizeBuffer);
+		
+		buffer.copyToBuffer(bBuffer);
+		IntBuffer intBufferView = bBuffer.asIntBuffer();
+		for (int i = 0; i < size; i++)
+		{
+			if(board.isActivated(i) != (intBufferView.get() == 1))
+			{
+				res = false;
+				break;
+			}
+		}
+		
+		return res;
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class LifeComputerPipeline extends ComputePipeline
 	public void attachSourcePipeline(LifeComputerPipeline source)
 	{
 		computer.attachSourceBuffer(source.computer.getBuffer());
-//		submission.addEmitterToWait(source);
+		submission.addEmitterToWait(source);
 	}
 
 	@Override
