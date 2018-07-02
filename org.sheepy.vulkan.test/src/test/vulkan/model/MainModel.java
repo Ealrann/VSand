@@ -32,7 +32,7 @@ import com.owens.oobjloader.builder.Face;
 import com.owens.oobjloader.builder.FaceVertex;
 import com.owens.oobjloader.parser.Parse;
 
-public class Main
+public class MainModel
 {
 	private static final String TEXTURE_PATH = "test/vulkan/model/chalet.jpg";
 	private static final String MODEL_PATH = "test/vulkan/model/chalet.obj";

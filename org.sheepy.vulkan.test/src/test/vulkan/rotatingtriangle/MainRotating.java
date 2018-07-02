@@ -21,7 +21,7 @@ import org.sheepy.lily.game.vulkan.pipeline.swap.graphic.graphic.impl.VertexDesc
 import org.sheepy.lily.game.vulkan.pipeline.swap.graphic.graphic.impl.VertexDescriptor.Vertex;
 import org.sheepy.lily.game.vulkan.shader.Shader;
 
-public class Main
+public class MainRotating
 {
 	private static final String VERTEX_SHADER_PATH = "test/vulkan/rotatingtriangle/triangle.vert.spv";
 	private static final String FRAGMENT_SHADER_PATH = "test/vulkan/rotatingtriangle/triangle.frag.spv";
