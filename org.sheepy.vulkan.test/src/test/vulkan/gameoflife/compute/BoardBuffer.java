@@ -1,17 +1,28 @@
 package test.vulkan.gameoflife.compute;
 
-import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.vulkan.VK10.VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
+import static org.lwjgl.vulkan.VK10.VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+import static org.lwjgl.vulkan.VK10.VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+import static org.lwjgl.vulkan.VK10.VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+import static org.lwjgl.vulkan.VK10.VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+import static org.lwjgl.vulkan.VK10.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+import static org.lwjgl.vulkan.VK10.VK_SHADER_STAGE_COMPUTE_BIT;
+import static org.lwjgl.vulkan.VK10.VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.vulkan.VkCommandBuffer;
 import org.lwjgl.vulkan.VkDescriptorBufferInfo;
 import org.lwjgl.vulkan.VkDescriptorPoolSize;
 import org.lwjgl.vulkan.VkDescriptorSetLayoutBinding;
+import org.lwjgl.vulkan.VkQueue;
 import org.lwjgl.vulkan.VkWriteDescriptorSet;
 import org.sheepy.lily.game.vulkan.buffer.Buffer;
+import org.sheepy.lily.game.vulkan.command.CommandPool;
+import org.sheepy.lily.game.vulkan.command.SingleTimeCommand;
 import org.sheepy.lily.game.vulkan.descriptor.IDescriptor;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 
@@ -19,36 +30,60 @@ import test.vulkan.gameoflife.Board;
 
 public class BoardBuffer implements IDescriptor
 {
-	private Buffer buffer;
-	
+	private LogicalDevice logicalDevice;
 	private int width;
 	private int height;
-	
 	private Board board;
-	
+
+	private Buffer buffer;
+
 	public BoardBuffer(LogicalDevice logicalDevice, Board board)
 	{
+		this.logicalDevice = logicalDevice;
 		this.width = board.getWidth();
 		this.height = board.getHeight();
 		this.board = board;
-		
-		long size = board.getWidth() * board.getHeight();
+
 		long sizeBuffer = board.getWidth() * board.getHeight() * Integer.BYTES;
-		
 		buffer = Buffer.alloc(logicalDevice, sizeBuffer,
 				VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
 				VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-		ByteBuffer byteBuffer = MemoryUtil.memAlloc((int) sizeBuffer);
+	}
+
+	public void load(CommandPool commandPool, VkQueue queue)
+	{
+		long size = board.getWidth() * board.getHeight();
+
+		Buffer indexStagingBuffer = Buffer.alloc(logicalDevice, buffer.getSize(),
+				VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+
+		ByteBuffer byteBuffer = MemoryUtil.memAlloc((int) buffer.getSize());
 		IntBuffer intBufferView = byteBuffer.asIntBuffer();
 		for (int i = 0; i < size; i++)
 		{
-			intBufferView.put(board.isActivated(i)? 1 : 0);
+			intBufferView.put(board.isActivated(i) ? 1 : 0);
 		}
 		intBufferView.flip();
 
-		buffer.fillWithBuffer(byteBuffer);
+		indexStagingBuffer.fillWithBuffer(byteBuffer);
+
+		SingleTimeCommand stc = new SingleTimeCommand(commandPool, queue)
+		{
+
+			@Override
+			protected void doExecute(MemoryStack stack, VkCommandBuffer commandBuffer)
+			{
+
+				Buffer.copyBuffer(commandBuffer, indexStagingBuffer.getId(), buffer.getId(),
+						(int) buffer.getSize());
+			}
+		};
+		stc.execute();
+
+		indexStagingBuffer.free();
 	}
-	
+
 	public boolean compareWithBoard()
 	{
 		boolean res = true;
@@ -56,18 +91,18 @@ public class BoardBuffer implements IDescriptor
 		int size = width * height;
 		long sizeBuffer = size * Integer.BYTES;
 		ByteBuffer bBuffer = MemoryUtil.memAlloc((int) sizeBuffer);
-		
+
 		buffer.copyToBuffer(bBuffer);
 		IntBuffer intBufferView = bBuffer.asIntBuffer();
 		for (int i = 0; i < size; i++)
 		{
-			if(board.isActivated(i) != (intBufferView.get() == 1))
+			if (board.isActivated(i) != (intBufferView.get() == 1))
 			{
 				res = false;
 				break;
 			}
 		}
-		
+
 		return res;
 	}
 
@@ -112,18 +147,18 @@ public class BoardBuffer implements IDescriptor
 	{
 		return buffer;
 	}
-	
+
 	@Override
 	public void free()
 	{
 		buffer.free();
 	}
-	
+
 	public int getWidth()
 	{
 		return width;
 	}
-	
+
 	public int getHeight()
 	{
 		return height;
