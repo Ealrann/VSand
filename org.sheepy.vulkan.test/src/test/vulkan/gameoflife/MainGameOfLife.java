@@ -2,7 +2,7 @@ package test.vulkan.gameoflife;
 
 import org.sheepy.lily.game.vulkan.VulkanApplication;
 
-public class MainCompute
+public class MainGameOfLife
 {
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 600;

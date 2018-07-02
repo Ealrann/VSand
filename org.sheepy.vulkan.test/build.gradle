@@ -12,7 +12,7 @@ sourceSets {
     }
 }
 
-mainClassName = 'test.vulkan.triangle.Main'
+mainClassName = 'test.vulkan.gameoflife.MainGameOfLife'
 
 project.ext.lwjglVersion = "3.1.6"
 project.ext.jomlVersion = "1.9.9"
