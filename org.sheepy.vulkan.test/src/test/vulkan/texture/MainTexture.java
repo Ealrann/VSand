@@ -22,7 +22,7 @@ import org.sheepy.lily.game.vulkan.pipeline.swap.graphic.graphic.impl.TextureVer
 import org.sheepy.lily.game.vulkan.shader.Shader;
 import org.sheepy.lily.game.vulkan.texture.Texture;
 
-public class Main
+public class MainTexture
 {
 	private static final String IMAGE_PATH = "test/vulkan/texture/image_77MJJZ.png";
 	private static final String VERTEX_SHADER_PATH = "test/vulkan/texture/triangle.vert.spv";
