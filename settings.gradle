@@ -1,0 +1,6 @@
+rootProject.name = "Vulkan"
+
+
+include ':vulkan_lib/org.sheepy.lily.game.vulkan'
+include ':org.sheepy.vulkan.test'
+
