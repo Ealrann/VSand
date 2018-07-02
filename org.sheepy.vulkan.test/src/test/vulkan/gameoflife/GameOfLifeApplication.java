@@ -14,7 +14,7 @@ public class GameOfLifeApplication extends VulkanApplication
 
 	private static final int TARGET_FPS = 60;
 	private static final int FRAME_TIME_STEP_MS = (int) ((1f / TARGET_FPS) * 1000);
-	
+
 	private BoardPool boardPool;
 	private IPipelinePool renderPool;
 
@@ -52,6 +52,16 @@ public class GameOfLifeApplication extends VulkanApplication
 	}
 
 	private long nextRenderDate = 0;
+	private int countFrame = 0;
+	private long stopCountDate;
+	private boolean countFrameEnabled = true;
+
+	@Override
+	public void mainLoop()
+	{
+		stopCountDate = System.currentTimeMillis() + 3000;
+		super.mainLoop();
+	}
 
 	@Override
 	public void drawFrame()
@@ -60,6 +70,19 @@ public class GameOfLifeApplication extends VulkanApplication
 		{
 			vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
 			boardPool.execute();
+
+			if (countFrameEnabled)
+			{
+				if (System.currentTimeMillis() > stopCountDate)
+				{
+					countFrameEnabled = false;
+					System.out.println("UPS: " + (int) (countFrame / 3f));
+				}
+				else
+				{
+					countFrame += 2;
+				}
+			}
 		}
 
 		nextRenderDate = System.currentTimeMillis() + FRAME_TIME_STEP_MS;
