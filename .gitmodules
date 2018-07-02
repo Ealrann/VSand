@@ -1,0 +1,3 @@
+[submodule "vulkan_lib"]
+	path = vulkan_lib
+	url = ssh://lyvi:2280/light/server/git/vulkan
