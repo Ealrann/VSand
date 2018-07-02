@@ -27,6 +27,6 @@ dependencies {
 
 	api 'com.google.guava:guava:24.1-jre'
 
-	api project(':org.sheepy.lily.game.vulkan')
+	api project(':vulkan_lib/org.sheepy.lily.game.vulkan')
 }
 
