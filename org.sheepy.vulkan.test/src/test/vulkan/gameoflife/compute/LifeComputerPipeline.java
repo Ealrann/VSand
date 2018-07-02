@@ -29,9 +29,10 @@ public class LifeComputerPipeline extends ComputePipeline
 	@Override
 	public void load()
 	{
-		computer.load();
+		computer.load(commandPool, logicalDevice.getQueueManager().getComputeQueue());
 
 		ComputerPool pool = new ComputerPool(Collections.singletonList(computer));
+		
 		attachComputerPool(pool);
 
 		super.load();

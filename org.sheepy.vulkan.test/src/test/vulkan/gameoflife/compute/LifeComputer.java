@@ -5,6 +5,8 @@ import static org.lwjgl.vulkan.VK10.VK_SHADER_STAGE_COMPUTE_BIT;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.vulkan.VkQueue;
+import org.sheepy.lily.game.vulkan.command.CommandPool;
 import org.sheepy.lily.game.vulkan.descriptor.IDescriptor;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.compute.IComputer;
@@ -26,10 +28,10 @@ public class LifeComputer implements IComputer
 
 	private Shader shader;
 
-	public static LifeComputer alloc(LogicalDevice logicalDevice, Board board)
+	public static LifeComputer alloc(LogicalDevice logicalDevice, Board board, CommandPool commandPool, VkQueue queue)
 	{
 		LifeComputer res = new LifeComputer(logicalDevice, board);
-		res.load();
+		res.load(commandPool, queue);
 		return res;
 	}
 
@@ -41,9 +43,10 @@ public class LifeComputer implements IComputer
 		buffer = new BoardBuffer(logicalDevice, board);
 	}
 
-	public void load()
+	public void load(CommandPool commandPool, VkQueue queue)
 	{
 		shader = new Shader(logicalDevice, SHADER_LOCATION, VK_SHADER_STAGE_COMPUTE_BIT);
+		buffer.load(commandPool, queue);
 	}
 
 	public void attachSourceBuffer(BoardBuffer boardBuffer)
