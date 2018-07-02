@@ -8,7 +8,7 @@ plugins {
 sourceSets {
     main {
         java.srcDirs = ['src/']
-        resources.srcDirs = ['resources/']
+        resources.srcDirs = ['res/']
     }
 }
 
