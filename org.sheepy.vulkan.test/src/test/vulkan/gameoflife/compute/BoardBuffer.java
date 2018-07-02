@@ -1,13 +1,6 @@
 package test.vulkan.gameoflife.compute;
 
-import static org.lwjgl.vulkan.VK10.VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
-import static org.lwjgl.vulkan.VK10.VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-import static org.lwjgl.vulkan.VK10.VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-import static org.lwjgl.vulkan.VK10.VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-import static org.lwjgl.vulkan.VK10.VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
-import static org.lwjgl.vulkan.VK10.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
-import static org.lwjgl.vulkan.VK10.VK_SHADER_STAGE_COMPUTE_BIT;
-import static org.lwjgl.vulkan.VK10.VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+import static org.lwjgl.vulkan.VK10.*;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -46,7 +39,9 @@ public class BoardBuffer implements IDescriptor
 
 		long sizeBuffer = board.getWidth() * board.getHeight() * Integer.BYTES;
 		buffer = Buffer.alloc(logicalDevice, sizeBuffer,
-				VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+				VK_BUFFER_USAGE_STORAGE_BUFFER_BIT
+						| VK_BUFFER_USAGE_TRANSFER_SRC_BIT
+						| VK_BUFFER_USAGE_TRANSFER_DST_BIT,
 				VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 	}
 
