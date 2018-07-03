@@ -224,7 +224,7 @@ public class BufferToPixelRenderPass implements IRenderPass
 		renderPassInfo.sType(VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO);
 		renderPassInfo.pAttachments(attachments);
 		renderPassInfo.pSubpasses(subpass);
-		// renderPassInfo.pDependencies(dependency);
+		renderPassInfo.pDependencies(dependency);
 
 		long[] aRenderPass = new long[1];
 		if (vkCreateRenderPass(logicalDevice.getVkDevice(), renderPassInfo, null,
