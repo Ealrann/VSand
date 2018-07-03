@@ -11,7 +11,6 @@ import test.vulkan.gameoflife.pipelinepool.RenderPipelinePool;
 
 public class GameOfLifeApplication extends VulkanApplication
 {
-
 	private static final int TARGET_FPS = 60;
 	private static final int FRAME_TIME_STEP_MS = (int) ((1f / TARGET_FPS) * 1000);
 

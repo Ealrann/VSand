@@ -65,11 +65,9 @@ public class BoardBuffer implements IDescriptor
 
 		SingleTimeCommand stc = new SingleTimeCommand(commandPool, queue)
 		{
-
 			@Override
 			protected void doExecute(MemoryStack stack, VkCommandBuffer commandBuffer)
 			{
-
 				Buffer.copyBuffer(commandBuffer, indexStagingBuffer.getId(), buffer.getId(),
 						(int) buffer.getSize());
 			}

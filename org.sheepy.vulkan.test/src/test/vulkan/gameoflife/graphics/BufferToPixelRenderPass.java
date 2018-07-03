@@ -59,30 +59,6 @@ public class BufferToPixelRenderPass implements IRenderPass
 	{
 		Extent2D extent = pipeline.getSwapChain().getExtent();
 
-		// VkBufferImageCopy.Buffer region = VkBufferImageCopy.calloc(1);
-		// region.imageSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
-		// region.imageSubresource().mipLevel(0);
-		// region.imageSubresource().baseArrayLayer(0);
-		// region.imageSubresource().layerCount(1);
-		// region.imageOffset().x(0);
-		// region.imageOffset().y(0);
-		// region.imageOffset().z(0);
-		// region.imageExtent().set(extent.getWidth(), extent.getHeight(), 1);
-		//
-		// dstImageView.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
-		// VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
-		//
-		// vkCmdCopyBufferToImage(commandBuffer.getVkCommandBuffer(),
-		// srcImage.getId(),
-		// dstImageView.getImageId(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-		// region);
-		//
-		// dstImageView.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
-		// VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-		// VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-		//
-		// region.free();
-
 		// Intend to blit from this image, set the layout accordingly
 
 		srcImage.transitionImageLayout(commandBuffer.getVkCommandBuffer(), VK_IMAGE_LAYOUT_GENERAL,
