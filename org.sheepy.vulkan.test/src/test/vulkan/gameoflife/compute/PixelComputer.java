@@ -1,13 +1,11 @@
 package test.vulkan.gameoflife.compute;
 
-import static org.lwjgl.vulkan.VK10.VK_FORMAT_R8G8B8A8_UNORM;
 import static org.lwjgl.vulkan.VK10.VK_SHADER_STAGE_COMPUTE_BIT;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.sheepy.lily.game.vulkan.buffer.Image;
 import org.sheepy.lily.game.vulkan.command.CommandPool;
 import org.sheepy.lily.game.vulkan.descriptor.IDescriptor;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
@@ -28,11 +26,11 @@ public class PixelComputer implements IComputer
 
 	private List<IDescriptor> descriptors;
 
-	public PixelComputer(LogicalDevice logicalDevice, CommandPool commandPool, BoardBuffer board)
+	public PixelComputer(LogicalDevice logicalDevice, CommandPool commandPool, BoardBuffer board,
+			BoardImage image)
 	{
 		this.logicalDevice = logicalDevice;
-
-		image = new BoardImage(logicalDevice);
+		this.image = image;
 
 		descriptors = new ArrayList<>();
 		descriptors.add(board);
@@ -42,9 +40,6 @@ public class PixelComputer implements IComputer
 
 		this.width = board.getWidth();
 		this.height = board.getHeight();
-
-		image.load(commandPool, logicalDevice.getQueueManager().getComputeQueue(), width, height,
-				VK_FORMAT_R8G8B8A8_UNORM);
 	}
 
 	public void load()
@@ -82,11 +77,6 @@ public class PixelComputer implements IComputer
 	public int getDataDepth()
 	{
 		return 1;
-	}
-
-	public Image getImage()
-	{
-		return image.getImage();
 	}
 
 	@Override
