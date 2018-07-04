@@ -1,15 +1,17 @@
 package test.vulkan.gameoflife.pipelinepool;
 
-import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.vulkan.VK10.VK_NULL_HANDLE;
+import static org.lwjgl.vulkan.VK10.vkQueueSubmit;
 
 import org.lwjgl.system.MemoryStack;
+import org.sheepy.lily.game.vulkan.buffer.Image;
 import org.sheepy.lily.game.vulkan.command.CommandPool;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
 
 import test.vulkan.gameoflife.Board;
-import test.vulkan.gameoflife.compute.BoardBuffer;
 import test.vulkan.gameoflife.compute.LifeComputerPipeline;
+import test.vulkan.gameoflife.compute.PixelComputerPipeline;
 
 public class BoardPool implements IPipelinePool
 {
@@ -20,6 +22,8 @@ public class BoardPool implements IPipelinePool
 
 	private LifeComputerPipeline lifePipeline1;
 	private LifeComputerPipeline lifePipeline2;
+
+	private PixelComputerPipeline pixelPipeline;
 
 	public BoardPool(LogicalDevice logicalDevice, Board board)
 	{
@@ -42,6 +46,9 @@ public class BoardPool implements IPipelinePool
 
 		lifePipeline1.attachSourcePipeline(lifePipeline2);
 		lifePipeline2.attachSourcePipeline(lifePipeline1);
+
+		pixelPipeline = new PixelComputerPipeline(logicalDevice, commandPool,
+				lifePipeline1.getBoardBuffer());
 	}
 
 	@Override
@@ -54,6 +61,8 @@ public class BoardPool implements IPipelinePool
 		// signaled until we run it once. So we need to do it manually now.
 		lifePipeline1.getSubmission().getWaitSemaphores().get(0).signalSemaphore(getCommandPool(),
 				logicalDevice.getQueueManager().getComputeQueue());
+
+		pixelPipeline.load();
 	}
 
 	@Override
@@ -64,6 +73,9 @@ public class BoardPool implements IPipelinePool
 
 		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
 				lifePipeline2.getSubmitInfo(), VK_NULL_HANDLE);
+
+		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
+				pixelPipeline.getSubmitInfo(), VK_NULL_HANDLE);
 	}
 
 	@Override
@@ -73,6 +85,7 @@ public class BoardPool implements IPipelinePool
 	@Override
 	public void free()
 	{
+		pixelPipeline.free();
 		lifePipeline1.free();
 		lifePipeline2.free();
 		commandPool.free();
@@ -84,9 +97,8 @@ public class BoardPool implements IPipelinePool
 		return commandPool;
 	}
 
-	public BoardBuffer getBoardBuffer()
+	public Image getImage()
 	{
-		return lifePipeline1.getBoardBuffer();
+		return pixelPipeline.getImage();
 	}
-
 }

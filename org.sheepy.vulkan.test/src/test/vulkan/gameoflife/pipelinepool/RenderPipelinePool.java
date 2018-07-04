@@ -4,31 +4,34 @@ import static org.lwjgl.vulkan.KHRSurface.VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
 import static org.lwjgl.vulkan.KHRSwapchain.vkQueuePresentKHR;
 import static org.lwjgl.vulkan.VK10.*;
 
+import java.util.Collection;
+
 import org.lwjgl.system.MemoryStack;
+import org.sheepy.lily.game.vulkan.buffer.Image;
 import org.sheepy.lily.game.vulkan.command.CommandPool;
+import org.sheepy.lily.game.vulkan.concurrent.ISignalEmitter;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
 import org.sheepy.lily.game.vulkan.pipeline.swap.SwapConfiguration;
 
-import test.vulkan.gameoflife.compute.BoardBuffer;
-import test.vulkan.gameoflife.compute.PixelComputerPipeline;
 import test.vulkan.gameoflife.graphics.BufferedSwapPipeline;
 
 public class RenderPipelinePool implements IPipelinePool
 {
 
 	private LogicalDevice logicalDevice;
-	private BoardBuffer boardBuffer;
-
+	private Image image;
+	private Collection<ISignalEmitter> waitForEmitters;
 	private CommandPool commandPool;
 
-	private PixelComputerPipeline computerPipeline;
 	private BufferedSwapPipeline renderPipeline;
 
-	public RenderPipelinePool(LogicalDevice logicalDevice, BoardBuffer boardBuffer)
+	public RenderPipelinePool(LogicalDevice logicalDevice, Image image,
+			Collection<ISignalEmitter> waitForEmitters)
 	{
 		this.logicalDevice = logicalDevice;
-		this.boardBuffer = boardBuffer;
+		this.image = image;
+		this.waitForEmitters = waitForEmitters;
 
 		try (MemoryStack stack = MemoryStack.stackPush())
 		{
@@ -46,31 +49,22 @@ public class RenderPipelinePool implements IPipelinePool
 		// We will fill the framebuffer manually.
 		configuration.renderPipeline = false;
 
-		computerPipeline = new PixelComputerPipeline(logicalDevice, commandPool, boardBuffer);
-
 		// We will use the swap image as a target transfer
 		configuration.swapImageUsages |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 		renderPipeline = new BufferedSwapPipeline(logicalDevice, configuration, commandPool,
-				computerPipeline);
+				image, waitForEmitters);
 	}
 
 	@Override
 	public void load(MemoryStack stack, long surface, int width, int height)
 	{
 		renderPipeline.load(surface, width, height);
-		computerPipeline.load();
 	}
 
 	@Override
 	public void execute()
 	{
 		int imageIndex = renderPipeline.acquireNextImage();
-
-		if (vkQueueSubmit(logicalDevice.getQueueManager().getGraphicQueue(),
-				computerPipeline.getSubmitInfo(), VK_NULL_HANDLE) != VK_SUCCESS)
-		{
-			throw new AssertionError("failed to submit draw command buffer!");
-		}
 
 		if (vkQueueSubmit(logicalDevice.getQueueManager().getGraphicQueue(),
 				renderPipeline.getFrameSubmission().getSubmitInfo(imageIndex),
@@ -93,7 +87,6 @@ public class RenderPipelinePool implements IPipelinePool
 	@Override
 	public void free()
 	{
-		computerPipeline.free();
 		renderPipeline.destroy(true);
 		commandPool.free();
 	}

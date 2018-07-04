@@ -1,7 +1,5 @@
 package test.vulkan.gameoflife;
 
-import static org.lwjgl.vulkan.VK10.vkQueueWaitIdle;
-
 import org.sheepy.lily.game.vulkan.VulkanApplication;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
@@ -26,7 +24,7 @@ public class GameOfLifeApplication extends VulkanApplication
 		Board board = createBoard(logicalDevice, width, height);
 
 		boardPool = new BoardPool(logicalDevice, board);
-		renderPool = new RenderPipelinePool(logicalDevice, boardPool.getBoardBuffer());
+		renderPool = new RenderPipelinePool(logicalDevice, boardPool.getImage(), null);
 
 		attachPipelinePool(boardPool);
 		attachPipelinePool(renderPool);
@@ -59,6 +57,7 @@ public class GameOfLifeApplication extends VulkanApplication
 	public void mainLoop()
 	{
 		stopCountDate = System.currentTimeMillis() + 3000;
+		nextRenderDate = System.currentTimeMillis() + FRAME_TIME_STEP_MS;
 		super.mainLoop();
 	}
 
@@ -67,7 +66,6 @@ public class GameOfLifeApplication extends VulkanApplication
 	{
 		while (nextRenderDate > System.currentTimeMillis())
 		{
-			vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
 			boardPool.execute();
 
 			if (countFrameEnabled)
