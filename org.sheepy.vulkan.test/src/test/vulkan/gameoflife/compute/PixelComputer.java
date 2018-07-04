@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.sheepy.lily.game.vulkan.command.CommandPool;
 import org.sheepy.lily.game.vulkan.descriptor.IDescriptor;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.compute.IComputer;
@@ -21,16 +20,13 @@ public class PixelComputer implements IComputer
 	private int width;
 	private int height;
 
-	private BoardImage image;
 	private Shader boardToImageShader;
 
 	private List<IDescriptor> descriptors;
 
-	public PixelComputer(LogicalDevice logicalDevice, CommandPool commandPool, BoardBuffer board,
-			BoardImage image)
+	public PixelComputer(LogicalDevice logicalDevice, BoardBuffer board, BoardImage image)
 	{
 		this.logicalDevice = logicalDevice;
-		this.image = image;
 
 		descriptors = new ArrayList<>();
 		descriptors.add(board);
@@ -42,6 +38,7 @@ public class PixelComputer implements IComputer
 		this.height = board.getHeight();
 	}
 
+	@Override
 	public void load()
 	{
 		boardToImageShader = new Shader(logicalDevice, SHADER_LOCATION,
@@ -52,7 +49,6 @@ public class PixelComputer implements IComputer
 	public void free()
 	{
 		boardToImageShader.destroy();
-		image.free();
 	}
 
 	@Override

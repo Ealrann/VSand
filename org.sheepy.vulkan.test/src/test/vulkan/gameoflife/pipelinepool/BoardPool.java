@@ -7,11 +7,14 @@ import org.sheepy.lily.game.vulkan.buffer.Image;
 import org.sheepy.lily.game.vulkan.command.CommandPool;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
+import org.sheepy.lily.game.vulkan.pipeline.compute.ComputePipeline;
+import org.sheepy.lily.game.vulkan.pipeline.compute.ComputeProcess;
 
 import test.vulkan.gameoflife.Board;
+import test.vulkan.gameoflife.compute.BoardBuffer;
 import test.vulkan.gameoflife.compute.BoardImage;
-import test.vulkan.gameoflife.compute.LifeComputerPipeline;
-import test.vulkan.gameoflife.compute.PixelComputerPipeline;
+import test.vulkan.gameoflife.compute.LifeComputer;
+import test.vulkan.gameoflife.compute.PixelComputer;
 
 public class BoardPool implements IPipelinePool
 {
@@ -21,10 +24,10 @@ public class BoardPool implements IPipelinePool
 
 	private CommandPool commandPool;
 
-	private LifeComputerPipeline[] lifePipelines;
-	private PixelComputerPipeline[] pixelPipelines;
+	private ComputeProcess[] boardProcesses;
 
 	private int currentIndex = 0;
+	private BoardBuffer[] boardBuffers;
 
 	public BoardPool(LogicalDevice logicalDevice, Board board)
 	{
@@ -42,55 +45,54 @@ public class BoardPool implements IPipelinePool
 
 	public void buildPipelines()
 	{
-		LifeComputerPipeline lifePipeline1 = new LifeComputerPipeline(logicalDevice, commandPool,
-				board);
-		LifeComputerPipeline lifePipeline2 = new LifeComputerPipeline(logicalDevice, commandPool,
-				board);
+		BoardBuffer boardBuffer1 = new BoardBuffer(logicalDevice, board);
+		BoardBuffer boardBuffer2 = new BoardBuffer(logicalDevice, board);
+		boardBuffers = new BoardBuffer[2];
+		boardBuffers[0] = boardBuffer1;
+		boardBuffers[1] = boardBuffer2;
 
-		lifePipeline1.attachSourcePipeline(lifePipeline2);
-		lifePipeline2.attachSourcePipeline(lifePipeline1);
-
-		lifePipelines = new LifeComputerPipeline[2];
-		lifePipelines[0] = lifePipeline1;
-		lifePipelines[1] = lifePipeline2;
+		LifeComputer lifeComputer1 = new LifeComputer(logicalDevice, boardBuffer1);
+		LifeComputer lifeComputer2 = new LifeComputer(logicalDevice, boardBuffer2);
+		lifeComputer1.attachSourceBuffer(lifeComputer2.getBuffer());
+		lifeComputer2.attachSourceBuffer(lifeComputer1.getBuffer());
 
 		image = new BoardImage(logicalDevice);
 		image.load(commandPool, logicalDevice.getQueueManager().getComputeQueue(), board.getWidth(),
 				board.getHeight(), VK_FORMAT_R8G8B8A8_UNORM);
 
-		PixelComputerPipeline pixelPipeline1 = new PixelComputerPipeline(logicalDevice, commandPool,
-				lifePipeline1.getBoardBuffer(), image);
-		PixelComputerPipeline pixelPipeline2 = new PixelComputerPipeline(logicalDevice, commandPool,
-				lifePipeline2.getBoardBuffer(), image);
+		PixelComputer pixelComputer1 = new PixelComputer(logicalDevice, lifeComputer1.getBuffer(),
+				image);
+		PixelComputer pixelComputer2 = new PixelComputer(logicalDevice, lifeComputer2.getBuffer(),
+				image);
 
-		pixelPipelines = new PixelComputerPipeline[2];
-		pixelPipelines[0] = pixelPipeline1;
-		pixelPipelines[1] = pixelPipeline2;
+		ComputeProcess boardProcess1 = new ComputeProcess(logicalDevice, commandPool);
+		boardProcess1.addPipeline(new ComputePipeline(logicalDevice, lifeComputer1));
+		boardProcess1.addPipeline(new ComputePipeline(logicalDevice, pixelComputer1));
+
+		ComputeProcess boardProcess2 = new ComputeProcess(logicalDevice, commandPool);
+		boardProcess2.addPipeline(new ComputePipeline(logicalDevice, lifeComputer2));
+		boardProcess2.addPipeline(new ComputePipeline(logicalDevice, pixelComputer2));
+
+		boardProcesses = new ComputeProcess[2];
+		boardProcesses[0] = boardProcess1;
+		boardProcesses[1] = boardProcess2;
 	}
 
 	@Override
 	public void load(MemoryStack stack, long surface, int width, int height)
 	{
-		lifePipelines[0].load();
-		lifePipelines[1].load();
+		boardBuffers[0].load(commandPool, logicalDevice.getQueueManager().getComputeQueue());
+		boardBuffers[1].load(commandPool, logicalDevice.getQueueManager().getComputeQueue());
 
-		// The lifePipeline1 wait for the lifePipeline2. But it can't be
-		// signaled until we run it once. So we need to do it manually now.
-		lifePipelines[0].getSubmission().getWaitSemaphores().get(0).signalSemaphore(getCommandPool(),
-				logicalDevice.getQueueManager().getComputeQueue());
-
-		pixelPipelines[0].load();
-		pixelPipelines[1].load();
+		boardProcesses[0].load();
+		boardProcesses[1].load();
 	}
 
 	@Override
 	public void execute()
 	{
 		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
-				lifePipelines[currentIndex].getSubmitInfo(), VK_NULL_HANDLE);
-
-		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
-				pixelPipelines[currentIndex].getSubmitInfo(), VK_NULL_HANDLE);
+				boardProcesses[currentIndex].getSubmitInfo(), VK_NULL_HANDLE);
 
 		currentIndex = currentIndex == 1 ? 0 : 1;
 	}
@@ -102,10 +104,11 @@ public class BoardPool implements IPipelinePool
 	@Override
 	public void free()
 	{
-		pixelPipelines[0].free();
-		lifePipelines[0].free();
-		pixelPipelines[1].free();
-		lifePipelines[1].free();
+		boardProcesses[0].free();
+		boardProcesses[1].free();
+		boardBuffers[0].free();
+		boardBuffers[1].free();
+		image.free();
 		commandPool.free();
 	}
 
