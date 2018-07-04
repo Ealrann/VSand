@@ -2,7 +2,6 @@ package test.vulkan.gameoflife.compute;
 
 import java.util.Collections;
 
-import org.sheepy.lily.game.vulkan.buffer.Image;
 import org.sheepy.lily.game.vulkan.command.CommandPool;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.compute.ComputePipeline;
@@ -12,11 +11,12 @@ public class PixelComputerPipeline extends ComputePipeline
 {
 	private PixelComputer computer;
 
-	public PixelComputerPipeline(LogicalDevice logicalDevice, CommandPool commandPool, BoardBuffer boardBuffer)
+	public PixelComputerPipeline(LogicalDevice logicalDevice, CommandPool commandPool,
+			BoardBuffer boardBuffer, BoardImage image)
 	{
 		super(logicalDevice, commandPool, Collections.emptyList());
 
-		computer = new PixelComputer(logicalDevice, commandPool, boardBuffer);
+		computer = new PixelComputer(logicalDevice, commandPool, boardBuffer, image);
 	}
 
 	@Override
@@ -28,10 +28,5 @@ public class PixelComputerPipeline extends ComputePipeline
 		attachComputerPool(pool);
 
 		super.load();
-	}
-
-	public Image getImage()
-	{
-		return computer.getImage();
 	}
 }

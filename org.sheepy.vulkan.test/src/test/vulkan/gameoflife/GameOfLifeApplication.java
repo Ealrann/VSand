@@ -77,7 +77,7 @@ public class GameOfLifeApplication extends VulkanApplication
 				}
 				else
 				{
-					countFrame += 2;
+					countFrame ++;
 				}
 			}
 		}
