@@ -9,6 +9,7 @@ import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
 import org.sheepy.lily.game.vulkan.pipeline.compute.ComputePipeline;
 import org.sheepy.lily.game.vulkan.pipeline.compute.ComputeProcess;
+import org.sheepy.lily.game.vulkan.pipeline.compute.ComputeProcessPool;
 
 import test.vulkan.gameoflife.Board;
 import test.vulkan.gameoflife.compute.BoardBuffer;
@@ -24,7 +25,7 @@ public class BoardPool implements IPipelinePool
 
 	private CommandPool commandPool;
 
-	private ComputeProcess[] boardProcesses;
+	private ComputeProcessPool boardProcesses;
 
 	private int currentIndex = 0;
 	private BoardBuffer[] boardBuffers;
@@ -65,17 +66,17 @@ public class BoardPool implements IPipelinePool
 		PixelComputer pixelComputer2 = new PixelComputer(logicalDevice, lifeComputer2.getBuffer(),
 				image);
 
-		ComputeProcess boardProcess1 = new ComputeProcess(logicalDevice, commandPool);
+		ComputeProcess boardProcess1 = new ComputeProcess(logicalDevice);
 		boardProcess1.addPipeline(new ComputePipeline(logicalDevice, lifeComputer1));
 		boardProcess1.addPipeline(new ComputePipeline(logicalDevice, pixelComputer1));
 
-		ComputeProcess boardProcess2 = new ComputeProcess(logicalDevice, commandPool);
+		ComputeProcess boardProcess2 = new ComputeProcess(logicalDevice);
 		boardProcess2.addPipeline(new ComputePipeline(logicalDevice, lifeComputer2));
 		boardProcess2.addPipeline(new ComputePipeline(logicalDevice, pixelComputer2));
 
-		boardProcesses = new ComputeProcess[2];
-		boardProcesses[0] = boardProcess1;
-		boardProcesses[1] = boardProcess2;
+		boardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
+		boardProcesses.addProcess(boardProcess1);
+		boardProcesses.addProcess(boardProcess2);
 	}
 
 	@Override
@@ -84,15 +85,13 @@ public class BoardPool implements IPipelinePool
 		boardBuffers[0].load(commandPool, logicalDevice.getQueueManager().getComputeQueue());
 		boardBuffers[1].load(commandPool, logicalDevice.getQueueManager().getComputeQueue());
 
-		boardProcesses[0].load();
-		boardProcesses[1].load();
+		boardProcesses.load();
 	}
 
 	@Override
 	public void execute()
 	{
-		vkQueueSubmit(logicalDevice.getQueueManager().getComputeQueue(),
-				boardProcesses[currentIndex].getSubmitInfo(), VK_NULL_HANDLE);
+		boardProcesses.exectue(logicalDevice.getQueueManager().getComputeQueue(), currentIndex);
 
 		currentIndex = currentIndex == 1 ? 0 : 1;
 	}
@@ -104,8 +103,7 @@ public class BoardPool implements IPipelinePool
 	@Override
 	public void free()
 	{
-		boardProcesses[0].free();
-		boardProcesses[1].free();
+		boardProcesses.free();
 		boardBuffers[0].free();
 		boardBuffers[1].free();
 		image.free();
