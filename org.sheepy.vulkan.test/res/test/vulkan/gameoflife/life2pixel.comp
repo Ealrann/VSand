@@ -15,7 +15,7 @@ layout(binding = 0) readonly buffer buf1 {
    int boardData[];
 } inArray;
 
-layout(rgba8, binding = 1) uniform restrict image2D outImage;
+layout(rgba8, binding = 1) uniform image2D outImage;
 
 void main() {
   /*
