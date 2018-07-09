@@ -1,0 +1,49 @@
+#version 450
+#extension GL_ARB_separate_shader_objects : enable
+
+#define WIDTH 1024
+#define HEIGHT 576
+#define WORKGROUP_SIZE 32
+
+#define SQUARE 0
+#define CIRCLE 1
+
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
+
+layout(binding = 0) buffer boardBuffer {
+	int data[WIDTH][HEIGHT];
+}board;
+
+layout(binding = 1) uniform attributeBuffer {
+	int shape;
+	int size;
+	int value;
+	int x;
+	int y;
+}attributes;
+
+void main() {
+
+	uint x = gl_GlobalInvocationID.x;
+	uint y = gl_GlobalInvocationID.y;
+
+	if (x >= attributes.x && y >= attributes.y
+			&& x <= attributes.x + attributes.size
+			&& y <= attributes.y + attributes.size) {
+
+		bool isInShape = false;
+		switch (attributes.shape) {
+		case SQUARE:
+			isInShape = true;
+			break;
+		case CIRCLE:
+			isInShape = true;
+			break;
+		}
+
+		if(isInShape)
+		{
+			board.data[x][y] = attributes.value;
+		}
+	}
+}

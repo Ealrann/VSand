@@ -1,0 +1,86 @@
+import org.gradle.internal.os.OperatingSystem
+
+plugins {
+	id 'java-library'
+	id 'application'
+	id 'eclipse'
+	//id 'org.gradle.java.experimental-jigsaw' version '0.1.1'
+}
+
+sourceSets {
+    main {
+        java.srcDirs = ['src/']
+        resources.srcDirs = ['res/']
+    }
+}
+
+mainClassName = 'test.vulkan.gameoflife.MainGameOfLife'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+    maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url 'https://jitpack.io' }
+}
+
+project.ext.lwjglVersion = "3.1.6"
+project.ext.jomlVersion = "1.9.9"
+switch ( OperatingSystem.current() ) {
+	case OperatingSystem.WINDOWS:
+		project.ext.lwjglNatives = "natives-windows"
+		break
+	case OperatingSystem.LINUX:
+		project.ext.lwjglNatives = "natives-linux"
+	break
+	case OperatingSystem.MAC_OS:
+		project.ext.lwjglNatives = "natives-macos"
+		break
+}
+
+dependencies {
+
+	api 'com.google.guava:guava:24.1-jre'
+	
+	api project(':org.sheepy.lily.game.vulkan')
+
+	// ------------------------/
+	// ImGUI
+	
+	api "org.joml:joml:${jomlVersion}"
+	api "org.lwjgl:lwjgl:$lwjglVersion"
+	api "org.lwjgl:lwjgl-assimp:$lwjglVersion"
+	api "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+	api "org.lwjgl:lwjgl-openal:$lwjglVersion"
+	api "org.lwjgl:lwjgl-stb:$lwjglVersion"
+	api "org.lwjgl:lwjgl-vulkan:$lwjglVersion"
+	implementation "org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives"
+	implementation "org.lwjgl:lwjgl-assimp:$lwjglVersion:$lwjglNatives"
+	implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives"
+	implementation "org.lwjgl:lwjgl-openal:$lwjglVersion:$lwjglNatives"
+	implementation "org.lwjgl:lwjgl-stb:$lwjglVersion:$lwjglNatives"
+	
+    compile 'com.github.kotlin-graphics:imgui:-SNAPSHOT'
+    
+    switch ( OperatingSystem.current() ) {
+        case OperatingSystem.WINDOWS:
+            ext.lwjglNatives = "natives-windows"
+            break
+        case OperatingSystem.LINUX:
+            ext.lwjglNatives = "natives-linux"
+            break
+        case OperatingSystem.MAC_OS:
+            ext.lwjglNatives = "natives-macos"
+            break
+    }
+
+    // Look up which modules and versions of LWJGL are required and add setup the approriate natives.
+    configurations.compile.resolvedConfiguration.getResolvedArtifacts().forEach {
+        if (it.moduleVersion.id.group == "org.lwjgl") {
+            runtime "org.lwjgl:${it.moduleVersion.id.name}:${it.moduleVersion.id.version}:${lwjglNatives}"
+        }
+    }
+    // End ImGUI
+	// ------------------------/
+}
+
