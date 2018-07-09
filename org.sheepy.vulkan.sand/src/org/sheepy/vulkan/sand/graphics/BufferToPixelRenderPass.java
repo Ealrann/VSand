@@ -99,7 +99,7 @@ public class BufferToPixelRenderPass implements IRenderPass
 
 		vkCmdBlitImage(commandBuffer.getVkCommandBuffer(), bltSrcImage,
 				VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, bltDstImage,
-				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, region, VK_FILTER_NEAREST);
+				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, region, VK_FILTER_LINEAR);
 
 		srcImage.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
 				VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL, 1,

@@ -19,6 +19,8 @@ public class SandApplication extends VulkanApplication
 	private static final int WIDTH = 1024;
 	private static final int HEIGHT = 576;
 
+	private static final int ZOOM = 1;
+
 	// in update per frame
 	private int speed = 1;
 
@@ -29,16 +31,16 @@ public class SandApplication extends VulkanApplication
 	// private static final int TARGET_FPS = 60;
 	// private static final float FRAME_TIME_STEP_MS = (1f / TARGET_FPS) * 1000;
 
-	public SandApplication(int width, int height)
+	public SandApplication()
 	{
-		super(width, height);
+		super(WIDTH, HEIGHT);
 
 		LogicalDevice logicalDevice = initLogicalDevice();
 
-		boardModifications = new BoardModifications(logicalDevice, width, height);
+		boardModifications = new BoardModifications(logicalDevice, ZOOM);
 
 		BoardImage image = new BoardImage(logicalDevice);
-		image.load(width, height, VK_FORMAT_R8G8B8A8_UNORM);
+		image.load(WIDTH * ZOOM, HEIGHT * ZOOM, VK_FORMAT_R8G8B8A8_UNORM);
 
 		boardPool = new BoardPipelinePool(logicalDevice, boardModifications, image);
 
@@ -62,11 +64,12 @@ public class SandApplication extends VulkanApplication
 	{
 		if (count++ == 90)
 		{
-			boardModifications.pushModification(EShape.Square, EShapeSize.ES5, 300, 200, EMaterial.Sand);
+			boardModifications.pushModification(EShape.Square, EShapeSize.ES5, 300, 200,
+					EMaterial.Sand);
 			System.out.println("Put sand");
 		}
 
-		for (int i = 0; i < speed; i++)
+		for (int i = 0; i < speed * ZOOM; i++)
 		{
 			boardPool.execute();
 		}
@@ -76,7 +79,7 @@ public class SandApplication extends VulkanApplication
 
 	public static void main(String[] args)
 	{
-		VulkanApplication app = new SandApplication(WIDTH, HEIGHT);
+		VulkanApplication app = new SandApplication();
 
 		try
 		{
