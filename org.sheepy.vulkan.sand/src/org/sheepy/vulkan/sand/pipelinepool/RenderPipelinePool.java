@@ -15,6 +15,7 @@ import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
 import org.sheepy.lily.game.vulkan.pipeline.swap.SwapConfiguration;
 import org.sheepy.vulkan.sand.graphics.BufferedSwapPipeline;
+import org.sheepy.vulkan.sand.util.LoadCounter;
 
 public class RenderPipelinePool implements IPipelinePool
 {
@@ -63,21 +64,19 @@ public class RenderPipelinePool implements IPipelinePool
 		renderPipeline.load(surface, width, height);
 	}
 
-	private int count = 0;
-	private long countTime = -1;
-	private static int maxCount = 60;
-	private float[] load = new float[maxCount];
+	private LoadCounter loadCounterTotal = new LoadCounter("Total ", 60);
+	private LoadCounter loadCounterRender = new LoadCounter("Render", 60);
 
 	@Override
 	public void execute()
 	{
-		long beforePresent = System.currentTimeMillis();
+		loadCounterRender.start();
+		loadCounterTotal.start();
 
-		vkQueueWaitIdle(logicalDevice.getQueueManager().getGraphicQueue());
-
-	
-
+		// vkQueueWaitIdle(logicalDevice.getQueueManager().getGraphicQueue());
 		int imageIndex = renderPipeline.acquireNextImage();
+
+		loadCounterTotal.countTime();
 
 		if (vkQueueSubmit(logicalDevice.getQueueManager().getGraphicQueue(),
 				renderPipeline.getFrameSubmission().getSubmitInfo(imageIndex),
@@ -89,32 +88,10 @@ public class RenderPipelinePool implements IPipelinePool
 		vkQueuePresentKHR(logicalDevice.getQueueManager().getGraphicQueue(),
 				renderPipeline.getFrameSubmission().getPresentInfo(imageIndex));
 
-		
-		long presentDuration = System.currentTimeMillis() - beforePresent;
-
-		if (countTime != -1)
-		{
-			long totalDuration = System.currentTimeMillis() - countTime;
-			load[count] = 1 - (presentDuration / totalDuration);
-			count++;
-		}
-
-		if (count == maxCount)
-		{
-			float averageLoad = 0;
-			for (float f : load)
-			{
-				averageLoad += f;
-			}
-			averageLoad /= maxCount;
-
-			System.out.println("Average Load : " + averageLoad);
-			count = 0;
-		}
-
-		countTime = System.currentTimeMillis();
-		
+		loadCounterRender.countTime();
 	}
+
+
 
 	@Override
 	public void resize(long surface, int width, int height)
