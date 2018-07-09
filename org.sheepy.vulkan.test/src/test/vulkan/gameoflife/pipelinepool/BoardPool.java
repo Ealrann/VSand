@@ -1,13 +1,12 @@
 package test.vulkan.gameoflife.pipelinepool;
 
-import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.vulkan.VK10.VK_FORMAT_R8G8B8A8_UNORM;
 
 import org.lwjgl.system.MemoryStack;
 import org.sheepy.lily.game.vulkan.buffer.Image;
 import org.sheepy.lily.game.vulkan.command.CommandPool;
 import org.sheepy.lily.game.vulkan.device.LogicalDevice;
 import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
-import org.sheepy.lily.game.vulkan.pipeline.compute.ComputePipeline;
 import org.sheepy.lily.game.vulkan.pipeline.compute.ComputeProcess;
 import org.sheepy.lily.game.vulkan.pipeline.compute.ComputeProcessPool;
 
@@ -52,27 +51,23 @@ public class BoardPool implements IPipelinePool
 		boardBuffers[0] = boardBuffer1;
 		boardBuffers[1] = boardBuffer2;
 
-		LifeComputer lifeComputer1 = new LifeComputer(logicalDevice, boardBuffer1);
-		LifeComputer lifeComputer2 = new LifeComputer(logicalDevice, boardBuffer2);
-		lifeComputer1.attachSourceBuffer(lifeComputer2.getBuffer());
-		lifeComputer2.attachSourceBuffer(lifeComputer1.getBuffer());
+		LifeComputer lifeComputer1 = new LifeComputer(logicalDevice, boardBuffer2, boardBuffer1);
+		LifeComputer lifeComputer2 = new LifeComputer(logicalDevice, boardBuffer1, boardBuffer2);
 
 		image = new BoardImage(logicalDevice);
 		image.load(commandPool, logicalDevice.getQueueManager().getComputeQueue(), board.getWidth(),
 				board.getHeight(), VK_FORMAT_R8G8B8A8_UNORM);
 
-		PixelComputer pixelComputer1 = new PixelComputer(logicalDevice, lifeComputer1.getBuffer(),
-				image);
-		PixelComputer pixelComputer2 = new PixelComputer(logicalDevice, lifeComputer2.getBuffer(),
-				image);
+		PixelComputer pixelComputer1 = new PixelComputer(logicalDevice, boardBuffer1, image);
+		PixelComputer pixelComputer2 = new PixelComputer(logicalDevice, boardBuffer2, image);
 
 		ComputeProcess boardProcess1 = new ComputeProcess(logicalDevice);
-		boardProcess1.addPipeline(new ComputePipeline(logicalDevice, lifeComputer1));
-		boardProcess1.addPipeline(new ComputePipeline(logicalDevice, pixelComputer1));
+		boardProcess1.addNewPipeline(lifeComputer1);
+		boardProcess1.addNewPipeline(pixelComputer1);
 
 		ComputeProcess boardProcess2 = new ComputeProcess(logicalDevice);
-		boardProcess2.addPipeline(new ComputePipeline(logicalDevice, lifeComputer2));
-		boardProcess2.addPipeline(new ComputePipeline(logicalDevice, pixelComputer2));
+		boardProcess2.addNewPipeline(lifeComputer2);
+		boardProcess2.addNewPipeline(pixelComputer2);
 
 		boardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
 		boardProcesses.addProcess(boardProcess1);
@@ -85,7 +80,7 @@ public class BoardPool implements IPipelinePool
 		boardBuffers[0].load(commandPool, logicalDevice.getQueueManager().getComputeQueue());
 		boardBuffers[1].load(commandPool, logicalDevice.getQueueManager().getComputeQueue());
 
-		boardProcesses.load();
+		boardProcesses.allocateNode(stack);
 	}
 
 	@Override
@@ -103,7 +98,7 @@ public class BoardPool implements IPipelinePool
 	@Override
 	public void free()
 	{
-		boardProcesses.free();
+		boardProcesses.freeNode();
 		boardBuffers[0].free();
 		boardBuffers[1].free();
 		image.free();
