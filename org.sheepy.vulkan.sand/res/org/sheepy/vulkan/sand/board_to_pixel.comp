@@ -7,17 +7,18 @@
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
-struct Entry {
+struct Entry
+{
 	int isStatic;
 	int density;
 	int runoff;
+	float viscosity;
 	float r;
 	float g;
 	float b;
 
 	// Padding for the alignement
 	float padding1;
-	float padding2;
 };
 
 layout(binding = 0) uniform SConfiguration {

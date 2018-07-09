@@ -25,6 +25,9 @@ public class RenderPipelinePool implements IPipelinePool
 	private Collection<ISignalEmitter> waitForEmitters;
 	private CommandPool commandPool;
 
+	private LoadCounter loadCounterTotal = new LoadCounter("Total ", 120);
+	private LoadCounter loadCounterRender = new LoadCounter("Render", 120);
+
 	private BufferedSwapPipeline renderPipeline;
 
 	public RenderPipelinePool(LogicalDevice logicalDevice, Image image,
@@ -64,9 +67,6 @@ public class RenderPipelinePool implements IPipelinePool
 		renderPipeline.load(surface, width, height);
 	}
 
-	private LoadCounter loadCounterTotal = new LoadCounter("Total ", 60);
-	private LoadCounter loadCounterRender = new LoadCounter("Render", 60);
-
 	@Override
 	public void execute()
 	{
@@ -90,8 +90,6 @@ public class RenderPipelinePool implements IPipelinePool
 
 		loadCounterRender.countTime();
 	}
-
-
 
 	@Override
 	public void resize(long surface, int width, int height)

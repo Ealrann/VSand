@@ -4,6 +4,7 @@ import static org.lwjgl.vulkan.VK10.*;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.lwjgl.system.MemoryStack;
@@ -21,14 +22,13 @@ import org.sheepy.lily.game.vulkan.pipeline.compute.Computer;
 import org.sheepy.vulkan.sand.board.BoardModifications;
 import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
-import org.sheepy.vulkan.sand.compute.DrawComputer;
 import org.sheepy.vulkan.sand.compute.PixelComputer;
 
 public class BoardPipelinePool implements IPipelinePool
 {
+	private static final String SHADER_VERT = "org/sheepy/vulkan/sand/game_step_vert.comp.spv";
 
-	private static final String SHADER_VERT_PAIR = "org/sheepy/vulkan/sand/game_step_vert_pair.comp.spv";
-	private static final String SHADER_VERT_IMPAIR = "org/sheepy/vulkan/sand/game_step_vert_impair.comp.spv";
+	private static final String SHADER_DRAW = "org/sheepy/vulkan/sand/draw.comp.spv";
 
 	private LogicalDevice logicalDevice;
 
@@ -42,8 +42,6 @@ public class BoardPipelinePool implements IPipelinePool
 
 	private ConfigurationBuffer configBuffer;
 	private Buffer boardBuffer;
-	private Buffer movedBuffer;
-	private Buffer movedCleanBuffer;
 
 	public BoardPipelinePool(LogicalDevice logicalDevice, BoardModifications boardModifications,
 			BoardImage boardImage)
@@ -64,8 +62,8 @@ public class BoardPipelinePool implements IPipelinePool
 
 	private void createBuffers()
 	{
-		int width = boardModifications.getWidth();
-		int height = boardModifications.getHeight();
+		int width = boardImage.getWidth();
+		int height = boardImage.getHeight();
 
 		// configBuffer
 		{
@@ -83,61 +81,38 @@ public class BoardPipelinePool implements IPipelinePool
 			boardBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
 					VK_DESCRIPTOR_TYPE_STORAGE_BUFFER);
 		}
-
-		// MovedBuffer
-		{
-			int movedSizeByte = (int) Math.ceil(width * height / 8f);
-			movedBuffer = Buffer.alloc(logicalDevice, movedSizeByte,
-					VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-					VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-			movedBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
-					VK_DESCRIPTOR_TYPE_STORAGE_BUFFER);
-
-			movedCleanBuffer = Buffer.alloc(logicalDevice, movedSizeByte,
-					VK_BUFFER_USAGE_STORAGE_BUFFER_BIT
-							| VK_BUFFER_USAGE_TRANSFER_SRC_BIT
-							| VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-					VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-			movedCleanBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
-					VK_DESCRIPTOR_TYPE_STORAGE_BUFFER);
-		}
 	}
 
 	private void buildPipelines()
 	{
-		int width = boardModifications.getWidth();
-		int height = boardModifications.getHeight();
+		int width = boardImage.getWidth();
+		int height = boardImage.getHeight();
 
-		DrawComputer modificationComputer = new DrawComputer(logicalDevice, boardBuffer,
-				boardModifications);
+		Computer modificationComputer = new Computer(logicalDevice, SHADER_DRAW, width, height,
+				Arrays.asList(boardBuffer, boardModifications));
 
 		List<IDescriptor> stepDescriptors = new ArrayList<>();
 		stepDescriptors.add(configBuffer.getBuffer());
 		stepDescriptors.add(boardBuffer);
-		stepDescriptors.add(movedBuffer);
 
-		Computer stepVertPair = new Computer(logicalDevice, SHADER_VERT_PAIR, (int) width,
-				(int) (height / 2f), stepDescriptors);
-		Computer stepVertImpair = new Computer(logicalDevice, SHADER_VERT_IMPAIR, (int) width,
-				(int) (height / 2f), stepDescriptors);
-
+		Computer stepVert = new Computer(logicalDevice, SHADER_VERT, width,
+				1, stepDescriptors);
+		stepVert.setWorkgroupSize(16);
+		
+		
 		PixelComputer pixelComputer = new PixelComputer(logicalDevice, configBuffer, boardBuffer,
 				boardImage);
 
-		ComputeProcess process = new BoardComputeProcess(logicalDevice, movedCleanBuffer,
-				movedBuffer);
-		process.addNewPipeline(stepVertPair);
-		process.addNewPipeline(stepVertImpair);
+		ComputeProcess process = new ComputeProcess(logicalDevice);
+		process.addNewPipeline(stepVert);
 		process.addNewPipeline(pixelComputer);
 
 		boardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
 		boardProcesses.addProcess(process);
 
-		ComputeProcess modificationProcess = new BoardComputeProcess(logicalDevice, movedCleanBuffer,
-				movedBuffer);
+		ComputeProcess modificationProcess = new ComputeProcess(logicalDevice);
 		modificationProcess.addNewPipeline(modificationComputer);
-		modificationProcess.addNewPipeline(stepVertPair);
-		modificationProcess.addNewPipeline(stepVertImpair);
+		modificationProcess.addNewPipeline(stepVert);
 		modificationProcess.addNewPipeline(pixelComputer);
 
 		mergeBoardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
@@ -175,31 +150,6 @@ public class BoardPipelinePool implements IPipelinePool
 			MemoryUtil.memFree(bBuffer);
 		}
 
-		// Fill the moved Clean Buffer
-		{
-			Buffer stagingMovedCleanBuffer = Buffer.alloc(logicalDevice, movedBuffer.getSize(),
-					VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-					VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
-
-			ByteBuffer bBuffer = MemoryUtil.memCalloc((int) movedBuffer.getSize());
-			stagingMovedCleanBuffer.fillWithBuffer(bBuffer);
-
-			SingleTimeCommand stc = new SingleTimeCommand(commandPool,
-					logicalDevice.getQueueManager().getGraphicQueue())
-			{
-				@Override
-				protected void doExecute(MemoryStack stack, VkCommandBuffer commandBuffer)
-				{
-					Buffer.copyBuffer(vkCommandBuffer, stagingMovedCleanBuffer.getId(),
-							movedCleanBuffer.getId(), (int) movedCleanBuffer.getSize());
-				}
-			};
-			stc.execute();
-
-			MemoryUtil.memFree(bBuffer);
-			stagingMovedCleanBuffer.free();
-		}
-
 		mergeBoardProcesses.allocateNode(stack);
 		boardProcesses.allocateNode(stack);
 	}
@@ -229,8 +179,6 @@ public class BoardPipelinePool implements IPipelinePool
 		mergeBoardProcesses.freeNode();
 		boardProcesses.freeNode();
 
-		movedBuffer.free();
-		movedCleanBuffer.free();
 		boardBuffer.free();
 		configBuffer.free();
 

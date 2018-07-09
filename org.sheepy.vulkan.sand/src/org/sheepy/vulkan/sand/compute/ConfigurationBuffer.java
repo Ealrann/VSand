@@ -37,13 +37,12 @@ public class ConfigurationBuffer
 			bBuffer.putInt(material.isStatic ? 1 : 0);
 			bBuffer.putInt(material.density);
 			bBuffer.putInt(material.runoff);
+			bBuffer.putFloat(material.viscosity);
 			bBuffer.putFloat(material.r);
 			bBuffer.putFloat(material.g);
 			bBuffer.putFloat(material.b);
 			
 			// Padding1
-			bBuffer.putFloat(0);
-			// Padding2
 			bBuffer.putFloat(0);
 		}
 		bBuffer.flip();

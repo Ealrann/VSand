@@ -24,19 +24,16 @@ import org.sheepy.lily.game.vulkan.device.LogicalDevice;
  */
 public class BoardModifications implements IDescriptor
 {
-	private int width;
-	private int height;
-
+	private int zoom;
+	
 	private ByteBuffer copyBuffer;
 	private Buffer modificationBuffer;
 
 	private Deque<Modification> boardModifications = new ArrayDeque<>();
 
-	public BoardModifications(LogicalDevice logicalDevice, int width, int height)
+	public BoardModifications(LogicalDevice logicalDevice, int zoom)
 	{
-		this.width = width;
-		this.height = height;
-
+		this.zoom = zoom;
 		int maxShapeSize = 1;
 		for (EShapeSize shapeSize : EShapeSize.values())
 		{
@@ -79,16 +76,6 @@ public class BoardModifications implements IDescriptor
 		modificationBuffer.fillWithBuffer(copyBuffer);
 	}
 
-	public int getWidth()
-	{
-		return width;
-	}
-
-	public int getHeight()
-	{
-		return height;
-	}
-
 	private class Modification
 	{
 		EShape shape;
@@ -108,11 +95,16 @@ public class BoardModifications implements IDescriptor
 
 		public void fillBuffer(ByteBuffer copyBuffer)
 		{
+			int size = this.size.getSize() * zoom;
+
 			copyBuffer.putInt(shape.ordinal());
-			copyBuffer.putInt(size.getSize());
+			copyBuffer.putInt(size);
 			copyBuffer.putInt(value.id);
-			copyBuffer.putInt(x);
-			copyBuffer.putInt(y);
+			copyBuffer.putInt(x * zoom);
+			copyBuffer.putInt(y * zoom);
+
+			// Use the padding zone to store some precomputed stuff
+			copyBuffer.putInt(size * size);
 		}
 	}
 

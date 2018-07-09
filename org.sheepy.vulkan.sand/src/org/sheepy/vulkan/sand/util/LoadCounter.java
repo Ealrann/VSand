@@ -9,36 +9,43 @@ public class LoadCounter
 	private long dateStart = -1;
 	private long dateBeforeAcquire;
 
-	private float[] history;
+	private double[] history;
 
 	public LoadCounter(String name, int numberOfStep)
 	{
 		this.name = name;
 		this.maxCount = numberOfStep;
 
-		history = new float[maxCount];
+		history = new double[maxCount];
 	}
 
 	public void start()
 	{
-		dateBeforeAcquire = System.currentTimeMillis();
+		dateBeforeAcquire = getTime();
+	}
+
+	private static final long getTime()
+	{
+		return System.nanoTime();
 	}
 
 	public void countTime()
 	{
-		long acquireDuration = System.currentTimeMillis() - dateBeforeAcquire;
+		long acquireDuration = getTime() - dateBeforeAcquire;
 
 		if (dateStart != -1)
 		{
-			long totalDuration = System.currentTimeMillis() - dateStart;
-			history[count] = 1 - (acquireDuration / totalDuration);
+			long totalDuration = getTime() - dateStart;
+
+			if (acquireDuration == 0) history[count] = 1;
+			else history[count] = 1 - ((double) acquireDuration / totalDuration);
 			count++;
 		}
 
 		if (count == maxCount)
 		{
-			float averageLoad = 0;
-			for (float f : history)
+			double averageLoad = 0;
+			for (double f : history)
 			{
 				averageLoad += f;
 			}
@@ -48,6 +55,6 @@ public class LoadCounter
 			count = 0;
 		}
 
-		dateStart = System.currentTimeMillis();
+		dateStart = getTime();
 	}
 }

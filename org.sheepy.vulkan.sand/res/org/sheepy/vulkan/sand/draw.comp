@@ -20,30 +20,44 @@ layout(binding = 1) uniform attributeBuffer {
 	int value;
 	int x;
 	int y;
+
+	int squareSize;
 }attributes;
+
+bool testCircle(uint x, uint y);
 
 void main() {
 
 	uint x = gl_GlobalInvocationID.x;
 	uint y = gl_GlobalInvocationID.y;
 
-	if (x >= attributes.x && y >= attributes.y
+	if (x >= attributes.x - attributes.size
+			&& y >= attributes.y - attributes.size
 			&& x <= attributes.x + attributes.size
 			&& y <= attributes.y + attributes.size) {
 
-		bool isInShape = false;
+		bool isInShape;
 		switch (attributes.shape) {
 		case SQUARE:
 			isInShape = true;
 			break;
 		case CIRCLE:
-			isInShape = true;
+			isInShape = testCircle(x, y);
 			break;
 		}
 
-		if(isInShape)
-		{
+		if (isInShape) {
 			board.data[x][y] = attributes.value;
 		}
 	}
+}
+
+bool testCircle(uint x, uint y) {
+	uint distX = attributes.x - x;
+	uint distY = attributes.y - y;
+
+	distX *= distX;
+	distY *= distY;
+
+	return (distX + distY) <= (attributes.squareSize);
 }
