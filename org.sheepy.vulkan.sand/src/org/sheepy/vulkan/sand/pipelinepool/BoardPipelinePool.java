@@ -27,6 +27,7 @@ import org.sheepy.vulkan.sand.compute.PixelComputer;
 public class BoardPipelinePool implements IPipelinePool
 {
 	private static final String SHADER_VERT = "org/sheepy/vulkan/sand/game_step_vert.comp.spv";
+	private static final String SHADER_HORI = "org/sheepy/vulkan/sand/game_step_hori.comp.spv";
 
 	private static final String SHADER_DRAW = "org/sheepy/vulkan/sand/draw.comp.spv";
 
@@ -98,6 +99,9 @@ public class BoardPipelinePool implements IPipelinePool
 		Computer stepVert = new Computer(logicalDevice, SHADER_VERT, width,
 				1, stepDescriptors);
 		stepVert.setWorkgroupSize(16);
+		Computer stepHori = new Computer(logicalDevice, SHADER_HORI, 1,
+				height, stepDescriptors);
+		stepHori.setWorkgroupSize(16);
 		
 		
 		PixelComputer pixelComputer = new PixelComputer(logicalDevice, configBuffer, boardBuffer,
@@ -105,6 +109,7 @@ public class BoardPipelinePool implements IPipelinePool
 
 		ComputeProcess process = new ComputeProcess(logicalDevice);
 		process.addNewPipeline(stepVert);
+		process.addNewPipeline(stepHori);
 		process.addNewPipeline(pixelComputer);
 
 		boardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
@@ -113,6 +118,7 @@ public class BoardPipelinePool implements IPipelinePool
 		ComputeProcess modificationProcess = new ComputeProcess(logicalDevice);
 		modificationProcess.addNewPipeline(modificationComputer);
 		modificationProcess.addNewPipeline(stepVert);
+		modificationProcess.addNewPipeline(stepHori);
 		modificationProcess.addNewPipeline(pixelComputer);
 
 		mergeBoardProcesses = new ComputeProcessPool(logicalDevice, commandPool);

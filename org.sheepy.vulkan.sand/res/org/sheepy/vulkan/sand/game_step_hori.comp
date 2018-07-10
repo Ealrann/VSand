@@ -31,32 +31,121 @@ layout(binding = 1) buffer buf2
 	int data[WIDTH][HEIGHT];
 }board;
 
+bool check(uint x, uint y, int runoff, int dir, int srcDensity);
+
 void main()
 {
-	uint y = gl_GlobalInvocationID.y;
+	uint y = HEIGHT - 1 - gl_GlobalInvocationID.y;
+	int value0;
 	int value1;
 	int value2;
+	int sourceDensity;
+	int underDensity;
 
-	for (int x = -1; x < WIDTH + 1; x++)
+	for (int x = 0; x < WIDTH; x++)
 	{
-		value1 = y > 0 ? board.data[x][y] : 0;
-		value2 = y < (HEIGHT - 1) ? board.data[x][y + 1] : 0;
+		value0 = x > 1 ? board.data[x - 1][y] : 0;
+		value1 = board.data[x][y];
+		value2 = x < (WIDTH - 1) ? board.data[x + 1][y] : 0;
+		sourceDensity = configuration.materials[value1].density;
+
+		underDensity = 0;
+
+		if (y < (HEIGHT - 1))
+		{
+			int valueUnder = board.data[x][y + 1];
+			underDensity = configuration.materials[valueUnder].density;
+		}
 
 		if (configuration.materials[value1].isStatic == 0
-				&& configuration.materials[value2].isStatic == 0
-				&& configuration.materials[value1].density
-						> configuration.materials[value2].density)
+				&& sourceDensity <= underDensity)
 		{
-			if (y > 0)
+			bool freeRight = configuration.materials[value2].isStatic == 0
+					&& configuration.materials[value2].density < sourceDensity;
+			bool freeLeft = configuration.materials[value0].isStatic == 0
+					&& configuration.materials[value0].density < sourceDensity;
+
+			if (freeRight)
+			{
+				freeRight = check(x + 1, y + 1,
+						configuration.materials[value1].runoff, 1,
+						sourceDensity);
+			}
+
+			if (freeLeft)
+			{
+				freeLeft = check(x - 1, y + 1,
+						configuration.materials[value1].runoff, -1,
+						sourceDensity);
+			}
+
+			// Choose only one
+			if (freeLeft && freeRight)
+			{
+				if (mod(x + y * 3, 2) == 0)
+				{
+					freeLeft = false;
+				}
+				else
+				{
+					freeRight = false;
+				}
+			}
+
+			if (freeRight)
 			{
 				board.data[x][y] = value2;
+				if (x < WIDTH - 1)
+					board.data[x + 1][y] = value1;
+				// Don't try to do again the next one
+				x++;
 			}
-			if (y < HEIGHT - 1)
+
+			if (freeLeft)
 			{
-				board.data[x][y + 1] = value1;
+				board.data[x][y] = value0;
+				if (x > 0)
+					board.data[x - 1][y] = value1;
 			}
-			// Don't try to move again the next one.
-			y++;
 		}
 	}
+}
+
+bool check(uint x, uint y, int runoff, int dir, int srcDensity)
+{
+	while (runoff != 0)
+	{
+		if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+		{
+			int value = board.data[x][y];
+			if (configuration.materials[value].isStatic == 0
+					&& configuration.materials[value].density < srcDensity)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			return true;
+		}
+		x += dir;
+		runoff--;
+	}
+
+	return false;
+}
+
+highp float rand(vec2 co)
+{
+	highp
+	float a = 12.9898;
+	highp
+	float b = 78.233;
+	highp
+	float c = 43758.5453;
+	highp
+	float dt = dot(co.xy, vec2(a, b));
+	highp
+	float sn = mod(dt, 3.14);
+	return fract(sin(sn) * c);
 }
