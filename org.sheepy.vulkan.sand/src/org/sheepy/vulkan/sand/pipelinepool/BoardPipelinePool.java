@@ -101,15 +101,15 @@ public class BoardPipelinePool implements IPipelinePool
 		stepVert.setWorkgroupSize(16);
 		Computer stepHori = new Computer(logicalDevice, SHADER_HORI, 1,
 				height, stepDescriptors);
-		stepHori.setWorkgroupSize(16);
+		stepHori.setWorkgroupSize(8);
 		
 		
 		PixelComputer pixelComputer = new PixelComputer(logicalDevice, configBuffer, boardBuffer,
 				boardImage);
 
 		ComputeProcess process = new ComputeProcess(logicalDevice);
-		process.addNewPipeline(stepVert);
 		process.addNewPipeline(stepHori);
+		process.addNewPipeline(stepVert);
 		process.addNewPipeline(pixelComputer);
 
 		boardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
@@ -117,8 +117,8 @@ public class BoardPipelinePool implements IPipelinePool
 
 		ComputeProcess modificationProcess = new ComputeProcess(logicalDevice);
 		modificationProcess.addNewPipeline(modificationComputer);
-		modificationProcess.addNewPipeline(stepVert);
 		modificationProcess.addNewPipeline(stepHori);
+		modificationProcess.addNewPipeline(stepVert);
 		modificationProcess.addNewPipeline(pixelComputer);
 
 		mergeBoardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
