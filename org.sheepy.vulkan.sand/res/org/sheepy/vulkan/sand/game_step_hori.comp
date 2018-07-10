@@ -3,7 +3,7 @@
 
 #define WIDTH 1024
 #define HEIGHT 576
-#define WORKGROUP_SIZE 16
+#define WORKGROUP_SIZE 8
 
 layout (local_size_x = 1, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
@@ -31,11 +31,11 @@ layout(binding = 1) buffer buf2
 	int data[WIDTH][HEIGHT];
 }board;
 
-bool check(uint x, uint y, int runoff, int dir, int srcDensity);
+bool check(int x, int y, int runoff, int dir, int srcDensity);
 
 void main()
 {
-	uint y = HEIGHT - 1 - gl_GlobalInvocationID.y;
+	int y = int(gl_GlobalInvocationID.y);
 	int value0;
 	int value1;
 	int value2;
@@ -44,7 +44,7 @@ void main()
 
 	for (int x = 0; x < WIDTH; x++)
 	{
-		value0 = x > 1 ? board.data[x - 1][y] : 0;
+		value0 = x > 0 ? board.data[x - 1][y] : 0;
 		value1 = board.data[x][y];
 		value2 = x < (WIDTH - 1) ? board.data[x + 1][y] : 0;
 		sourceDensity = configuration.materials[value1].density;
@@ -57,66 +57,80 @@ void main()
 			underDensity = configuration.materials[valueUnder].density;
 		}
 
-		if (configuration.materials[value1].isStatic == 0
-				&& sourceDensity <= underDensity)
+		if (configuration.materials[value1].isStatic == 0)
 		{
-			bool freeRight = configuration.materials[value2].isStatic == 0
-					&& configuration.materials[value2].density < sourceDensity;
 			bool freeLeft = configuration.materials[value0].isStatic == 0
 					&& configuration.materials[value0].density < sourceDensity;
+			bool freeRight = configuration.materials[value2].isStatic == 0
+					&& configuration.materials[value2].density < sourceDensity;
 
-			if (freeRight)
-			{
-				freeRight = check(x + 1, y + 1,
-						configuration.materials[value1].runoff, 1,
-						sourceDensity);
-			}
+			freeLeft = freeLeft
+					&& check(x - 1, y + 1,
+							configuration.materials[value1].runoff, -1,
+							sourceDensity);
 
-			if (freeLeft)
-			{
-				freeLeft = check(x - 1, y + 1,
-						configuration.materials[value1].runoff, -1,
-						sourceDensity);
-			}
+			freeRight = freeRight
+					&& check(x + 1, y + 1,
+							configuration.materials[value1].runoff, 1,
+							sourceDensity);
 
-			// Choose only one
-			if (freeLeft && freeRight)
+
+			bool fallDown = sourceDensity > underDensity;
+			if ((freeRight || freeLeft)
+					&& (!fallDown || !freeRight || !freeLeft))
 			{
-				if (mod(x + y * 3, 2) == 0)
+				// Choose only one
+				if (freeLeft && freeRight)
 				{
-					freeLeft = false;
+					if (mod(y, 2) == 0)
+					{
+						freeLeft = false;
+					}
+					else
+					{
+						freeRight = false;
+					}
 				}
-				else
+
+				if (freeLeft)
 				{
-					freeRight = false;
+					board.data[x][y] = value0;
+					if (x > 0)
+					{
+						board.data[x - 1][y] = value1;
+					}
+					// Don't try to do again the left one
+					x += 1;
 				}
-			}
-
-			if (freeRight)
-			{
-				board.data[x][y] = value2;
-				if (x < WIDTH - 1)
-					board.data[x + 1][y] = value1;
-				// Don't try to do again the next one
-				x++;
-			}
-
-			if (freeLeft)
-			{
-				board.data[x][y] = value0;
-				if (x > 0)
-					board.data[x - 1][y] = value1;
+				else if (freeRight)
+				{
+					board.data[x][y] = value2;
+					if (x < WIDTH - 1)
+					{
+						board.data[x + 1][y] = value1;
+					}
+					// Don't try to do again the right one
+					x += 2;
+				}
 			}
 		}
 	}
 }
 
-bool check(uint x, uint y, int runoff, int dir, int srcDensity)
+bool check(int x, int y, int runoff, int dir, int srcDensity)
 {
 	while (runoff != 0)
 	{
 		if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
 		{
+			int valueAbove = board.data[x][y - 1];
+			if (configuration.materials[valueAbove].isStatic == 1
+					|| configuration.materials[valueAbove].density > srcDensity)
+			{
+				// stuck
+				return false;
+			}
+
 			int value = board.data[x][y];
 			if (configuration.materials[value].isStatic == 0
 					&& configuration.materials[value].density < srcDensity)
@@ -133,19 +147,4 @@ bool check(uint x, uint y, int runoff, int dir, int srcDensity)
 	}
 
 	return false;
-}
-
-highp float rand(vec2 co)
-{
-	highp
-	float a = 12.9898;
-	highp
-	float b = 78.233;
-	highp
-	float c = 43758.5453;
-	highp
-	float dt = dot(co.xy, vec2(a, b));
-	highp
-	float sn = mod(dt, 3.14);
-	return fract(sin(sn) * c);
 }

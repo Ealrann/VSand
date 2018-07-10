@@ -10,11 +10,13 @@
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
-layout(binding = 0) buffer boardBuffer {
+layout(binding = 0) buffer boardBuffer
+{
 	int data[WIDTH][HEIGHT];
 }board;
 
-layout(binding = 1) uniform attributeBuffer {
+layout(binding = 1) uniform attributeBuffer
+{
 	int shape;
 	int size;
 	int value;
@@ -24,20 +26,22 @@ layout(binding = 1) uniform attributeBuffer {
 	int squareSize;
 }attributes;
 
-bool testCircle(uint x, uint y);
+bool testCircle(int x, int y);
 
-void main() {
-
-	uint x = gl_GlobalInvocationID.x;
-	uint y = gl_GlobalInvocationID.y;
+void main()
+{
+	int x = int(gl_GlobalInvocationID.x);
+	int y = int(gl_GlobalInvocationID.y);
 
 	if (x >= attributes.x - attributes.size
 			&& y >= attributes.y - attributes.size
 			&& x <= attributes.x + attributes.size
-			&& y <= attributes.y + attributes.size) {
+			&& y <= attributes.y + attributes.size)
+	{
 
-		bool isInShape;
-		switch (attributes.shape) {
+		bool isInShape = false;
+		switch (attributes.shape)
+		{
 		case SQUARE:
 			isInShape = true;
 			break;
@@ -46,18 +50,17 @@ void main() {
 			break;
 		}
 
-		if (isInShape) {
+		if (isInShape)
+		{
 			board.data[x][y] = attributes.value;
 		}
 	}
 }
 
-bool testCircle(uint x, uint y) {
-	uint distX = attributes.x - x;
-	uint distY = attributes.y - y;
-
-	distX *= distX;
-	distY *= distY;
+bool testCircle(int x, int y)
+{
+	int distX = (attributes.x - x) * (attributes.x - x);
+	int distY = (attributes.y - y) * (attributes.y - y);
 
 	return (distX + distY) <= (attributes.squareSize);
 }

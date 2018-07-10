@@ -33,7 +33,7 @@ layout(binding = 1) buffer buf2
 
 void main()
 {
-	uint x = gl_GlobalInvocationID.x;
+	int x = int(gl_GlobalInvocationID.x);
 	int value1;
 	int value2;
 
