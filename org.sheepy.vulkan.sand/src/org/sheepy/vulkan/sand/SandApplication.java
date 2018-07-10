@@ -64,8 +64,10 @@ public class SandApplication extends VulkanApplication
 	{
 		if (count++ == 90)
 		{
-			boardModifications.pushModification(EShape.Square, EShapeSize.ES5, 300, 200,
+			boardModifications.pushModification(EShape.Circle, EShapeSize.ES6, 300, 200,
 					EMaterial.Sand);
+			boardModifications.pushModification(EShape.Square, EShapeSize.ES6, 320, 350,
+					EMaterial.Wall);
 			System.out.println("Put sand");
 		}
 

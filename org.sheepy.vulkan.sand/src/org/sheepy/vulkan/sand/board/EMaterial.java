@@ -3,7 +3,8 @@ package org.sheepy.vulkan.sand.board;
 public enum EMaterial
 {
 	Void(0, false, 0, 0, 0f, 0f, 0f, 0f),
-	Sand(1, false, 2, 2, 0.1f, 1f, 1f, 0.255f);
+	Sand(1, false, 2, 2, 0.1f, 1f, 1f, 0.255f),
+	Wall(2, true, 20, 0, 1f, 0.35f, 0.35f, 0.43f);
 
 	public final int id;
 	public final boolean isStatic;
@@ -14,7 +15,8 @@ public enum EMaterial
 	public final float g;
 	public final float b;
 
-	private EMaterial(int id, boolean isStatic, int density, int runoff, float viscosity, float r, float g, float b)
+	private EMaterial(int id, boolean isStatic, int density, int runoff, float viscosity, float r,
+			float g, float b)
 	{
 		this.id = id;
 		this.isStatic = isStatic;
