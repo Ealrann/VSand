@@ -1,6 +1,6 @@
 package test.vulkan.gameoflife;
 
-import org.sheepy.lily.game.vulkan.VulkanApplication;
+import org.sheepy.vulkan.VulkanApplication;
 
 public class MainGameOfLife
 {

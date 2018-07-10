@@ -8,12 +8,12 @@ import static org.lwjgl.vulkan.VK10.*;
 import java.util.Collection;
 
 import org.lwjgl.system.MemoryStack;
-import org.sheepy.lily.game.vulkan.buffer.Image;
-import org.sheepy.lily.game.vulkan.command.CommandPool;
-import org.sheepy.lily.game.vulkan.concurrent.ISignalEmitter;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
-import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
-import org.sheepy.lily.game.vulkan.pipeline.swap.SwapConfiguration;
+import org.sheepy.vulkan.buffer.Image;
+import org.sheepy.vulkan.command.CommandPool;
+import org.sheepy.vulkan.concurrent.ISignalEmitter;
+import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.pipeline.IPipelinePool;
+import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
 import org.sheepy.vulkan.sand.graphics.BufferedSwapPipeline;
 import org.sheepy.vulkan.sand.util.LoadCounter;
 

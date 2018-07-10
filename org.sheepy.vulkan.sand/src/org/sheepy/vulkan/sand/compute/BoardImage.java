@@ -7,10 +7,10 @@ import org.lwjgl.vulkan.VkDescriptorImageInfo;
 import org.lwjgl.vulkan.VkDescriptorPoolSize;
 import org.lwjgl.vulkan.VkDescriptorSetLayoutBinding;
 import org.lwjgl.vulkan.VkWriteDescriptorSet;
-import org.sheepy.lily.game.vulkan.buffer.Image;
-import org.sheepy.lily.game.vulkan.descriptor.IDescriptor;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
-import org.sheepy.lily.game.vulkan.view.ImageView;
+import org.sheepy.vulkan.buffer.Image;
+import org.sheepy.vulkan.descriptor.IDescriptor;
+import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.view.ImageView;
 
 public class BoardImage implements IDescriptor
 {
