@@ -1,9 +1,12 @@
 package org.sheepy.vulkan.sand;
 
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.vulkan.VK10.VK_FORMAT_R8G8B8A8_UNORM;
 
 import java.util.Collections;
 
+import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.sheepy.vulkan.VulkanApplication;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.sand.board.BoardModifications;
@@ -18,11 +21,16 @@ public class SandApplication extends VulkanApplication
 {
 	private static final int WIDTH = 1024;
 	private static final int HEIGHT = 576;
+	// private static final int WIDTH = 2048;
+	// private static final int HEIGHT = 1152;
 
-	private static final int ZOOM = 1;
+	private static final float ZOOM = 1f;
 
 	// in update per frame
 	private int speed = 1;
+	private boolean pause = false;
+	private boolean next = false;
+	private int indexMaterial = 1;
 
 	private BoardPipelinePool boardPool;
 	private RenderPipelinePool renderPool;
@@ -31,16 +39,61 @@ public class SandApplication extends VulkanApplication
 	// private static final int TARGET_FPS = 60;
 	// private static final float FRAME_TIME_STEP_MS = (1f / TARGET_FPS) * 1000;
 
+	private boolean drawEnabled = false;
+
 	public SandApplication()
 	{
 		super(WIDTH, HEIGHT);
 
 		LogicalDevice logicalDevice = initLogicalDevice();
 
+		window.setMouseButtonCallback(new GLFWMouseButtonCallback()
+		{
+			@Override
+			public void invoke(long window, int button, int action, int mods)
+			{
+				if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+				{
+					drawEnabled = true;
+				}
+
+				if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+				{
+					drawEnabled = false;
+				}
+			}
+		});
+
+		window.setKeyCallback(new GLFWKeyCallback()
+		{
+			@Override
+			public void invoke(long window, int key, int scancode, int action, int mods)
+			{
+				if (key == GLFW_KEY_P && action == GLFW_PRESS)
+				{
+					pause = !pause;
+				}
+				if (key == GLFW_KEY_T && action == GLFW_PRESS)
+				{
+					indexMaterial++;
+					if (indexMaterial >= EMaterial.values().length)
+					{
+						indexMaterial = 0;
+					}
+				}
+				if (key == GLFW_KEY_N && action == GLFW_PRESS)
+				{
+					pause = false;
+					speed = 1;
+					next = true;
+				}
+			}
+		});
+
 		boardModifications = new BoardModifications(logicalDevice, ZOOM);
 
 		BoardImage image = new BoardImage(logicalDevice);
-		image.load(WIDTH * ZOOM, HEIGHT * ZOOM, VK_FORMAT_R8G8B8A8_UNORM);
+		image.load((int) (WIDTH * ZOOM), (int) (HEIGHT * ZOOM), VK_FORMAT_R8G8B8A8_UNORM);
 
 		boardPool = new BoardPipelinePool(logicalDevice, boardModifications, image);
 
@@ -62,6 +115,15 @@ public class SandApplication extends VulkanApplication
 	@Override
 	public void drawFrame()
 	{
+
+		if (drawEnabled)
+		{
+			double[] cursorPosition = window.getCursorPosition();
+			boardModifications.pushModification(EShape.Circle, EShapeSize.ES6,
+					(int) cursorPosition[0], (int) cursorPosition[1],
+					EMaterial.values()[indexMaterial]);
+		}
+
 		if (count++ == 90)
 		{
 			boardModifications.pushModification(EShape.Circle, EShapeSize.ES6, 300, 200,
@@ -71,9 +133,18 @@ public class SandApplication extends VulkanApplication
 			System.out.println("Put sand");
 		}
 
-		for (int i = 0; i < speed * ZOOM; i++)
+		if (pause != true)
 		{
-			boardPool.execute();
+			for (int i = 0; i < speed * ZOOM; i++)
+			{
+				boardPool.execute();
+			}
+
+			if (next == true)
+			{
+				next = false;
+				pause = true;
+			}
 		}
 
 		renderPool.execute();

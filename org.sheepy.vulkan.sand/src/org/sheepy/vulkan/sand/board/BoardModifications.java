@@ -24,14 +24,14 @@ import org.sheepy.vulkan.device.LogicalDevice;
  */
 public class BoardModifications implements IDescriptor
 {
-	private int zoom;
+	private float zoom;
 	
 	private ByteBuffer copyBuffer;
 	private Buffer modificationBuffer;
 
 	private Deque<Modification> boardModifications = new ArrayDeque<>();
 
-	public BoardModifications(LogicalDevice logicalDevice, int zoom)
+	public BoardModifications(LogicalDevice logicalDevice, float zoom)
 	{
 		this.zoom = zoom;
 		int maxShapeSize = 1;
@@ -95,13 +95,13 @@ public class BoardModifications implements IDescriptor
 
 		public void fillBuffer(ByteBuffer copyBuffer)
 		{
-			int size = this.size.getSize() * zoom;
+			int size = (int) (this.size.getSize() * zoom);
 
 			copyBuffer.putInt(shape.ordinal());
 			copyBuffer.putInt(size);
 			copyBuffer.putInt(value.id);
-			copyBuffer.putInt(x * zoom);
-			copyBuffer.putInt(y * zoom);
+			copyBuffer.putInt((int) (x * zoom));
+			copyBuffer.putInt((int) (y * zoom));
 
 			// Use the padding zone to store some precomputed stuff
 			copyBuffer.putInt(size * size);
