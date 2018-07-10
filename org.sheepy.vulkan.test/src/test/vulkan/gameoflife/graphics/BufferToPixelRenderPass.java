@@ -11,13 +11,13 @@ import org.lwjgl.vulkan.VkImageBlit;
 import org.lwjgl.vulkan.VkRenderPassCreateInfo;
 import org.lwjgl.vulkan.VkSubpassDependency;
 import org.lwjgl.vulkan.VkSubpassDescription;
-import org.sheepy.lily.game.vulkan.buffer.Image;
-import org.sheepy.lily.game.vulkan.command.AbstractCommandBuffer;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
-import org.sheepy.lily.game.vulkan.pipeline.swap.IRenderPass;
-import org.sheepy.lily.game.vulkan.swapchain.SwapChainManager;
-import org.sheepy.lily.game.vulkan.swapchain.SwapChainManager.Extent2D;
-import org.sheepy.lily.game.vulkan.view.ImageView;
+import org.sheepy.vulkan.buffer.Image;
+import org.sheepy.vulkan.command.AbstractCommandBuffer;
+import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.pipeline.swap.IRenderPass;
+import org.sheepy.vulkan.swapchain.SwapChainManager;
+import org.sheepy.vulkan.swapchain.SwapChainManager.Extent2D;
+import org.sheepy.vulkan.view.ImageView;
 
 public class BufferToPixelRenderPass implements IRenderPass
 {

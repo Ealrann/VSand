@@ -4,8 +4,8 @@ import static org.lwjgl.vulkan.VK10.VK_FORMAT_R8G8B8A8_UNORM;
 
 import java.util.Collections;
 
-import org.sheepy.lily.game.vulkan.VulkanApplication;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.VulkanApplication;
+import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.sand.board.BoardModifications;
 import org.sheepy.vulkan.sand.board.EMaterial;
 import org.sheepy.vulkan.sand.board.EShape;

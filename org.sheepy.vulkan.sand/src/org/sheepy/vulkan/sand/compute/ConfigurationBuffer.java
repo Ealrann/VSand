@@ -5,8 +5,8 @@ import static org.lwjgl.vulkan.VK10.*;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.game.vulkan.buffer.Buffer;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.buffer.Buffer;
+import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.sand.board.EMaterial;
 
 public class ConfigurationBuffer

@@ -6,20 +6,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.sheepy.lily.game.vulkan.BasicVulkanApplication;
-import org.sheepy.lily.game.vulkan.UniformBufferObject;
-import org.sheepy.lily.game.vulkan.VulkanApplication;
-import org.sheepy.lily.game.vulkan.buffer.IndexBuffer;
-import org.sheepy.lily.game.vulkan.buffer.Mesh;
-import org.sheepy.lily.game.vulkan.command.CommandPool;
-import org.sheepy.lily.game.vulkan.descriptor.IDescriptor;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
-import org.sheepy.lily.game.vulkan.pipeline.swap.BasicRenderPipelinePool;
-import org.sheepy.lily.game.vulkan.pipeline.swap.MeshSwapPipeline;
-import org.sheepy.lily.game.vulkan.pipeline.swap.SwapConfiguration;
-import org.sheepy.lily.game.vulkan.pipeline.swap.graphic.graphic.impl.VertexDescriptor;
-import org.sheepy.lily.game.vulkan.pipeline.swap.graphic.graphic.impl.VertexDescriptor.Vertex;
-import org.sheepy.lily.game.vulkan.shader.Shader;
+import org.sheepy.vulkan.BasicVulkanApplication;
+import org.sheepy.vulkan.UniformBufferObject;
+import org.sheepy.vulkan.VulkanApplication;
+import org.sheepy.vulkan.buffer.IndexBuffer;
+import org.sheepy.vulkan.buffer.Mesh;
+import org.sheepy.vulkan.command.CommandPool;
+import org.sheepy.vulkan.descriptor.IDescriptor;
+import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.pipeline.swap.BasicRenderPipelinePool;
+import org.sheepy.vulkan.pipeline.swap.MeshSwapPipeline;
+import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
+import org.sheepy.vulkan.pipeline.swap.graphic.graphic.impl.VertexDescriptor;
+import org.sheepy.vulkan.pipeline.swap.graphic.graphic.impl.VertexDescriptor.Vertex;
+import org.sheepy.vulkan.shader.Shader;
 
 public class MainRotating
 {

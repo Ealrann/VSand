@@ -12,9 +12,9 @@ import org.lwjgl.vulkan.VkDescriptorBufferInfo;
 import org.lwjgl.vulkan.VkDescriptorPoolSize;
 import org.lwjgl.vulkan.VkDescriptorSetLayoutBinding;
 import org.lwjgl.vulkan.VkWriteDescriptorSet;
-import org.sheepy.lily.game.vulkan.buffer.Buffer;
-import org.sheepy.lily.game.vulkan.descriptor.IDescriptor;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.buffer.Buffer;
+import org.sheepy.vulkan.descriptor.IDescriptor;
+import org.sheepy.vulkan.device.LogicalDevice;
 
 /**
  * CPU side Board

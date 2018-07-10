@@ -4,16 +4,16 @@ import static org.lwjgl.vulkan.VK10.VK_PIPELINE_STAGE_TRANSFER_BIT;
 
 import java.util.Collection;
 
-import org.sheepy.lily.game.vulkan.buffer.Image;
-import org.sheepy.lily.game.vulkan.command.AbstractCommandBuffer;
-import org.sheepy.lily.game.vulkan.command.CommandPool;
-import org.sheepy.lily.game.vulkan.concurrent.ISignalEmitter;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
-import org.sheepy.lily.game.vulkan.pipeline.swap.AbstractSwapPipeline;
-import org.sheepy.lily.game.vulkan.pipeline.swap.FrameSubmission;
-import org.sheepy.lily.game.vulkan.pipeline.swap.IGraphicsPipeline;
-import org.sheepy.lily.game.vulkan.pipeline.swap.IRenderPass;
-import org.sheepy.lily.game.vulkan.pipeline.swap.SwapConfiguration;
+import org.sheepy.vulkan.buffer.Image;
+import org.sheepy.vulkan.command.AbstractCommandBuffer;
+import org.sheepy.vulkan.command.CommandPool;
+import org.sheepy.vulkan.concurrent.ISignalEmitter;
+import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.pipeline.swap.AbstractSwapPipeline;
+import org.sheepy.vulkan.pipeline.swap.FrameSubmission;
+import org.sheepy.vulkan.pipeline.swap.IGraphicsPipeline;
+import org.sheepy.vulkan.pipeline.swap.IRenderPass;
+import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
 
 public class BufferedSwapPipeline extends AbstractSwapPipeline
 {

@@ -3,12 +3,12 @@ package test.vulkan.gameoflife.pipelinepool;
 import static org.lwjgl.vulkan.VK10.VK_FORMAT_R8G8B8A8_UNORM;
 
 import org.lwjgl.system.MemoryStack;
-import org.sheepy.lily.game.vulkan.buffer.Image;
-import org.sheepy.lily.game.vulkan.command.CommandPool;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
-import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
-import org.sheepy.lily.game.vulkan.pipeline.compute.ComputeProcess;
-import org.sheepy.lily.game.vulkan.pipeline.compute.ComputeProcessPool;
+import org.sheepy.vulkan.buffer.Image;
+import org.sheepy.vulkan.command.CommandPool;
+import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.pipeline.IPipelinePool;
+import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
+import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
 
 import test.vulkan.gameoflife.Board;
 import test.vulkan.gameoflife.compute.BoardBuffer;

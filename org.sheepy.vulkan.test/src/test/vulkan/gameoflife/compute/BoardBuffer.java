@@ -13,11 +13,11 @@ import org.lwjgl.vulkan.VkDescriptorPoolSize;
 import org.lwjgl.vulkan.VkDescriptorSetLayoutBinding;
 import org.lwjgl.vulkan.VkQueue;
 import org.lwjgl.vulkan.VkWriteDescriptorSet;
-import org.sheepy.lily.game.vulkan.buffer.Buffer;
-import org.sheepy.lily.game.vulkan.command.CommandPool;
-import org.sheepy.lily.game.vulkan.command.SingleTimeCommand;
-import org.sheepy.lily.game.vulkan.descriptor.IDescriptor;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.buffer.Buffer;
+import org.sheepy.vulkan.command.CommandPool;
+import org.sheepy.vulkan.command.SingleTimeCommand;
+import org.sheepy.vulkan.descriptor.IDescriptor;
+import org.sheepy.vulkan.device.LogicalDevice;
 
 import test.vulkan.gameoflife.Board;
 

@@ -1,8 +1,8 @@
 package test.vulkan.gameoflife;
 
-import org.sheepy.lily.game.vulkan.VulkanApplication;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
-import org.sheepy.lily.game.vulkan.pipeline.IPipelinePool;
+import org.sheepy.vulkan.VulkanApplication;
+import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.pipeline.IPipelinePool;
 
 import test.vulkan.gameoflife.pipelinepool.BoardPool;
 import test.vulkan.gameoflife.pipelinepool.RenderPipelinePool;

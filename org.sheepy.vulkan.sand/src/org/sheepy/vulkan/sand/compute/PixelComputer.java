@@ -2,9 +2,9 @@ package org.sheepy.vulkan.sand.compute;
 
 import java.util.Arrays;
 
-import org.sheepy.lily.game.vulkan.buffer.Buffer;
-import org.sheepy.lily.game.vulkan.device.LogicalDevice;
-import org.sheepy.lily.game.vulkan.pipeline.compute.Computer;
+import org.sheepy.vulkan.buffer.Buffer;
+import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.pipeline.compute.Computer;
 
 public class PixelComputer extends Computer
 {
