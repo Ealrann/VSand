@@ -46,11 +46,11 @@ public class BoardModifications implements IDescriptor
 		int size = 8 * 4;
 
 		copyBuffer = MemoryUtil.memAlloc(size);
-		modificationBuffer = Buffer.alloc(logicalDevice, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+		modificationBuffer = new Buffer(logicalDevice, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
 				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+		modificationBuffer.allocate();
 	}
 
-	@Override
 	public void free()
 	{
 		MemoryUtil.memFree(copyBuffer);

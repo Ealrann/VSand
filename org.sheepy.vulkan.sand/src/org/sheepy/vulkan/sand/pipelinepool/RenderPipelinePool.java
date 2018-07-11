@@ -9,21 +9,20 @@ import java.util.Collection;
 
 import org.lwjgl.system.MemoryStack;
 import org.sheepy.vulkan.buffer.Image;
-import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.concurrent.ISignalEmitter;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.pipeline.IPipelinePool;
+import org.sheepy.vulkan.pipeline.SurfacePipelinePool;
 import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
 import org.sheepy.vulkan.sand.graphics.BufferedSwapPipeline;
 import org.sheepy.vulkan.sand.util.LoadCounter;
+import org.sheepy.vulkan.window.Surface;
 
-public class RenderPipelinePool implements IPipelinePool
+public class RenderPipelinePool extends SurfacePipelinePool
 {
 
 	private LogicalDevice logicalDevice;
 	private Image image;
 	private Collection<ISignalEmitter> waitForEmitters;
-	private CommandPool commandPool;
 
 	private LoadCounter loadCounterTotal = new LoadCounter("Total ", 120);
 	private LoadCounter loadCounterRender = new LoadCounter("Render", 120);
@@ -33,15 +32,11 @@ public class RenderPipelinePool implements IPipelinePool
 	public RenderPipelinePool(LogicalDevice logicalDevice, Image image,
 			Collection<ISignalEmitter> waitForEmitters)
 	{
+		super(logicalDevice, logicalDevice.getQueueManager().getGraphicQueueIndex());
+
 		this.logicalDevice = logicalDevice;
 		this.image = image;
 		this.waitForEmitters = waitForEmitters;
-
-		try (MemoryStack stack = MemoryStack.stackPush())
-		{
-			commandPool = CommandPool.alloc(stack, logicalDevice,
-					logicalDevice.getQueueManager().getGraphicQueueIndex());
-		}
 
 		buildPipelines();
 	}
@@ -59,12 +54,13 @@ public class RenderPipelinePool implements IPipelinePool
 		configuration.swapImageUsages |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 		renderPipeline = new BufferedSwapPipeline(logicalDevice, configuration, commandPool, image,
 				waitForEmitters);
+		subAllocationObjects.add(renderPipeline);
 	}
 
 	@Override
-	public void load(MemoryStack stack, long surface, int width, int height)
+	public void configure(Surface surface)
 	{
-		renderPipeline.load(surface, width, height);
+		renderPipeline.configure(surface);
 	}
 
 	@Override
@@ -74,40 +70,31 @@ public class RenderPipelinePool implements IPipelinePool
 		loadCounterTotal.start();
 
 		// vkQueueWaitIdle(logicalDevice.getQueueManager().getGraphicQueue());
-		int imageIndex = renderPipeline.acquireNextImage();
+		Integer imageIndex = renderPipeline.acquireNextImage();
 
 		loadCounterTotal.countTime();
 
-		if (vkQueueSubmit(logicalDevice.getQueueManager().getGraphicQueue(),
-				renderPipeline.getFrameSubmission().getSubmitInfo(imageIndex),
-				VK_NULL_HANDLE) != VK_SUCCESS)
+		if (imageIndex != null)
 		{
-			throw new AssertionError("failed to submit draw command buffer!");
-		}
+			if (vkQueueSubmit(logicalDevice.getQueueManager().getGraphicQueue(),
+					renderPipeline.getFrameSubmission().getSubmitInfo(imageIndex),
+					VK_NULL_HANDLE) != VK_SUCCESS)
+			{
+				throw new AssertionError("failed to submit draw command buffer!");
+			}
 
-		vkQueuePresentKHR(logicalDevice.getQueueManager().getGraphicQueue(),
-				renderPipeline.getFrameSubmission().getPresentInfo(imageIndex));
+			vkQueuePresentKHR(logicalDevice.getQueueManager().getGraphicQueue(),
+					renderPipeline.getFrameSubmission().getPresentInfo(imageIndex));
+		}
 
 		loadCounterRender.countTime();
 	}
 
 	@Override
-	public void resize(long surface, int width, int height)
+	public void resize(MemoryStack stack, Surface surface)
 	{
-		renderPipeline.destroy(false);
-		renderPipeline.load(surface, width, height);
-	}
-
-	@Override
-	public void free()
-	{
-		renderPipeline.destroy(true);
-		commandPool.free();
-	}
-
-	@Override
-	public CommandPool getCommandPool()
-	{
-		return commandPool;
+		renderPipeline.free(false);
+		configure(surface);
+		renderPipeline.allocate(stack);
 	}
 }

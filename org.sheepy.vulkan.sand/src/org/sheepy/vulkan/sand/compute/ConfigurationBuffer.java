@@ -4,12 +4,14 @@ import static org.lwjgl.vulkan.VK10.*;
 
 import java.nio.ByteBuffer;
 
+import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.vulkan.buffer.Buffer;
+import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.sand.board.EMaterial;
 
-public class ConfigurationBuffer
+public class ConfigurationBuffer implements IAllocable
 {
 	private static final int MAX_MATERIAL_NUMBER = 16;
 	
@@ -20,15 +22,18 @@ public class ConfigurationBuffer
 		int size = (MAX_MATERIAL_NUMBER * 8);
 		int byteSize = size * Integer.BYTES;
 
-		configBuffer = Buffer.alloc(logicalDevice, byteSize,
+		configBuffer = new Buffer(logicalDevice, byteSize,
 				VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
 				VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
 		configBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
 				VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER);
 	}
 
-	public void load(int width, int height)
+	@Override
+	public void allocate(MemoryStack stack)
 	{
+		configBuffer.allocate();
+		
 		ByteBuffer bBuffer = MemoryUtil.memAlloc((int) configBuffer.getSize());
 //		bBuffer.putInt(width);
 //		bBuffer.putInt(height);
@@ -56,6 +61,7 @@ public class ConfigurationBuffer
 		return configBuffer;
 	}
 
+	@Override
 	public void free()
 	{
 		configBuffer.free();

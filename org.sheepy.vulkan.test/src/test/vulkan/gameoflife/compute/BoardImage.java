@@ -12,22 +12,37 @@ import org.lwjgl.vulkan.VkWriteDescriptorSet;
 import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.command.SingleTimeCommand;
+import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.view.ImageView;
 
-public class BoardImage implements IDescriptor
+public class BoardImage implements IDescriptor, IAllocable
 {
+	private CommandPool commandPool;
+	private VkQueue queue;
+	private int width;
+	private int height;
+	private int imageFormat;
+
 	private Image image;
 	private ImageView imageView;
 
-	public BoardImage(LogicalDevice logicalDevice)
+	public BoardImage(LogicalDevice logicalDevice, CommandPool commandPool, VkQueue queue,
+			int width, int height, int imageFormat)
 	{
+		this.commandPool = commandPool;
+		this.queue = queue;
+		this.width = width;
+		this.height = height;
+		this.imageFormat = imageFormat;
+
 		image = new Image(logicalDevice);
 		imageView = new ImageView(logicalDevice);
 	}
 
-	public void load(CommandPool commandPool, VkQueue queue, int width, int height, int imageFormat)
+	@Override
+	public void allocate(MemoryStack stack)
 	{
 		image.createImage(width, height, 1, imageFormat, VK_IMAGE_TILING_OPTIMAL,
 				VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_STORAGE_BIT,
@@ -40,8 +55,7 @@ public class BoardImage implements IDescriptor
 			{
 				image.transitionImageLayout(commandBuffer, VK_IMAGE_LAYOUT_UNDEFINED,
 						VK_IMAGE_LAYOUT_GENERAL, 1, VK_PIPELINE_STAGE_TRANSFER_BIT,
-						VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, 0,
-						VK_ACCESS_SHADER_WRITE_BIT);
+						VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, 0, VK_ACCESS_SHADER_WRITE_BIT);
 			}
 		};
 		stc.execute();
@@ -97,5 +111,4 @@ public class BoardImage implements IDescriptor
 		poolSize.descriptorCount(1);
 		return poolSize;
 	}
-
 }

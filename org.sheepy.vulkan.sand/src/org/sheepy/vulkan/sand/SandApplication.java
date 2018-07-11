@@ -92,7 +92,7 @@ public class SandApplication extends VulkanApplication
 
 		boardModifications = new BoardModifications(logicalDevice, ZOOM);
 
-		BoardImage image = new BoardImage(logicalDevice);
+		image = new BoardImage(logicalDevice);
 		image.load((int) (WIDTH * ZOOM), (int) (HEIGHT * ZOOM), VK_FORMAT_R8G8B8A8_UNORM);
 
 		boardPool = new BoardPipelinePool(logicalDevice, boardModifications, image);
@@ -103,6 +103,15 @@ public class SandApplication extends VulkanApplication
 		attachPipelinePool(boardPool);
 		attachPipelinePool(renderPool);
 	}
+	
+	@Override
+	public void cleanup()
+	{
+		image.free();
+		boardModifications.free();
+		
+		super.cleanup();
+	}
 
 	@Override
 	public void mainLoop()
@@ -111,6 +120,7 @@ public class SandApplication extends VulkanApplication
 	}
 
 	private int count = 0;
+	private BoardImage image;
 
 	@Override
 	public void drawFrame()
