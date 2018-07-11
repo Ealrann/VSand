@@ -3,7 +3,6 @@ package test.vulkan.rotatingtriangle;
 import static org.lwjgl.vulkan.VK10.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.sheepy.vulkan.BasicVulkanApplication;
@@ -12,7 +11,6 @@ import org.sheepy.vulkan.VulkanApplication;
 import org.sheepy.vulkan.buffer.IndexBuffer;
 import org.sheepy.vulkan.buffer.Mesh;
 import org.sheepy.vulkan.command.CommandPool;
-import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.swap.BasicRenderPipelinePool;
 import org.sheepy.vulkan.pipeline.swap.MeshSwapPipeline;
@@ -50,10 +48,8 @@ public class MainRotating
 		LogicalDevice logicalDevice = app.initLogicalDevice();
 
 		BasicRenderPipelinePool pipelinePool = new BasicRenderPipelinePool(logicalDevice);
-		CommandPool commandPool = pipelinePool.getCommandPool();
 
-		ubo = new UniformBufferObject(app, logicalDevice);
-		createMeshBuffer(logicalDevice, commandPool, Collections.singletonList(ubo));
+		createMeshBuffer(app, logicalDevice, pipelinePool.getCommandPool());
 
 		SwapConfiguration configuration = new SwapConfiguration();
 		configuration.rasterizerFrontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
@@ -76,9 +72,9 @@ public class MainRotating
 	// {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
 	// {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
 	// {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
-	private static void createMeshBuffer(LogicalDevice logicalDevice,
-			CommandPool commandPool,
-			List<IDescriptor> descriptors)
+	private static void createMeshBuffer(VulkanApplication app,
+			LogicalDevice logicalDevice,
+			CommandPool commandPool)
 	{
 		Vertex[] vertices = new Vertex[4];
 		vertices[0] = new Vertex(-0.5f, -0.5f, 1.0f, 1.0f, 1.0f);
@@ -90,14 +86,15 @@ public class MainRotating
 				0, 1, 2, 2, 3, 0
 		};
 
-		IndexBuffer indexBuffer = new IndexBuffer(logicalDevice);
-		indexBuffer.allocIndexBuffer(commandPool, logicalDevice.getQueueManager().getGraphicQueue(),
-				new VertexDescriptor(), vertices, indices);
+		IndexBuffer<Vertex> indexBuffer = new IndexBuffer<>(logicalDevice, new VertexDescriptor(),
+				vertices, indices);
 
 		List<Shader> shaders = new ArrayList<>();
 		shaders.add(new Shader(logicalDevice, VERTEX_SHADER_PATH, VK_SHADER_STAGE_VERTEX_BIT));
 		shaders.add(new Shader(logicalDevice, FRAGMENT_SHADER_PATH, VK_SHADER_STAGE_FRAGMENT_BIT));
 
-		mesh = new Mesh(indexBuffer, shaders, descriptors);
+		ubo = new UniformBufferObject(app, logicalDevice);
+
+		mesh = new Mesh(commandPool, indexBuffer, shaders, ubo, null);
 	}
 }

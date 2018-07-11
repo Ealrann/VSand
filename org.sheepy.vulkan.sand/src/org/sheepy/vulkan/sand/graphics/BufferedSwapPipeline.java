@@ -44,12 +44,6 @@ public class BufferedSwapPipeline extends AbstractSwapPipeline
 	{}
 
 	@Override
-	public void destroy(boolean full)
-	{
-		super.destroy(full);
-	}
-
-	@Override
 	protected IGraphicsPipeline buildGraphicsPipeline()
 	{
 		return null;

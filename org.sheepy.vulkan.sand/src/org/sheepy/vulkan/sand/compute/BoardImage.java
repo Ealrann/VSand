@@ -43,7 +43,6 @@ public class BoardImage implements IDescriptor
 		return image;
 	}
 
-	@Override
 	public void free()
 	{
 		imageView.free();

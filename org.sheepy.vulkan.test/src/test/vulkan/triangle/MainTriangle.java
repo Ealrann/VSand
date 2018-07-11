@@ -4,7 +4,6 @@ import static org.lwjgl.vulkan.VK10.VK_SHADER_STAGE_FRAGMENT_BIT;
 import static org.lwjgl.vulkan.VK10.VK_SHADER_STAGE_VERTEX_BIT;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.sheepy.vulkan.BasicVulkanApplication;
@@ -69,14 +68,12 @@ public class MainTriangle
 				0, 1, 2, 2, 3, 0
 		};
 
-		IndexBuffer indexBuffer = new IndexBuffer(logicalDevice);
-		indexBuffer.allocIndexBuffer(commandPool, logicalDevice.getQueueManager().getGraphicQueue(),
-				new VertexDescriptor(), vertices, indices);
+		IndexBuffer<Vertex> indexBuffer = new IndexBuffer<>(logicalDevice, new VertexDescriptor(), vertices, indices);
 
 		List<Shader> shaders = new ArrayList<>();
 		shaders.add(new Shader(logicalDevice, VERTEX_SHADER_PATH, VK_SHADER_STAGE_VERTEX_BIT));
 		shaders.add(new Shader(logicalDevice, FRAGMENT_SHADER_PATH, VK_SHADER_STAGE_FRAGMENT_BIT));
 
-		mesh = new Mesh(indexBuffer, shaders, Collections.emptyList());
+		mesh = new Mesh(commandPool, indexBuffer, shaders, null, null);
 	}
 }

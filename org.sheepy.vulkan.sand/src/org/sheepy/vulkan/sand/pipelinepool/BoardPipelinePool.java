@@ -11,11 +11,11 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.vulkan.VkCommandBuffer;
 import org.sheepy.vulkan.buffer.Buffer;
-import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.command.SingleTimeCommand;
+import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.pipeline.IPipelinePool;
+import org.sheepy.vulkan.pipeline.PipelinePool;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
 import org.sheepy.vulkan.pipeline.compute.Computer;
@@ -24,7 +24,7 @@ import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
 import org.sheepy.vulkan.sand.compute.PixelComputer;
 
-public class BoardPipelinePool implements IPipelinePool
+public class BoardPipelinePool extends PipelinePool implements IAllocable
 {
 	private static final String SHADER_VERT = "org/sheepy/vulkan/sand/game_step_vert.comp.spv";
 	private static final String SHADER_HORI = "org/sheepy/vulkan/sand/game_step_hori.comp.spv";
@@ -32,11 +32,8 @@ public class BoardPipelinePool implements IPipelinePool
 	private static final String SHADER_DRAW = "org/sheepy/vulkan/sand/draw.comp.spv";
 
 	private LogicalDevice logicalDevice;
-
 	private BoardModifications boardModifications;
 	private BoardImage boardImage;
-
-	private CommandPool commandPool;
 
 	private ComputeProcessPool boardProcesses;
 	private ComputeProcessPool mergeBoardProcesses;
@@ -47,15 +44,11 @@ public class BoardPipelinePool implements IPipelinePool
 	public BoardPipelinePool(LogicalDevice logicalDevice, BoardModifications boardModifications,
 			BoardImage boardImage)
 	{
+		super(logicalDevice, logicalDevice.getQueueManager().getComputeQueueIndex());
+
 		this.logicalDevice = logicalDevice;
 		this.boardModifications = boardModifications;
 		this.boardImage = boardImage;
-
-		try (MemoryStack stack = MemoryStack.stackPush())
-		{
-			commandPool = CommandPool.alloc(stack, logicalDevice,
-					logicalDevice.getQueueManager().getComputeQueueIndex());
-		}
 
 		createBuffers();
 		buildPipelines();
@@ -74,7 +67,7 @@ public class BoardPipelinePool implements IPipelinePool
 		// boardBuffer
 		{
 			int boardSizeByte = width * height * Integer.BYTES;
-			boardBuffer = Buffer.alloc(logicalDevice, boardSizeByte,
+			boardBuffer = new Buffer(logicalDevice, boardSizeByte,
 					VK_BUFFER_USAGE_STORAGE_BUFFER_BIT
 							| VK_BUFFER_USAGE_TRANSFER_SRC_BIT
 							| VK_BUFFER_USAGE_TRANSFER_DST_BIT,
@@ -82,6 +75,9 @@ public class BoardPipelinePool implements IPipelinePool
 			boardBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
 					VK_DESCRIPTOR_TYPE_STORAGE_BUFFER);
 		}
+
+		subAllocationObjects.add(configBuffer);
+		subAllocationObjects.add(boardBuffer);
 	}
 
 	private void buildPipelines()
@@ -96,14 +92,11 @@ public class BoardPipelinePool implements IPipelinePool
 		stepDescriptors.add(configBuffer.getBuffer());
 		stepDescriptors.add(boardBuffer);
 
-		Computer stepVert = new Computer(logicalDevice, SHADER_VERT, width,
-				1, stepDescriptors);
+		Computer stepVert = new Computer(logicalDevice, SHADER_VERT, width, 1, stepDescriptors);
 		stepVert.setWorkgroupSize(16);
-		Computer stepHori = new Computer(logicalDevice, SHADER_HORI, 1,
-				height, stepDescriptors);
+		Computer stepHori = new Computer(logicalDevice, SHADER_HORI, 1, height, stepDescriptors);
 		stepHori.setWorkgroupSize(8);
-		
-		
+
 		PixelComputer pixelComputer = new PixelComputer(logicalDevice, configBuffer, boardBuffer,
 				boardImage);
 
@@ -123,10 +116,13 @@ public class BoardPipelinePool implements IPipelinePool
 
 		mergeBoardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
 		mergeBoardProcesses.addProcess(modificationProcess);
+
+		subAllocationObjects.add(mergeBoardProcesses);
+		subAllocationObjects.add(boardProcesses);
 	}
 
 	@Override
-	public void load(MemoryStack stack, long surface, int width, int height)
+	public void allocate(MemoryStack stack)
 	{
 		{
 			SingleTimeCommand stc = new SingleTimeCommand(commandPool,
@@ -144,20 +140,12 @@ public class BoardPipelinePool implements IPipelinePool
 			stc.execute();
 		}
 
-		// Fill the configurationBuffer
-		{
-			configBuffer.load(width, height);
-		}
-
 		// Fill the board buffer with void (0)
 		{
 			ByteBuffer bBuffer = MemoryUtil.memCalloc((int) boardBuffer.getSize());
 			boardBuffer.fillWithBuffer(bBuffer);
 			MemoryUtil.memFree(bBuffer);
 		}
-
-		mergeBoardProcesses.allocateNode(stack);
-		boardProcesses.allocateNode(stack);
 	}
 
 	@Override
@@ -176,24 +164,6 @@ public class BoardPipelinePool implements IPipelinePool
 	}
 
 	@Override
-	public void resize(long surface, int width, int height)
-	{}
-
-	@Override
 	public void free()
-	{
-		mergeBoardProcesses.freeNode();
-		boardProcesses.freeNode();
-
-		boardBuffer.free();
-		configBuffer.free();
-
-		commandPool.free();
-	}
-
-	@Override
-	public CommandPool getCommandPool()
-	{
-		return commandPool;
-	}
+	{}
 }

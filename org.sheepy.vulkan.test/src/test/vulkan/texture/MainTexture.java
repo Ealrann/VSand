@@ -5,14 +5,12 @@ import static org.lwjgl.vulkan.VK10.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.vulkan.VkQueue;
 import org.sheepy.vulkan.BasicVulkanApplication;
 import org.sheepy.vulkan.UniformBufferObject;
 import org.sheepy.vulkan.VulkanApplication;
 import org.sheepy.vulkan.buffer.IndexBuffer;
 import org.sheepy.vulkan.buffer.Mesh;
 import org.sheepy.vulkan.command.CommandPool;
-import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.swap.BasicRenderPipelinePool;
 import org.sheepy.vulkan.pipeline.swap.MeshSwapPipeline;
@@ -50,19 +48,10 @@ public class MainTexture
 
 		LogicalDevice logicalDevice = app.initLogicalDevice();
 
-		VkQueue graphicQueue = logicalDevice.getQueueManager().getGraphicQueue();
-
 		BasicRenderPipelinePool pipelinePool = new BasicRenderPipelinePool(logicalDevice);
 		CommandPool commandPool = pipelinePool.getCommandPool();
 
-		Texture texture = Texture.alloc(logicalDevice, IMAGE_PATH, commandPool, graphicQueue,
-				false);
-		ubo = new UniformBufferObject(app, logicalDevice);
-
-		List<IDescriptor> descriptors = new ArrayList<>();
-		descriptors.add(ubo);
-		descriptors.add(texture);
-		Mesh mesh = createMeshBuffer(logicalDevice, commandPool, descriptors);
+		Mesh mesh = createMeshBuffer(app, logicalDevice, commandPool);
 
 		SwapConfiguration configuration = new SwapConfiguration();
 		configuration.depthBuffer = true;
@@ -83,9 +72,7 @@ public class MainTexture
 		}
 	}
 
-	private static Mesh createMeshBuffer(LogicalDevice logicalDevice,
-			CommandPool commandPool,
-			List<IDescriptor> descriptors)
+	private static Mesh createMeshBuffer(VulkanApplication app, LogicalDevice logicalDevice, CommandPool commandPool)
 	{
 		TextureVertex[] vertices = new TextureVertex[8];
 		vertices[0] = new TextureVertex(-0.5f, -0.5f, 0f, 1.0f, 0.0f, 0.0f, 1f, 0f);
@@ -102,14 +89,16 @@ public class MainTexture
 				0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4
 		};
 
-		IndexBuffer indexBuffer = new IndexBuffer(logicalDevice);
-		indexBuffer.allocIndexBuffer(commandPool, logicalDevice.getQueueManager().getGraphicQueue(),
+		IndexBuffer<TextureVertex> indexBuffer = new IndexBuffer<>(logicalDevice,
 				new TextureVertexDescriptor(), vertices, indices);
 
 		List<Shader> shaders = new ArrayList<>();
 		shaders.add(new Shader(logicalDevice, VERTEX_SHADER_PATH, VK_SHADER_STAGE_VERTEX_BIT));
 		shaders.add(new Shader(logicalDevice, FRAGMENT_SHADER_PATH, VK_SHADER_STAGE_FRAGMENT_BIT));
 
-		return new Mesh(indexBuffer, shaders, descriptors);
+		Texture texture = new Texture(logicalDevice,commandPool, IMAGE_PATH, false);
+		ubo = new UniformBufferObject(app, logicalDevice);
+
+		return new Mesh(commandPool, indexBuffer, shaders, ubo, texture);
 	}
 }

@@ -16,42 +16,52 @@ import org.lwjgl.vulkan.VkWriteDescriptorSet;
 import org.sheepy.vulkan.buffer.Buffer;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.command.SingleTimeCommand;
+import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
 
 import test.vulkan.gameoflife.Board;
 
-public class BoardBuffer implements IDescriptor
+public class BoardBuffer implements IDescriptor, IAllocable
 {
 	private LogicalDevice logicalDevice;
+	private CommandPool commandPool;
+	private VkQueue queue;
+	
 	private int width;
 	private int height;
 	private Board board;
 
 	private Buffer buffer;
 
-	public BoardBuffer(LogicalDevice logicalDevice, Board board)
+	public BoardBuffer(LogicalDevice logicalDevice, Board board, CommandPool commandPool, VkQueue queue)
 	{
 		this.logicalDevice = logicalDevice;
+		this.commandPool = commandPool;
+		this.queue = queue;
+		
 		this.width = board.getWidth();
 		this.height = board.getHeight();
 		this.board = board;
 
 		long sizeBuffer = board.getWidth() * board.getHeight() * Integer.BYTES;
-		buffer = Buffer.alloc(logicalDevice, sizeBuffer,
+		buffer = new Buffer(logicalDevice, sizeBuffer,
 				VK_BUFFER_USAGE_STORAGE_BUFFER_BIT
 						| VK_BUFFER_USAGE_TRANSFER_SRC_BIT
 						| VK_BUFFER_USAGE_TRANSFER_DST_BIT,
 				VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 	}
 
-	public void load(CommandPool commandPool, VkQueue queue)
+	@Override
+	public void allocate(MemoryStack stack)
 	{
 		long size = board.getWidth() * board.getHeight();
-
-		Buffer indexStagingBuffer = Buffer.alloc(logicalDevice, buffer.getSize(),
+		buffer.allocate();
+		
+		Buffer indexStagingBuffer = new Buffer(logicalDevice, buffer.getSize(),
 				VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
 				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+		indexStagingBuffer.allocate();
 
 		ByteBuffer byteBuffer = MemoryUtil.memAlloc((int) buffer.getSize());
 		IntBuffer intBufferView = byteBuffer.asIntBuffer();
