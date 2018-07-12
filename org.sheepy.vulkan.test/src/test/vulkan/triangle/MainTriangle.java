@@ -14,8 +14,8 @@ import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.swap.BasicRenderPipelinePool;
 import org.sheepy.vulkan.pipeline.swap.MeshSwapPipeline;
 import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
-import org.sheepy.vulkan.pipeline.swap.graphic.graphic.impl.VertexDescriptor;
-import org.sheepy.vulkan.pipeline.swap.graphic.graphic.impl.VertexDescriptor.Vertex;
+import org.sheepy.vulkan.pipeline.swap.graphic.impl.VertexDescriptor;
+import org.sheepy.vulkan.pipeline.swap.graphic.impl.VertexDescriptor.Vertex;
 import org.sheepy.vulkan.shader.Shader;
 
 public class MainTriangle
