@@ -20,8 +20,8 @@ import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.swap.BasicRenderPipelinePool;
 import org.sheepy.vulkan.pipeline.swap.MeshSwapPipeline;
 import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
-import org.sheepy.vulkan.pipeline.swap.graphic.graphic.impl.TextureVertexDescriptor;
-import org.sheepy.vulkan.pipeline.swap.graphic.graphic.impl.TextureVertexDescriptor.TextureVertex;
+import org.sheepy.vulkan.pipeline.swap.graphic.impl.TextureVertexDescriptor;
+import org.sheepy.vulkan.pipeline.swap.graphic.impl.TextureVertexDescriptor.TextureVertex;
 import org.sheepy.vulkan.shader.Shader;
 import org.sheepy.vulkan.texture.Texture;
 
@@ -67,7 +67,7 @@ public class MainMipMap
 		SwapConfiguration configuration = new SwapConfiguration();
 		configuration.depthBuffer = true;
 		configuration.rasterizerFrontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
-		configuration.setVertexInputState(new TextureVertexDescriptor());
+		configuration.vertexInputState = new TextureVertexDescriptor();
 
 		MeshSwapPipeline swapPipeline = new MeshSwapPipeline(logicalDevice, mesh, configuration,
 				pipelinePool.getCommandPool());

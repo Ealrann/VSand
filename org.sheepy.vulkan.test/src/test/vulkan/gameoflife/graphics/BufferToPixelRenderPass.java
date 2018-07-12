@@ -13,6 +13,7 @@ import org.lwjgl.vulkan.VkSubpassDependency;
 import org.lwjgl.vulkan.VkSubpassDescription;
 import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.command.AbstractCommandBuffer;
+import org.sheepy.vulkan.command.graphic.RenderCommandBuffer;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.swap.IRenderPass;
 import org.sheepy.vulkan.swapchain.SwapChainManager;
@@ -36,20 +37,20 @@ public class BufferToPixelRenderPass implements IRenderPass
 	}
 
 	@Override
-	public void buildRenderPass(List<? extends AbstractCommandBuffer> commandBuffers)
+	public void buildRenderPass(List<RenderCommandBuffer> commandBuffers)
 	{
 		for (int i = 0; i < commandBuffers.size(); i++)
 		{
-			AbstractCommandBuffer commandBuffer = commandBuffers.get(i);
+			RenderCommandBuffer commandBuffer = commandBuffers.get(i);
 			ImageView imageView = pipeline.getImageView().getImageViews().get(i);
 
-			commandBuffer.start();
+			commandBuffer.startCommand();
 
 			pipeline.bind(commandBuffer);
 
 			buildSwapCommand(pipeline, commandBuffer, imageView);
 
-			commandBuffer.end();
+			commandBuffer.endCommand();
 		}
 	}
 
