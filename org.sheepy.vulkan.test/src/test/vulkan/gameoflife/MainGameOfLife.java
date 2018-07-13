@@ -4,8 +4,8 @@ import org.sheepy.vulkan.VulkanApplication;
 
 public class MainGameOfLife
 {
-	private static final int WIDTH = 800;
-	private static final int HEIGHT = 600;
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 600;
 
 	public static void main(String[] args)
 	{
