@@ -1,9 +1,9 @@
 rootProject.name = "Vulkan"
 
 
-include ':org.sheepy.lily.game.vulkan'
+include ':org.sheepy.vulkan'
 include ':org.sheepy.vulkan.test'
 include ':org.sheepy.vulkan.sand'
 
 
-project(':org.sheepy.lily.game.vulkan').projectDir = new File(settingsDir, 'vulkan_lib/org.sheepy.lily.game.vulkan')
+project(':org.sheepy.vulkan').projectDir = new File(settingsDir, 'vulkan_lib/org.sheepy.vulkan')

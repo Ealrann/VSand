@@ -40,11 +40,10 @@ public class RenderPipelinePool extends SurfacePipelinePool
 	{
 		SwapConfiguration configuration = new SwapConfiguration(VK_FORMAT_B8G8R8A8_UNORM,
 				VK_COLOR_SPACE_SRGB_NONLINEAR_KHR);
-		// We will fill the framebuffer manually.
-//		configuration.renderPipeline = false;
 
 		// We will use the swap image as a target transfer
 		configuration.swapImageUsages |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+		
 		renderPipeline = new BufferedSwapPipeline(logicalDevice, configuration, commandPool, image,
 				waitForEmitters);
 		subAllocationObjects.add(renderPipeline);

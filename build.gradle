@@ -3,6 +3,9 @@ buildscript {
         mavenLocal()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
+        maven { url 'https://jitpack.io' }
         jcenter()
     }
     dependencies {
@@ -19,4 +22,30 @@ repositories {
 	mavenCentral()
 	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 	maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
+    maven { url 'https://jitpack.io' }
+}
+
+subprojects {
+
+    //apply plugin: 'java-library'
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    
+    sourceSets {
+        main {
+            java.srcDirs = ['src/']
+            resources.srcDirs = ['res/']
+        }
+    }
+
+    afterEvaluate {
+        repositories {
+            jcenter()
+            maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+            maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+            maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
+            maven { url 'https://jitpack.io' }
+        }
+    }
 }

@@ -14,7 +14,7 @@ public class GameOfLifeApplication extends VulkanApplication
 
 	private BoardPool boardPool;
 	private PipelinePool renderPool;
-
+	
 	public GameOfLifeApplication(int width, int height)
 	{
 		super(width, height);
@@ -35,15 +35,37 @@ public class GameOfLifeApplication extends VulkanApplication
 		Board board = new Board(width, height);
 
 		// Create little spaceshift
-		board.activate(0, 0);
-		board.activate(0, 2);
-		board.activate(3, 0);
-		board.activate(4, 1);
-		board.activate(4, 2);
-		board.activate(4, 3);
-		board.activate(1, 3);
-		board.activate(2, 3);
-		board.activate(3, 3);
+		board.activate(0, 200);
+		board.activate(0, 202);
+		board.activate(3, 200);
+		board.activate(4, 201);
+		board.activate(4, 202);
+		board.activate(4, 203);
+		board.activate(1, 203);
+		board.activate(2, 203);
+		board.activate(3, 203);
+
+		// Create little spaceshift
+		board.activate(0, 300);
+		board.activate(0, 302);
+		board.activate(3, 300);
+		board.activate(4, 301);
+		board.activate(4, 302);
+		board.activate(4, 303);
+		board.activate(1, 303);
+		board.activate(2, 303);
+		board.activate(3, 303);
+
+		// Create little spaceshift
+		board.activate(0, 400);
+		board.activate(0, 402);
+		board.activate(3, 400);
+		board.activate(4, 401);
+		board.activate(4, 402);
+		board.activate(4, 403);
+		board.activate(1, 403);
+		board.activate(2, 403);
+		board.activate(3, 403);
 
 		return board;
 	}
@@ -85,5 +107,4 @@ public class GameOfLifeApplication extends VulkanApplication
 		nextRenderDate = System.currentTimeMillis() + FRAME_TIME_STEP_MS;
 		renderPool.execute();
 	}
-
 }

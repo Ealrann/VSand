@@ -50,6 +50,9 @@ public class BufferToPixelRenderPass implements IRenderPass
 
 			buildSwapCommand(pipeline, commandBuffer, imageView);
 
+			commandBuffer.startRenderPass();
+			
+			commandBuffer.endRenderPass();
 			commandBuffer.endCommand();
 		}
 	}
@@ -108,80 +111,9 @@ public class BufferToPixelRenderPass implements IRenderPass
 				VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_SHADER_WRITE_BIT);
 
 		dstImageView.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
-				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 1,
+				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, 1,
 				VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
 				VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_COLOR_ATTACHMENT_READ_BIT);
-
-		// // Use a barrier to make sure the blit is finished before the copy
-		// // starts
-		// VkImageMemoryBarrier.Buffer memBarrier =
-		// VkImageMemoryBarrier.calloc(1);
-		// memBarrier.sType(VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER);
-		// memBarrier.srcAccessMask(VK_ACCESS_TRANSFER_WRITE_BIT);
-		// memBarrier.dstAccessMask(VK_ACCESS_MEMORY_READ_BIT);
-		// memBarrier.oldLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
-		// memBarrier.newLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
-		// memBarrier.srcQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED);
-		// memBarrier.dstQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED);
-		// memBarrier.subresourceRange().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
-		// memBarrier.subresourceRange().baseMipLevel(0);
-		// memBarrier.subresourceRange().levelCount(1);
-		// memBarrier.subresourceRange().baseArrayLayer(0);
-		// memBarrier.subresourceRange().layerCount(1);
-		// memBarrier.image(bltDstImage);
-		// vkCmdPipelineBarrier(commandBuffer.getVkCommandBuffer(),
-		// VK_PIPELINE_STAGE_TRANSFER_BIT,
-		// VK_PIPELINE_STAGE_TRANSFER_BIT, 0, null, null, memBarrier);
-
-		// // Do a image copy to part of the dst image - checks should stay
-		// small
-		// VkImageCopy.Buffer cregion = VkImageCopy.calloc(1);
-		// cregion.srcSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
-		// cregion.srcSubresource().mipLevel(0);
-		// cregion.srcSubresource().baseArrayLayer(0);
-		// cregion.srcSubresource().layerCount(1);
-		// cregion.srcOffset().x(0);
-		// cregion.srcOffset().y(0);
-		// cregion.srcOffset().z(0);
-		// cregion.dstSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
-		// cregion.dstSubresource().mipLevel(0);
-		// cregion.dstSubresource().baseArrayLayer(0);
-		// cregion.dstSubresource().layerCount(1);
-		// cregion.dstOffset().x(256);
-		// cregion.dstOffset().y(256);
-		// cregion.dstOffset().z(0);
-		// cregion.extent().width(128);
-		// cregion.extent().height(128);
-		// cregion.extent().depth(1);
-		//
-		// vkCmdCopyImage(commandBuffer.getVkCommandBuffer(), bltSrcImage,
-		// VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, bltDstImage,
-		// VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cregion);
-		//
-		// VkImageMemoryBarrier.Buffer prePresentBarrier =
-		// VkImageMemoryBarrier.calloc(1);
-		// prePresentBarrier.sType(VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER);
-		// prePresentBarrier.srcAccessMask(VK_ACCESS_TRANSFER_WRITE_BIT);
-		// prePresentBarrier.dstAccessMask(VK_ACCESS_MEMORY_READ_BIT);
-		// prePresentBarrier.oldLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
-		// prePresentBarrier.newLayout(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-		// prePresentBarrier.srcQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED);
-		// prePresentBarrier.dstQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED);
-		// prePresentBarrier.subresourceRange().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
-		// prePresentBarrier.subresourceRange().baseMipLevel(0);
-		// prePresentBarrier.subresourceRange().levelCount(1);
-		// prePresentBarrier.subresourceRange().baseArrayLayer(0);
-		// prePresentBarrier.subresourceRange().layerCount(1);
-		// prePresentBarrier.image(bltDstImage);
-		// vkCmdPipelineBarrier(commandBuffer.getVkCommandBuffer(),
-		// VK_PIPELINE_STAGE_TRANSFER_BIT,
-		// VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, 0, null, null,
-		// prePresentBarrier);
-
-		// cregion.free();
-		// prePresentBarrier.free();
-		// memBarrier.free();
-		// region.free();
 	}
 
 	@Override
@@ -190,11 +122,11 @@ public class BufferToPixelRenderPass implements IRenderPass
 		VkAttachmentDescription colorAttachment = VkAttachmentDescription.calloc();
 		colorAttachment.format(swapChain.getColorDomain().getColorFormat());
 		colorAttachment.samples(VK_SAMPLE_COUNT_1_BIT);
-		colorAttachment.loadOp(VK_ATTACHMENT_LOAD_OP_DONT_CARE);
+		colorAttachment.loadOp(VK_ATTACHMENT_LOAD_OP_LOAD);
 		colorAttachment.storeOp(VK_ATTACHMENT_STORE_OP_STORE);
 		colorAttachment.stencilLoadOp(VK_ATTACHMENT_LOAD_OP_DONT_CARE);
 		colorAttachment.stencilStoreOp(VK_ATTACHMENT_STORE_OP_DONT_CARE);
-		colorAttachment.initialLayout(VK_IMAGE_LAYOUT_UNDEFINED);
+		colorAttachment.initialLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
 		colorAttachment.finalLayout(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
 
 		VkAttachmentReference.Buffer colorAttachmentRef = VkAttachmentReference.calloc(1);

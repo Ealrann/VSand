@@ -6,8 +6,6 @@ public class Board
 	private int height;
 
 	private int size;
-	private int xOrigin;
-	private int yOrigin;
 
 	private boolean[] values;
 
@@ -17,17 +15,12 @@ public class Board
 		this.height = height;
 
 		size = width * height;
-		xOrigin = (int) (width / 2f);
-		yOrigin = (int) (height / 2f);
 
 		values = new boolean[size];
 	}
 
 	public void setValue(int x, int y, boolean value)
 	{
-		x += xOrigin;
-		y += yOrigin;
-
 		values[y * width + x] = value;
 	}
 
