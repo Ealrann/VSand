@@ -16,9 +16,9 @@ import org.sheepy.vulkan.pipeline.swap.graphic.impl.TextureVertexDescriptor.Text
 import org.sheepy.vulkan.shader.Shader;
 import org.sheepy.vulkan.texture.Texture;
 
-import test.vulkan.mesh.MeshRenderPipelinePool;
 import test.vulkan.mesh.Mesh;
 import test.vulkan.mesh.MeshRenderPass;
+import test.vulkan.mesh.MeshRenderPipelinePool;
 import test.vulkan.mesh.MeshSwapConfiguration;
 import test.vulkan.mesh.MeshSwapPipeline;
 import test.vulkan.mesh.UniformBufferObject;
@@ -94,8 +94,8 @@ public class MainTexture
 				0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4
 		};
 
-		IndexBuffer<TextureVertex> indexBuffer = new IndexBuffer<>(logicalDevice,
-				new TextureVertexDescriptor(), vertices, indices);
+		IndexBuffer<TextureVertex> indexBuffer = IndexBuffer.alloc(logicalDevice,
+				new TextureVertexDescriptor(), commandPool, vertices, indices);
 
 		List<Shader> shaders = new ArrayList<>();
 		shaders.add(new Shader(logicalDevice, VERTEX_SHADER_PATH, VK_SHADER_STAGE_VERTEX_BIT));
@@ -104,6 +104,6 @@ public class MainTexture
 		Texture texture = new Texture(logicalDevice,commandPool, IMAGE_PATH, false);
 		ubo = new UniformBufferObject(app, logicalDevice);
 
-		return new Mesh(logicalDevice, commandPool, indexBuffer, shaders, ubo, texture);
+		return new Mesh(logicalDevice, indexBuffer, shaders, ubo, texture);
 	}
 }

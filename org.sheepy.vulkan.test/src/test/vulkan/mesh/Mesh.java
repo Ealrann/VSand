@@ -9,7 +9,6 @@ import java.util.List;
 import org.lwjgl.system.MemoryStack;
 import org.sheepy.vulkan.buffer.IndexBuffer;
 import org.sheepy.vulkan.command.AbstractCommandBuffer;
-import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.descriptor.BasicDescriptorSetConfiguration;
 import org.sheepy.vulkan.descriptor.DescriptorPool;
@@ -20,27 +19,24 @@ import org.sheepy.vulkan.texture.Texture;
 
 public class Mesh implements IAllocable
 {
-	private CommandPool commandPool;
 	private IndexBuffer<?> buffer;
 	protected List<Shader> shaders = new ArrayList<>();
 	protected UniformBufferObject ubo;
 	protected Texture texture;
 	private DescriptorPool descriptorPool;
 
-	public Mesh(LogicalDevice logicalDevice, CommandPool commandPool, IndexBuffer<?> buffer, List<Shader> shaders,
-			UniformBufferObject ubo, Texture texture)
+	public Mesh(LogicalDevice logicalDevice, IndexBuffer<?> buffer,
+			List<Shader> shaders, UniformBufferObject ubo, Texture texture)
 	{
-		this.commandPool = commandPool;
 		this.buffer = buffer;
 		this.shaders = Collections.unmodifiableList(new ArrayList<>(shaders));
 
 		this.ubo = ubo;
 		this.texture = texture;
 
-		List<IDescriptor>  descriptors = new ArrayList<>();
+		List<IDescriptor> descriptors = new ArrayList<>();
 		if (ubo != null) descriptors.add(ubo);
 		if (texture != null) descriptors.add(texture);
-		
 
 		if (descriptors.isEmpty() == false)
 		{
@@ -58,8 +54,6 @@ public class Mesh implements IAllocable
 		if (ubo != null) ubo.allocate(stack);
 		if (texture != null) texture.allocate(stack);
 
-		buffer.allocIndexBuffer(commandPool);
-
 		for (Shader shader : shaders)
 		{
 			shader.allocate(stack);
@@ -69,7 +63,7 @@ public class Mesh implements IAllocable
 	public void bindBufferForRender(AbstractCommandBuffer commandBuffer)
 	{
 		long[] indexBuffers = new long[] {
-				buffer.getBufferId()
+				buffer.getVertexBufferId()
 		};
 		long[] offsets = {
 				0
@@ -97,7 +91,7 @@ public class Mesh implements IAllocable
 			shader.free();
 		}
 	}
-	
+
 	public DescriptorPool getDescriptorPool()
 	{
 		return descriptorPool;
