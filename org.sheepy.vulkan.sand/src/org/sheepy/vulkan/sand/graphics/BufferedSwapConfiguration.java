@@ -7,14 +7,14 @@ import static org.lwjgl.vulkan.VK10.VK_PIPELINE_STAGE_TRANSFER_BIT;
 import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.imgui.MyImGui;
+import org.sheepy.vulkan.imgui.ImGuiPipeline;
 import org.sheepy.vulkan.imgui.UIDescriptor;
 import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
 
 public class BufferedSwapConfiguration extends SwapConfiguration
 {
 	public Image pixelImage;
-	public MyImGui imGui;
+	public ImGuiPipeline imGui;
 
 	public BufferedSwapConfiguration(LogicalDevice logicalDevice, CommandPool commandPool,
 			Image pixelImage)
@@ -26,7 +26,7 @@ public class BufferedSwapConfiguration extends SwapConfiguration
 
 		this.frameWaitStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
 
-		imGui = new MyImGui(commandPool, this, createUIDescriptor());
+		imGui = new ImGuiPipeline(commandPool, this, createUIDescriptor());
 	}
 
 	public UIDescriptor createUIDescriptor()

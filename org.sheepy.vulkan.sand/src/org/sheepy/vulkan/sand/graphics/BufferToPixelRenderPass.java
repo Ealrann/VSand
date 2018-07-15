@@ -16,7 +16,7 @@ import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.command.AbstractCommandBuffer;
 import org.sheepy.vulkan.command.graphic.RenderCommandBuffer;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.imgui.MyImGui;
+import org.sheepy.vulkan.imgui.ImGuiPipeline;
 import org.sheepy.vulkan.pipeline.swap.IRenderPass;
 import org.sheepy.vulkan.swapchain.SwapChainManager.Extent2D;
 import org.sheepy.vulkan.view.ImageView;
@@ -29,7 +29,7 @@ public class BufferToPixelRenderPass implements IRenderPass
 
 	private long renderPass;
 
-	private MyImGui myImGui;
+	private ImGuiPipeline myImGui;
 
 	public BufferToPixelRenderPass(BufferedSwapConfiguration configuration)
 	{

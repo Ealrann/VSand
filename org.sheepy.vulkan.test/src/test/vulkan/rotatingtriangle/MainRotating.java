@@ -11,8 +11,8 @@ import org.sheepy.vulkan.buffer.IndexBuffer;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.swap.graphic.GraphicsPipeline;
-import org.sheepy.vulkan.pipeline.swap.graphic.impl.VertexDescriptor;
-import org.sheepy.vulkan.pipeline.swap.graphic.impl.VertexDescriptor.Vertex;
+import org.sheepy.vulkan.pipeline.swap.graphic.impl.IndexBufferDescriptor;
+import org.sheepy.vulkan.pipeline.swap.graphic.impl.IndexBufferDescriptor.Vertex;
 import org.sheepy.vulkan.shader.Shader;
 
 import test.vulkan.mesh.MeshRenderPipelinePool;
@@ -92,15 +92,15 @@ public class MainRotating
 				0, 1, 2, 2, 3, 0
 		};
 
-		IndexBuffer<Vertex> indexBuffer = new IndexBuffer<>(logicalDevice, new VertexDescriptor(),
-				vertices, indices);
-
+		IndexBuffer<Vertex> indexBuffer = IndexBuffer.alloc(logicalDevice,
+				new IndexBufferDescriptor(), commandPool, vertices, indices);
+		
 		List<Shader> shaders = new ArrayList<>();
 		shaders.add(new Shader(logicalDevice, VERTEX_SHADER_PATH, VK_SHADER_STAGE_VERTEX_BIT));
 		shaders.add(new Shader(logicalDevice, FRAGMENT_SHADER_PATH, VK_SHADER_STAGE_FRAGMENT_BIT));
 
 		ubo = new UniformBufferObject(app, logicalDevice);
 
-		mesh = new Mesh(logicalDevice, commandPool, indexBuffer, shaders, ubo, null);
+		mesh = new Mesh(logicalDevice, indexBuffer, shaders, ubo, null);
 	}
 }

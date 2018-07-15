@@ -139,8 +139,8 @@ public class MainModel
 		System.err.println("Final vertices count: " + vertices.size());
 		System.err.println("Indices count: " + indiceCount);
 
-		IndexBuffer<TextureVertex> indexBuffer = new IndexBuffer<>(logicalDevice,
-				new TextureVertexDescriptor(), vertexArray, indexArray);
+		IndexBuffer<TextureVertex> indexBuffer = IndexBuffer.alloc(logicalDevice,
+				new TextureVertexDescriptor(), commandPool, vertexArray, indexArray);
 
 		List<Shader> shaders = new ArrayList<>();
 		shaders.add(new Shader(logicalDevice, VERTEX_SHADER_PATH, VK_SHADER_STAGE_VERTEX_BIT));
@@ -149,6 +149,6 @@ public class MainModel
 		Texture texture = new Texture(logicalDevice, commandPool, TEXTURE_PATH, false);
 		ubo = new UniformBufferObject(app, logicalDevice);
 
-		return new Mesh(logicalDevice, commandPool, indexBuffer, shaders, ubo, texture);
+		return new Mesh(logicalDevice, indexBuffer, shaders, ubo, texture);
 	}
 }
