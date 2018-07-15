@@ -8,15 +8,18 @@ import java.util.List;
 
 import org.sheepy.vulkan.BasicVulkanApplication;
 import org.sheepy.vulkan.buffer.IndexBuffer;
-import org.sheepy.vulkan.buffer.Mesh;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.pipeline.swap.BasicRenderPipelinePool;
-import org.sheepy.vulkan.pipeline.swap.MeshSwapPipeline;
-import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
+import org.sheepy.vulkan.pipeline.swap.graphic.GraphicsPipeline;
 import org.sheepy.vulkan.pipeline.swap.graphic.impl.VertexDescriptor;
 import org.sheepy.vulkan.pipeline.swap.graphic.impl.VertexDescriptor.Vertex;
 import org.sheepy.vulkan.shader.Shader;
+
+import test.vulkan.mesh.MeshRenderPipelinePool;
+import test.vulkan.mesh.Mesh;
+import test.vulkan.mesh.MeshRenderPass;
+import test.vulkan.mesh.MeshSwapConfiguration;
+import test.vulkan.mesh.MeshSwapPipeline;
 
 public class MainTriangle
 {
@@ -34,13 +37,19 @@ public class MainTriangle
 
 		LogicalDevice logicalDevice = app.initLogicalDevice();
 
-		SwapConfiguration configuration = new SwapConfiguration();
-		BasicRenderPipelinePool pipelinePool = new BasicRenderPipelinePool(logicalDevice);
+		MeshRenderPipelinePool pipelinePool = new MeshRenderPipelinePool(logicalDevice);
 
-		createMeshBuffer(logicalDevice, pipelinePool.getCommandPool());
-		MeshSwapPipeline swapPipeline = new MeshSwapPipeline(logicalDevice, mesh, configuration,
-				pipelinePool.getCommandPool());
-		pipelinePool.setSwapPipeline(swapPipeline);
+		CommandPool commandPool = pipelinePool.getCommandPool();
+		createMeshBuffer(logicalDevice, commandPool);
+
+		MeshSwapConfiguration configuration = new MeshSwapConfiguration(logicalDevice, commandPool,
+				mesh);
+		configuration.graphicsPipeline = new GraphicsPipeline(configuration);
+		configuration.renderPass = new MeshRenderPass(configuration);
+
+		MeshSwapPipeline swapPipeline = new MeshSwapPipeline(logicalDevice, configuration,
+				commandPool);
+		pipelinePool.setSwapPipeline(swapPipeline, configuration);
 		app.attachPipelinePool(pipelinePool);
 
 		try
@@ -68,12 +77,13 @@ public class MainTriangle
 				0, 1, 2, 2, 3, 0
 		};
 
-		IndexBuffer<Vertex> indexBuffer = new IndexBuffer<>(logicalDevice, new VertexDescriptor(), vertices, indices);
+		IndexBuffer<Vertex> indexBuffer = new IndexBuffer<>(logicalDevice, new VertexDescriptor(),
+				vertices, indices);
 
 		List<Shader> shaders = new ArrayList<>();
 		shaders.add(new Shader(logicalDevice, VERTEX_SHADER_PATH, VK_SHADER_STAGE_VERTEX_BIT));
 		shaders.add(new Shader(logicalDevice, FRAGMENT_SHADER_PATH, VK_SHADER_STAGE_FRAGMENT_BIT));
 
-		mesh = new Mesh(commandPool, indexBuffer, shaders, null, null);
+		mesh = new Mesh(logicalDevice, commandPool, indexBuffer, shaders, null, null);
 	}
 }
