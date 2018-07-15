@@ -6,19 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sheepy.vulkan.BasicVulkanApplication;
-import org.sheepy.vulkan.UniformBufferObject;
 import org.sheepy.vulkan.VulkanApplication;
 import org.sheepy.vulkan.buffer.IndexBuffer;
-import org.sheepy.vulkan.buffer.Mesh;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.pipeline.swap.BasicRenderPipelinePool;
-import org.sheepy.vulkan.pipeline.swap.MeshSwapPipeline;
-import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
+import org.sheepy.vulkan.pipeline.swap.graphic.GraphicsPipeline;
 import org.sheepy.vulkan.pipeline.swap.graphic.impl.TextureVertexDescriptor;
 import org.sheepy.vulkan.pipeline.swap.graphic.impl.TextureVertexDescriptor.TextureVertex;
 import org.sheepy.vulkan.shader.Shader;
 import org.sheepy.vulkan.texture.Texture;
+
+import test.vulkan.mesh.MeshRenderPipelinePool;
+import test.vulkan.mesh.Mesh;
+import test.vulkan.mesh.MeshRenderPass;
+import test.vulkan.mesh.MeshSwapConfiguration;
+import test.vulkan.mesh.MeshSwapPipeline;
+import test.vulkan.mesh.UniformBufferObject;
 
 public class MainTexture
 {
@@ -48,21 +51,23 @@ public class MainTexture
 
 		LogicalDevice logicalDevice = app.initLogicalDevice();
 
-		BasicRenderPipelinePool pipelinePool = new BasicRenderPipelinePool(logicalDevice);
+		MeshRenderPipelinePool pipelinePool = new MeshRenderPipelinePool(logicalDevice);
 		CommandPool commandPool = pipelinePool.getCommandPool();
 
 		Mesh mesh = createMeshBuffer(app, logicalDevice, commandPool);
 
-		SwapConfiguration configuration = new SwapConfiguration();
+		MeshSwapConfiguration configuration = new MeshSwapConfiguration(logicalDevice, commandPool, mesh);
+		configuration.renderPass = new MeshRenderPass(configuration);
 		configuration.depthBuffer = true;
 		configuration.rasterizerFrontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
 		configuration.vertexInputState = new TextureVertexDescriptor();
+		configuration.graphicsPipeline = new GraphicsPipeline(configuration);
 
-		MeshSwapPipeline swapPipeline = new MeshSwapPipeline(logicalDevice, mesh, configuration,
+		MeshSwapPipeline swapPipeline = new MeshSwapPipeline(logicalDevice, configuration,
 				pipelinePool.getCommandPool());
-		pipelinePool.setSwapPipeline(swapPipeline);
+		pipelinePool.setSwapPipeline(swapPipeline, configuration);
 		app.attachPipelinePool(pipelinePool);
-
+		
 		try
 		{
 			app.run();
@@ -99,6 +104,6 @@ public class MainTexture
 		Texture texture = new Texture(logicalDevice,commandPool, IMAGE_PATH, false);
 		ubo = new UniformBufferObject(app, logicalDevice);
 
-		return new Mesh(commandPool, indexBuffer, shaders, ubo, texture);
+		return new Mesh(logicalDevice, commandPool, indexBuffer, shaders, ubo, texture);
 	}
 }

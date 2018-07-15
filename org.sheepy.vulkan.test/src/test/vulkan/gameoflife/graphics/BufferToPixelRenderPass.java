@@ -5,6 +5,7 @@ import static org.lwjgl.vulkan.VK10.*;
 
 import java.util.List;
 
+import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VkAttachmentDescription;
 import org.lwjgl.vulkan.VkAttachmentReference;
 import org.lwjgl.vulkan.VkImageBlit;
@@ -16,7 +17,6 @@ import org.sheepy.vulkan.command.AbstractCommandBuffer;
 import org.sheepy.vulkan.command.graphic.RenderCommandBuffer;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.swap.IRenderPass;
-import org.sheepy.vulkan.swapchain.SwapChainManager;
 import org.sheepy.vulkan.swapchain.SwapChainManager.Extent2D;
 import org.sheepy.vulkan.view.ImageView;
 
@@ -24,16 +24,15 @@ public class BufferToPixelRenderPass implements IRenderPass
 {
 	private LogicalDevice logicalDevice;
 	private Image srcImage;
-	private BufferedSwapPipeline pipeline;
+	private BufferedSwapConfiguration configuration;
 
 	private long renderPass;
 
-	public BufferToPixelRenderPass(LogicalDevice logicalDevice, Image srcImage,
-			BufferedSwapPipeline pipeline)
+	public BufferToPixelRenderPass(BufferedSwapConfiguration configuration)
 	{
-		this.logicalDevice = logicalDevice;
-		this.srcImage = srcImage;
-		this.pipeline = pipeline;
+		this.logicalDevice = configuration.logicalDevice;
+		this.srcImage = configuration.pixelImage;
+		this.configuration = configuration;
 	}
 
 	@Override
@@ -42,26 +41,22 @@ public class BufferToPixelRenderPass implements IRenderPass
 		for (int i = 0; i < commandBuffers.size(); i++)
 		{
 			RenderCommandBuffer commandBuffer = commandBuffers.get(i);
-			ImageView imageView = pipeline.getImageView().getImageViews().get(i);
+			ImageView imageView = configuration.imageViewManager.getImageViews().get(i);
 
 			commandBuffer.startCommand();
 
-			pipeline.bind(commandBuffer);
-
-			buildSwapCommand(pipeline, commandBuffer, imageView);
+			buildSwapCommand(commandBuffer, imageView);
 
 			commandBuffer.startRenderPass();
-			
+
 			commandBuffer.endRenderPass();
 			commandBuffer.endCommand();
 		}
 	}
 
-	public void buildSwapCommand(BufferedSwapPipeline pipeline,
-			AbstractCommandBuffer commandBuffer,
-			ImageView dstImageView)
+	public void buildSwapCommand(AbstractCommandBuffer commandBuffer, ImageView dstImageView)
 	{
-		Extent2D extent = pipeline.getSwapChain().getExtent();
+		Extent2D extent = configuration.swapChainManager.getExtent();
 
 		// Intend to blit from this image, set the layout accordingly
 
@@ -117,10 +112,10 @@ public class BufferToPixelRenderPass implements IRenderPass
 	}
 
 	@Override
-	public void load(SwapChainManager swapChain)
+	public void allocate(MemoryStack stack)
 	{
 		VkAttachmentDescription colorAttachment = VkAttachmentDescription.calloc();
-		colorAttachment.format(swapChain.getColorDomain().getColorFormat());
+		colorAttachment.format(configuration.swapChainManager.getColorDomain().getColorFormat());
 		colorAttachment.samples(VK_SAMPLE_COUNT_1_BIT);
 		colorAttachment.loadOp(VK_ATTACHMENT_LOAD_OP_LOAD);
 		colorAttachment.storeOp(VK_ATTACHMENT_STORE_OP_STORE);
@@ -186,4 +181,5 @@ public class BufferToPixelRenderPass implements IRenderPass
 	{
 		vkDestroyRenderPass(logicalDevice.getVkDevice(), renderPass, null);
 	}
+
 }
