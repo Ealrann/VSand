@@ -1,6 +1,5 @@
 package org.sheepy.vulkan.sand.pipelinepool;
 
-import static org.lwjgl.vulkan.KHRSurface.VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
 import static org.lwjgl.vulkan.KHRSurface.VK_PRESENT_MODE_FIFO_KHR;
 import static org.lwjgl.vulkan.KHRSwapchain.vkQueuePresentKHR;
 import static org.lwjgl.vulkan.VK10.*;
@@ -12,8 +11,9 @@ import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.concurrent.ISignalEmitter;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.SurfacePipelinePool;
-import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
-import org.sheepy.vulkan.sand.graphics.BufferedSwapPipeline;
+import org.sheepy.vulkan.pipeline.swap.SwapPipeline;
+import org.sheepy.vulkan.sand.graphics.BufferToPixelRenderPass;
+import org.sheepy.vulkan.sand.graphics.BufferedSwapConfiguration;
 import org.sheepy.vulkan.sand.util.LoadCounter;
 import org.sheepy.vulkan.window.Surface;
 
@@ -27,7 +27,8 @@ public class RenderPipelinePool extends SurfacePipelinePool
 	private LoadCounter loadCounterTotal = new LoadCounter("Total ", 120);
 	private LoadCounter loadCounterRender = new LoadCounter("Render", 120);
 
-	private BufferedSwapPipeline renderPipeline;
+	private SwapPipeline renderPipeline;
+	private BufferedSwapConfiguration configuration;
 
 	public RenderPipelinePool(LogicalDevice logicalDevice, Image image,
 			Collection<ISignalEmitter> waitForEmitters)
@@ -43,17 +44,18 @@ public class RenderPipelinePool extends SurfacePipelinePool
 
 	public void buildPipelines()
 	{
-		SwapConfiguration configuration = new SwapConfiguration(VK_FORMAT_B8G8R8A8_UNORM,
-				VK_COLOR_SPACE_SRGB_NONLINEAR_KHR);
-		// We will fill the framebuffer manually.
-		configuration.renderPipeline = false;
+		configuration = new BufferedSwapConfiguration(logicalDevice, commandPool, image);
 		// enable VSync
 		configuration.presentationMode = VK_PRESENT_MODE_FIFO_KHR;
 
+		configuration.renderPass = new BufferToPixelRenderPass(configuration);
+
 		// We will use the swap image as a target transfer
 		configuration.swapImageUsages |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
-		renderPipeline = new BufferedSwapPipeline(logicalDevice, configuration, commandPool, image,
-				waitForEmitters);
+
+		renderPipeline = new SwapPipeline(configuration, waitForEmitters);
+
+		subAllocationObjects.add(configuration);
 		subAllocationObjects.add(renderPipeline);
 	}
 
@@ -71,6 +73,8 @@ public class RenderPipelinePool extends SurfacePipelinePool
 
 		// vkQueueWaitIdle(logicalDevice.getQueueManager().getGraphicQueue());
 		Integer imageIndex = renderPipeline.acquireNextImage();
+
+		configuration.updateUI();
 
 		loadCounterTotal.countTime();
 
@@ -93,8 +97,8 @@ public class RenderPipelinePool extends SurfacePipelinePool
 	@Override
 	public void resize(MemoryStack stack, Surface surface)
 	{
-		renderPipeline.free(false);
+		renderPipeline.freeNode();
 		configure(surface);
-		renderPipeline.allocate(stack);
+		renderPipeline.allocateNode(stack);
 	}
 }

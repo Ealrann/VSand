@@ -2,8 +2,10 @@ rootProject.name = "Vulkan"
 
 
 include ':org.sheepy.vulkan'
+include ':org.sheepy.vulkan.imgui'
 include ':org.sheepy.vulkan.test'
 include ':org.sheepy.vulkan.sand'
 
 
 project(':org.sheepy.vulkan').projectDir = new File(settingsDir, 'vulkan_lib/org.sheepy.vulkan')
+project(':org.sheepy.vulkan.imgui').projectDir = new File(settingsDir, 'vulkan_lib/org.sheepy.vulkan.imgui')

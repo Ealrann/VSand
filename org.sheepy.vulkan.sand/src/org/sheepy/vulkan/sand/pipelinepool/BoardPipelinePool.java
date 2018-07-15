@@ -124,6 +124,8 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 	@Override
 	public void allocate(MemoryStack stack)
 	{
+		super.allocate(stack);
+		
 		{
 			SingleTimeCommand stc = new SingleTimeCommand(commandPool,
 					logicalDevice.getQueueManager().getGraphicQueue())

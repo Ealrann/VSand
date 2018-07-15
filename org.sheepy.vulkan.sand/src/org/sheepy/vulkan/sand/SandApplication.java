@@ -17,6 +17,10 @@ import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.pipelinepool.BoardPipelinePool;
 import org.sheepy.vulkan.sand.pipelinepool.RenderPipelinePool;
 
+import imgui.Context;
+import imgui.IO;
+import imgui.ImGui;
+
 public class SandApplication extends VulkanApplication
 {
 	private static final int WIDTH = 1024;
@@ -52,15 +56,24 @@ public class SandApplication extends VulkanApplication
 			@Override
 			public void invoke(long window, int button, int action, int mods)
 			{
-				if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+				// Update imGui
+				IO io = ImGui.INSTANCE.getIo();
+
+				switch (button)
 				{
-					drawEnabled = true;
+				case GLFW_MOUSE_BUTTON_LEFT:
+					io.getMouseDown()[0] = action == GLFW_PRESS;
+					if (io.getWantCaptureMouse()) drawEnabled = false;
+					else drawEnabled = action == GLFW_PRESS;
+					break;
+				case GLFW_MOUSE_BUTTON_RIGHT:
+					io.getMouseDown()[1] = action == GLFW_PRESS;
+					break;
+				case GLFW_MOUSE_BUTTON_MIDDLE:
+					io.getMouseDown()[2] = action == GLFW_PRESS;
+					break;
 				}
 
-				if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
-				{
-					drawEnabled = false;
-				}
 			}
 		});
 
@@ -97,19 +110,23 @@ public class SandApplication extends VulkanApplication
 
 		boardPool = new BoardPipelinePool(logicalDevice, boardModifications, image);
 
+		ctx = new Context();
+
 		renderPool = new RenderPipelinePool(logicalDevice, image.getImage(),
 				Collections.emptyList());
 
 		attachPipelinePool(boardPool);
 		attachPipelinePool(renderPool);
+
 	}
-	
+
 	@Override
 	public void cleanup()
 	{
+		ctx.shutdown();
 		image.free();
 		boardModifications.free();
-		
+
 		super.cleanup();
 	}
 
@@ -121,14 +138,18 @@ public class SandApplication extends VulkanApplication
 
 	private int count = 0;
 	private BoardImage image;
+	private Context ctx;
 
 	@Override
 	public void drawFrame()
 	{
+		double[] cursorPosition = SandApplication.this.window.getCursorPosition();
+		IO io = ImGui.INSTANCE.getIo();
+		io.getMousePos().setX((int) cursorPosition[0]);
+		io.getMousePos().setY((int) cursorPosition[1]);
 
 		if (drawEnabled)
 		{
-			double[] cursorPosition = window.getCursorPosition();
 			boardModifications.pushModification(EShape.Circle, EShapeSize.ES6,
 					(int) cursorPosition[0], (int) cursorPosition[1],
 					EMaterial.values()[indexMaterial]);
