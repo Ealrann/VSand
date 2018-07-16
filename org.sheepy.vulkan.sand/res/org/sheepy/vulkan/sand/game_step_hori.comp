@@ -3,7 +3,9 @@
 
 #define WIDTH 1024
 #define HEIGHT 576
-#define WORKGROUP_SIZE 8
+//#define WIDTH 2048
+//#define HEIGHT 1152
+#define WORKGROUP_SIZE 32
 
 layout (local_size_x = 1, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 

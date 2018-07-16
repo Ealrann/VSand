@@ -24,8 +24,8 @@ public class SandApplication extends VulkanApplication
 {
 	private static final int WIDTH = 1024;
 	private static final int HEIGHT = 576;
-	// private static final int WIDTH = 2048;
-	// private static final int HEIGHT = 1152;
+//	private static final int WIDTH = 2048;
+//	private static final int HEIGHT = 1152;
 
 	private static final float ZOOM = 1f;
 
@@ -47,7 +47,7 @@ public class SandApplication extends VulkanApplication
 	public SandApplication()
 	{
 		super(WIDTH, HEIGHT);
-		
+
 		LogicalDevice logicalDevice = initLogicalDevice();
 
 		uiDescriptor = new SandUIDescriptor(window);
@@ -105,7 +105,7 @@ public class SandApplication extends VulkanApplication
 
 		ctx = new Context();
 
-		renderPool = new RenderPipelinePool(logicalDevice, image.getImage(),uiDescriptor,
+		renderPool = new RenderPipelinePool(logicalDevice, image.getImage(), uiDescriptor,
 				Collections.emptyList());
 
 		attachPipelinePool(boardPool);
@@ -140,17 +140,15 @@ public class SandApplication extends VulkanApplication
 		IO io = ImGui.INSTANCE.getIo();
 		io.getMousePos().setX((int) cursorPosition[0]);
 		io.getMousePos().setY((int) cursorPosition[1]);
-		
+
 		lastPosition = new double[2];
 		lastPosition[0] = cursorPosition[0];
 		lastPosition[1] = cursorPosition[1];
-		
 
 		if (drawEnabled)
 		{
 			boardModifications.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
-					(int) cursorPosition[0], (int) cursorPosition[1],
-					uiDescriptor.getMaterial());
+					(int) cursorPosition[0], (int) cursorPosition[1], uiDescriptor.getMaterial());
 		}
 
 		if (pause != true)
