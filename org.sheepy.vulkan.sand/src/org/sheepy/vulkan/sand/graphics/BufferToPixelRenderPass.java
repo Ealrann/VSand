@@ -29,7 +29,7 @@ public class BufferToPixelRenderPass implements IRenderPass
 
 	private long renderPass;
 
-	private ImGuiPipeline myImGui;
+	private ImGuiPipeline imGui;
 	private VkImageBlit.Buffer region;
 
 	public BufferToPixelRenderPass(BufferedSwapConfiguration configuration)
@@ -38,8 +38,8 @@ public class BufferToPixelRenderPass implements IRenderPass
 		this.srcImage = configuration.pixelImage;
 		this.configuration = configuration;
 
-		this.myImGui = configuration.imGui;
-		
+		this.imGui = configuration.imGui;
+
 		region = VkImageBlit.calloc(1);
 		region.srcSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
 		region.srcSubresource().mipLevel(0);
@@ -60,12 +60,11 @@ public class BufferToPixelRenderPass implements IRenderPass
 		region.dstOffsets(0).z(0);
 	}
 
+	boolean first = true;
+
 	@Override
 	public void buildRenderPass(List<RenderCommandBuffer> commandBuffers)
 	{
-		myImGui.newFrame(false);
-		myImGui.updateBuffers();
-
 		for (int i = 0; i < commandBuffers.size(); i++)
 		{
 			RenderCommandBuffer commandBuffer = commandBuffers.get(i);
@@ -73,35 +72,33 @@ public class BufferToPixelRenderPass implements IRenderPass
 
 			commandBuffer.startCommand();
 
-			buildSwapCommand(commandBuffer, imageView);
+			copyPixelBufferToFB(commandBuffer, imageView);
 
 			commandBuffer.startRenderPass();
 
-			myImGui.drawFrame(commandBuffer.getVkCommandBuffer());
+			imGui.drawFrame(commandBuffer.getVkCommandBuffer());
 
 			commandBuffer.endRenderPass();
 			commandBuffer.endCommand();
 		}
 	}
 
-	public void buildSwapCommand(AbstractCommandBuffer commandBuffer, ImageView dstImageView)
+	private void copyPixelBufferToFB(AbstractCommandBuffer commandBuffer, ImageView framebufferImageView)
 	{
 		Extent2D extent = configuration.swapChainManager.getExtent();
-
-		// Intend to blit from this image, set the layout accordingly
 
 		srcImage.transitionImageLayout(commandBuffer.getVkCommandBuffer(), VK_IMAGE_LAYOUT_GENERAL,
 				VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, 1, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
 				VK_PIPELINE_STAGE_TRANSFER_BIT, VK_ACCESS_SHADER_WRITE_BIT,
 				VK_ACCESS_TRANSFER_READ_BIT);
 
-		dstImageView.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
+		framebufferImageView.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
 				VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1,
 				VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0,
 				VK_ACCESS_TRANSFER_WRITE_BIT);
 
 		long bltSrcImage = srcImage.getId();
-		long bltDstImage = dstImageView.getImageId();
+		long bltDstImage = framebufferImageView.getImageId();
 
 		region.dstOffsets(1).x(extent.getWidth());
 		region.dstOffsets(1).y(extent.getHeight());
@@ -116,7 +113,7 @@ public class BufferToPixelRenderPass implements IRenderPass
 				VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
 				VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_SHADER_WRITE_BIT);
 
-		dstImageView.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
+		framebufferImageView.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
 				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, 1,
 				VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT,
 				VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_SHADER_WRITE_BIT);
@@ -173,7 +170,10 @@ public class BufferToPixelRenderPass implements IRenderPass
 		}
 		renderPass = aRenderPass[0];
 
-		myImGui.allocate(stack);
+		imGui.allocate(stack);
+
+		imGui.newFrame();
+		imGui.updateBuffers();
 
 		attachments.free();
 		dependency.free();
@@ -193,7 +193,7 @@ public class BufferToPixelRenderPass implements IRenderPass
 	public void free()
 	{
 		region.free();
-		myImGui.free();
+		imGui.free();
 		vkDestroyRenderPass(logicalDevice.getVkDevice(), renderPass, null);
 	}
 }

@@ -76,13 +76,22 @@ public class RenderPipelinePool extends SurfacePipelinePool
 		loadCounterRender.start();
 		loadCounterTotal.start();
 
-		// vkQueueWaitIdle(logicalDevice.getQueueManager().getGraphicQueue());
+		vkQueueWaitIdle(logicalDevice.getQueueManager().getGraphicQueue());
 		Integer imageIndex = renderPipeline.acquireNextImage();
 
 		loadCounterTotal.countTime();
 
 		loadCounterUI.start();
-		configuration.renderPass.buildRenderPass(configuration.commandBuffers.getCommandBuffers());
+
+		if (configuration.imGui.newFrame())
+		{
+			configuration.imGui.updateBuffers();
+			configuration.renderPass
+					.buildRenderPass(configuration.commandBuffers.getCommandBuffers());
+
+			System.out.println("Rebuild");
+		}
+
 		loadCounterUI.countTime();
 
 		if (imageIndex != null)
