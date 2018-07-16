@@ -14,6 +14,7 @@ import org.sheepy.vulkan.pipeline.SurfacePipelinePool;
 import org.sheepy.vulkan.pipeline.swap.SwapPipeline;
 import org.sheepy.vulkan.sand.graphics.BufferToPixelRenderPass;
 import org.sheepy.vulkan.sand.graphics.BufferedSwapConfiguration;
+import org.sheepy.vulkan.sand.graphics.SandUIDescriptor;
 import org.sheepy.vulkan.sand.util.LoadCounter;
 import org.sheepy.vulkan.window.Surface;
 
@@ -23,19 +24,22 @@ public class RenderPipelinePool extends SurfacePipelinePool
 	private LogicalDevice logicalDevice;
 	private Image image;
 	private Collection<ISignalEmitter> waitForEmitters;
+	private SandUIDescriptor uiDescriptor;
 
-	private LoadCounter loadCounterTotal = new LoadCounter("Total ", 120);
+	private LoadCounter loadCounterTotal = new LoadCounter("Total", 120);
 	private LoadCounter loadCounterRender = new LoadCounter("Render", 120);
+	private LoadCounter loadCounterUI = new LoadCounter("UI", 120);
 
 	private SwapPipeline renderPipeline;
 	private BufferedSwapConfiguration configuration;
 
 	public RenderPipelinePool(LogicalDevice logicalDevice, Image image,
-			Collection<ISignalEmitter> waitForEmitters)
+			SandUIDescriptor uiDescriptor, Collection<ISignalEmitter> waitForEmitters)
 	{
 		super(logicalDevice, logicalDevice.getQueueManager().getGraphicQueueIndex(), true);
 
 		this.logicalDevice = logicalDevice;
+		this.uiDescriptor = uiDescriptor;
 		this.image = image;
 		this.waitForEmitters = waitForEmitters;
 
@@ -44,7 +48,8 @@ public class RenderPipelinePool extends SurfacePipelinePool
 
 	public void buildPipelines()
 	{
-		configuration = new BufferedSwapConfiguration(logicalDevice, commandPool, image);
+		configuration = new BufferedSwapConfiguration(logicalDevice, commandPool, image,
+				uiDescriptor);
 		// enable VSync
 		configuration.presentationMode = VK_PRESENT_MODE_FIFO_KHR;
 
@@ -74,9 +79,11 @@ public class RenderPipelinePool extends SurfacePipelinePool
 		// vkQueueWaitIdle(logicalDevice.getQueueManager().getGraphicQueue());
 		Integer imageIndex = renderPipeline.acquireNextImage();
 
-		configuration.updateUI();
-
 		loadCounterTotal.countTime();
+
+		loadCounterUI.start();
+		configuration.renderPass.buildRenderPass(configuration.commandBuffers.getCommandBuffers());
+		loadCounterUI.countTime();
 
 		if (imageIndex != null)
 		{

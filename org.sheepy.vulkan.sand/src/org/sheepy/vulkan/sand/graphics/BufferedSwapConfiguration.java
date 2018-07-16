@@ -8,7 +8,6 @@ import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.imgui.ImGuiPipeline;
-import org.sheepy.vulkan.imgui.UIDescriptor;
 import org.sheepy.vulkan.pipeline.swap.SwapConfiguration;
 
 public class BufferedSwapConfiguration extends SwapConfiguration
@@ -17,7 +16,7 @@ public class BufferedSwapConfiguration extends SwapConfiguration
 	public ImGuiPipeline imGui;
 
 	public BufferedSwapConfiguration(LogicalDevice logicalDevice, CommandPool commandPool,
-			Image pixelImage)
+			Image pixelImage, SandUIDescriptor uiDescriptor)
 	{
 		super(logicalDevice, commandPool, VK_FORMAT_B8G8R8A8_UNORM,
 				VK_COLOR_SPACE_SRGB_NONLINEAR_KHR);
@@ -26,19 +25,7 @@ public class BufferedSwapConfiguration extends SwapConfiguration
 
 		this.frameWaitStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
 
-		imGui = new ImGuiPipeline(commandPool, this, createUIDescriptor());
+		imGui = new ImGuiPipeline(commandPool, this, uiDescriptor);
 	}
 
-	public UIDescriptor createUIDescriptor()
-	{
-		UIDescriptor uiDescriptor = new UIDescriptor(logicalDevice.getWindow());
-
-		return uiDescriptor;
-	}
-
-	public void updateUI()
-	{
-		imGui.newFrame(false);
-		imGui.updateBuffers();		
-	}
 }

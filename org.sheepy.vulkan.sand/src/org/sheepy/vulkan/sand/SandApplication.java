@@ -10,10 +10,9 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.sheepy.vulkan.VulkanApplication;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.sand.board.BoardModifications;
-import org.sheepy.vulkan.sand.board.EMaterial;
 import org.sheepy.vulkan.sand.board.EShape;
-import org.sheepy.vulkan.sand.board.EShapeSize;
 import org.sheepy.vulkan.sand.compute.BoardImage;
+import org.sheepy.vulkan.sand.graphics.SandUIDescriptor;
 import org.sheepy.vulkan.sand.pipelinepool.BoardPipelinePool;
 import org.sheepy.vulkan.sand.pipelinepool.RenderPipelinePool;
 
@@ -34,7 +33,6 @@ public class SandApplication extends VulkanApplication
 	private int speed = 1;
 	private boolean pause = false;
 	private boolean next = false;
-	private int indexMaterial = 1;
 
 	private BoardPipelinePool boardPool;
 	private RenderPipelinePool renderPool;
@@ -44,12 +42,15 @@ public class SandApplication extends VulkanApplication
 	// private static final float FRAME_TIME_STEP_MS = (1f / TARGET_FPS) * 1000;
 
 	private boolean drawEnabled = false;
+	private SandUIDescriptor uiDescriptor;
 
 	public SandApplication()
 	{
 		super(WIDTH, HEIGHT);
-
+		
 		LogicalDevice logicalDevice = initLogicalDevice();
+
+		uiDescriptor = new SandUIDescriptor(window);
 
 		window.setMouseButtonCallback(new GLFWMouseButtonCallback()
 		{
@@ -86,14 +87,6 @@ public class SandApplication extends VulkanApplication
 				{
 					pause = !pause;
 				}
-				if (key == GLFW_KEY_T && action == GLFW_PRESS)
-				{
-					indexMaterial++;
-					if (indexMaterial >= EMaterial.values().length)
-					{
-						indexMaterial = 0;
-					}
-				}
 				if (key == GLFW_KEY_N && action == GLFW_PRESS)
 				{
 					pause = false;
@@ -112,7 +105,7 @@ public class SandApplication extends VulkanApplication
 
 		ctx = new Context();
 
-		renderPool = new RenderPipelinePool(logicalDevice, image.getImage(),
+		renderPool = new RenderPipelinePool(logicalDevice, image.getImage(),uiDescriptor,
 				Collections.emptyList());
 
 		attachPipelinePool(boardPool);
@@ -136,9 +129,9 @@ public class SandApplication extends VulkanApplication
 		super.mainLoop();
 	}
 
-	private int count = 0;
 	private BoardImage image;
 	private Context ctx;
+	private double[] lastPosition = null;
 
 	@Override
 	public void drawFrame()
@@ -147,21 +140,17 @@ public class SandApplication extends VulkanApplication
 		IO io = ImGui.INSTANCE.getIo();
 		io.getMousePos().setX((int) cursorPosition[0]);
 		io.getMousePos().setY((int) cursorPosition[1]);
+		
+		lastPosition = new double[2];
+		lastPosition[0] = cursorPosition[0];
+		lastPosition[1] = cursorPosition[1];
+		
 
 		if (drawEnabled)
 		{
-			boardModifications.pushModification(EShape.Circle, EShapeSize.ES6,
+			boardModifications.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
 					(int) cursorPosition[0], (int) cursorPosition[1],
-					EMaterial.values()[indexMaterial]);
-		}
-
-		if (count++ == 90)
-		{
-			boardModifications.pushModification(EShape.Circle, EShapeSize.ES6, 300, 200,
-					EMaterial.Sand);
-			boardModifications.pushModification(EShape.Square, EShapeSize.ES6, 320, 350,
-					EMaterial.Wall);
-			System.out.println("Put sand");
+					uiDescriptor.getMaterial());
 		}
 
 		if (pause != true)

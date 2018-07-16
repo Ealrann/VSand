@@ -51,7 +51,7 @@ public class LoadCounter
 			}
 			averageLoad /= maxCount;
 
-			System.out.println(String.format("Load [%s] : %f", name, averageLoad));
+			System.out.println(String.format("Load [%7s] : %2f", name, averageLoad));
 			count = 0;
 		}
 
