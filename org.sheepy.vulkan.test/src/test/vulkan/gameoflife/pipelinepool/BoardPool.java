@@ -3,6 +3,7 @@ package test.vulkan.gameoflife.pipelinepool;
 import static org.lwjgl.vulkan.VK10.VK_FORMAT_R8G8B8A8_UNORM;
 
 import org.sheepy.vulkan.buffer.Image;
+import org.sheepy.vulkan.descriptor.DescriptorPool;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.PipelinePool;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
@@ -11,8 +12,8 @@ import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
 import test.vulkan.gameoflife.Board;
 import test.vulkan.gameoflife.compute.BoardBuffer;
 import test.vulkan.gameoflife.compute.BoardImage;
-import test.vulkan.gameoflife.compute.LifeComputer;
-import test.vulkan.gameoflife.compute.PixelComputer;
+import test.vulkan.gameoflife.compute.LifeCompute;
+import test.vulkan.gameoflife.compute.PixelCompute;
 
 public class BoardPool extends PipelinePool
 {
@@ -47,25 +48,31 @@ public class BoardPool extends PipelinePool
 		subAllocationObjects.add(boardBuffer1);
 		subAllocationObjects.add(boardBuffer2);
 
-		LifeComputer lifeComputer1 = new LifeComputer(logicalDevice, boardBuffer2, boardBuffer1);
-		LifeComputer lifeComputer2 = new LifeComputer(logicalDevice, boardBuffer1, boardBuffer2);
-
 		image = new BoardImage(logicalDevice, commandPool,
 				logicalDevice.getQueueManager().getComputeQueue(), board.getWidth(),
 				board.getHeight(), VK_FORMAT_R8G8B8A8_UNORM);
 
 		subAllocationObjects.add(image);
 
-		PixelComputer pixelComputer1 = new PixelComputer(logicalDevice, boardBuffer1, image);
-		PixelComputer pixelComputer2 = new PixelComputer(logicalDevice, boardBuffer2, image);
-
 		ComputeProcess boardProcess1 = new ComputeProcess(logicalDevice);
-		boardProcess1.addNewPipeline(lifeComputer1);
-		boardProcess1.addNewPipeline(pixelComputer1);
-
 		ComputeProcess boardProcess2 = new ComputeProcess(logicalDevice);
-		boardProcess2.addNewPipeline(lifeComputer2);
-		boardProcess2.addNewPipeline(pixelComputer2);
+
+		DescriptorPool dPool1 = boardProcess1.getDescriptorPool();
+		DescriptorPool dPool2 = boardProcess2.getDescriptorPool();
+
+		LifeCompute lifeComputer1 = new LifeCompute(logicalDevice, dPool1, boardBuffer2,
+				boardBuffer1);
+		LifeCompute lifeComputer2 = new LifeCompute(logicalDevice, dPool2, boardBuffer1,
+				boardBuffer2);
+
+		PixelCompute pixelComputer1 = new PixelCompute(logicalDevice, dPool1, boardBuffer1, image);
+		PixelCompute pixelComputer2 = new PixelCompute(logicalDevice, dPool2, boardBuffer2, image);
+
+		boardProcess1.addPipeline(lifeComputer1);
+		boardProcess1.addPipeline(pixelComputer1);
+
+		boardProcess2.addPipeline(lifeComputer2);
+		boardProcess2.addPipeline(pixelComputer2);
 
 		boardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
 		boardProcesses.addProcess(boardProcess1);

@@ -13,16 +13,17 @@ import org.lwjgl.vulkan.VkCommandBuffer;
 import org.sheepy.vulkan.buffer.Buffer;
 import org.sheepy.vulkan.command.SingleTimeCommand;
 import org.sheepy.vulkan.common.IAllocable;
+import org.sheepy.vulkan.descriptor.DescriptorPool;
 import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.PipelinePool;
+import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
-import org.sheepy.vulkan.pipeline.compute.Computer;
 import org.sheepy.vulkan.sand.board.BoardModifications;
 import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
-import org.sheepy.vulkan.sand.compute.PixelComputer;
+import org.sheepy.vulkan.sand.compute.PixelComputePipeline;
 
 public class BoardPipelinePool extends PipelinePool implements IAllocable
 {
@@ -36,10 +37,12 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 	private BoardImage boardImage;
 
 	private ComputeProcessPool boardProcesses;
-	private ComputeProcessPool mergeBoardProcesses;
 
 	private ConfigurationBuffer configBuffer;
 	private Buffer boardBuffer;
+	private ComputePipeline drawPipeline;
+	private ComputePipeline stepPipelineVert;
+	private ComputePipeline stepPipelineHori;
 
 	public BoardPipelinePool(LogicalDevice logicalDevice, BoardModifications boardModifications,
 			BoardImage boardImage)
@@ -85,39 +88,30 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 		int width = boardImage.getWidth();
 		int height = boardImage.getHeight();
 
-		Computer modificationComputer = new Computer(logicalDevice, SHADER_DRAW, width, height,
-				Arrays.asList(boardBuffer, boardModifications));
-
 		List<IDescriptor> stepDescriptors = new ArrayList<>();
 		stepDescriptors.add(configBuffer.getBuffer());
 		stepDescriptors.add(boardBuffer);
 
-		Computer stepVert = new Computer(logicalDevice, SHADER_VERT, width, 1, stepDescriptors);
-		stepVert.setWorkgroupSize(16);
-		Computer stepHori = new Computer(logicalDevice, SHADER_HORI, 1, height, stepDescriptors);
-		stepHori.setWorkgroupSize(8);
-
-		PixelComputer pixelComputer = new PixelComputer(logicalDevice, configBuffer, boardBuffer,
-				boardImage);
-
 		ComputeProcess process = new ComputeProcess(logicalDevice);
-		process.addNewPipeline(stepHori);
-		process.addNewPipeline(stepVert);
-		process.addNewPipeline(pixelComputer);
+		DescriptorPool descriptorPool = process.getDescriptorPool();
+
+		drawPipeline = new ComputePipeline(logicalDevice, descriptorPool, width, height, 1,
+				Arrays.asList(boardBuffer, boardModifications), SHADER_DRAW);
+		stepPipelineVert = new ComputePipeline(logicalDevice, descriptorPool, width, 1, 1, stepDescriptors, SHADER_VERT);
+		stepPipelineHori = new ComputePipeline(logicalDevice, descriptorPool, 1, height, 1, stepDescriptors, SHADER_HORI);
+		
+		
+		PixelComputePipeline pixelCompute = new PixelComputePipeline(logicalDevice, descriptorPool,
+				configBuffer, boardBuffer, boardImage);
+
+		process.addPipeline(drawPipeline);
+		process.addPipeline(stepPipelineHori);
+		process.addPipeline(stepPipelineVert);
+		process.addPipeline(pixelCompute);
 
 		boardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
 		boardProcesses.addProcess(process);
 
-		ComputeProcess modificationProcess = new ComputeProcess(logicalDevice);
-		modificationProcess.addNewPipeline(modificationComputer);
-		modificationProcess.addNewPipeline(stepHori);
-		modificationProcess.addNewPipeline(stepVert);
-		modificationProcess.addNewPipeline(pixelComputer);
-
-		mergeBoardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
-		mergeBoardProcesses.addProcess(modificationProcess);
-
-		subAllocationObjects.add(mergeBoardProcesses);
 		subAllocationObjects.add(boardProcesses);
 	}
 
@@ -125,7 +119,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 	public void allocate(MemoryStack stack)
 	{
 		super.allocate(stack);
-		
+
 		{
 			SingleTimeCommand stc = new SingleTimeCommand(commandPool,
 					logicalDevice.getQueueManager().getGraphicQueue())
@@ -153,16 +147,32 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 	@Override
 	public void execute()
 	{
+		//TODO changed avec la speed
+		boolean changed = false;
 		if (boardModifications.isDirty())
 		{
 			boardModifications.updateVkBuffer();
-
-			mergeBoardProcesses.exectue(logicalDevice.getQueueManager().getComputeQueue(), 0);
+			if (drawPipeline.isEnabled() == false)
+			{
+				drawPipeline.setEnabled(true);
+				changed = true;
+			}
 		}
 		else
 		{
-			boardProcesses.exectue(logicalDevice.getQueueManager().getComputeQueue(), 0);
+			if (drawPipeline.isEnabled() == true)
+			{
+				drawPipeline.setEnabled(false);
+				changed = true;
+			}
 		}
+		
+		if(changed == true)
+		{
+			boardProcesses.recordCommands();
+		}
+		
+		boardProcesses.exectue(logicalDevice.getQueueManager().getComputeQueue(), 0);
 	}
 
 	@Override

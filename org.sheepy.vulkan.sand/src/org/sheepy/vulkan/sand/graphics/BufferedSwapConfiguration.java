@@ -28,4 +28,5 @@ public class BufferedSwapConfiguration extends SwapConfiguration
 		imGui = new ImGuiPipeline(commandPool, this, uiDescriptor);
 	}
 
+	
 }

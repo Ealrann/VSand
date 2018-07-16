@@ -3,6 +3,8 @@
 
 #define WIDTH 1024
 #define HEIGHT 576
+//#define WIDTH 2048
+//#define HEIGHT 1152
 #define WORKGROUP_SIZE 32
 
 #define SQUARE 0
