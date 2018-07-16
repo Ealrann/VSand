@@ -3,9 +3,6 @@ package org.sheepy.vulkan.sand.pipelinepool;
 import static org.lwjgl.vulkan.VK10.*;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
@@ -13,36 +10,27 @@ import org.lwjgl.vulkan.VkCommandBuffer;
 import org.sheepy.vulkan.buffer.Buffer;
 import org.sheepy.vulkan.command.SingleTimeCommand;
 import org.sheepy.vulkan.common.IAllocable;
-import org.sheepy.vulkan.descriptor.DescriptorPool;
-import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.PipelinePool;
-import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
-import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
 import org.sheepy.vulkan.sand.board.BoardModifications;
 import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
-import org.sheepy.vulkan.sand.compute.PixelComputePipeline;
 
 public class BoardPipelinePool extends PipelinePool implements IAllocable
 {
-	private static final String SHADER_VERT = "org/sheepy/vulkan/sand/game_step_vert.comp.spv";
-	private static final String SHADER_HORI = "org/sheepy/vulkan/sand/game_step_hori.comp.spv";
-
-	private static final String SHADER_DRAW = "org/sheepy/vulkan/sand/draw.comp.spv";
-
 	private LogicalDevice logicalDevice;
 	private BoardModifications boardModifications;
 	private BoardImage boardImage;
 
-	private ComputeProcessPool boardProcesses;
+	private ComputeProcessPool boardProcessesPool;
 
 	private ConfigurationBuffer configBuffer;
 	private Buffer boardBuffer;
-	private ComputePipeline drawPipeline;
-	private ComputePipeline stepPipelineVert;
-	private ComputePipeline stepPipelineHori;
+
+	private boolean speedChanged = false;
+	private int speed = 1;
+	private SandComputeProcess process;
 
 	public BoardPipelinePool(LogicalDevice logicalDevice, BoardModifications boardModifications,
 			BoardImage boardImage)
@@ -85,34 +73,13 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 	private void buildPipelines()
 	{
-		int width = boardImage.getWidth();
-		int height = boardImage.getHeight();
+		process = new SandComputeProcess(logicalDevice, boardModifications,
+				boardImage, boardBuffer, configBuffer);
 
-		List<IDescriptor> stepDescriptors = new ArrayList<>();
-		stepDescriptors.add(configBuffer.getBuffer());
-		stepDescriptors.add(boardBuffer);
+		boardProcessesPool = new ComputeProcessPool(logicalDevice, commandPool);
+		boardProcessesPool.addProcess(process);
 
-		ComputeProcess process = new ComputeProcess(logicalDevice);
-		DescriptorPool descriptorPool = process.getDescriptorPool();
-
-		drawPipeline = new ComputePipeline(logicalDevice, descriptorPool, width, height, 1,
-				Arrays.asList(boardBuffer, boardModifications), SHADER_DRAW);
-		stepPipelineVert = new ComputePipeline(logicalDevice, descriptorPool, width, 1, 1, stepDescriptors, SHADER_VERT);
-		stepPipelineHori = new ComputePipeline(logicalDevice, descriptorPool, 1, height, 1, stepDescriptors, SHADER_HORI);
-		
-		
-		PixelComputePipeline pixelCompute = new PixelComputePipeline(logicalDevice, descriptorPool,
-				configBuffer, boardBuffer, boardImage);
-
-		process.addPipeline(drawPipeline);
-		process.addPipeline(stepPipelineHori);
-		process.addPipeline(stepPipelineVert);
-		process.addPipeline(pixelCompute);
-
-		boardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
-		boardProcesses.addProcess(process);
-
-		subAllocationObjects.add(boardProcesses);
+		subAllocationObjects.add(boardProcessesPool);
 	}
 
 	@Override
@@ -144,35 +111,50 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 		}
 	}
 
+	public void setSpeed(int speed)
+	{
+		if (this.speed != speed)
+		{
+			speedChanged = true;
+			process.setSpeed(speed);
+			this.speed = speed;
+		}
+	}
+
 	@Override
 	public void execute()
 	{
-		//TODO changed avec la speed
 		boolean changed = false;
 		if (boardModifications.isDirty())
 		{
 			boardModifications.updateVkBuffer();
-			if (drawPipeline.isEnabled() == false)
+			if (process.drawPipeline.isEnabled() == false)
 			{
-				drawPipeline.setEnabled(true);
+				process.drawPipeline.setEnabled(true);
 				changed = true;
 			}
 		}
 		else
 		{
-			if (drawPipeline.isEnabled() == true)
+			if (process.drawPipeline.isEnabled() == true)
 			{
-				drawPipeline.setEnabled(false);
+				process.drawPipeline.setEnabled(false);
 				changed = true;
 			}
 		}
-		
-		if(changed == true)
+
+		if (speedChanged)
 		{
-			boardProcesses.recordCommands();
+			changed = true;
+			speedChanged = false;
 		}
-		
-		boardProcesses.exectue(logicalDevice.getQueueManager().getComputeQueue(), 0);
+
+		if (changed == true)
+		{
+			boardProcessesPool.recordCommands();
+		}
+
+		boardProcessesPool.exectue(logicalDevice.getQueueManager().getComputeQueue(), 0);
 	}
 
 	@Override
