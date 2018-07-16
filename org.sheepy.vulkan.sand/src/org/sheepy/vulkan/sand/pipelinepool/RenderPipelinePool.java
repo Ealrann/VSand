@@ -33,7 +33,7 @@ public class RenderPipelinePool extends SurfacePipelinePool
 	public RenderPipelinePool(LogicalDevice logicalDevice, Image image,
 			Collection<ISignalEmitter> waitForEmitters)
 	{
-		super(logicalDevice, logicalDevice.getQueueManager().getGraphicQueueIndex());
+		super(logicalDevice, logicalDevice.getQueueManager().getGraphicQueueIndex(), true);
 
 		this.logicalDevice = logicalDevice;
 		this.image = image;

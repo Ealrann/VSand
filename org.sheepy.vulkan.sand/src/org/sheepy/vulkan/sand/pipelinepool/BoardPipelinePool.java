@@ -44,7 +44,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 	public BoardPipelinePool(LogicalDevice logicalDevice, BoardModifications boardModifications,
 			BoardImage boardImage)
 	{
-		super(logicalDevice, logicalDevice.getQueueManager().getComputeQueueIndex());
+		super(logicalDevice, logicalDevice.getQueueManager().getComputeQueueIndex(), true);
 
 		this.logicalDevice = logicalDevice;
 		this.boardModifications = boardModifications;
