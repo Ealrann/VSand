@@ -9,7 +9,7 @@ dependencies {
 
 	implementation 'com.google.guava:guava:24.1-jre'
 	
-	implementation project(':org.sheepy.vulkan')
-	implementation project(':org.sheepy.vulkan.imgui')
+	api project(':org.sheepy.vulkan')
+	api project(':org.sheepy.vulkan.imgui')
 }
 
