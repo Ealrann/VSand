@@ -15,6 +15,7 @@ import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.graphics.SandUIDescriptor;
 import org.sheepy.vulkan.sand.pipelinepool.BoardPipelinePool;
 import org.sheepy.vulkan.sand.pipelinepool.RenderPipelinePool;
+import org.sheepy.vulkan.sand.util.FPSCounter;
 
 import imgui.Context;
 import imgui.IO;
@@ -24,13 +25,12 @@ public class SandApplication extends VulkanApplication
 {
 	private static final int WIDTH = 1024;
 	private static final int HEIGHT = 576;
-//	private static final int WIDTH = 2048;
-//	private static final int HEIGHT = 1152;
+	// private static final int WIDTH = 2048;
+	// private static final int HEIGHT = 1152;
 
 	private static final float ZOOM = 1f;
 
 	// in update per frame
-	private int speed = 1;
 	private boolean pause = false;
 	private boolean next = false;
 
@@ -90,7 +90,6 @@ public class SandApplication extends VulkanApplication
 				if (key == GLFW_KEY_N && action == GLFW_PRESS)
 				{
 					pause = false;
-					speed = 1;
 					next = true;
 				}
 			}
@@ -133,9 +132,13 @@ public class SandApplication extends VulkanApplication
 	private Context ctx;
 	private double[] lastPosition = null;
 
+	private FPSCounter fpsCounter = new FPSCounter();
+
 	@Override
 	public void drawFrame()
 	{
+		fpsCounter.step();
+
 		double[] cursorPosition = SandApplication.this.window.getCursorPosition();
 		IO io = ImGui.INSTANCE.getIo();
 		io.getMousePos().setX((int) cursorPosition[0]);
@@ -145,6 +148,8 @@ public class SandApplication extends VulkanApplication
 		lastPosition[0] = cursorPosition[0];
 		lastPosition[1] = cursorPosition[1];
 
+		boardPool.setSpeed(uiDescriptor.speed);
+
 		if (drawEnabled)
 		{
 			boardModifications.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
@@ -153,10 +158,7 @@ public class SandApplication extends VulkanApplication
 
 		if (pause != true)
 		{
-			for (int i = 0; i < speed * ZOOM; i++)
-			{
-				boardPool.execute();
-			}
+			boardPool.execute();
 
 			if (next == true)
 			{
