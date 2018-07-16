@@ -10,6 +10,7 @@ import org.sheepy.vulkan.window.Window;
 
 import glm_.vec2.Vec2;
 import glm_.vec4.Vec4;
+import imgui.ColorEditFlag;
 import imgui.Cond;
 import imgui.IO;
 import imgui.ImGui;
@@ -35,8 +36,9 @@ public class SandUIDescriptor extends UIDescriptor
 	}
 	
 	@Override
-	public void newFrame(ImGui imgui)
+	public boolean newFrame(ImGui imgui)
 	{
+		boolean res = false;
 		IO io = imgui.getIo();
 		
 		imgui.setNextWindowPos(new Vec2(io.getDisplaySize().getX() - CONFIG_WINDOW_WIDTH, 0), Cond.Always, new Vec2(0, 0));
@@ -44,22 +46,23 @@ public class SandUIDescriptor extends UIDescriptor
 		imgui.begin("Configuration", new boolean[1],
 				WindowFlag.NoMove.getI() | WindowFlag.NoResize.getI());
 
-
 		imgui.textUnformatted("Brush Size:", 0);
-		imgui.combo("", currentSize, sizeList, 16);
+		res |= imgui.combo("", currentSize, sizeList, 16);
 		imgui.verticalSeparator();
 		imgui.textUnformatted("Materials:", 0);
 		for (EMaterial m : EMaterial.values())
 		{
-			if (imgui.colorButton(m.name(), new Vec4(m.r, m.g, m.b, 1f), 0,
+			if (imgui.colorButton(m.name(), new Vec4(m.r, m.g, m.b, 1f), ColorEditFlag.NoTooltip.getI(),
 					new Vec2(100, 25)))
 			{
 				material = m;
+				res |= true;
 			}
 		}
 
-
 		imgui.end();
+		
+		return res;
 	}
 
 	public EMaterial getMaterial()
