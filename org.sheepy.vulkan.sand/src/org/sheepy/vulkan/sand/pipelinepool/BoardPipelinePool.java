@@ -14,7 +14,6 @@ import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.PipelinePool;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
 import org.sheepy.vulkan.sand.board.BoardModifications;
-import org.sheepy.vulkan.sand.compute.BoardDecisionBuffer;
 import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
 
@@ -26,12 +25,9 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 	private ComputeProcessPool boardProcessesPool;
 
-	private BoardDecisionBuffer decisionBuffer;
 	private ConfigurationBuffer configBuffer;
 	private Buffer boardBuffer;
 
-	private boolean speedChanged = false;
-	private int speed = 1;
 	private SandComputeProcess process;
 
 	public BoardPipelinePool(LogicalDevice logicalDevice, BoardModifications boardModifications,
@@ -54,7 +50,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 		// configBuffer
 		{
-			configBuffer = new ConfigurationBuffer(logicalDevice);
+			configBuffer = new ConfigurationBuffer(logicalDevice, commandPool);
 		}
 
 		// boardBuffer
@@ -68,19 +64,15 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 			boardBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
 					VK_DESCRIPTOR_TYPE_STORAGE_BUFFER);
 		}
-		
-
-		decisionBuffer = new BoardDecisionBuffer(logicalDevice, width, height, commandPool);
 
 		subAllocationObjects.add(configBuffer);
 		subAllocationObjects.add(boardBuffer);
-		subAllocationObjects.add(decisionBuffer);
 	}
 
 	private void buildPipelines()
 	{
 		process = new SandComputeProcess(logicalDevice, commandPool, boardModifications, boardImage,
-				boardBuffer, decisionBuffer, configBuffer);
+				boardBuffer, configBuffer);
 
 		boardProcessesPool = new ComputeProcessPool(logicalDevice, commandPool);
 		boardProcessesPool.addProcess(process);
@@ -119,51 +111,26 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 	public void setSpeed(int speed)
 	{
-		if (this.speed != speed)
-		{
-			speedChanged = true;
 			process.setSpeed(speed);
-			this.speed = speed;
-		}
 	}
 
 	@Override
 	public void execute()
 	{
-		boolean changed = false;
-		if (boardModifications.isDirty())
+		if(boardModifications.isEmpty() == false)
 		{
+			process.setNeedDraw(true);
 			boardModifications.updateVkBuffer();
-			if (process.drawPipeline.isEnabled() == false)
-			{
-				process.drawPipeline.setEnabled(true);
-				changed = true;
-			}
-		}
-		else
+		}else
 		{
-			if (process.drawPipeline.isEnabled() == true)
-			{
-				process.drawPipeline.setEnabled(false);
-				changed = true;
-			}
+			process.setNeedDraw(false);
 		}
-
-		if (speedChanged)
-		{
-			changed = true;
-			speedChanged = false;
-		}
-
-		if (changed == true)
+		
+		if (process.isDirty())
 		{
 			boardProcessesPool.recordCommands();
 		}
 
 		boardProcessesPool.exectue(logicalDevice.getQueueManager().getComputeQueue(), 0);
 	}
-
-	@Override
-	public void free()
-	{}
 }

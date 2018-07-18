@@ -83,7 +83,7 @@ public class SandApplication extends VulkanApplication
 			@Override
 			public void invoke(long window, int key, int scancode, int action, int mods)
 			{
-				if (key == GLFW_KEY_P && action == GLFW_PRESS)
+				if ((key == GLFW_KEY_P || key == GLFW_KEY_SPACE) && action == GLFW_PRESS)
 				{
 					pause = !pause;
 				}
@@ -148,7 +148,8 @@ public class SandApplication extends VulkanApplication
 		lastPosition[0] = cursorPosition[0];
 		lastPosition[1] = cursorPosition[1];
 
-		boardPool.setSpeed(uiDescriptor.speed);
+		if (pause != true) boardPool.setSpeed(uiDescriptor.speed);
+		else boardPool.setSpeed(0);
 
 		if (drawEnabled)
 		{
@@ -156,15 +157,13 @@ public class SandApplication extends VulkanApplication
 					(int) cursorPosition[0], (int) cursorPosition[1], uiDescriptor.getMaterial());
 		}
 
-		if (pause != true)
-		{
-			boardPool.execute();
+		boardPool.execute();
 
-			if (next == true)
-			{
-				next = false;
-				pause = true;
-			}
+		if (next == true)
+		{
+			next = false;
+			boardPool.setSpeed(0);
+			pause = true;
 		}
 
 		renderPool.execute();

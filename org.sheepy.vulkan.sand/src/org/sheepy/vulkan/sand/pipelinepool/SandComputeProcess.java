@@ -1,10 +1,12 @@
 package org.sheepy.vulkan.sand.pipelinepool;
 
+import static org.lwjgl.vulkan.VK10.VK_ACCESS_MEMORY_READ_BIT;
+import static org.lwjgl.vulkan.VK10.VK_ACCESS_MEMORY_WRITE_BIT;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.lwjgl.vulkan.VK10.*;
 import org.sheepy.vulkan.buffer.Buffer;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.command.compute.ComputeCommandBuffer;
@@ -14,7 +16,6 @@ import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
 import org.sheepy.vulkan.pipeline.compute.PipelineBarrier;
 import org.sheepy.vulkan.sand.board.BoardModifications;
-import org.sheepy.vulkan.sand.compute.BoardDecisionBuffer;
 import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
 import org.sheepy.vulkan.sand.compute.PixelComputePipeline;
@@ -33,7 +34,7 @@ public class SandComputeProcess extends ComputeProcess
 
 	public SandComputeProcess(LogicalDevice logicalDevice, CommandPool commandPool,
 			BoardModifications boardModifications, BoardImage boardImage, Buffer boardBuffer,
-			BoardDecisionBuffer decisionBuffer, ConfigurationBuffer configBuffer)
+			ConfigurationBuffer configBuffer)
 	{
 		super(logicalDevice);
 
@@ -43,10 +44,10 @@ public class SandComputeProcess extends ComputeProcess
 		List<IDescriptor> stepDescriptors = new ArrayList<>();
 		stepDescriptors.add(configBuffer.getBuffer());
 		stepDescriptors.add(boardBuffer);
-		stepDescriptors.add(decisionBuffer.getBuffer());
 
 		drawPipeline = new ComputePipeline(logicalDevice, descriptorPool, width, height, 1,
 				Arrays.asList(boardBuffer, boardModifications), SHADER_DRAW);
+		drawPipeline.setEnabled(false);
 		stepPipelineVert = new ComputePipeline(logicalDevice, descriptorPool, width, 1, 1,
 				stepDescriptors, SHADER_VERT);
 		stepPipelineVert.setWorkgroupSize(128);
@@ -61,29 +62,52 @@ public class SandComputeProcess extends ComputeProcess
 		addProcessUnit(new PipelineBarrier(boardBuffer, VK_ACCESS_MEMORY_READ_BIT,
 				VK_ACCESS_MEMORY_WRITE_BIT));
 		addProcessUnit(drawPipeline);
-		addProcessUnit(stepPipelineHori);
 		addProcessUnit(stepPipelineVert);
+		addProcessUnit(stepPipelineHori);
 		addProcessUnit(new PipelineBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,
 				VK_ACCESS_MEMORY_READ_BIT));
 		addProcessUnit(pixelCompute);
 	}
 
+	private int speed = 1;
+	private boolean dirty = false;
+
 	public void setSpeed(int speed)
 	{
-		computePipelines.clear();
-
-		computePipelines.add(drawPipeline);
-		for (int i = 0; i < speed; i++)
+		if (this.speed != speed)
 		{
-			computePipelines.add(stepPipelineHori);
-			computePipelines.add(stepPipelineVert);
+			this.speed = speed;
+			dirty = true;
+			computePipelines.clear();
+
+			computePipelines.add(drawPipeline);
+			for (int i = 0; i < speed; i++)
+			{
+				computePipelines.add(stepPipelineVert);
+				computePipelines.add(stepPipelineHori);
+			}
+			computePipelines.add(pixelCompute);
 		}
-		computePipelines.add(pixelCompute);
+	}
+
+	public boolean isDirty()
+	{
+		return dirty;
 	}
 
 	@Override
 	public void recordCommand(ComputeCommandBuffer commandBuffer)
 	{
 		super.recordCommand(commandBuffer);
+		dirty = false;
+	}
+
+	public void setNeedDraw(boolean value)
+	{
+		if (drawPipeline.isEnabled() != value)
+		{
+			drawPipeline.setEnabled(value);
+			dirty = true;
+		}
 	}
 }

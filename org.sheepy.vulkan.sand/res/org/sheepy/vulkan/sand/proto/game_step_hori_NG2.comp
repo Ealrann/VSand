@@ -1,0 +1,203 @@
+#version 450
+
+#define WIDTH 1024
+#define HEIGHT 512
+//#define WIDTH 2048
+//#define HEIGHT 1152
+#define WORKGROUP_SIZE 128
+
+layout (local_size_x = 1, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	int viscosity;
+	float r;
+	float g;
+	float b;
+
+	// Padding for the alignement
+	float padding1;
+};
+
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[16];
+}configuration;
+
+layout(binding = 1) buffer buf2
+{
+	int data[WIDTH][HEIGHT];
+}board;
+
+bool check(int x, int y, int runoff, int dir, int srcDensity);
+
+void main()
+{
+	int y = int(gl_GlobalInvocationID.y);
+
+	int startLocation = -1;
+	int prevValue = 0;
+	int nodeValue = 0;
+
+	for (int x = 0; x < WIDTH + 1; x++)
+	{
+		int nextValue = x < WIDTH ? board.data[x][y] : 0;
+
+		// If we swapped last iteration, we enter in a new node
+		if (nodeValue == -1)
+		{
+			startLocation = x;
+			nodeValue = nextValue;
+		}
+		else if (nextValue != nodeValue)
+		{
+//				if(startLocation >= 0) ;board.data[1][1] = 2;
+			if (configuration.materials[nodeValue].isStatic == 0)
+			{
+				int endLocation = x - 1;
+				int underLeftDensity = 0;
+				int underRightDensity = 0;
+				if (y < (HEIGHT - 1))
+				{
+					int valueUnderLeft = startLocation >= 0 ? board.data[startLocation][y + 1] : 0;
+					int valueUnderRight = board.data[endLocation][y + 1];
+					underLeftDensity = configuration.materials[valueUnderLeft].density;
+					underRightDensity = configuration.materials[valueUnderRight].density;
+				}
+
+				int nodeDensity = configuration.materials[nodeValue].density;
+				int nodeRunoff = configuration.materials[nodeValue].runoff;
+				// we have now to deal with a node of nodeValue.
+
+				bool freeLeft = configuration.materials[prevValue].isStatic == 0
+						&& configuration.materials[prevValue].density < nodeDensity;
+				bool freeRight = configuration.materials[nextValue].isStatic == 0
+						&& configuration.materials[nextValue].density < nodeDensity;
+
+				freeLeft = freeLeft && check(startLocation - 1, y + 1, nodeRunoff, -1, nodeDensity);
+				freeRight = freeRight && check(endLocation + 1, y + 1, nodeRunoff, 1, nodeDensity);
+
+				bool fallDownLeft = nodeDensity > underLeftDensity;
+				bool fallDownRight = nodeDensity > underRightDensity;
+				bool moveLeft = freeLeft && (!fallDownLeft || !freeRight);
+				bool moveRight = freeRight && (!fallDownRight || !freeLeft);
+
+				// Determiner où l'on cut.
+				int length = endLocation - startLocation + 1;
+
+				int cutPosLeft = startLocation + nodeRunoff;
+				int cutPosRight = endLocation - nodeRunoff;
+
+				if (moveLeft && moveRight)
+				{
+					if (length < nodeRunoff * 2)
+					{
+						cutPosLeft = int(startLocation + floor(float((length) / 2.0)));
+						cutPosRight = int(endLocation - floor(float(length) / 2.0));
+					}
+				}
+				else if (length < nodeRunoff)
+				{
+					cutPosLeft = startLocation + length;
+					cutPosRight = endLocation - length;
+				}
+
+				// Solve conflict
+				if (cutPosRight == cutPosLeft && moveRight && moveLeft)
+				{
+					if (length == 1)
+					{
+						if (mod(y, 2) == 0)
+						{
+							moveRight = false;
+						}
+						else
+						{
+							moveLeft = false;
+						}
+					}
+					else
+					{
+						if (mod(y, 2) == 0)
+						{
+							cutPosLeft--;
+						}
+						else
+						{
+							cutPosRight++;
+						}
+					}
+				}
+
+				if (moveLeft)
+				{
+					board.data[cutPosLeft][y] = prevValue;
+					if ((startLocation - 1) >= 0)
+						board.data[(startLocation - 1)][y] = nodeValue;
+				}
+				if (moveRight)
+				{
+					board.data[cutPosRight][y] = nextValue;
+					if ((endLocation + 1) < WIDTH)
+						board.data[endLocation + 1][y] = nodeValue;
+				}
+
+				// Prepare the next round
+
+				if (moveRight)
+				{
+					startLocation = -2;
+					prevValue = nodeValue;
+					nodeValue = -1;
+				}
+				else
+				{
+					startLocation = x;
+					prevValue = nodeValue;
+					nodeValue = nextValue;
+				}
+			}
+			else
+			{
+				startLocation = x;
+				prevValue = nodeValue;
+				nodeValue = nextValue;
+			}
+		}
+	}
+}
+
+bool check(int x, int y, int runoff, int dir, int srcDensity)
+{
+	while (runoff != 0)
+	{
+		if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+		{
+//			int valueAbove = board.data[x][y - 1];
+//			if (configuration.materials[valueAbove].isStatic == 1
+//					|| configuration.materials[valueAbove].density > srcDensity)
+//			{
+//				// stuck
+//				return false;
+//			}
+
+			int value = board.data[x][y];
+			if (configuration.materials[value].isStatic == 0
+					&& configuration.materials[value].density < srcDensity)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			return true;
+		}
+		x += dir;
+		runoff--;
+	}
+
+	return false;
+}
