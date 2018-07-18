@@ -2,7 +2,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 #define WIDTH 1024
-#define HEIGHT 576
+#define HEIGHT 512
 //#define WIDTH 2048
 //#define HEIGHT 1152
 #define WORKGROUP_SIZE 32

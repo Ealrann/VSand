@@ -2,7 +2,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 #define WIDTH 1024
-#define HEIGHT 576
+#define HEIGHT 512
 //#define WIDTH 2048
 //#define HEIGHT 1152
 #define WORKGROUP_SIZE 32
@@ -30,20 +30,20 @@ layout(binding = 1) uniform attributeBuffer
 
 bool testCircle(int x, int y);
 
-void main()
-{
+void main() {
+	if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
+		return;
+
 	int x = int(gl_GlobalInvocationID.x);
 	int y = int(gl_GlobalInvocationID.y);
 
 	if (x >= attributes.x - attributes.size
 			&& y >= attributes.y - attributes.size
 			&& x <= attributes.x + attributes.size
-			&& y <= attributes.y + attributes.size)
-	{
+			&& y <= attributes.y + attributes.size) {
 
 		bool isInShape = false;
-		switch (attributes.shape)
-		{
+		switch (attributes.shape) {
 		case SQUARE:
 			isInShape = true;
 			break;
@@ -52,15 +52,13 @@ void main()
 			break;
 		}
 
-		if (isInShape)
-		{
+		if (isInShape) {
 			board.data[x][y] = attributes.value;
 		}
 	}
 }
 
-bool testCircle(int x, int y)
-{
+bool testCircle(int x, int y) {
 	int distX = (attributes.x - x) * (attributes.x - x);
 	int distY = (attributes.y - y) * (attributes.y - y);
 

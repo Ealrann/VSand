@@ -24,7 +24,7 @@ import imgui.ImGui;
 public class SandApplication extends VulkanApplication
 {
 	private static final int WIDTH = 1024;
-	private static final int HEIGHT = 576;
+	private static final int HEIGHT = 512;
 	// private static final int WIDTH = 2048;
 	// private static final int HEIGHT = 1152;
 
