@@ -57,9 +57,9 @@ public class BoardModifications implements IDescriptor
 		modificationBuffer.free();
 	}
 
-	public boolean isDirty()
+	public boolean isEmpty()
 	{
-		return boardModifications.isEmpty() == false;
+		return boardModifications.isEmpty();
 	}
 
 	public void pushModification(EShape shape, EShapeSize size, int x, int y, EMaterial value)

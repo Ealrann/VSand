@@ -35,29 +35,35 @@ layout(binding = 1) buffer buf2
 void main()
 {
 	int x = int(gl_GlobalInvocationID.x);
-	int value1;
-	int value2;
+	int currentValue;
+	int prevValue = 0;
+	int prevIndex = -1;
 
-	for (int y = -1; y < HEIGHT + 1; y++)
+	for (int y = 0; y < HEIGHT + 1; y++)
 	{
-		value1 = y > 0 ? board.data[x][y] : 0;
-		value2 = y < (HEIGHT - 1) ? board.data[x][y + 1] : 0;
 
-		if (configuration.materials[value1].isStatic == 0
-				&& configuration.materials[value2].isStatic == 0
-				&& configuration.materials[value1].density
-						> configuration.materials[value2].density)
+		currentValue = y < HEIGHT ? board.data[x][y] : 0;
+
+		if (currentValue != prevValue)
 		{
-			if (y > 0)
+
+			if (configuration.materials[currentValue].isStatic == 0 && prevValue != -1
+					&& configuration.materials[prevValue].isStatic == 0
+					&& configuration.materials[currentValue].density
+							< configuration.materials[prevValue].density)
 			{
-				board.data[x][y] = value2;
+
+				if (prevIndex >= 0)
+				{
+					board.data[x][prevIndex] = currentValue;
+				}
+				if (y < HEIGHT)
+				{
+					board.data[x][y] = prevValue;
+				}
 			}
-			if (y < HEIGHT - 1)
-			{
-				board.data[x][y + 1] = value1;
-			}
-			// Don't try to move again the next one.
-			y++;
+			prevValue = currentValue;
+			prevIndex = y;
 		}
 	}
 }

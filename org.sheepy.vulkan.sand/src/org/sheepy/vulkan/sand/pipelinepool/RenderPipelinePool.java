@@ -76,8 +76,6 @@ public class RenderPipelinePool extends SurfacePipelinePool
 			configuration.imGui.updateBuffers();
 			configuration.renderPass
 					.buildRenderPass(configuration.commandBuffers.getCommandBuffers());
-
-			System.out.println("Rebuild");
 		}
 
 		if (imageIndex != null)
