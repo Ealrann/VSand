@@ -73,7 +73,7 @@ public class BufferToPixelRenderPass implements IRenderPass
 			commandBuffer.startCommand();
 
 			copyPixelBufferToFB(commandBuffer, imageView);
-
+			
 			commandBuffer.startRenderPass();
 
 			imGui.drawFrame(commandBuffer.getVkCommandBuffer());

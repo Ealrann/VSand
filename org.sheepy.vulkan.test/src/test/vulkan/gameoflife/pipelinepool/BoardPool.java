@@ -68,11 +68,11 @@ public class BoardPool extends PipelinePool
 		PixelCompute pixelComputer1 = new PixelCompute(logicalDevice, dPool1, boardBuffer1, image);
 		PixelCompute pixelComputer2 = new PixelCompute(logicalDevice, dPool2, boardBuffer2, image);
 
-		boardProcess1.addPipeline(lifeComputer1);
-		boardProcess1.addPipeline(pixelComputer1);
+		boardProcess1.addProcessUnit(lifeComputer1);
+		boardProcess1.addProcessUnit(pixelComputer1);
 
-		boardProcess2.addPipeline(lifeComputer2);
-		boardProcess2.addPipeline(pixelComputer2);
+		boardProcess2.addProcessUnit(lifeComputer2);
+		boardProcess2.addProcessUnit(pixelComputer2);
 
 		boardProcesses = new ComputeProcessPool(logicalDevice, commandPool);
 		boardProcesses.addProcess(boardProcess1);
