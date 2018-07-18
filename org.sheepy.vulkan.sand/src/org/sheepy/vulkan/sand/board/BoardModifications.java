@@ -81,15 +81,15 @@ public class BoardModifications implements IDescriptor
 		EShape shape;
 		EShapeSize size;
 		EMaterial value;
-		int x;
-		int y;
+		float x;
+		float y;
 
 		Modification(EShape shape, EShapeSize size, int x, int y, EMaterial value)
 		{
 			this.shape = shape;
 			this.size = size;
-			this.x = x;
-			this.y = y;
+			this.x = x + .5f;
+			this.y = y + .5f;
 			this.value = value;
 		}
 
@@ -98,13 +98,13 @@ public class BoardModifications implements IDescriptor
 			int size = (int) (this.size.getSize() * zoom);
 
 			copyBuffer.putInt(shape.ordinal());
-			copyBuffer.putInt(size);
+			copyBuffer.putFloat(size);
 			copyBuffer.putInt(value.id);
-			copyBuffer.putInt((int) (x * zoom));
-			copyBuffer.putInt((int) (y * zoom));
+			copyBuffer.putFloat((int) (x * zoom));
+			copyBuffer.putFloat((int) (y * zoom));
 
 			// Use the padding zone to store some precomputed stuff
-			copyBuffer.putInt(size * size);
+			copyBuffer.putFloat(size * size);
 		}
 	}
 

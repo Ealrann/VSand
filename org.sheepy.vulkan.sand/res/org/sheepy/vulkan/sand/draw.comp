@@ -20,12 +20,12 @@ layout(binding = 0) buffer boardBuffer
 layout(binding = 1) uniform attributeBuffer
 {
 	int shape;
-	int size;
+	float size;
 	int value;
-	int x;
-	int y;
+	float x;
+	float y;
+	float squareSize;
 
-	int squareSize;
 }attributes;
 
 bool testCircle(int x, int y);
@@ -56,8 +56,8 @@ void main() {
 }
 
 bool testCircle(int x, int y) {
-	int distX = (attributes.x - x) * (attributes.x - x);
-	int distY = (attributes.y - y) * (attributes.y - y);
+	float distX = (attributes.x - x) * (attributes.x - x);
+	float distY = (attributes.y - y) * (attributes.y - y);
 
-	return (distX + distY) <= (attributes.squareSize);
+	return (distX + distY) < (attributes.squareSize);
 }
