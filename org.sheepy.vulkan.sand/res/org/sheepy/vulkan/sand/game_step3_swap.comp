@@ -62,19 +62,15 @@ layout(binding = 2) readonly buffer SDecision
  */
 void main()
 {
-
-	if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
-		return;
-
 	int x = int(gl_GlobalInvocationID.x);
 	int y = int(gl_GlobalInvocationID.y);
-	int value = board.data[x][y];
 
 	// We will take the value of our target neighbor if he do the same move.
 	uint dir = decision.data[x][y] & 15;
 
 	if (dir != 0)
 	{
+		int value = board.data[x][y];
 		// resolve the direction
 		uint invertDir = 0;
 		int targetX = x;

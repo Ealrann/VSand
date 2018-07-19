@@ -35,8 +35,7 @@ layout(rgba8, binding = 2) uniform image2D outImage;
 
 void main() {
 
-	int value = board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y];
-	Entry material = configuration.materials[value];
+	Entry material = configuration.materials[board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y]];
 
 	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy),
 			vec4(material.r, material.g, material.b, 1.0));
