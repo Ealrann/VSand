@@ -28,7 +28,6 @@ import org.sheepy.vulkan.device.LogicalDevice;
  * @author ealrann
  *
  */
-@Deprecated
 public class BoardDecisionBuffer implements IAllocable
 {
 	private LogicalDevice logicalDevice;
