@@ -62,53 +62,59 @@ layout(binding = 2) buffer SDecision
  */
 void main()
 {
-
-	if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
-		return;
-
 	int x = int(gl_GlobalInvocationID.x);
 	int y = int(gl_GlobalInvocationID.y);
 	int value = board.data[x][y];
 
-	int rLocation = RANDOM_1_LOC;
-	for (int i = 0; i < 4; i++)
+	if (configuration.materials[value].isStatic == 0)
 	{
-		uint iDir = (decision.data[x][y] & (3 << rLocation)) >> rLocation;
-		// iDir should be between 0 and 3 (included) here
-
-		// convert iDir to a mask
-		uint maskDir = 1 << iDir;
-		// resolve the direction
-		uint invertDir = 0;
-		int targetX = x;
-		int targetY = y;
-		switch (iDir)
+		int density = configuration.materials[value].density;
+		int rLocation = RANDOM_1_LOC;
+		for (int i = 0; i < 4; i++)
 		{
-		case RIGHT :
-			targetX += 1;
-			invertDir = TO_LEFT;
-			break;
-		case LEFT :
-			targetX -= 1;
-			invertDir = TO_RIGHT;
-			break;
-		case UP :
-			targetY -= 1;
-			invertDir = TO_DOWN;
-			break;
-		default :
-			targetY += 1;
-			invertDir = TO_UP;
-		}
+			uint iDir = (decision.data[x][y] & (3 << rLocation)) >> rLocation;
+			// iDir should be between 0 and 3 (included) here
 
-		if (targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT
-				&& (decision.data[targetX][targetY] & invertDir) != 0)
-		{
-			decision.data[x][y] = decision.data[x][y] >> 8;
-			decision.data[x][y]	= decision.data[x][y] << 8 | maskDir;
-			break;
-		}
+			// resolve the direction
+			uint invertDir = 0;
+			int targetX = x;
+			int targetY = y;
+			switch (iDir)
+			{
+			case RIGHT:
+				targetX += 1;
+				invertDir = TO_LEFT;
+				break;
+			case LEFT:
+				targetX -= 1;
+				invertDir = TO_RIGHT;
+				break;
+			case UP:
+				targetY -= 1;
+				invertDir = TO_DOWN;
+				break;
+			default:
+				targetY += 1;
+				invertDir = TO_UP;
+			}
 
-		rLocation += 2;
+			if (targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT)
+			{
+				int targetValue = board.data[targetX][targetY];
+				int targetDensity = configuration.materials[targetValue].density;
+
+				if (targetDensity > density && (decision.data[targetX][targetY] & invertDir) != 0)
+				{
+					// convert iDir to a mask
+					uint maskDir = 1 << iDir;
+
+					decision.data[x][y] = decision.data[x][y] >> 8;
+					decision.data[x][y] = decision.data[x][y] << 8 | maskDir;
+					break;
+				}
+			}
+
+			rLocation += 2;
+		}
 	}
 }

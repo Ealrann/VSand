@@ -10,6 +10,7 @@ import java.util.List;
 import org.sheepy.vulkan.buffer.Buffer;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.command.compute.ComputeCommandBuffer;
+import org.sheepy.vulkan.descriptor.DescriptorPool;
 import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
@@ -29,10 +30,12 @@ public class SandComputeProcess extends ComputeProcess
 
 	private static final String SHADER_DRAW = "org/sheepy/vulkan/sand/draw.comp.spv";
 
-	private ComputePipeline stepPipeline;
-
+	private RepeatComputePipeline stepPipeline;
 	public final ComputePipeline drawPipeline;
 	private PixelComputePipeline pixelCompute;
+
+	private int speed = 1;
+	private boolean dirty = false;
 
 	public SandComputeProcess(LogicalDevice logicalDevice, CommandPool commandPool,
 			BoardModifications boardModifications, BoardDecisionBuffer decision,
@@ -52,10 +55,14 @@ public class SandComputeProcess extends ComputeProcess
 				Arrays.asList(boardBuffer, boardModifications), SHADER_DRAW);
 		drawPipeline.setEnabled(false);
 
-		stepPipeline = new ComputePipeline(logicalDevice, descriptorPool, width, height, 1,
+		stepPipeline = new RepeatComputePipeline(logicalDevice, descriptorPool, width, height, 1,
 				stepDescriptors);
+		stepPipeline.addPipelineBarrier(new PipelineBarrier(decision.getBuffer(),
+				VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_MEMORY_WRITE_BIT));
 		stepPipeline.addShader(SHADER_STEP1);
 		stepPipeline.addShader(SHADER_STEP2);
+		stepPipeline.addPipelineBarrier(new PipelineBarrier(decision.getBuffer(),
+				VK_ACCESS_MEMORY_WRITE_BIT, VK_ACCESS_MEMORY_READ_BIT));
 		stepPipeline.addShader(SHADER_STEP3);
 
 		pixelCompute = new PixelComputePipeline(logicalDevice, descriptorPool, configBuffer,
@@ -70,23 +77,13 @@ public class SandComputeProcess extends ComputeProcess
 		addProcessUnit(pixelCompute);
 	}
 
-	private int speed = 1;
-	private boolean dirty = false;
-
 	public void setSpeed(int speed)
 	{
 		if (this.speed != speed)
 		{
 			this.speed = speed;
 			dirty = true;
-			computePipelines.clear();
-
-			computePipelines.add(drawPipeline);
-			for (int i = 0; i < speed; i++)
-			{
-				addProcessUnit(stepPipeline);
-			}
-			computePipelines.add(pixelCompute);
+			stepPipeline.repeat = speed;
 		}
 	}
 
@@ -108,6 +105,30 @@ public class SandComputeProcess extends ComputeProcess
 		{
 			drawPipeline.setEnabled(value);
 			dirty = true;
+		}
+	}
+
+	class RepeatComputePipeline extends ComputePipeline
+	{
+		int repeat = 1;
+
+		public RepeatComputePipeline(LogicalDevice logicalDevice, DescriptorPool descriptorPool,
+				int width, int height, int depth, List<IDescriptor> descriptors)
+		{
+			super(logicalDevice, descriptorPool, width, height, depth, descriptors);
+		}
+
+		@Override
+		public List<IComputePipelineExecutableUnit> getExecutablesUnit()
+		{
+			List<IComputePipelineExecutableUnit> res = new ArrayList<>();
+
+			for (int i = 0; i < repeat; i++)
+			{
+				res.addAll(super.getExecutablesUnit());
+			}
+
+			return res;
 		}
 	}
 }

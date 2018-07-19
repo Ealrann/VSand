@@ -57,31 +57,21 @@ layout(binding = 2) buffer SDecision
 	uint data[WIDTH][HEIGHT];
 }decision;
 
-bool check(int x, int y, int runoff, int dir, int srcDensity);
-int getValue(int x, int y);
-
-bool checkSwapToLeft(int x, int y, int value);
-bool checkSwapToRight(int x, int y, int value);
+int check(int x, int y, int runoff, int dir, int srcDensity);
 
 /**
  * Here, we will choose one favourite destination.
  */
 void main()
 {
-
-	if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
-		return;
-
 	int x = int(gl_GlobalInvocationID.x);
 	int y = int(gl_GlobalInvocationID.y);
 
 	int currentValue = board.data[x][y];
-	// First, store the current value to the decision buffer.
-	decision.data[x][y] = (uint(decision.data[x][y] << 16)) >> 16; // erase previous value
-	decision.data[x][y] |= currentValue << 16; // store
-
-	// Clear the FROM and TO tags
-	decision.data[x][y] = uint(decision.data[x][y] >> 8) << 8;
+	// Erase Tag,
+	// Erase previous value
+	// and Store the current value to the decision buffer.
+	decision.data[x][y] = (((decision.data[x][y] >> 8) << 24) >> 16) | (currentValue << 16);
 
 	if (configuration.materials[currentValue].isStatic == 0)
 	{
@@ -109,71 +99,76 @@ void main()
 			int valueLeft = x > 0 ? board.data[x - 1][y] : 0;
 			int valueRight = x < (WIDTH - 1) ? board.data[x + 1][y] : 0;
 
-			if (configuration.materials[currentValue].density
-					> configuration.materials[valueLeft].density
-					&& checkSwapToLeft(x, y, currentValue))
+			int runoff = configuration.materials[currentValue].runoff;
+			int distLeft = runoff;
+			int distRight = runoff;
+
+			if (configuration.materials[valueLeft].density < density)
 			{
-				possibleDest |= TO_LEFT;
+				distLeft = check(x - 1, y + 1, runoff, -1, density);
 			}
-			if (configuration.materials[currentValue].density
-					> configuration.materials[valueRight].density
-					&& checkSwapToRight(x, y, currentValue))
+			if (configuration.materials[valueRight].density < density)
+			{
+				distRight = check(x + 1, y + 1, runoff, 1, density);
+			}
+
+			bool right = distRight < runoff;
+			bool left = distLeft < runoff;
+
+			if (right && left)
+			{
+				if (distRight < distLeft)
+				{
+					possibleDest |= TO_RIGHT;
+				}
+				else if (distLeft < distRight)
+				{
+					possibleDest |= TO_LEFT;
+				}
+				else
+				{
+					possibleDest |= (TO_RIGHT | TO_LEFT);
+				}
+			}
+			else if (right)
 			{
 				possibleDest |= TO_RIGHT;
 			}
+			else if (left)
+			{
+				possibleDest |= TO_LEFT;
+			}
 		}
 
-		uint rLocation = RANDOM_1_LOC;
-		for (int i = 0; i < 4; i++)
+		if (possibleDest != 0)
 		{
-			uint iDir = (decision.data[x][y] & (3 << rLocation)) >> rLocation;
-			// iDir should be between 0 and 3 (included) here
-
-			// convert iDir to a mask
-			iDir = 1 << iDir;
-
-			if ((possibleDest & iDir) != 0)
+			uint rLocation = RANDOM_1_LOC;
+			for (int i = 0; i < 4; i++)
 			{
-				decision.data[x][y] |= iDir;
-				break;
-			}
+				uint iDir = (decision.data[x][y] & (3 << rLocation)) >> rLocation;
+				// iDir should be between 0 and 3 (included) here
 
-			rLocation += 2;
+				// convert iDir to a mask
+				iDir = 1 << iDir;
+
+				if ((possibleDest & iDir) != 0)
+				{
+					decision.data[x][y] |= iDir;
+					break;
+				}
+
+				rLocation += 2;
+			}
 		}
 	}
 }
 
-bool checkSwapToLeft(int x, int y, int value)
+int check(int x, int y, int runoff, int dir, int srcDensity)
 {
-	int leftValue = x - 1 >= 0 ? getValue(x - 1, y) : 0;
-
-	int density = configuration.materials[value].density;
-	int runoff = configuration.materials[value].runoff;
-
-	bool canMove = configuration.materials[leftValue].density < density
-			&& check(x - 1, y + 1, runoff, -1, density);
-
-	return canMove;
-}
-
-bool checkSwapToRight(int x, int y, int value)
-{
-	int rightValue = x + 1 < WIDTH ? getValue(x + 1, y) : 0;
-
-	int density = configuration.materials[value].density;
-	int runoff = configuration.materials[value].runoff;
-
-	bool canMove = configuration.materials[rightValue].density < density
-			&& check(x + 1, y + 1, runoff, 1, density);
-
-	return canMove;
-}
-
-bool check(int x, int y, int runoff, int dir, int srcDensity)
-{
+	int course = 0;
 	if (y < 0 && y >= HEIGHT)
 	{
-		return true;
+		return course;
 	}
 	else
 	{
@@ -181,27 +176,22 @@ bool check(int x, int y, int runoff, int dir, int srcDensity)
 		{
 			if (x >= 0 && x < WIDTH)
 			{
-				int value = getValue(x, y);
+				int value = board.data[x][y];
 				if (configuration.materials[value].isStatic == 0
 						&& configuration.materials[value].density < srcDensity)
 				{
-					return true;
+					return course;
 				}
 			}
 			else
 			{
-				return true;
+				return course;
 			}
 			x += dir;
 			runoff--;
+			course++;
 		}
 	}
 
-	return false;
+	return course;
 }
-
-int getValue(int x, int y)
-{
-	return board.data[x][y];
-}
-
