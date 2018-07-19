@@ -16,25 +16,27 @@ import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
 import org.sheepy.vulkan.pipeline.compute.PipelineBarrier;
 import org.sheepy.vulkan.sand.board.BoardModifications;
+import org.sheepy.vulkan.sand.compute.BoardDecisionBuffer;
 import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
 import org.sheepy.vulkan.sand.compute.PixelComputePipeline;
 
 public class SandComputeProcess extends ComputeProcess
 {
-	private static final String SHADER_VERT = "org/sheepy/vulkan/sand/game_step_vert.comp.spv";
-	private static final String SHADER_HORI = "org/sheepy/vulkan/sand/game_step_hori.comp.spv";
+	private static final String SHADER_STEP1 = "org/sheepy/vulkan/sand/game_step1_chooseTO.comp.spv";
+	private static final String SHADER_STEP2 = "org/sheepy/vulkan/sand/game_step2_acceptFROM.comp.spv";
+	private static final String SHADER_STEP3 = "org/sheepy/vulkan/sand/game_step3_swap.comp.spv";
+
 	private static final String SHADER_DRAW = "org/sheepy/vulkan/sand/draw.comp.spv";
 
-	private ComputePipeline stepPipelineVert;
-	private ComputePipeline stepPipelineHori;
+	private ComputePipeline stepPipeline;
 
 	public final ComputePipeline drawPipeline;
 	private PixelComputePipeline pixelCompute;
 
 	public SandComputeProcess(LogicalDevice logicalDevice, CommandPool commandPool,
-			BoardModifications boardModifications, BoardImage boardImage, Buffer boardBuffer,
-			ConfigurationBuffer configBuffer)
+			BoardModifications boardModifications, BoardDecisionBuffer decision,
+			BoardImage boardImage, Buffer boardBuffer, ConfigurationBuffer configBuffer)
 	{
 		super(logicalDevice);
 
@@ -44,17 +46,17 @@ public class SandComputeProcess extends ComputeProcess
 		List<IDescriptor> stepDescriptors = new ArrayList<>();
 		stepDescriptors.add(configBuffer.getBuffer());
 		stepDescriptors.add(boardBuffer);
+		stepDescriptors.add(decision.getBuffer());
 
 		drawPipeline = new ComputePipeline(logicalDevice, descriptorPool, width, height, 1,
 				Arrays.asList(boardBuffer, boardModifications), SHADER_DRAW);
 		drawPipeline.setEnabled(false);
-		stepPipelineVert = new ComputePipeline(logicalDevice, descriptorPool, width, 1, 1,
-				stepDescriptors, SHADER_VERT);
-		stepPipelineVert.setWorkgroupSize(128);
 
-		stepPipelineHori = new ComputePipeline(logicalDevice, descriptorPool, 1, height, 1,
-				stepDescriptors, SHADER_HORI);
-		stepPipelineHori.setWorkgroupSize(128);
+		stepPipeline = new ComputePipeline(logicalDevice, descriptorPool, width, height, 1,
+				stepDescriptors);
+		stepPipeline.addShader(SHADER_STEP1);
+		stepPipeline.addShader(SHADER_STEP2);
+		stepPipeline.addShader(SHADER_STEP3);
 
 		pixelCompute = new PixelComputePipeline(logicalDevice, descriptorPool, configBuffer,
 				boardBuffer, boardImage);
@@ -62,8 +64,7 @@ public class SandComputeProcess extends ComputeProcess
 		addProcessUnit(new PipelineBarrier(boardBuffer, VK_ACCESS_MEMORY_READ_BIT,
 				VK_ACCESS_MEMORY_WRITE_BIT));
 		addProcessUnit(drawPipeline);
-		addProcessUnit(stepPipelineVert);
-		addProcessUnit(stepPipelineHori);
+		addProcessUnit(stepPipeline);
 		addProcessUnit(new PipelineBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,
 				VK_ACCESS_MEMORY_READ_BIT));
 		addProcessUnit(pixelCompute);
@@ -83,8 +84,7 @@ public class SandComputeProcess extends ComputeProcess
 			computePipelines.add(drawPipeline);
 			for (int i = 0; i < speed; i++)
 			{
-				computePipelines.add(stepPipelineVert);
-				computePipelines.add(stepPipelineHori);
+				addProcessUnit(stepPipeline);
 			}
 			computePipelines.add(pixelCompute);
 		}

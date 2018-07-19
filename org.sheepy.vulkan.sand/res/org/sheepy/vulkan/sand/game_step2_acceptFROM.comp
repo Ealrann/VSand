@@ -28,7 +28,8 @@
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
-struct Entry {
+struct Entry
+{
 	int isStatic;
 	int density;
 	int runoff;
@@ -59,50 +60,55 @@ layout(binding = 2) buffer SDecision
 /**
  * For the pixels that have no preferences, if a neighbor want to come here, we accept the move.
  */
-void main() {
+void main()
+{
 
-
-	if(gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
+	if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
 		return;
 
 	int x = int(gl_GlobalInvocationID.x);
 	int y = int(gl_GlobalInvocationID.y);
 	int value = board.data[x][y];
 
-	if ((decision.data[x][y] & 15) == 0) {
-		int rLocation = RANDOM_1_LOC;
-		for (int i = 0; i < 4; i++) {
-			uint iDir = (decision.data[x][y] & (3 << rLocation)) >> rLocation;
-			// iDir should be between 0 and 3 (included) here
+	int rLocation = RANDOM_1_LOC;
+	for (int i = 0; i < 4; i++)
+	{
+		uint iDir = (decision.data[x][y] & (3 << rLocation)) >> rLocation;
+		// iDir should be between 0 and 3 (included) here
 
-			// convert iDir to a mask
-			uint maskDir = 1 << iDir;
-			// resolve the direction
-			uint invertDir = 0;
-			int targetX = x;
-			int targetY = y;
-			if (iDir == RIGHT) {
-				targetX += 1;
-				invertDir = TO_LEFT;
-			} else if (iDir == LEFT) {
-				targetX -= 1;
-				invertDir = TO_RIGHT;
-			} else if (iDir == UP) {
-				targetY -= 1;
-				invertDir = TO_DOWN;
-			} else {
-				targetY += 1;
-				invertDir = TO_UP;
-			}
-
-			if (targetX >= 0 && targetX < WIDTH && targetY >= 0
-					&& targetY < HEIGHT
-					&& (decision.data[targetX][targetY] & invertDir) != 0) {
-				decision.data[x][y] |= maskDir;
-				break;
-			}
-
-			rLocation += 2;
+		// convert iDir to a mask
+		uint maskDir = 1 << iDir;
+		// resolve the direction
+		uint invertDir = 0;
+		int targetX = x;
+		int targetY = y;
+		switch (iDir)
+		{
+		case RIGHT :
+			targetX += 1;
+			invertDir = TO_LEFT;
+			break;
+		case LEFT :
+			targetX -= 1;
+			invertDir = TO_RIGHT;
+			break;
+		case UP :
+			targetY -= 1;
+			invertDir = TO_DOWN;
+			break;
+		default :
+			targetY += 1;
+			invertDir = TO_UP;
 		}
+
+		if (targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT
+				&& (decision.data[targetX][targetY] & invertDir) != 0)
+		{
+			decision.data[x][y] = decision.data[x][y] >> 8;
+			decision.data[x][y]	= decision.data[x][y] << 8 | maskDir;
+			break;
+		}
+
+		rLocation += 2;
 	}
 }

@@ -28,7 +28,8 @@
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
-struct Entry {
+struct Entry
+{
 	int isStatic;
 	int density;
 	int runoff;
@@ -59,9 +60,10 @@ layout(binding = 2) readonly buffer SDecision
 /**
  * Here, we will apply the swap
  */
-void main() {
+void main()
+{
 
-	if(gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
+	if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
 		return;
 
 	int x = int(gl_GlobalInvocationID.x);
@@ -71,29 +73,35 @@ void main() {
 	// We will take the value of our target neighbor if he do the same move.
 	uint dir = decision.data[x][y] & 15;
 
-	if (dir != 0) {
+	if (dir != 0)
+	{
 		// resolve the direction
 		uint invertDir = 0;
 		int targetX = x;
 		int targetY = y;
-		if (dir == TO_RIGHT) {
+		switch (dir)
+		{
+		case TO_RIGHT:
 			targetX += 1;
 			invertDir = TO_LEFT;
-		} else if (dir == TO_LEFT) {
+			break;
+		case TO_LEFT:
 			targetX -= 1;
 			invertDir = TO_RIGHT;
-		} else if (dir == TO_UP) {
+			break;
+		case TO_UP:
 			targetY -= 1;
 			invertDir = TO_DOWN;
-		} else {
+			break;
+		default:
 			targetY += 1;
 			invertDir = TO_UP;
 		}
 
 		if (targetX < 0 || targetX >= WIDTH || targetY < 0 || targetY >= HEIGHT
-				|| (decision.data[targetX][targetY] & invertDir) != 0) {
-			board.data[x][y] = int(
-					(decision.data[targetX][targetY] & (65535 << 16)) >> 16);
+				|| (decision.data[targetX][targetY] & invertDir) != 0)
+		{
+			board.data[x][y] = int((decision.data[targetX][targetY] & (65535 << 16)) >> 16);
 		}
 	}
 }

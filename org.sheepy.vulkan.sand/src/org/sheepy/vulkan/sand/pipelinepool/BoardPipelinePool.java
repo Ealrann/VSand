@@ -14,6 +14,7 @@ import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.PipelinePool;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
 import org.sheepy.vulkan.sand.board.BoardModifications;
+import org.sheepy.vulkan.sand.compute.BoardDecisionBuffer;
 import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
 
@@ -25,6 +26,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 	private ComputeProcessPool boardProcessesPool;
 
+	private BoardDecisionBuffer decision;
 	private ConfigurationBuffer configBuffer;
 	private Buffer boardBuffer;
 
@@ -64,14 +66,17 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 			boardBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
 					VK_DESCRIPTOR_TYPE_STORAGE_BUFFER);
 		}
+		
+		decision = new BoardDecisionBuffer(logicalDevice, width, height, commandPool);
 
+		subAllocationObjects.add(decision);
 		subAllocationObjects.add(configBuffer);
 		subAllocationObjects.add(boardBuffer);
 	}
 
 	private void buildPipelines()
 	{
-		process = new SandComputeProcess(logicalDevice, commandPool, boardModifications, boardImage,
+		process = new SandComputeProcess(logicalDevice, commandPool, boardModifications, decision, boardImage,
 				boardBuffer, configBuffer);
 
 		boardProcessesPool = new ComputeProcessPool(logicalDevice, commandPool);
