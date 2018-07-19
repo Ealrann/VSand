@@ -29,25 +29,27 @@ layout(binding = 0) uniform SConfiguration
 
 layout(binding = 1) buffer buf2
 {
-	int data[WIDTH][HEIGHT];
+	uint data[WIDTH][HEIGHT];
 }board;
 
-bool check(int x, int y, int runoff, int dir, int srcDensity);
+int check(int x, int y, int runoff, int dir, int srcDensity);
+uint getValue(int x, int y);
+void setValue(int x, int y, uint value);
 
 void main()
 {
 	int y = int(gl_GlobalInvocationID.y);
 
 	int startLocation = -1;
-	int prevValue = 0;
-	int nodeValue = 0;
+	uint prevValue = 0;
+	uint nodeValue = 0;
 
 	for (int x = 0; x < WIDTH + 1; x++)
 	{
-		int nextValue = x < WIDTH ? board.data[x][y] : 0;
+		uint nextValue = x < WIDTH ? getValue(x, y) : 0;
 
 		// If we swapped last iteration, we enter in a new node
-		if (nodeValue == -1)
+		if (startLocation == -2)
 		{
 			startLocation = x;
 			nodeValue = nextValue;
@@ -62,8 +64,8 @@ void main()
 				int underRightDensity = 0;
 				if (y < (HEIGHT - 1))
 				{
-					int valueUnderLeft = startLocation >= 0 ? board.data[startLocation][y + 1] : 0;
-					int valueUnderRight = board.data[endLocation][y + 1];
+					uint valueUnderLeft = startLocation >= 0 ? getValue(startLocation, y + 1) : 0;
+					uint valueUnderRight = getValue(endLocation, y + 1);
 					underLeftDensity = configuration.materials[valueUnderLeft].density;
 					underRightDensity = configuration.materials[valueUnderRight].density;
 				}
@@ -77,8 +79,11 @@ void main()
 				bool freeRight = configuration.materials[nextValue].isStatic == 0
 						&& configuration.materials[nextValue].density < nodeDensity;
 
-				freeLeft = freeLeft && check(startLocation - 1, y + 1, nodeRunoff, -1, nodeDensity);
-				freeRight = freeRight && check(endLocation + 1, y + 1, nodeRunoff, 1, nodeDensity);
+				int holeLeft = check(startLocation - 1, y + 1, nodeRunoff, -1, nodeDensity);
+				int holeRight = check(endLocation + 1, y + 1, nodeRunoff, 1, nodeDensity);
+
+				freeLeft = freeLeft && holeLeft < nodeRunoff;
+				freeRight = freeRight && holeRight < nodeRunoff;
 
 				bool fallDownLeft = nodeDensity > underLeftDensity;
 				bool fallDownRight = nodeDensity > underRightDensity;
@@ -88,61 +93,53 @@ void main()
 				// Determiner où l'on cut.
 				int length = endLocation - startLocation + 1;
 
-				int cutPosLeft = startLocation + nodeRunoff;
-				int cutPosRight = endLocation - nodeRunoff;
+				int cutPosLeft = startLocation + nodeRunoff - holeLeft;
+				int cutPosRight = endLocation - nodeRunoff + holeRight;
+
 
 				if (moveLeft && moveRight)
 				{
-					if (length < nodeRunoff * 2)
-					{
-						cutPosLeft = int(startLocation + floor(float((length) / 2.0)));
-						cutPosRight = int(endLocation - floor(float(length) / 2.0));
-					}
-				}
-				else if (length < nodeRunoff)
-				{
-					cutPosLeft = startLocation + length;
-					cutPosRight = endLocation - length;
-				}
-
-				// Solve conflict
-				if (cutPosRight == cutPosLeft && moveRight && moveLeft)
-				{
+					// if we try to move a single pixel
 					if (length == 1)
 					{
-						if (mod(y, 2) == 0)
-						{
-							moveRight = false;
-						}
-						else
+						if (mod(y + x, 2) == 0)
 						{
 							moveLeft = false;
 						}
-					}
-					else
-					{
-						if (mod(y, 2) == 0)
-						{
-							cutPosLeft--;
-						}
 						else
 						{
-							cutPosRight++;
+							moveRight = false;
 						}
 					}
+					else if (cutPosLeft >= cutPosRight)
+					{
+						int delta = int(ceil(float(cutPosLeft - cutPosRight + 1) / 2.0));
+						cutPosLeft -= delta;
+						cutPosRight += delta;
+					}
+				}
+
+				// clamp
+				if (moveLeft && cutPosLeft > endLocation)
+				{
+					cutPosLeft = endLocation;
+				}
+				if (moveRight && cutPosRight < startLocation)
+				{
+					cutPosRight = startLocation;
 				}
 
 				if (moveLeft)
 				{
-					board.data[cutPosLeft][y] = prevValue;
+					setValue(cutPosLeft, y, prevValue);
 					if ((startLocation - 1) >= 0)
-						board.data[(startLocation - 1)][y] = nodeValue;
+						setValue(startLocation - 1, y, nodeValue);
 				}
 				if (moveRight)
 				{
-					board.data[cutPosRight][y] = nextValue;
+					setValue(cutPosRight, y, nextValue);
 					if ((endLocation + 1) < WIDTH)
-						board.data[endLocation + 1][y] = nodeValue;
+						setValue(endLocation + 1, y, nodeValue);
 				}
 
 				// Prepare the next round
@@ -170,34 +167,48 @@ void main()
 	}
 }
 
-bool check(int x, int y, int runoff, int dir, int srcDensity)
+int check(int x, int y, int runoff, int dir, int srcDensity)
 {
-	while (runoff != 0)
+	int course = 0;
+	if (y >= 0 && y < HEIGHT)
 	{
-		if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+		for (; course < runoff; course++)
 		{
-//			int valueAbove = board.data[x][y - 1];
-//			if (configuration.materials[valueAbove].isStatic == 1
-//					|| configuration.materials[valueAbove].density > srcDensity)
-//			{
-//				// stuck
-//				return false;
-//			}
-
-			int value = board.data[x][y];
-			if (configuration.materials[value].isStatic == 0
-					&& configuration.materials[value].density < srcDensity)
+			if (x >= 0 && x < WIDTH)
 			{
-				return true;
+				//			int valueAbove = board.data[x][y - 1];
+				//			if (configuration.materials[valueAbove].isStatic == 1
+				//					|| configuration.materials[valueAbove].density > srcDensity)
+				//			{
+				//				// stuck
+				//				return false;
+				//			}
+
+				uint value = getValue(x, y);
+				if (configuration.materials[value].isStatic == 0
+						&& configuration.materials[value].density < srcDensity)
+				{
+					break;
+				}
 			}
+			else
+			{
+				break;
+			}
+			x += dir;
 		}
-		else
-		{
-			return true;
-		}
-		x += dir;
-		runoff--;
 	}
 
-	return false;
+	return course;
+}
+
+uint getValue(int x, int y)
+{
+	return board.data[x][y] >> 16;
+}
+
+void setValue(int x, int y, uint value)
+{
+	board.data[x][y] = board.data[x][y] >> 16;
+	board.data[x][y] = (board.data[x][y] << 16) | value;
 }

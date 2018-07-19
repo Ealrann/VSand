@@ -1,0 +1,171 @@
+#version 450
+
+#define WIDTH 1024
+#define HEIGHT 512
+//#define WIDTH 2048
+//#define HEIGHT 1152
+#define WORKGROUP_SIZE 128
+
+layout (local_size_x = 1, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	int viscosity;
+	float r;
+	float g;
+	float b;
+
+	// Padding for the alignement
+	float padding1;
+};
+
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[16];
+}configuration;
+
+layout(binding = 1) buffer buf2
+{
+	uint data[WIDTH][HEIGHT];
+}board;
+
+bool check(int x, int y, int runoff, int dir, int srcDensity);
+uint getValue(int x, int y);
+void setValue(int x, int y, uint value);
+
+bool checkSwapToLeft(int x, int y, uint value);
+bool checkSwapToRight(int x, int y, uint value);
+
+void main()
+{
+	int y = int(gl_GlobalInvocationID.y);
+
+	uint prevValue = 0;
+	bool swapped = false;
+
+	for (int x = 0; x < WIDTH + 1; x++)
+	{
+		uint currentValue = getValue(x, y);
+
+		if (swapped)
+		{
+			prevValue = currentValue;
+			swapped = false;
+		}
+		else if (currentValue != prevValue)
+		{
+			if (configuration.materials[currentValue].isStatic == 0
+					&& configuration.materials[prevValue].isStatic == 0)
+			{
+				bool needSwap = false;
+
+				if (configuration.materials[currentValue].density
+						> configuration.materials[prevValue].density)
+				{
+					needSwap = checkSwapToLeft(x, y, currentValue);
+				}
+				else if (configuration.materials[currentValue].density
+						< configuration.materials[prevValue].density)
+				{
+					needSwap = checkSwapToRight(x - 1, y, prevValue);
+				}
+
+				if (needSwap)
+				{
+					if (x < WIDTH)
+						setValue(x, y, prevValue);
+					if (x - 1 >= 0)
+						setValue(x - 1, y, currentValue);
+
+					swapped = true;
+				}
+			}
+
+			prevValue = currentValue;
+		}
+	}
+}
+
+bool checkSwapToLeft(int x, int y, uint value)
+{
+	uint leftValue = x - 1 >= 0 ? getValue(x - 1, y) : 0;
+	int underDensity = 0;
+	if (y < (HEIGHT - 1))
+	{
+		uint valueUnder = x >= 0 ? getValue(x, y + 1) : 0;
+		underDensity = configuration.materials[valueUnder].density;
+	}
+
+	int density = configuration.materials[value].density;
+	int runoff = configuration.materials[value].runoff;
+
+	bool fallingDown = underDensity < density;
+	bool canMove = configuration.materials[leftValue].density < density
+			&& check(x - 1, y + 1, runoff, -1, density);
+
+	return canMove && !fallingDown;
+}
+
+bool checkSwapToRight(int x, int y, uint value)
+{
+	uint rightValue = x + 1 < WIDTH ? getValue(x + 1, y) : 0;
+	int underDensity = 0;
+	if (y < (HEIGHT - 1))
+	{
+		uint valueUnder = x < WIDTH ? getValue(x, y + 1) : 0;
+		underDensity = configuration.materials[valueUnder].density;
+	}
+	int density = configuration.materials[value].density;
+	int runoff = configuration.materials[value].runoff;
+
+	bool fallingDown = underDensity < density;
+	bool canMove = configuration.materials[rightValue].density < density
+			&& check(x + 1, y + 1, runoff, 1, density);
+
+	return canMove && !fallingDown;
+}
+
+bool check(int x, int y, int runoff, int dir, int srcDensity)
+{
+	if (y < 0 && y >= HEIGHT)
+	{
+		return true;
+	}
+	else
+	{
+		while (runoff != 0)
+		{
+			if (x >= 0 && x < WIDTH)
+			{
+				uint value = getValue(x, y);
+				if (configuration.materials[value].isStatic == 0
+						&& configuration.materials[value].density < srcDensity)
+				{
+					return true;
+				}
+			}
+			else
+			{
+				return true;
+			}
+			x += dir;
+			runoff--;
+		}
+	}
+
+	return false;
+}
+
+uint getValue(int x, int y)
+{
+	return board.data[x][y] >> 16;
+}
+
+void setValue(int x, int y, uint value)
+{
+	board.data[x][y] = board.data[x][y] >> 16;
+	board.data[x][y] = (board.data[x][y] << 16) | value;
+}
