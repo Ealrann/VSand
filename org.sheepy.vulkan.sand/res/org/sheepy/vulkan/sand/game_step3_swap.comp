@@ -26,6 +26,8 @@
 #define RANDOM_3_LOC  12
 #define RANDOM_4_LOC  14
 
+#define OLD_VALUE_MASK 4294901760
+
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
 struct Entry
@@ -97,7 +99,7 @@ void main()
 		if (targetX < 0 || targetX >= WIDTH || targetY < 0 || targetY >= HEIGHT
 				|| (decision.data[targetX][targetY] & invertDir) != 0)
 		{
-			board.data[x][y] = int((decision.data[targetX][targetY] & (65535 << 16)) >> 16);
+			board.data[x][y] = int((decision.data[targetX][targetY] & (OLD_VALUE_MASK)) >> 16);
 		}
 	}
 }

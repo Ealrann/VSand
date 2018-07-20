@@ -154,10 +154,13 @@ void main()
 				if ((possibleDest & iDir) != 0)
 				{
 					decision.data[x][y] |= iDir;
-					break;
+					// Note: the break here is not supported by the spirv-opt, don't know why.
+					i = 4; // break;
 				}
-
-				rLocation += 2;
+				else
+				{
+					rLocation += 2;
+				}
 			}
 		}
 	}
@@ -166,11 +169,7 @@ void main()
 int check(int x, int y, int runoff, int dir, int srcDensity)
 {
 	int course = 0;
-	if (y < 0 && y >= HEIGHT)
-	{
-		return course;
-	}
-	else
+	if (y >= 0 || y < HEIGHT)
 	{
 		while (runoff != 0)
 		{
@@ -180,12 +179,12 @@ int check(int x, int y, int runoff, int dir, int srcDensity)
 				if (configuration.materials[value].isStatic == 0
 						&& configuration.materials[value].density < srcDensity)
 				{
-					return course;
+					break;
 				}
 			}
 			else
 			{
-				return course;
+				break;
 			}
 			x += dir;
 			runoff--;
