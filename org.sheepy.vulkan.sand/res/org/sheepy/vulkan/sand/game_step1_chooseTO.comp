@@ -16,11 +16,6 @@
 #define TO_RIGHT 1 << 2
 #define TO_LEFT  1 << 3
 
-#define FROM_UP    1 << 4
-#define FROM_DOWN  1 << 5
-#define FROM_RIGHT 1 << 6
-#define FROM_LEFT  1 << 7
-
 #define RANDOM_1_LOC  8
 #define RANDOM_2_LOC  10
 #define RANDOM_3_LOC  12
@@ -85,17 +80,15 @@ void main()
 		int valueUp = y > 0 ? board.data[x][y - 1] : 0;
 		int valueDown = y < (HEIGHT - 1) ? board.data[x][y + 1] : 0;
 		// Make a list of available directions
-		uint possibleDest = 0;
 
 		if (configuration.materials[valueDown].isStatic == 0
 				&& density > configuration.materials[valueDown].density)
 		{
-			possibleDest |= TO_DOWN;
+			decision.data[x][y] |= TO_DOWN;
 		}
-
-		// If not fallingdown, we check the right/left move
-		if (possibleDest == 0)
+		else
 		{
+			// If not fallingdown, we check the right/left move
 			int valueLeft = x > 0 ? board.data[x - 1][y] : 0;
 			int valueRight = x < (WIDTH - 1) ? board.data[x + 1][y] : 0;
 
@@ -115,55 +108,39 @@ void main()
 			bool right = distRight < runoff;
 			bool left = distLeft < runoff;
 
-			if (right && left)
+			if (right || left)
 			{
-				if (distRight < distLeft)
+				uint tag = 0;
+				if (right && left)
 				{
-					possibleDest |= TO_RIGHT;
-				}
-				else if (distLeft < distRight)
-				{
-					possibleDest |= TO_LEFT;
+					if (distRight < distLeft)
+					{
+						tag = TO_RIGHT;
+					}
+					else if (distRight > distLeft)
+					{
+						tag = TO_LEFT;
+					}
+					else // if (distLeft == fistRight)
+					{
+						if (mod(FUB.random, 2) == 0)
+							tag = TO_RIGHT;
+						else
+							tag = TO_LEFT;
+					}
 				}
 				else
 				{
-					possibleDest |= (TO_RIGHT | TO_LEFT);
+					if (right)
+					{
+						tag = TO_RIGHT;
+					}
+					else if (left)
+					{
+						tag = TO_LEFT;
+					}
 				}
-			}
-			else
-			{
-				if (right)
-				{
-					possibleDest |= TO_RIGHT;
-				}
-				else if (left)
-				{
-					possibleDest |= TO_LEFT;
-				}
-			}
-		}
-
-		if (possibleDest != 0)
-		{
-			uint rLocation = RANDOM_1_LOC;
-			for (int i = 0; i < 4; i++)
-			{
-				uint iDir = (decision.data[x][y] & (3 << rLocation)) >> rLocation;
-				// iDir should be between 0 and 3 (included) here
-
-				// convert iDir to a mask
-				iDir = 1 << iDir;
-
-				if ((possibleDest & iDir) != 0)
-				{
-					decision.data[x][y] |= iDir;
-					// Note: the break here is not supported by the spirv-opt, don't know why.
-					i = 4; // break;
-				}
-				else
-				{
-					rLocation += 2;
-				}
+				decision.data[x][y] |= tag;
 			}
 		}
 	}
