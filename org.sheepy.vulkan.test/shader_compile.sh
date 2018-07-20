@@ -1,8 +1,12 @@
 #!/bin/bash
 
-rm *.spv 2>/dev/null
-
 for i in `find res/ -type f -name "*.frag" -o -name "*.vert" -o -name "*.comp" 2>/dev/null`
 do
-    glslangValidator -V $i -o $i.spv
+    rm $i.spv 2>/dev/null
+    name=`basename $i`
+    dir=`dirname $i`
+    glslangValidator -V $i -o /tmp/$name.spv
+    spirv-opt -O /tmp/$name.spv -o /tmp/$name.spv
+    spirv-remap --strip all --dce all -i /tmp/$name.spv -o $dir
+    rm /tmp/$name.spv
 done
