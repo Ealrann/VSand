@@ -47,12 +47,17 @@ layout(binding = 0) uniform SConfiguration
 	Entry materials[16];
 }configuration;
 
-layout(binding = 1) readonly buffer SBoard
+layout(binding = 1) uniform FrameUniformBuffer
+{
+	uint random;
+}FUB;
+
+layout(binding = 2) readonly buffer SBoard
 {
 	int data[WIDTH][HEIGHT];
 }board;
 
-layout(binding = 2) buffer SDecision
+layout(binding = 3) buffer SDecision
 {
 	uint data[WIDTH][HEIGHT];
 }decision;
@@ -82,11 +87,6 @@ void main()
 		// Make a list of available directions
 		uint possibleDest = 0;
 
-		if (configuration.materials[valueUp].isStatic == 0
-				&& density < configuration.materials[valueUp].density)
-		{
-			possibleDest |= TO_UP;
-		}
 		if (configuration.materials[valueDown].isStatic == 0
 				&& density > configuration.materials[valueDown].density)
 		{
@@ -130,13 +130,16 @@ void main()
 					possibleDest |= (TO_RIGHT | TO_LEFT);
 				}
 			}
-			else if (right)
+			else
 			{
-				possibleDest |= TO_RIGHT;
-			}
-			else if (left)
-			{
-				possibleDest |= TO_LEFT;
+				if (right)
+				{
+					possibleDest |= TO_RIGHT;
+				}
+				else if (left)
+				{
+					possibleDest |= TO_LEFT;
+				}
 			}
 		}
 
