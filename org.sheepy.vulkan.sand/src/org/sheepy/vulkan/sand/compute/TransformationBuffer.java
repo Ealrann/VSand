@@ -13,51 +13,44 @@ import org.sheepy.vulkan.command.SingleTimeCommand;
 import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.sand.board.EMaterial;
+import org.sheepy.vulkan.sand.board.ETransformation;
 
-public class ConfigurationBuffer implements IAllocable
+public class TransformationBuffer implements IAllocable
 {
 
-	private static final int ENTRIES_ARRAY_SIZE = EMaterial.MAX_MATERIAL_NUMBER * 8 * Integer.BYTES;
-	private Buffer configBuffer;
+	private static final int TRANSFORMATIONS_ARRAY_SIZE = EMaterial.MAX_MATERIAL_NUMBER
+			* EMaterial.MAX_MATERIAL_NUMBER
+			* Integer.BYTES;
+	private Buffer transformationBuffer;
 	private LogicalDevice logicalDevice;
 	private CommandPool commandPool;
 
-	public ConfigurationBuffer(LogicalDevice logicalDevice, CommandPool commandPool)
+	public TransformationBuffer(LogicalDevice logicalDevice, CommandPool commandPool)
 	{
 		this.logicalDevice = logicalDevice;
 		this.commandPool = commandPool;
 
-		int byteSize = ENTRIES_ARRAY_SIZE;
-
-		configBuffer = new Buffer(logicalDevice, byteSize,
-				VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+		transformationBuffer = new Buffer(logicalDevice, TRANSFORMATIONS_ARRAY_SIZE,
+				VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
 				VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-		configBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
-				VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER);
+		transformationBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
+				VK_DESCRIPTOR_TYPE_STORAGE_BUFFER);
 	}
 
 	@Override
 	public void allocate(MemoryStack stack)
 	{
-		configBuffer.allocate();
+		transformationBuffer.allocate();
 
-		ByteBuffer bBuffer = MemoryUtil.memAlloc((int) configBuffer.getSize());
-		for (EMaterial material : EMaterial.values())
+		ByteBuffer bBuffer = MemoryUtil.memAlloc(TRANSFORMATIONS_ARRAY_SIZE);
+		int[] transfoArray = ETransformation.toArray();
+		for (int i = 0; i < transfoArray.length; i++)
 		{
-			bBuffer.putInt(material.isStatic ? 1 : 0);
-			bBuffer.putInt(material.density);
-			bBuffer.putInt(material.runoff);
-			bBuffer.putFloat(material.viscosity);
-			bBuffer.putFloat(material.r);
-			bBuffer.putFloat(material.g);
-			bBuffer.putFloat(material.b);
-
-			// Padding1
-			bBuffer.putFloat(0);
+			bBuffer.putInt(transfoArray[i]);
 		}
 		bBuffer.flip();
 
-		Buffer staggingBuffer = new Buffer(logicalDevice, configBuffer.getSize(),
+		Buffer staggingBuffer = new Buffer(logicalDevice, TRANSFORMATIONS_ARRAY_SIZE,
 				VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
 				VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
 		staggingBuffer.allocate();
@@ -69,11 +62,13 @@ public class ConfigurationBuffer implements IAllocable
 			@Override
 			protected void doExecute(MemoryStack stack, VkCommandBuffer commandBuffer)
 			{
-				Buffer.copyBuffer(vkCommandBuffer, staggingBuffer.getId(), configBuffer.getId(),
-						(int) configBuffer.getSize());
+				Buffer.copyBuffer(vkCommandBuffer, staggingBuffer.getId(),
+						transformationBuffer.getId(), (int) transformationBuffer.getSize());
 			}
 		};
 		stc.execute();
+
+		transformationBuffer.flush();
 
 		staggingBuffer.free();
 		MemoryUtil.memFree(bBuffer);
@@ -81,12 +76,12 @@ public class ConfigurationBuffer implements IAllocable
 
 	public Buffer getBuffer()
 	{
-		return configBuffer;
+		return transformationBuffer;
 	}
 
 	@Override
 	public void free()
 	{
-		configBuffer.free();
+		transformationBuffer.free();
 	}
 }
