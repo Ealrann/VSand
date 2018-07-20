@@ -16,11 +16,6 @@
 #define TO_RIGHT 1 << 2
 #define TO_LEFT  1 << 3
 
-#define FROM_UP    1 << 4
-#define FROM_DOWN  1 << 5
-#define FROM_RIGHT 1 << 6
-#define FROM_LEFT  1 << 7
-
 #define RANDOM_1_LOC  8
 #define RANDOM_2_LOC  10
 #define RANDOM_3_LOC  12
@@ -116,8 +111,7 @@ void main()
 					// convert iDir to a mask
 					uint maskDir = 1 << iDir;
 
-					decision.data[x][y] = decision.data[x][y] >> 8;
-					decision.data[x][y] = decision.data[x][y] << 8 | maskDir;
+					decision.data[x][y] = ((decisionValue >> 8) << 8) | maskDir;
 					break;
 				}
 			}
