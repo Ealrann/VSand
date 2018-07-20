@@ -27,12 +27,14 @@ import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
 import org.sheepy.vulkan.sand.compute.FrameUniformBuffer;
 import org.sheepy.vulkan.sand.compute.PixelComputePipeline;
+import org.sheepy.vulkan.sand.compute.TransformationBuffer;
 
 public class BoardPipelinePool extends PipelinePool implements IAllocable
 {
 	private static final String SHADER_STEP1 = "org/sheepy/vulkan/sand/game_step1_chooseTO.comp.spv";
 	private static final String SHADER_STEP2 = "org/sheepy/vulkan/sand/game_step2_acceptFROM.comp.spv";
 	private static final String SHADER_STEP3 = "org/sheepy/vulkan/sand/game_step3_swap.comp.spv";
+	private static final String SHADER_STEP4 = "org/sheepy/vulkan/sand/game_step4_transformation.comp.spv";
 
 	private static final String SHADER_DRAW = "org/sheepy/vulkan/sand/draw.comp.spv";
 
@@ -50,6 +52,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 	private BoardDecisionBuffer decision;
 	private ConfigurationBuffer configBuffer;
+	private TransformationBuffer tranformationBuffer;
 	private Buffer boardBuffer;
 
 	private ComputeProcess process;
@@ -74,6 +77,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 		// configBuffer
 		configBuffer = new ConfigurationBuffer(logicalDevice, commandPool);
+		tranformationBuffer = new TransformationBuffer(logicalDevice, commandPool);
 
 		// boardBuffer
 		{
@@ -92,6 +96,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 		ubo = new FrameUniformBuffer(logicalDevice);
 
 		subAllocationObjects.add(configBuffer);
+		subAllocationObjects.add(tranformationBuffer);
 		subAllocationObjects.add(ubo);
 		subAllocationObjects.add(boardBuffer);
 		subAllocationObjects.add(decision);
@@ -110,6 +115,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 		stepDescriptors.add(ubo.getBuffer());
 		stepDescriptors.add(boardBuffer);
 		stepDescriptors.add(decision.getBuffer());
+		stepDescriptors.add(tranformationBuffer.getBuffer());
 
 		drawPipeline = new ComputePipeline(logicalDevice, descriptorPool, width, height, 1,
 				Arrays.asList(boardBuffer, boardModifications), SHADER_DRAW);
@@ -117,13 +123,10 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 		stepPipeline = new RepeatComputePipeline(logicalDevice, descriptorPool, width, height, 1,
 				stepDescriptors);
-		stepPipeline.addPipelineBarrier(new PipelineBarrier(decision.getBuffer(),
-				VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_MEMORY_WRITE_BIT));
 		stepPipeline.addShader(SHADER_STEP1);
 		stepPipeline.addShader(SHADER_STEP2);
-		stepPipeline.addPipelineBarrier(new PipelineBarrier(decision.getBuffer(),
-				VK_ACCESS_MEMORY_WRITE_BIT, VK_ACCESS_MEMORY_READ_BIT));
 		stepPipeline.addShader(SHADER_STEP3);
+		stepPipeline.addShader(SHADER_STEP4);
 
 		pixelCompute = new PixelComputePipeline(logicalDevice, descriptorPool, configBuffer,
 				boardBuffer, boardImage);

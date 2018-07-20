@@ -39,7 +39,7 @@ struct Entry
 
 layout(binding = 0) uniform SConfiguration
 {
-	Entry materials[16];
+	Entry materials[8];
 }configuration;
 
 layout(binding = 1) uniform FrameUniformBuffer

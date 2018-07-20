@@ -1,0 +1,122 @@
+#version 450
+#extension GL_ARB_separate_shader_objects : enable
+
+#define WIDTH 1024
+#define HEIGHT 512
+//#define WIDTH 2048
+//#define HEIGHT 1152
+#define WORKGROUP_SIZE 32
+
+#define UP    0
+#define DOWN  1
+#define RIGHT 2
+#define LEFT  3
+
+#define TO_UP    1 << 0
+#define TO_DOWN  1 << 1
+#define TO_RIGHT 1 << 2
+#define TO_LEFT  1 << 3
+
+#define RANDOM_1_LOC  8
+#define RANDOM_2_LOC  10
+#define RANDOM_3_LOC  12
+#define RANDOM_4_LOC  14
+
+#define OLD_VALUE_MASK 4294901760
+
+#define MATERIAL_COUNT 8
+
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	float viscosity;
+	float r;
+	float g;
+	float b;
+
+	// Padding for the alignement
+	float padding1;
+};
+
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+}configuration;
+
+layout(binding = 1) uniform FrameUniformBuffer
+{
+	uint random;
+}FUB;
+
+layout(binding = 2) buffer SBoard
+{
+	int data[WIDTH][HEIGHT];
+}board;
+
+layout(binding = 3) buffer SDecision
+{
+	uint data[WIDTH][HEIGHT];
+}decision;
+
+layout(binding = 4) readonly buffer STransformation
+{
+	int data[MATERIAL_COUNT * MATERIAL_COUNT];
+}transformations;
+
+bool transform(int x, int y, uint value, uint otherValue);
+float rand(vec2 co);
+
+/**
+ * Here, we will apply the swap
+ */
+void main()
+{
+	int x = int(gl_GlobalInvocationID.x);
+	int y = int(gl_GlobalInvocationID.y);
+
+	uint currentValue = decision.data[x][y] >> 16;
+
+	uint valueUp = y > 0 ? decision.data[x][y - 1] >> 16 : 0;
+	uint valueDown = y < (HEIGHT - 1) ? decision.data[x][y + 1] >> 16 : 0;
+	uint valueRight = x < (WIDTH - 1) ? decision.data[x + 1][y] >> 16 : 0;
+	uint valueLeft = x > 0 ? decision.data[x - 1][y] >> 16 : 0;
+
+// Purpose here is to call transform one by one, and stop at the first that is true.
+	!(currentValue == valueUp || !transform(x, y, currentValue, valueUp))
+			|| !(currentValue == valueDown || !transform(x, y, currentValue, valueDown))
+			|| !(currentValue == valueRight || !transform(x, y, currentValue, valueRight))
+			|| !(currentValue == valueLeft || !transform(x, y, currentValue, valueLeft));
+}
+
+bool transform(int x, int y, uint value, uint otherValue)
+{
+	bool res = false;
+	float rate = 0.25;
+	int targetValue = transformations.data[otherValue * MATERIAL_COUNT + value];
+
+	if (targetValue != -1)
+	{
+		float rand = rand(vec2(FUB.random, x * y));
+		if (rand <= rate)
+		{
+			board.data[x][y] = targetValue;
+			res = true;
+		}
+	}
+
+	return res;
+}
+
+float rand(vec2 co)
+{
+	float a = 12.9898;
+	float b = 78.233;
+	float c = 43758.5453;
+	float dt = dot(co.xy, vec2(a, b));
+	float sn = mod(dt, 3.14);
+	return fract(sin(sn) * c);
+}

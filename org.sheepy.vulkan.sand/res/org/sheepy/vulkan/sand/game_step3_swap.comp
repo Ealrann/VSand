@@ -41,20 +41,20 @@ struct Entry
 
 layout(binding = 0) uniform SConfiguration
 {
-	Entry materials[16];
+	Entry materials[8];
 }configuration;
 
 layout(binding = 1) uniform FrameUniformBuffer
 {
 	uint random;
-} FUB;
+}FUB;
 
 layout(binding = 2) buffer SBoard
 {
 	int data[WIDTH][HEIGHT];
 }board;
 
-layout(binding = 3) readonly buffer SDecision
+layout(binding = 3) buffer SDecision
 {
 	uint data[WIDTH][HEIGHT];
 }decision;
@@ -96,11 +96,22 @@ void main()
 			invertDir = TO_UP;
 		}
 
-		if (targetX < 0 || targetX >= WIDTH || targetY < 0 || targetY >= HEIGHT
-				|| (decision.data[targetX][targetY] & invertDir) != 0)
+		bool validPosition = targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT;
+		if (!validPosition || (decision.data[targetX][targetY] & invertDir) != 0)
 		{
-			board.data[x][y] = int((decision.data[targetX][targetY] & OLD_VALUE_MASK) >> 16);
-			decision.data[targetX][targetY] = board.data[x][y] << 16;
+			uint targetDecisionValue = 0;
+
+			if (validPosition)
+				targetDecisionValue = decision.data[targetX][targetY];
+
+			uint targetValue = targetDecisionValue & OLD_VALUE_MASK;
+
+			// Update value for next step
+			if (validPosition)
+				decision.data[targetX][targetY] = ((targetDecisionValue << 16) >> 16)
+						| (board.data[x][y] << 16);
+
+			board.data[x][y] = int(targetValue >> 16);
 		}
 	}
 }
