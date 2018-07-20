@@ -47,12 +47,17 @@ layout(binding = 0) uniform SConfiguration
 	Entry materials[16];
 }configuration;
 
-layout(binding = 1) readonly buffer SBoard
+layout(binding = 1) uniform FrameUniformBuffer
+{
+	uint random;
+} FUB;
+
+layout(binding = 2) readonly buffer SBoard
 {
 	int data[WIDTH][HEIGHT];
 }board;
 
-layout(binding = 2) buffer SDecision
+layout(binding = 3) buffer SDecision
 {
 	uint data[WIDTH][HEIGHT];
 }decision;
@@ -70,9 +75,12 @@ void main()
 	{
 		int density = configuration.materials[value].density;
 		int rLocation = RANDOM_1_LOC;
+
+		uint decisionValue = decision.data[x][y];
+
 		for (int i = 0; i < 4; i++)
 		{
-			uint iDir = (decision.data[x][y] & (3 << rLocation)) >> rLocation;
+			uint iDir = (decisionValue & (3 << rLocation)) >> rLocation;
 			// iDir should be between 0 and 3 (included) here
 
 			// resolve the direction
