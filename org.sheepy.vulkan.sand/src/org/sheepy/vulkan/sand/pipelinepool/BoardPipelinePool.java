@@ -126,14 +126,13 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 				stepDescriptors);
 		stepPipeline.addShader(SHADER_STEP1);
 		stepPipeline.addShader(SHADER_STEP2);
+		stepPipeline.addPipelineBarrier(new BufferBarrier(boardBuffer, VK_ACCESS_MEMORY_READ_BIT,
+				VK_ACCESS_MEMORY_WRITE_BIT));
 		stepPipeline.addShader(SHADER_STEP3);
 		stepPipeline.addShader(SHADER_STEP4);
 
 		pixelCompute = new PixelComputePipeline(logicalDevice, descriptorPool, configBuffer,
 				boardBuffer, boardImage);
-
-		process.addProcessUnit(new BufferBarrier(boardBuffer, VK_ACCESS_MEMORY_READ_BIT,
-				VK_ACCESS_MEMORY_WRITE_BIT));
 		process.addProcessUnit(drawPipeline);
 		process.addProcessUnit(stepPipeline);
 		process.addProcessUnit(new BufferBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,

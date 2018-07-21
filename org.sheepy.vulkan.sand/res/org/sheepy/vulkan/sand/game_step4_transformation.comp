@@ -24,7 +24,9 @@
 
 #define OLD_VALUE_MASK 4294901760
 
-#define MATERIAL_COUNT 8
+#define MATERIAL_COUNT 16
+
+const uint MOVED_TAG = 1 << 16;
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
@@ -78,12 +80,12 @@ void main()
 	int x = int(gl_GlobalInvocationID.x);
 	int y = int(gl_GlobalInvocationID.y);
 
-	uint currentValue = decision.data[x][y] >> 16;
+	uint currentValue = decision.data[x][y] >> 24;
 
-	uint valueUp = y > 0 ? decision.data[x][y - 1] >> 16 : 0;
-	uint valueDown = y < (HEIGHT - 1) ? decision.data[x][y + 1] >> 16 : 0;
-	uint valueRight = x < (WIDTH - 1) ? decision.data[x + 1][y] >> 16 : 0;
-	uint valueLeft = x > 0 ? decision.data[x - 1][y] >> 16 : 0;
+	uint valueUp = y > 0 ? decision.data[x][y - 1] >> 24 : 0;
+	uint valueDown = y < (HEIGHT - 1) ? decision.data[x][y + 1] >> 24 : 0;
+	uint valueRight = x < (WIDTH - 1) ? decision.data[x + 1][y] >> 24 : 0;
+	uint valueLeft = x > 0 ? decision.data[x - 1][y] >> 24 : 0;
 
 // Purpose here is to call transform one by one, and stop at the first that is true.
 	!(currentValue == valueUp || !transform(x, y, currentValue, valueUp))
@@ -95,16 +97,22 @@ void main()
 bool transform(int x, int y, uint value, uint otherValue)
 {
 	bool res = false;
-	float rate = 0.25;
 	int targetValue = transformations.data[otherValue * MATERIAL_COUNT + value];
 
 	if (targetValue != -1)
 	{
-		float rand = rand(vec2(FUB.random, x * y));
-		if (rand <= rate)
+		int probability = (targetValue << 2) >> 18;
+		bool staticTransfo = (targetValue & (1 << 30)) != 0;
+
+		// If not static, or if we didn't move (no change Value)
+		if (!staticTransfo || (decision.data[x][y] & MOVED_TAG) == 0)
 		{
-			board.data[x][y] = targetValue;
-			res = true;
+			float rand = rand(vec2(FUB.random, x * y));
+			if (rand * 1000 <= float(probability))
+			{
+				board.data[x][y] = (targetValue << 16) >> 16;
+				res = true;
+			}
 		}
 	}
 

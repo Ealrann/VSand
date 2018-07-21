@@ -18,7 +18,7 @@ import imgui.WindowFlag;
 
 public class SandUIDescriptor extends UIDescriptor
 {
-	private final static int CONFIG_WINDOW_WIDTH = 200;
+	private final static int CONFIG_WINDOW_WIDTH = 140;
 	private final static int CONFIG_WINDOW_HEIGHT = 400;
 
 	private EMaterial material = EMaterial.Sand;
@@ -64,7 +64,7 @@ public class SandUIDescriptor extends UIDescriptor
 
 		imgui.sameLine(40);
 
-		if (imgui.button("* 2", new Vec2(30, 30)))
+		if (imgui.button("x 2", new Vec2(30, 30)))
 		{
 			if (speed < 16 - 1)
 			{
@@ -107,11 +107,18 @@ public class SandUIDescriptor extends UIDescriptor
 		imgui.textUnformatted("Materials:", 0);
 		for (EMaterial m : EMaterial.values())
 		{
-			if (imgui.colorButton(m.name(), new Vec4(m.r, m.g, m.b, 1f),
-					ColorEditFlag.NoTooltip.getI(), new Vec2(100, 25)))
+			if (m.userFriendly)
 			{
-				material = m;
-				res |= true;
+				imgui.textUnformatted(m.name(), 0);
+
+				imgui.sameLine(70);
+
+				if (imgui.colorButton(m.name(), new Vec4(m.r, m.g, m.b, 1f),
+						ColorEditFlag.NoTooltip.getI(), new Vec2(60, 25)))
+				{
+					material = m;
+					res |= true;
+				}
 			}
 		}
 

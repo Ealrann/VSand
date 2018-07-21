@@ -17,7 +17,6 @@ import org.sheepy.vulkan.sand.pipelinepool.BoardPipelinePool;
 import org.sheepy.vulkan.sand.pipelinepool.RenderPipelinePool;
 import org.sheepy.vulkan.sand.util.FPSCounter;
 
-import imgui.Context;
 import imgui.IO;
 import imgui.ImGui;
 
@@ -38,11 +37,12 @@ public class SandApplication extends VulkanApplication
 	private RenderPipelinePool renderPool;
 	private BoardModifications boardModifications;
 
-	// private static final int TARGET_FPS = 60;
-	// private static final float FRAME_TIME_STEP_MS = (1f / TARGET_FPS) * 1000;
-
 	private boolean drawEnabled = false;
 	private SandUIDescriptor uiDescriptor;
+	
+	private BoardImage image;
+
+	private FPSCounter fpsCounter = new FPSCounter();
 
 	public SandApplication()
 	{
@@ -102,8 +102,6 @@ public class SandApplication extends VulkanApplication
 
 		boardPool = new BoardPipelinePool(logicalDevice, boardModifications, image);
 
-		ctx = new Context();
-
 		renderPool = new RenderPipelinePool(logicalDevice, image.getImage(), uiDescriptor,
 				Collections.emptyList());
 
@@ -115,7 +113,6 @@ public class SandApplication extends VulkanApplication
 	@Override
 	public void cleanup()
 	{
-		ctx.shutdown();
 		image.free();
 		boardModifications.free();
 
@@ -128,25 +125,16 @@ public class SandApplication extends VulkanApplication
 		super.mainLoop();
 	}
 
-	private BoardImage image;
-	private Context ctx;
-	private double[] lastPosition = null;
-
-	private FPSCounter fpsCounter = new FPSCounter();
-
 	@Override
 	public void drawFrame()
 	{
-		fpsCounter.step();
+		if(DEBUG)
+			fpsCounter.step();
 
 		double[] cursorPosition = SandApplication.this.window.getCursorPosition();
 		IO io = ImGui.INSTANCE.getIo();
 		io.getMousePos().setX((int) cursorPosition[0]);
 		io.getMousePos().setY((int) cursorPosition[1]);
-
-		lastPosition = new double[2];
-		lastPosition[0] = cursorPosition[0];
-		lastPosition[1] = cursorPosition[1];
 
 		if (pause != true) boardPool.setSpeed(uiDescriptor.speed);
 		else boardPool.setSpeed(0);

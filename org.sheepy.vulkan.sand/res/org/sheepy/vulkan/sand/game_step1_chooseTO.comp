@@ -39,7 +39,7 @@ struct Entry
 
 layout(binding = 0) uniform SConfiguration
 {
-	Entry materials[8];
+	Entry materials[16];
 }configuration;
 
 layout(binding = 1) uniform FrameUniformBuffer
@@ -71,7 +71,7 @@ void main()
 	// Erase Tag,
 	// Erase previous value
 	// and Store the current value to the decision buffer.
-	decision.data[x][y] = (((decision.data[x][y] >> 8) << 24) >> 16) | (currentValue << 16);
+	decision.data[x][y] = (((decision.data[x][y] >> 8) << 24) >> 16) | (currentValue << 24);
 
 	if (configuration.materials[currentValue].isStatic == 0)
 	{
