@@ -21,7 +21,9 @@
 #define RANDOM_3_LOC  12
 #define RANDOM_4_LOC  14
 
-#define OLD_VALUE_MASK 4294901760
+const uint OLD_VALUE_MASK = 255 << 24;
+
+const uint MOVED_TAG = 1 << 16;
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
@@ -41,7 +43,7 @@ struct Entry
 
 layout(binding = 0) uniform SConfiguration
 {
-	Entry materials[8];
+	Entry materials[16];
 }configuration;
 
 layout(binding = 1) uniform FrameUniformBuffer
@@ -106,12 +108,16 @@ void main()
 
 			uint targetValue = targetDecisionValue & OLD_VALUE_MASK;
 
-			// Update value for next step
+			// Update new value for next step
+			// We update the neighboor value, because he don't needs it anymore.
 			if (validPosition)
-				decision.data[targetX][targetY] = ((targetDecisionValue << 16) >> 16)
-						| (board.data[x][y] << 16);
+				decision.data[targetX][targetY] = ((targetDecisionValue << 8) >> 8)
+						| (board.data[x][y] << 24) | MOVED_TAG;
+			else
+				// If no neighbors, nobody will update our value, so we do it.
+				decision.data[x][y] = ((decision.data[x][y] << 8) >> 8) | targetValue | MOVED_TAG;
 
-			board.data[x][y] = int(targetValue >> 16);
+			board.data[x][y] = int(targetValue >> 24);
 		}
 	}
 }

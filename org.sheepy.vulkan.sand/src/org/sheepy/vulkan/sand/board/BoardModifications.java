@@ -99,7 +99,7 @@ public class BoardModifications implements IDescriptor
 
 			copyBuffer.putInt(shape.ordinal());
 			copyBuffer.putFloat(size);
-			copyBuffer.putInt(value.id);
+			copyBuffer.putInt(value.ordinal());
 			copyBuffer.putFloat((int) (x * zoom));
 			copyBuffer.putFloat((int) (y * zoom));
 

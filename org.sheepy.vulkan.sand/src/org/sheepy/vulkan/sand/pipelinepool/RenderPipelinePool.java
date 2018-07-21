@@ -17,7 +17,6 @@ import org.sheepy.vulkan.sand.graphics.BufferedSwapConfiguration;
 import org.sheepy.vulkan.sand.graphics.SandUIDescriptor;
 import org.sheepy.vulkan.window.Surface;
 
-@SuppressWarnings("unused")
 public class RenderPipelinePool extends SurfacePipelinePool
 {
 	private LogicalDevice logicalDevice;
@@ -46,7 +45,7 @@ public class RenderPipelinePool extends SurfacePipelinePool
 		configuration = new BufferedSwapConfiguration(logicalDevice, commandPool, image,
 				uiDescriptor);
 		// enable VSync
-		// configuration.presentationMode = VK_PRESENT_MODE_FIFO_KHR;
+		configuration.presentationMode = VK_PRESENT_MODE_FIFO_KHR;
 
 		configuration.renderPass = new BufferToPixelRenderPass(configuration);
 
