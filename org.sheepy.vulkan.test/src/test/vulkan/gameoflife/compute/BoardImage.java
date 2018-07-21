@@ -53,9 +53,9 @@ public class BoardImage implements IDescriptor, IAllocable
 			@Override
 			protected void doExecute(MemoryStack stack, VkCommandBuffer commandBuffer)
 			{
-				image.transitionImageLayout(commandBuffer, VK_IMAGE_LAYOUT_UNDEFINED,
-						VK_IMAGE_LAYOUT_GENERAL, 1, VK_PIPELINE_STAGE_TRANSFER_BIT,
-						VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, 0, VK_ACCESS_SHADER_WRITE_BIT);
+				image.transitionImageLayout(commandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT,
+						VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_IMAGE_LAYOUT_GENERAL,
+						VK_ACCESS_SHADER_WRITE_BIT);
 			}
 		};
 		stc.execute();

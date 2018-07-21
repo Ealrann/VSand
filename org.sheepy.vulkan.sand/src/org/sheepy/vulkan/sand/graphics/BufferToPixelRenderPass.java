@@ -13,6 +13,7 @@ import org.lwjgl.vulkan.VkRenderPassCreateInfo;
 import org.lwjgl.vulkan.VkSubpassDependency;
 import org.lwjgl.vulkan.VkSubpassDescription;
 import org.sheepy.vulkan.buffer.Image;
+import org.sheepy.vulkan.buffer.ImageBarrier;
 import org.sheepy.vulkan.command.AbstractCommandBuffer;
 import org.sheepy.vulkan.command.graphic.RenderCommandBuffer;
 import org.sheepy.vulkan.device.LogicalDevice;
@@ -73,7 +74,7 @@ public class BufferToPixelRenderPass implements IRenderPass
 			commandBuffer.startCommand();
 
 			copyPixelBufferToFB(commandBuffer, imageView);
-			
+
 			commandBuffer.startRenderPass();
 
 			imGui.drawFrame(commandBuffer.getVkCommandBuffer());
@@ -83,19 +84,19 @@ public class BufferToPixelRenderPass implements IRenderPass
 		}
 	}
 
-	private void copyPixelBufferToFB(AbstractCommandBuffer commandBuffer, ImageView framebufferImageView)
+	private void copyPixelBufferToFB(AbstractCommandBuffer commandBuffer,
+			ImageView framebufferImageView)
 	{
 		Extent2D extent = configuration.swapChainManager.getExtent();
 
-		srcImage.transitionImageLayout(commandBuffer.getVkCommandBuffer(), VK_IMAGE_LAYOUT_GENERAL,
-				VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, 1, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-				VK_PIPELINE_STAGE_TRANSFER_BIT, VK_ACCESS_SHADER_WRITE_BIT,
-				VK_ACCESS_TRANSFER_READ_BIT);
 
-		framebufferImageView.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
-				VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1,
-				VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0,
-				VK_ACCESS_TRANSFER_WRITE_BIT);
+		ImageBarrier barrier = new ImageBarrier(VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+				VK_PIPELINE_STAGE_TRANSFER_BIT);
+		barrier.addImageBarrier(srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+				VK_ACCESS_TRANSFER_READ_BIT);
+		barrier.addImageBarrier(framebufferImageView.getImageId(), framebufferImageView.getImageFormat(), 1, 0,
+				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 0, VK_ACCESS_TRANSFER_WRITE_BIT);
+		barrier.execute(commandBuffer.getVkCommandBuffer());
 
 		long bltSrcImage = srcImage.getId();
 		long bltDstImage = framebufferImageView.getImageId();
@@ -108,15 +109,14 @@ public class BufferToPixelRenderPass implements IRenderPass
 				VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, bltDstImage,
 				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, region, VK_FILTER_LINEAR);
 
-		srcImage.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
-				VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL, 1,
-				VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-				VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_SHADER_WRITE_BIT);
 
-		framebufferImageView.transitionImageLayout(commandBuffer.getVkCommandBuffer(),
-				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, 1,
-				VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT,
+		ImageBarrier barrierEnd = new ImageBarrier(VK_PIPELINE_STAGE_TRANSFER_BIT,
+				VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+		barrierEnd.addImageBarrier(srcImage, VK_IMAGE_LAYOUT_GENERAL, VK_ACCESS_SHADER_WRITE_BIT);
+		barrierEnd.addImageBarrier(framebufferImageView.getImageId(), framebufferImageView.getImageFormat(), 1,
+				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
 				VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_SHADER_WRITE_BIT);
+		barrierEnd.execute(commandBuffer.getVkCommandBuffer());
 	}
 
 	@Override

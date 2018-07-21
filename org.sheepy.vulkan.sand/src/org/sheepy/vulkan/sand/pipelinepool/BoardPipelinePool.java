@@ -11,6 +11,7 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.vulkan.VkCommandBuffer;
 import org.sheepy.vulkan.buffer.Buffer;
+import org.sheepy.vulkan.buffer.ImageBarrier;
 import org.sheepy.vulkan.command.SingleTimeCommand;
 import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.descriptor.DescriptorPool;
@@ -20,7 +21,7 @@ import org.sheepy.vulkan.pipeline.PipelinePool;
 import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
-import org.sheepy.vulkan.pipeline.compute.PipelineBarrier;
+import org.sheepy.vulkan.pipeline.compute.BufferBarrier;
 import org.sheepy.vulkan.sand.board.BoardModifications;
 import org.sheepy.vulkan.sand.compute.BoardDecisionBuffer;
 import org.sheepy.vulkan.sand.compute.BoardImage;
@@ -106,10 +107,10 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 	{
 		int width = boardImage.getWidth();
 		int height = boardImage.getHeight();
-		
+
 		process = new ComputeProcess(logicalDevice);
 		DescriptorPool descriptorPool = process.getDescriptorPool();
-		
+
 		List<IDescriptor> stepDescriptors = new ArrayList<>();
 		stepDescriptors.add(configBuffer.getBuffer());
 		stepDescriptors.add(ubo.getBuffer());
@@ -131,14 +132,13 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 		pixelCompute = new PixelComputePipeline(logicalDevice, descriptorPool, configBuffer,
 				boardBuffer, boardImage);
 
-		process.addProcessUnit(new PipelineBarrier(boardBuffer, VK_ACCESS_MEMORY_READ_BIT,
+		process.addProcessUnit(new BufferBarrier(boardBuffer, VK_ACCESS_MEMORY_READ_BIT,
 				VK_ACCESS_MEMORY_WRITE_BIT));
 		process.addProcessUnit(drawPipeline);
 		process.addProcessUnit(stepPipeline);
-		process.addProcessUnit(new PipelineBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,
+		process.addProcessUnit(new BufferBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,
 				VK_ACCESS_MEMORY_READ_BIT));
 		process.addProcessUnit(pixelCompute);
-
 
 		boardProcessesPool = new ComputeProcessPool(logicalDevice, commandPool);
 		boardProcessesPool.addProcess(process);
@@ -158,9 +158,9 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 				@Override
 				protected void doExecute(MemoryStack stack, VkCommandBuffer commandBuffer)
 				{
-					boardImage.getImage().transitionImageLayout(commandBuffer,
-							VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL, 1,
-							VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, 0,
+					ImageBarrier.execute(commandBuffer, boardImage.getImage(),
+							VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+							VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_IMAGE_LAYOUT_GENERAL,
 							VK_ACCESS_SHADER_WRITE_BIT);
 				}
 			};
@@ -184,7 +184,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 	public void execute()
 	{
 		ubo.update();
-		
+
 		if (boardModifications.isEmpty() == false)
 		{
 			drawPipeline.setEnabled(true);
