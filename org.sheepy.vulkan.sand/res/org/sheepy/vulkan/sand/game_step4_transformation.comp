@@ -26,7 +26,7 @@
 
 #define MATERIAL_COUNT 16
 
-const uint MOVED_TAG = 1 << 16;
+const uint MOVED_TAG = 1 << 4;
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
@@ -105,7 +105,7 @@ bool transform(int x, int y, uint value, uint otherValue)
 		bool staticTransfo = (targetValue & (1 << 30)) != 0;
 
 		// If not static, or if we didn't move (no change Value)
-		if (!staticTransfo || (decision.data[x][y] & MOVED_TAG) == 0)
+		if (!staticTransfo || (decision.data[x][y] & (15 | MOVED_TAG)) == 0)
 		{
 			float rand = rand(vec2(FUB.random, x * y));
 			if (rand * 1000 <= float(probability))

@@ -21,9 +21,8 @@
 #define RANDOM_3_LOC  12
 #define RANDOM_4_LOC  14
 
-const uint OLD_VALUE_MASK = 255 << 24;
-
-const uint MOVED_TAG = 1 << 16;
+const uint MOVED_TAG = 1 << 4;
+const uint TO_VALUE_FLAG = 15 << 16;
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
@@ -101,23 +100,34 @@ void main()
 		bool validPosition = targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT;
 		if (!validPosition || (decision.data[targetX][targetY] & invertDir) != 0)
 		{
-			uint targetDecisionValue = 0;
+			uint targetValue = (decision.data[x][y] & TO_VALUE_FLAG) >> 16;
 
-			if (validPosition)
-				targetDecisionValue = decision.data[targetX][targetY];
+			decision.data[x][y] = ((decision.data[x][y] << 8) >> 8) | (targetValue << 24)
+					| MOVED_TAG;
 
-			uint targetValue = targetDecisionValue & OLD_VALUE_MASK;
+			// If we swap on Air, we will try to swap a full column.
+			if (targetValue == 0)
+			{
+				int direction = y < targetY ? -1 : 1;
+				bool end = false;
+				while (!end)
+				{
+					int iterateY = y + direction;
+					if (iterateY >= 0 && iterateY < HEIGHT && board.data[x][iterateY] == value
+							&& (decision.data[x][iterateY] & 15) == 0)
+					{
+						y = iterateY;
+						decision.data[x][y] |= MOVED_TAG;
+					}
+					else
+					{
+						end = true;
+					}
+				}
+			}
 
-			// Update new value for next step
-			// We update the neighboor value, because he don't needs it anymore.
-			if (validPosition)
-				decision.data[targetX][targetY] = ((targetDecisionValue << 8) >> 8)
-						| (board.data[x][y] << 24) | MOVED_TAG;
-			else
-				// If no neighbors, nobody will update our value, so we do it.
-				decision.data[x][y] = ((decision.data[x][y] << 8) >> 8) | targetValue | MOVED_TAG;
-
-			board.data[x][y] = int(targetValue >> 24);
+			board.data[x][y] = int(targetValue);
 		}
 	}
 }
+

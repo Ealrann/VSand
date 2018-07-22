@@ -45,7 +45,7 @@ layout(binding = 0) uniform SConfiguration
 layout(binding = 1) uniform FrameUniformBuffer
 {
 	uint random;
-} FUB;
+}FUB;
 
 layout(binding = 2) readonly buffer SBoard
 {
@@ -78,41 +78,46 @@ void main()
 			uint iDir = (decisionValue & (3 << rLocation)) >> rLocation;
 			// iDir should be between 0 and 3 (included) here
 
-			// resolve the direction
-			uint invertDir = 0;
-			int targetX = x;
-			int targetY = y;
-			switch (iDir)
+			// The down is impossible here:
+			// We cannot be the target of a heavier down object.
+			if (iDir != DOWN)
 			{
-			case RIGHT:
-				targetX += 1;
-				invertDir = TO_LEFT;
-				break;
-			case LEFT:
-				targetX -= 1;
-				invertDir = TO_RIGHT;
-				break;
-			case UP:
-				targetY -= 1;
-				invertDir = TO_DOWN;
-				break;
-			default:
-				targetY += 1;
-				invertDir = TO_UP;
-			}
-
-			if (targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT)
-			{
-				int targetValue = board.data[targetX][targetY];
-				int targetDensity = configuration.materials[targetValue].density;
-
-				if (targetDensity > density && (decision.data[targetX][targetY] & invertDir) != 0)
+				// resolve the direction
+				uint invertDir = 0;
+				int targetX = x;
+				int targetY = y;
+				switch (iDir)
 				{
-					// convert iDir to a mask
-					uint maskDir = 1 << iDir;
-
-					decision.data[x][y] = ((decisionValue >> 8) << 8) | maskDir;
+				case RIGHT:
+					targetX += 1;
+					invertDir = TO_LEFT;
 					break;
+				case LEFT:
+					targetX -= 1;
+					invertDir = TO_RIGHT;
+					break;
+				case UP:
+					targetY -= 1;
+					invertDir = TO_DOWN;
+					break;
+				}
+
+				if (targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT)
+				{
+					int targetValue = board.data[targetX][targetY];
+					int targetDensity = configuration.materials[targetValue].density;
+
+					if (targetDensity > density
+							&& (decision.data[targetX][targetY] & invertDir) != 0)
+					{
+						// convert iDir to a mask
+						uint maskDir = 1 << iDir;
+
+						decision.data[x][y] = ((decisionValue >> 8) << 8) | maskDir
+								| (targetValue << 16);
+
+						break;
+					}
 				}
 			}
 

@@ -77,14 +77,13 @@ void main()
 	{
 		int density = configuration.materials[currentValue].density;
 
-		int valueUp = y > 0 ? board.data[x][y - 1] : 0;
 		int valueDown = y < (HEIGHT - 1) ? board.data[x][y + 1] : 0;
 		// Make a list of available directions
 
 		if (configuration.materials[valueDown].isStatic == 0
 				&& density > configuration.materials[valueDown].density)
 		{
-			decision.data[x][y] |= TO_DOWN;
+			decision.data[x][y] |= TO_DOWN | (valueDown << 16);
 		}
 		else
 		{
@@ -107,6 +106,7 @@ void main()
 
 			bool right = distRight < runoff;
 			bool left = distLeft < runoff;
+			int targetValue = 0;
 
 			if (right || left)
 			{
@@ -116,17 +116,25 @@ void main()
 					if (distRight < distLeft)
 					{
 						tag = TO_RIGHT;
+						targetValue = valueRight;
 					}
 					else if (distRight > distLeft)
 					{
 						tag = TO_LEFT;
+						targetValue = valueLeft;
 					}
 					else // if (distLeft == fistRight)
 					{
 						if (mod(FUB.random, 2) == 0)
+						{
 							tag = TO_RIGHT;
+							targetValue = valueRight;
+						}
 						else
+						{
 							tag = TO_LEFT;
+							targetValue = valueLeft;
+						}
 					}
 				}
 				else
@@ -134,13 +142,15 @@ void main()
 					if (right)
 					{
 						tag = TO_RIGHT;
+						targetValue = valueRight;
 					}
 					else if (left)
 					{
 						tag = TO_LEFT;
+						targetValue = valueLeft;
 					}
 				}
-				decision.data[x][y] |= tag;
+				decision.data[x][y] |= tag | (targetValue << 16);
 			}
 		}
 	}
