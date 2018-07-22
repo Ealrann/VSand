@@ -5,6 +5,7 @@ public enum ETransformation
 	WATER__PLANT(EMaterial.Water, EMaterial.Plant, EMaterial.Plant, 400, false),
 	VOID__FIRE(EMaterial.Void, EMaterial.Fire, EMaterial.Fire, 40, false),
 	FIRE__ALL(EMaterial.Fire, null, EMaterial.Void, 240, false),
+	FIRE__WATER(EMaterial.Fire, EMaterial.Water, EMaterial.Void, 1000, false),
 
 	CONCRETE__ALL(EMaterial.Concrete, null, EMaterial.Wall, 10, true),
 	
