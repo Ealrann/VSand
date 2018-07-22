@@ -17,7 +17,7 @@ public enum ETransformation
 	WAX__FIRE(EMaterial.Wax, EMaterial.Fire, EMaterial.WaxFire, 200, false),
 	WAX__WAXFIRE(EMaterial.Wax, EMaterial.WaxFire, EMaterial.WaxFire, 40, false),
 	WAX__FINALFIRE(EMaterial.Wax, EMaterial.FinalWaxFire, EMaterial.WaxFire, 1000, false),
-	WAXFIRE__FINALFIRE(EMaterial.WaxFire, null, EMaterial.FinalWaxFire, 10, false),
+	WAXFIRE__FINALFIRE(EMaterial.WaxFire, null, EMaterial.FinalWaxFire, 25, false),
 	WAXFIRE__VOID(EMaterial.WaxFire, EMaterial.Void, EMaterial.Fire, 40, false),
 	FINALFIRE__LIQUIDWAX(EMaterial.FinalWaxFire, null, EMaterial.LiquidWax, 50, false),
 	LIQUIDWAX__WAX(EMaterial.LiquidWax, null, EMaterial.Wax, 100, true)
