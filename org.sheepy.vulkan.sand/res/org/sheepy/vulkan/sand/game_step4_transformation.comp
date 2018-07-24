@@ -44,25 +44,46 @@ struct Entry
 	float padding1;
 };
 
+// The definition of materials.
 layout(binding = 0) uniform SConfiguration
 {
-	Entry materials[MATERIAL_COUNT];
+	Entry materials[16];
 }configuration;
 
+// Random number, change each frame.
 layout(binding = 1) uniform FrameUniformBuffer
 {
 	uint random;
 }FUB;
 
+// The game board, with all the values.
 layout(binding = 2) buffer SBoard
 {
 	int data[WIDTH][HEIGHT];
 }board;
 
+// DecisionBoard store necessary informations around movement.
+// Each 32 bit value (one per cell) stores:
+// 8 bits for the initial value
+// 8 bits for the swapped value
+// 8 bits with a random value.
+//		This value is divided in 4 value of 2 bit, and represent
+// 		a random array containing all the unique values : 0, 1, 2 and 3.
+//		Used to have a favourite neighboors per cells.
+// 3 unused bits.
+// 1 bit, true if the cell is swapped.
+// 4 bits for the direction we intend to swap.
 layout(binding = 3) buffer SDecision
 {
 	uint data[WIDTH][HEIGHT];
 }decision;
+
+// The description of the transformations.
+// Each cell contains :
+// 1 bit for the sign
+// 1 bit for isStatic (if the transformation should occur only if the material doesn't move.
+// 14 bits for the probability (not all used, probability is only an integer from 0 to 1000).
+// 16 bits for the target value.
 
 layout(binding = 4) readonly buffer STransformation
 {
