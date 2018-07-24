@@ -106,7 +106,7 @@ void main()
 					| MOVED_TAG;
 
 			// If we swap on Air, we will try to swap a full column.
-			if (targetValue == 0)
+			if (targetValue == 0 && (dir == TO_UP || dir == TO_DOWN))
 			{
 				int direction = y < targetY ? -1 : 1;
 				bool end = false;
@@ -114,7 +114,7 @@ void main()
 				{
 					int iterateY = y + direction;
 					if (iterateY >= 0 && iterateY < HEIGHT && board.data[x][iterateY] == value
-							&& (decision.data[x][iterateY] & 15) == 0)
+							&& (decision.data[x][iterateY] & 31) == 0)
 					{
 						y = iterateY;
 						decision.data[x][y] |= MOVED_TAG;
