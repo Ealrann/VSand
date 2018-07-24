@@ -17,11 +17,10 @@ import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.descriptor.DescriptorPool;
 import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.pipeline.PipelinePool;
+import org.sheepy.vulkan.pipeline.compute.ComputeBufferBarrier;
 import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
-import org.sheepy.vulkan.pipeline.compute.BufferBarrier;
 import org.sheepy.vulkan.sand.board.BoardModifications;
 import org.sheepy.vulkan.sand.compute.BoardDecisionBuffer;
 import org.sheepy.vulkan.sand.compute.BoardImage;
@@ -30,7 +29,7 @@ import org.sheepy.vulkan.sand.compute.FrameUniformBuffer;
 import org.sheepy.vulkan.sand.compute.PixelComputePipeline;
 import org.sheepy.vulkan.sand.compute.TransformationBuffer;
 
-public class BoardPipelinePool extends PipelinePool implements IAllocable
+public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 {
 	private static final String SHADER_STEP1 = "org/sheepy/vulkan/sand/game_step1_chooseTO.comp.spv";
 	private static final String SHADER_STEP2 = "org/sheepy/vulkan/sand/game_step2_acceptFROM.comp.spv";
@@ -45,11 +44,8 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 	private FrameUniformBuffer ubo;
 
-	private LogicalDevice logicalDevice;
 	private BoardModifications boardModifications;
 	private BoardImage boardImage;
-
-	private ComputeProcessPool boardProcessesPool;
 
 	private BoardDecisionBuffer decision;
 	private ConfigurationBuffer configBuffer;
@@ -61,9 +57,8 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 	public BoardPipelinePool(LogicalDevice logicalDevice, BoardModifications boardModifications,
 			BoardImage boardImage)
 	{
-		super(logicalDevice, logicalDevice.getQueueManager().getComputeQueueIndex(), true);
+		super(logicalDevice, true);
 
-		this.logicalDevice = logicalDevice;
 		this.boardModifications = boardModifications;
 		this.boardImage = boardImage;
 
@@ -96,11 +91,11 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 		ubo = new FrameUniformBuffer(logicalDevice);
 
-		subAllocationObjects.add(configBuffer);
-		subAllocationObjects.add(tranformationBuffer);
-		subAllocationObjects.add(ubo);
-		subAllocationObjects.add(boardBuffer);
-		subAllocationObjects.add(decision);
+		allocationObjects.add(configBuffer);
+		allocationObjects.add(tranformationBuffer);
+		allocationObjects.add(ubo);
+		allocationObjects.add(boardBuffer);
+		allocationObjects.add(decision);
 	}
 
 	private void buildPipelines()
@@ -126,7 +121,7 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 				stepDescriptors);
 		stepPipeline.addShader(SHADER_STEP1);
 		stepPipeline.addShader(SHADER_STEP2);
-		stepPipeline.addPipelineBarrier(new BufferBarrier(boardBuffer, VK_ACCESS_MEMORY_READ_BIT,
+		stepPipeline.addPipelineBarrier(new ComputeBufferBarrier(boardBuffer, VK_ACCESS_MEMORY_READ_BIT,
 				VK_ACCESS_MEMORY_WRITE_BIT));
 		stepPipeline.addShader(SHADER_STEP3);
 		stepPipeline.addShader(SHADER_STEP4);
@@ -135,14 +130,11 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 				boardBuffer, boardImage);
 		process.addProcessUnit(drawPipeline);
 		process.addProcessUnit(stepPipeline);
-		process.addProcessUnit(new BufferBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,
+		process.addProcessUnit(new ComputeBufferBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,
 				VK_ACCESS_MEMORY_READ_BIT));
 		process.addProcessUnit(pixelCompute);
 
-		boardProcessesPool = new ComputeProcessPool(logicalDevice, commandPool);
-		boardProcessesPool.addProcess(process);
-
-		subAllocationObjects.add(boardProcessesPool);
+		addProcess(process);
 	}
 
 	@Override
@@ -196,9 +188,10 @@ public class BoardPipelinePool extends PipelinePool implements IAllocable
 
 		if (process.isDirty())
 		{
-			boardProcessesPool.recordCommands();
+			vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
+			recordCommands();
 		}
 
-		boardProcessesPool.exectue(logicalDevice.getQueueManager().getComputeQueue(), 0);
+		super.execute();
 	}
 }

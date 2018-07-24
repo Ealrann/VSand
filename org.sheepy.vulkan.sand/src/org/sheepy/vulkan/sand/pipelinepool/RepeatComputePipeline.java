@@ -6,6 +6,7 @@ import java.util.List;
 import org.sheepy.vulkan.descriptor.DescriptorPool;
 import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.pipeline.IPipelineExecutable;
 import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
 
 class RepeatComputePipeline extends ComputePipeline
@@ -28,13 +29,13 @@ class RepeatComputePipeline extends ComputePipeline
 	}
 
 	@Override
-	public List<IComputePipelineExecutableUnit> getExecutablesUnit()
+	public List<IPipelineExecutable> getExecutables()
 	{
-		List<IComputePipelineExecutableUnit> res = new ArrayList<>();
+		List<IPipelineExecutable> res = new ArrayList<>();
 
 		for (int i = 0; i < repeat; i++)
 		{
-			res.addAll(super.getExecutablesUnit());
+			res.addAll(super.getExecutables());
 		}
 
 		return res;
