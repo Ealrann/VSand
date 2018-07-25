@@ -14,7 +14,6 @@ import org.sheepy.vulkan.buffer.Buffer;
 import org.sheepy.vulkan.buffer.ImageBarrier;
 import org.sheepy.vulkan.command.SingleTimeCommand;
 import org.sheepy.vulkan.common.IAllocable;
-import org.sheepy.vulkan.descriptor.DescriptorPool;
 import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
 import org.sheepy.vulkan.pipeline.compute.ComputeBufferBarrier;
@@ -103,9 +102,6 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		int width = boardImage.getWidth();
 		int height = boardImage.getHeight();
 
-		process = new ComputeProcess(logicalDevice);
-		DescriptorPool descriptorPool = process.getDescriptorPool();
-
 		List<IDescriptor> stepDescriptors = new ArrayList<>();
 		stepDescriptors.add(configBuffer.getBuffer());
 		stepDescriptors.add(ubo.getBuffer());
@@ -113,25 +109,25 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		stepDescriptors.add(decision.getBuffer());
 		stepDescriptors.add(tranformationBuffer.getBuffer());
 
-		drawPipeline = new ComputePipeline(logicalDevice, descriptorPool, width, height, 1,
+		drawPipeline = new ComputePipeline(logicalDevice, width, height, 1,
 				Arrays.asList(boardBuffer, boardModifications), SHADER_DRAW);
 		drawPipeline.setEnabled(false);
 		drawPipeline.setWorkgroupSize(32, 16, 1);
 
-		stepPipeline = new RepeatComputePipeline(logicalDevice, descriptorPool, width, height, 1,
-				stepDescriptors);
-		stepPipeline.addShader(SHADER_STEP1);
-		stepPipeline.addShader(SHADER_STEP2);
-		stepPipeline.addPipelineBarrier(new ComputeBufferBarrier(boardBuffer, VK_ACCESS_MEMORY_READ_BIT,
-				VK_ACCESS_MEMORY_WRITE_BIT));
-		stepPipeline.addShader(SHADER_STEP3);
-		stepPipeline.addShader(SHADER_STEP4);
+		stepPipeline = new RepeatComputePipeline(width, height, 1, stepDescriptors);
+		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP1));
+		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP2));
+		stepPipeline.addPipelineBarrier(new ComputeBufferBarrier(boardBuffer,
+				VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_MEMORY_WRITE_BIT));
+		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP3));
+		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP4));
 		stepPipeline.setWorkgroupSize(32, 16, 1);
 
-		pixelCompute = new PixelComputePipeline(logicalDevice, descriptorPool, configBuffer,
-				boardBuffer, boardImage);
+		pixelCompute = new PixelComputePipeline(logicalDevice, configBuffer, boardBuffer,
+				boardImage);
 		pixelCompute.setWorkgroupSize(32, 16, 1);
-		
+
+		process = new ComputeProcess(logicalDevice);
 		process.addProcessUnit(drawPipeline);
 		process.addProcessUnit(stepPipeline);
 		process.addProcessUnit(new ComputeBufferBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,

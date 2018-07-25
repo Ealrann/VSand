@@ -2,27 +2,20 @@ package org.sheepy.vulkan.sand.graphics;
 
 import static org.lwjgl.vulkan.VK10.*;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VkImageBlit;
 import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.buffer.ImageBarrier;
 import org.sheepy.vulkan.command.graphic.RenderCommandBuffer;
-import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.descriptor.DescriptorPool;
-import org.sheepy.vulkan.descriptor.IDescriptor;
-import org.sheepy.vulkan.imgui.ImGuiPipeline;
 import org.sheepy.vulkan.pipeline.graphic.GraphicContext;
+import org.sheepy.vulkan.pipeline.graphic.IGraphicExecutable;
 import org.sheepy.vulkan.pipeline.graphic.IGraphicProcessUnit;
 import org.sheepy.vulkan.swapchain.SwapChainManager.Extent2D;
 import org.sheepy.vulkan.view.ImageView;
 
-public class BufferedGraphicPipeline implements IGraphicProcessUnit, IAllocable
+public class BufferedGraphicPipeline implements IGraphicExecutable, IGraphicProcessUnit
 {
 	private GraphicContext context;
-	private ImGuiPipeline imGui;
 	private Image srcImage;
 
 	public BufferedGraphicPipeline(Image srcImage)
@@ -31,39 +24,13 @@ public class BufferedGraphicPipeline implements IGraphicProcessUnit, IAllocable
 	}
 
 	@Override
-	public void allocate(MemoryStack stack)
-	{
-		imGui.allocate(stack);
-
-		imGui.newFrame();
-		imGui.updateBuffers();
-	}
-
-	@Override
-	public void free()
-	{
-		imGui.free();
-	}
-
-	@Override
-	public void bindContext(GraphicContext context, DescriptorPool descriptorPool)
+	public void bindContext(DescriptorPool descriptorPool, GraphicContext context)
 	{
 		this.context = context;
-
-		if (context != null)
-		{
-			this.imGui = ((BufferedSwapConfiguration) context.configuration).imGui;
-		}
 	}
 
 	@Override
 	public void execute(RenderCommandBuffer commandBuffer)
-	{
-		imGui.drawFrame(commandBuffer.getVkCommandBuffer());
-	}
-
-	@Override
-	public void executePreRender(RenderCommandBuffer commandBuffer)
 	{
 		Extent2D extent = context.swapChainManager.getExtent();
 		ImageView dstImageView = context.imageViewManager.getImageViews().get(commandBuffer.id);
@@ -117,15 +84,5 @@ public class BufferedGraphicPipeline implements IGraphicProcessUnit, IAllocable
 				VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_SHADER_WRITE_BIT);
 
 		barrierEnd.execute(commandBuffer.getVkCommandBuffer());
-	}
-
-	@Override
-	public void executePostRender(RenderCommandBuffer commandBuffer)
-	{}
-
-	@Override
-	public List<IDescriptor> getDescriptors()
-	{
-		return Collections.emptyList();
 	}
 }
