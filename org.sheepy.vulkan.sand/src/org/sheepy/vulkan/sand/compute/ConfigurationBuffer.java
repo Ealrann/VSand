@@ -47,13 +47,12 @@ public class ConfigurationBuffer implements IAllocable
 			bBuffer.putInt(material.isStatic ? 1 : 0);
 			bBuffer.putInt(material.density);
 			bBuffer.putInt(material.runoff);
-			bBuffer.putFloat(material.viscosity);
-			bBuffer.putFloat(material.r);
-			bBuffer.putFloat(material.g);
-			bBuffer.putFloat(material.b);
 
-			// Padding1
-			bBuffer.putFloat(0);
+			int rgb = (int) (material.r * 255.) << 16
+					| (int) (material.g * 255.) << 8
+					| (int) (material.b * 255.);
+
+			bBuffer.putInt(rgb);
 		}
 		bBuffer.flip();
 

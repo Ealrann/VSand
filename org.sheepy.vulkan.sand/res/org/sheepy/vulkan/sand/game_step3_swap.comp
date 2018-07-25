@@ -31,13 +31,7 @@ struct Entry
 	int isStatic;
 	int density;
 	int runoff;
-	float viscosity;
-	float r;
-	float g;
-	float b;
-
-	// Padding for the alignement
-	float padding1;
+	uint rgb;
 };
 
 // The definition of materials.

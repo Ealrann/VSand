@@ -14,29 +14,32 @@ struct Entry
 	int isStatic;
 	int density;
 	int runoff;
-	float viscosity;
-	float r;
-	float g;
-	float b;
-
-	// Padding for the alignement
-	float padding1;
+	uint rgb;
 };
 
-layout(binding = 0) uniform SConfiguration {
+layout(binding = 0) uniform SConfiguration
+{
 	Entry materials[16];
 }configuration;
 
-layout(binding = 1) readonly buffer buf2 {
+layout(binding = 1) readonly buffer buf2
+{
 	int data[WIDTH][HEIGHT];
 }board;
 
-layout(rgba8, binding = 2) uniform image2D outImage;
+layout(rgba8ui, binding = 2) uniform uimage2D outImage;
 
-void main() {
+const uint G_MASK = 255 << 8;
+const uint B_MASK = 255;
 
-	Entry material = configuration.materials[board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y]];
+void main()
+{
+	Entry material =
+			configuration.materials[board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y]];
 
-	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy),
-			vec4(material.r, material.g, material.b, 1.0));
+	float r = (material.rgb >> 16);
+	float g = (material.rgb & G_MASK) >> 8;
+	float b = material.rgb & B_MASK;
+
+	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), uvec4(r, g, b, 1.0));
 }
