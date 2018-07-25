@@ -116,6 +116,7 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		drawPipeline = new ComputePipeline(logicalDevice, descriptorPool, width, height, 1,
 				Arrays.asList(boardBuffer, boardModifications), SHADER_DRAW);
 		drawPipeline.setEnabled(false);
+		drawPipeline.setWorkgroupSize(32, 16, 1);
 
 		stepPipeline = new RepeatComputePipeline(logicalDevice, descriptorPool, width, height, 1,
 				stepDescriptors);
@@ -125,9 +126,12 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 				VK_ACCESS_MEMORY_WRITE_BIT));
 		stepPipeline.addShader(SHADER_STEP3);
 		stepPipeline.addShader(SHADER_STEP4);
+		stepPipeline.setWorkgroupSize(32, 16, 1);
 
 		pixelCompute = new PixelComputePipeline(logicalDevice, descriptorPool, configBuffer,
 				boardBuffer, boardImage);
+		pixelCompute.setWorkgroupSize(32, 16, 1);
+		
 		process.addProcessUnit(drawPipeline);
 		process.addProcessUnit(stepPipeline);
 		process.addProcessUnit(new ComputeBufferBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,

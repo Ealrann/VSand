@@ -1,10 +1,10 @@
 #version 450
 
-#define WIDTH 1024
-#define HEIGHT 512
-//#define WIDTH 2048
-//#define HEIGHT 1152
-#define WORKGROUP_SIZE 32
+#define WIDTH 1280
+#define HEIGHT 720
+
+#define WORKGROUP_SIZE_X 32
+#define WORKGROUP_SIZE_Y 16
 
 #define UP    0
 #define DOWN  1
@@ -21,7 +21,7 @@
 #define RANDOM_3_LOC  12
 #define RANDOM_4_LOC  14
 
-layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
+layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
 struct Entry
 {
