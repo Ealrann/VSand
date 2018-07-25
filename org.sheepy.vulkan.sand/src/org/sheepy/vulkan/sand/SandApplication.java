@@ -67,7 +67,10 @@ public class SandApplication extends VulkanApplication
 					io.getMouseDown()[0] = action == GLFW_PRESS;
 					if (io.getWantCaptureMouse() == false && action == GLFW_PRESS)
 					{
-						firstDraw = true;
+						if (drawEnabled == false)
+						{
+							firstDraw = true;
+						}
 						drawEnabled = true;
 					}
 					else
