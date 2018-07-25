@@ -17,17 +17,18 @@ import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
 
 /**
- * CPU side Board
- * 
  * @author ealrann
  *
  */
 public class BoardModifications implements IDescriptor
 {
 	private float zoom;
-	
+
 	private ByteBuffer copyBuffer;
 	private Buffer modificationBuffer;
+
+	private static int oldX = 0;
+	private static int oldY = 0;
 
 	private Deque<Modification> boardModifications = new ArrayDeque<>();
 
@@ -43,7 +44,7 @@ public class BoardModifications implements IDescriptor
 			}
 		}
 
-		int size = 8 * 4;
+		int size = 17 * Integer.BYTES;
 
 		copyBuffer = MemoryUtil.memAlloc(size);
 		modificationBuffer = new Buffer(logicalDevice, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
@@ -64,11 +65,22 @@ public class BoardModifications implements IDescriptor
 
 	public void pushModification(EShape shape, EShapeSize size, int x, int y, EMaterial value)
 	{
-		boardModifications.add(new Modification(shape, size, x, y, value));
+
+		// We cannot draw a line if nothing moved
+		if (shape == EShape.Line && x == oldX && y == oldY)
+		{
+			shape = EShape.Circle;
+		}
+
+		boardModifications.add(new Modification(shape, size, x, y, oldX, oldY, value));
+
+		oldX = x;
+		oldY = y;
 	}
 
 	public void updateVkBuffer()
 	{
+		copyBuffer.clear();
 		Modification modif = boardModifications.pop();
 		modif.fillBuffer(copyBuffer);
 		copyBuffer.flip();
@@ -76,21 +88,27 @@ public class BoardModifications implements IDescriptor
 		modificationBuffer.fillWithBuffer(copyBuffer);
 	}
 
-	private class Modification
+	public class Modification
 	{
-		EShape shape;
-		EShapeSize size;
-		EMaterial value;
-		float x;
-		float y;
+		public final EShape shape;
+		public final EShapeSize size;
+		public final EMaterial value;
+		public final int x;
+		public final int y;
+		public final int oldX;
+		public final int oldY;
 
-		Modification(EShape shape, EShapeSize size, int x, int y, EMaterial value)
+		Modification(EShape shape, EShapeSize size, int x, int y, int oldX, int oldY,
+				EMaterial value)
 		{
 			this.shape = shape;
 			this.size = size;
-			this.x = x + .5f;
-			this.y = y + .5f;
+			this.x = x;
+			this.y = y;
 			this.value = value;
+
+			this.oldX = oldX;
+			this.oldY = oldY;
 		}
 
 		public void fillBuffer(ByteBuffer copyBuffer)
@@ -98,13 +116,11 @@ public class BoardModifications implements IDescriptor
 			int size = (int) (this.size.getSize() * zoom);
 
 			copyBuffer.putInt(shape.ordinal());
-			copyBuffer.putFloat(size);
-			copyBuffer.putInt(value.ordinal());
-			copyBuffer.putFloat((int) (x * zoom));
-			copyBuffer.putFloat((int) (y * zoom));
+			copyBuffer.putInt(size);
 
-			// Use the padding zone to store some precomputed stuff
-			copyBuffer.putFloat(size * size);
+			shape.getBuilder().fillBuffer(copyBuffer, this);
+
+			copyBuffer.putInt(value.ordinal());
 		}
 	}
 

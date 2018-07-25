@@ -22,7 +22,7 @@ public class SandUIDescriptor extends UIDescriptor
 	private final static int CONFIG_WINDOW_HEIGHT = 400;
 
 	private EMaterial material = EMaterial.Sand;
-	private int currentSize = EShapeSize.ES5.ordinal();
+	private int currentSize = EShapeSize.ES6.ordinal();
 
 	public int speed = 1;
 	private static final List<String> sizeList = new ArrayList<>();

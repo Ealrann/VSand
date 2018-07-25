@@ -37,9 +37,10 @@ public class SandApplication extends VulkanApplication
 	private RenderPipelinePool renderPool;
 	private BoardModifications boardModifications;
 
+	private boolean firstDraw = false;
 	private boolean drawEnabled = false;
 	private SandUIDescriptor uiDescriptor;
-	
+
 	private BoardImage image;
 
 	private FPSCounter fpsCounter = new FPSCounter();
@@ -64,8 +65,15 @@ public class SandApplication extends VulkanApplication
 				{
 				case GLFW_MOUSE_BUTTON_LEFT:
 					io.getMouseDown()[0] = action == GLFW_PRESS;
-					if (io.getWantCaptureMouse()) drawEnabled = false;
-					else drawEnabled = action == GLFW_PRESS;
+					if (io.getWantCaptureMouse() == false && action == GLFW_PRESS)
+					{
+						firstDraw = true;
+						drawEnabled = true;
+					}
+					else
+					{
+						drawEnabled = false;
+					}
 					break;
 				case GLFW_MOUSE_BUTTON_RIGHT:
 					io.getMouseDown()[1] = action == GLFW_PRESS;
@@ -128,8 +136,7 @@ public class SandApplication extends VulkanApplication
 	@Override
 	public void drawFrame()
 	{
-		if(DEBUG)
-			fpsCounter.step();
+		if (DEBUG) fpsCounter.step();
 
 		double[] cursorPosition = SandApplication.this.window.getCursorPosition();
 		IO io = ImGui.INSTANCE.getIo();
@@ -141,8 +148,19 @@ public class SandApplication extends VulkanApplication
 
 		if (drawEnabled)
 		{
-			boardModifications.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
-					(int) cursorPosition[0], (int) cursorPosition[1], uiDescriptor.getMaterial());
+			if (firstDraw)
+			{
+				boardModifications.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
+						(int) cursorPosition[0], (int) cursorPosition[1],
+						uiDescriptor.getMaterial());
+				firstDraw = false;
+			}
+			else
+			{
+				boardModifications.pushModification(EShape.Line, uiDescriptor.getBrushSize(),
+						(int) cursorPosition[0], (int) cursorPosition[1],
+						uiDescriptor.getMaterial());
+			}
 		}
 
 		boardPool.execute();

@@ -1,18 +1,34 @@
 package org.sheepy.vulkan.sand.board.builder;
 
-import java.nio.IntBuffer;
+import java.nio.ByteBuffer;
 
-import org.sheepy.vulkan.sand.board.EShapeSize;
+import org.sheepy.vulkan.sand.board.BoardModifications.Modification;
 
 public class SquareBuilder implements IShapeBuilder
 {
 
 	@Override
-	public void fillBuffer(IntBuffer shapeBuffer, EShapeSize size, int value)
+	public void fillBuffer(ByteBuffer shapeBuffer, Modification modification)
 	{
-		for (int index = 0; index < size.getSize() * size.getSize(); index++)
-		{
-			shapeBuffer.put(index, value);
-		}
+		shapeBuffer.putInt(modification.x);
+		shapeBuffer.putInt(modification.y);
+
+		int halfSize = modification.size.getSize() / 2;
+
+		shapeBuffer.putInt(modification.x - halfSize);
+		shapeBuffer.putInt(modification.y - halfSize);
+		shapeBuffer.putInt(modification.x + halfSize);
+		shapeBuffer.putInt(modification.y + halfSize);
+
+		// Unused here
+		shapeBuffer.putInt(0);
+		shapeBuffer.putInt(0);
+		shapeBuffer.putInt(0);
+		shapeBuffer.putInt(0);
+
+		shapeBuffer.putInt(0);
+		shapeBuffer.putInt(0);
+		shapeBuffer.putInt(0);
+		shapeBuffer.putInt(0);
 	}
 }

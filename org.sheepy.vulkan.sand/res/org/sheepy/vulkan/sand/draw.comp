@@ -7,8 +7,9 @@
 //#define HEIGHT 1152
 #define WORKGROUP_SIZE 32
 
-#define SQUARE 0
-#define CIRCLE 1
+#define SQUARE		0
+#define CIRCLE		1
+#define LINE	2
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
@@ -19,45 +20,91 @@ layout(binding = 0) buffer boardBuffer
 
 layout(binding = 1) uniform attributeBuffer
 {
+	// Shape to draw
 	int shape;
-	float size;
+	int size;
+	int x;
+	int y;
+
+	// BoundingBox
+	int minX;
+	int minY;
+	int maxX;
+	int maxY;
+
+	// For line, Rectangle to draw
+	ivec4 line1;
+	ivec4 line2;
+
 	int value;
-	float x;
-	float y;
-	float squareSize;
 
 }attributes;
 
 bool testCircle(int x, int y);
+bool testLine(int x, int y);
 
-void main() {
+void main()
+{
 	int x = int(gl_GlobalInvocationID.x);
 	int y = int(gl_GlobalInvocationID.y);
 
-	if (x >= attributes.x - attributes.size
-			&& y >= attributes.y - attributes.size
-			&& x <= attributes.x + attributes.size
-			&& y <= attributes.y + attributes.size) {
-
+	if (x >= attributes.minX && y >= attributes.minY && x <= attributes.maxX
+			&& y <= attributes.maxY)
+	{
 		bool isInShape = false;
-		switch (attributes.shape) {
+		switch (attributes.shape)
+		{
 		case SQUARE:
 			isInShape = true;
 			break;
 		case CIRCLE:
 			isInShape = testCircle(x, y);
 			break;
+		case LINE:
+			isInShape = testLine(x, y) || testCircle(x, y);
+			break;
 		}
 
-		if (isInShape) {
+		if (isInShape)
+		{
 			board.data[x][y] = attributes.value;
 		}
 	}
 }
 
-bool testCircle(int x, int y) {
-	float distX = (attributes.x - x) * (attributes.x - x);
-	float distY = (attributes.y - y) * (attributes.y - y);
+bool testCircle(int x, int y)
+{
+	int distX = int((attributes.x - x) * (attributes.x - x));
+	int distY = int((attributes.y - y) * (attributes.y - y));
 
-	return (distX + distY) < (attributes.squareSize);
+	int halfSize = attributes.size / 2;
+
+	return (distX + distY) < (halfSize * halfSize);
+}
+
+bool testLine(int x, int y)
+{
+	int ax = attributes.line1.x;
+	int ay = attributes.line1.y;
+
+	int bx = attributes.line1.z;
+	int by = attributes.line1.w;
+	int dx = attributes.line2.z;
+	int dy = attributes.line2.w;
+
+	int bay = by - ay;
+	int bax = bx - ax;
+	int dax = dx - ax;
+	int day = dy - ay;
+
+	if ((x - ax) * bax + (y - ay) * bay < 0.0)
+		return false;
+	if ((x - bx) * bax + (y - by) * bay > 0.0)
+		return false;
+	if ((x - ax) * dax + (y - ay) * day < 0.0)
+		return false;
+	if ((x - dx) * dax + (y - dy) * day > 0.0)
+		return false;
+
+	return true;
 }
