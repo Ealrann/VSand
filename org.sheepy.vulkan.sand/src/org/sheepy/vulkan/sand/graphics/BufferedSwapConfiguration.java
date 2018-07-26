@@ -31,6 +31,5 @@ public class BufferedSwapConfiguration extends GraphicConfiguration
 		
 		// enable VSync
 		presentationMode = VK_PRESENT_MODE_FIFO_KHR;
-
 	}
 }

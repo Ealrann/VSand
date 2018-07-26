@@ -172,7 +172,7 @@ public class SandApplication extends VulkanApplication
 			boardPool.setSpeed(0);
 			pause = true;
 		}
-
+		
 		renderPool.execute();
 	}
 
