@@ -40,7 +40,7 @@ public class BufferToPixelRenderPass implements IRenderPass
 		colorAttachment.storeOp(VK_ATTACHMENT_STORE_OP_STORE);
 		colorAttachment.stencilLoadOp(VK_ATTACHMENT_LOAD_OP_DONT_CARE);
 		colorAttachment.stencilStoreOp(VK_ATTACHMENT_STORE_OP_DONT_CARE);
-		colorAttachment.initialLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+		colorAttachment.initialLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
 		colorAttachment.finalLayout(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
 
 		VkAttachmentReference.Buffer colorAttachmentRef = VkAttachmentReference.calloc(1);
@@ -55,9 +55,9 @@ public class BufferToPixelRenderPass implements IRenderPass
 		VkSubpassDependency.Buffer dependency = VkSubpassDependency.calloc(1);
 		dependency.srcSubpass(VK_SUBPASS_EXTERNAL);
 		dependency.dstSubpass(0);
-		dependency.srcStageMask(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
+		dependency.srcStageMask(VK_PIPELINE_STAGE_TRANSFER_BIT);
 		dependency.dstStageMask(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
-		dependency.srcAccessMask(0);
+		dependency.srcAccessMask(VK_ACCESS_TRANSFER_WRITE_BIT);
 		dependency.dstAccessMask(
 				VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT);
 

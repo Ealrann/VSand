@@ -151,8 +151,8 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 				{
 					ImageBarrier.execute(commandBuffer, boardImage.getImage(),
 							VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
-							VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_IMAGE_LAYOUT_GENERAL,
-							VK_ACCESS_SHADER_WRITE_BIT);
+							VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_IMAGE_LAYOUT_UNDEFINED,
+							VK_IMAGE_LAYOUT_GENERAL, 0, VK_ACCESS_SHADER_WRITE_BIT);
 				}
 			};
 			stc.execute();
