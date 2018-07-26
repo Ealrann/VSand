@@ -24,8 +24,6 @@ public class SandApplication extends VulkanApplication
 {
 	private static final int WIDTH = 1280;
 	private static final int HEIGHT = 720;
-	// private static final int WIDTH = 2048;
-	// private static final int HEIGHT = 1152;
 
 	private static final float ZOOM = 1f;
 

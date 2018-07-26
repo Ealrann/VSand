@@ -23,6 +23,8 @@ public class BufferedSwapConfiguration extends GraphicConfiguration
 
 		this.frameWaitStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
 
+		this.clearBeforeRender = false;
+
 		// We will use the swap image as a target transfer
 		swapImageUsages |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 		renderPass = new BufferToPixelRenderPass();
