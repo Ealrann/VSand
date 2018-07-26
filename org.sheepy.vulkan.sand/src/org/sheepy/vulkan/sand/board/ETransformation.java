@@ -2,26 +2,26 @@ package org.sheepy.vulkan.sand.board;
 
 public enum ETransformation
 {
-	WATER__PLANT(EMaterial.Water, EMaterial.Plant, EMaterial.Plant, 400, false),
+	WATER__PLANT(EMaterial.Water, EMaterial.Plant, EMaterial.Plant, 700, false),
 	VOID__FIRE(EMaterial.Void, EMaterial.Fire, EMaterial.Fire, 40, false),
-	FIRE__ALL(EMaterial.Fire, null, EMaterial.Void, 240, false),
+	FIRE__ALL(EMaterial.Fire, null, EMaterial.Void, 300, false),
 	FIRE__WATER(EMaterial.Fire, EMaterial.Water, EMaterial.Void, 1000, false),
 
 	CONCRETE__ALL(EMaterial.Concrete, null, EMaterial.Wall, 10, true),
 	
-	FIRESTATIC__VOID(EMaterial.FireStatic, null, EMaterial.Void, 20, false),
-	FIRESTATIC__FIRE(EMaterial.FireStatic, EMaterial.Void, EMaterial.Fire, 120, false),
+	FIRESTATIC__FINALFIRE(EMaterial.FireStatic, null, EMaterial.FireFinal, 100, false),
+	FIREFINAL__ALL(EMaterial.FireFinal, null, EMaterial.Void, 500, false),
+	FIREFINAL__VOID(EMaterial.FireFinal, EMaterial.Void, EMaterial.Fire, 500, false),
 	
 	PLANT__FIRE(EMaterial.Plant, EMaterial.Fire, EMaterial.FireStatic, 240, false),
 	PLANT__FIRESTATIC(EMaterial.Plant, EMaterial.FireStatic, EMaterial.FireStatic, 240, false),
+	PLANT__FIREFINAL(EMaterial.Plant, EMaterial.FireFinal, EMaterial.FireStatic, 1000, false),
 	
-	WAX__FIRE(EMaterial.Wax, EMaterial.Fire, EMaterial.WaxFire, 200, false),
-	WAX__WAXFIRE(EMaterial.Wax, EMaterial.WaxFire, EMaterial.WaxFire, 40, false),
-	WAX__FINALFIRE(EMaterial.Wax, EMaterial.FinalWaxFire, EMaterial.WaxFire, 1000, false),
-	WAXFIRE__FINALFIRE(EMaterial.WaxFire, null, EMaterial.FinalWaxFire, 25, false),
-	WAXFIRE__VOID(EMaterial.WaxFire, EMaterial.Void, EMaterial.Fire, 40, false),
-	FINALFIRE__LIQUIDWAX(EMaterial.FinalWaxFire, null, EMaterial.LiquidWax, 50, false),
-	LIQUIDWAX__WAX(EMaterial.LiquidWax, null, EMaterial.Wax, 100, true)
+	WAX__FIRE(EMaterial.Wax, EMaterial.Fire, EMaterial.FireStatic, 200, false),
+	WAX__WAXFIRE(EMaterial.Wax, EMaterial.FireStatic, EMaterial.FireStatic, 15, false),
+	WAX__LIQUIDWAX(EMaterial.FireFinal, EMaterial.Wax, EMaterial.LiquidWax, 650, false),
+	WAX__FINALFIRE(EMaterial.Wax, EMaterial.FireFinal, EMaterial.FireStatic, 1000, false),
+	LIQUIDWAX__ALL(EMaterial.LiquidWax, null, EMaterial.Wax, 100, true),
 	;
 
 	public final EMaterial reactant;

@@ -16,9 +16,17 @@ public class LineBuilder implements IShapeBuilder
 
 		// Vecteur normal
 		float vx = 0;
-		if(p1.x != p2.x)
-			vx = (p2.y - p1.y) / (p2.x - p1.x);
 		float vy = -1;
+		
+		if(p1.x != p2.x)
+		{
+			vx = (p2.y - p1.y) / (p2.x - p1.x);
+		}
+		else
+		{
+			vx = 1;
+			vy = 0;
+		}
 
 		Vector2f v1 = new Vector2f(vx, vy);
 
