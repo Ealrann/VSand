@@ -11,8 +11,8 @@ import org.lwjgl.vulkan.VkCommandBuffer;
 import org.sheepy.vulkan.buffer.Buffer;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.command.SingleTimeCommand;
-import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.resource.IResource;
 
 /**
  * This Buffer will store the movement decisions during the board computation.
@@ -28,10 +28,9 @@ import org.sheepy.vulkan.device.LogicalDevice;
  * @author ealrann
  *
  */
-public class BoardDecisionBuffer implements IAllocable
+public class BoardDecisionBuffer implements IResource
 {
 	private LogicalDevice logicalDevice;
-	private CommandPool commandPool;
 
 	private Buffer stagingBuffer;
 	private Buffer buffer;
@@ -43,11 +42,9 @@ public class BoardDecisionBuffer implements IAllocable
 
 	Random random = new Random();
 
-	public BoardDecisionBuffer(LogicalDevice logicalDevice, int width, int height,
-			CommandPool commandPool)
+	public BoardDecisionBuffer(LogicalDevice logicalDevice, int width, int height)
 	{
 		this.logicalDevice = logicalDevice;
-		this.commandPool = commandPool;
 
 		int byteSize = width * height * Integer.BYTES;
 
@@ -61,7 +58,7 @@ public class BoardDecisionBuffer implements IAllocable
 	}
 
 	@Override
-	public void allocate(MemoryStack stack)
+	public void allocate(MemoryStack stack, CommandPool commandPool)
 	{
 		javaBuffer = MemoryUtil.memAlloc((int) buffer.getSize());
 
@@ -110,7 +107,7 @@ public class BoardDecisionBuffer implements IAllocable
 	{
 		Buffer.copyBuffer(commandBuffer, stagingBuffer.getId(), buffer.getId(),
 				(int) buffer.getSize());
-		
+
 		buffer.flush();
 	}
 

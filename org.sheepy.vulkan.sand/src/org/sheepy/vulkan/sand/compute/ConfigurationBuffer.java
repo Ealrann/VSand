@@ -10,22 +10,20 @@ import org.lwjgl.vulkan.VkCommandBuffer;
 import org.sheepy.vulkan.buffer.Buffer;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.command.SingleTimeCommand;
-import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.resource.IResource;
 import org.sheepy.vulkan.sand.board.EMaterial;
 
-public class ConfigurationBuffer implements IAllocable
+public class ConfigurationBuffer implements IResource
 {
 
 	private static final int ENTRIES_ARRAY_SIZE = EMaterial.MAX_MATERIAL_NUMBER * 8 * Integer.BYTES;
 	private Buffer configBuffer;
 	private LogicalDevice logicalDevice;
-	private CommandPool commandPool;
 
-	public ConfigurationBuffer(LogicalDevice logicalDevice, CommandPool commandPool)
+	public ConfigurationBuffer(LogicalDevice logicalDevice)
 	{
 		this.logicalDevice = logicalDevice;
-		this.commandPool = commandPool;
 
 		int byteSize = ENTRIES_ARRAY_SIZE;
 
@@ -37,7 +35,7 @@ public class ConfigurationBuffer implements IAllocable
 	}
 
 	@Override
-	public void allocate(MemoryStack stack)
+	public void allocate(MemoryStack stack, CommandPool commandPool)
 	{
 		configBuffer.allocate();
 

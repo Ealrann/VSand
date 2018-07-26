@@ -8,10 +8,11 @@ import java.util.Random;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.vulkan.buffer.Buffer;
-import org.sheepy.vulkan.common.IAllocable;
+import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.resource.IResource;
 
-public class FrameUniformBuffer implements IAllocable
+public class FrameUniformBuffer implements IResource
 {
 	private Buffer uniformBuffer;
 	private Random random = new Random(System.nanoTime() + 1859320);
@@ -33,7 +34,7 @@ public class FrameUniformBuffer implements IAllocable
 	}
 
 	@Override
-	public void allocate(MemoryStack stack)
+	public void allocate(MemoryStack stack, CommandPool commandPool)
 	{
 		uniformBuffer.allocate();
 

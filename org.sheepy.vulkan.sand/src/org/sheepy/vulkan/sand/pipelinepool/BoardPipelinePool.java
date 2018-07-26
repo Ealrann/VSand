@@ -71,8 +71,8 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		int height = boardImage.getHeight();
 
 		// configBuffer
-		configBuffer = new ConfigurationBuffer(logicalDevice, commandPool);
-		tranformationBuffer = new TransformationBuffer(logicalDevice, commandPool);
+		configBuffer = new ConfigurationBuffer(logicalDevice);
+		tranformationBuffer = new TransformationBuffer(logicalDevice);
 
 		// boardBuffer
 		{
@@ -86,15 +86,15 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 					VK_DESCRIPTOR_TYPE_STORAGE_BUFFER);
 		}
 
-		decision = new BoardDecisionBuffer(logicalDevice, width, height, commandPool);
+		decision = new BoardDecisionBuffer(logicalDevice, width, height);
 
 		ubo = new FrameUniformBuffer(logicalDevice);
 
-		allocationObjects.add(configBuffer);
-		allocationObjects.add(tranformationBuffer);
-		allocationObjects.add(ubo);
-		allocationObjects.add(boardBuffer);
-		allocationObjects.add(decision);
+		addResource(configBuffer);
+		addResource(tranformationBuffer);
+		addResource(ubo);
+		addResource(boardBuffer);
+		addResource(decision);
 	}
 
 	private void buildPipelines()
@@ -109,11 +109,11 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		stepDescriptors.add(decision.getBuffer());
 		stepDescriptors.add(tranformationBuffer.getBuffer());
 
-		drawPipeline = new ComputePipeline(logicalDevice, width, height, 1,
+		drawPipeline = new ComputePipeline(context, width, height, 1,
 				Arrays.asList(boardBuffer, boardModifications), SHADER_DRAW);
 		drawPipeline.setEnabled(false);
 
-		stepPipeline = new RepeatComputePipeline(width, height, 1, stepDescriptors);
+		stepPipeline = new RepeatComputePipeline(context, width, height, 1, stepDescriptors);
 		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP1));
 		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP2));
 		stepPipeline.addPipelineBarrier(new ComputeBufferBarrier(boardBuffer,
@@ -121,10 +121,10 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP3));
 		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP4));
 
-		pixelCompute = new PixelComputePipeline(logicalDevice, configBuffer, boardBuffer,
+		pixelCompute = new PixelComputePipeline(context, configBuffer, boardBuffer,
 				boardImage);
 
-		process = new ComputeProcess(logicalDevice);
+		process = new ComputeProcess(context);
 		process.addProcessUnit(drawPipeline);
 		process.addProcessUnit(stepPipeline);
 		process.addProcessUnit(new ComputeBufferBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,

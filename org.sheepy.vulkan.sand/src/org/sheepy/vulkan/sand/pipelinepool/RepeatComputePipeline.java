@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sheepy.vulkan.descriptor.IDescriptor;
+import org.sheepy.vulkan.pipeline.Context;
 import org.sheepy.vulkan.pipeline.IProcessUnit;
 import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
 
@@ -11,9 +12,9 @@ class RepeatComputePipeline extends ComputePipeline
 {
 	private int repeat = 1;
 
-	public RepeatComputePipeline(int width, int height, int depth, List<IDescriptor> descriptors)
+	public RepeatComputePipeline(Context context, int width, int height, int depth, List<IDescriptor> descriptors)
 	{
-		super(width, height, depth, descriptors);
+		super(context, width, height, depth, descriptors);
 	}
 
 	public void setRepeat(int repeat)

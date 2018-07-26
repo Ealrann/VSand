@@ -10,12 +10,12 @@ import org.lwjgl.vulkan.VkCommandBuffer;
 import org.sheepy.vulkan.buffer.Buffer;
 import org.sheepy.vulkan.command.CommandPool;
 import org.sheepy.vulkan.command.SingleTimeCommand;
-import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.resource.IResource;
 import org.sheepy.vulkan.sand.board.EMaterial;
 import org.sheepy.vulkan.sand.board.ETransformation;
 
-public class TransformationBuffer implements IAllocable
+public class TransformationBuffer implements IResource
 {
 
 	private static final int TRANSFORMATIONS_ARRAY_SIZE = EMaterial.MAX_MATERIAL_NUMBER
@@ -23,12 +23,10 @@ public class TransformationBuffer implements IAllocable
 			* Integer.BYTES;
 	private Buffer transformationBuffer;
 	private LogicalDevice logicalDevice;
-	private CommandPool commandPool;
 
-	public TransformationBuffer(LogicalDevice logicalDevice, CommandPool commandPool)
+	public TransformationBuffer(LogicalDevice logicalDevice)
 	{
 		this.logicalDevice = logicalDevice;
-		this.commandPool = commandPool;
 
 		transformationBuffer = new Buffer(logicalDevice, TRANSFORMATIONS_ARRAY_SIZE,
 				VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
@@ -38,7 +36,7 @@ public class TransformationBuffer implements IAllocable
 	}
 
 	@Override
-	public void allocate(MemoryStack stack)
+	public void allocate(MemoryStack stack, CommandPool commandPool)
 	{
 		transformationBuffer.allocate();
 

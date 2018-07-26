@@ -6,7 +6,6 @@ import org.lwjgl.vulkan.VkImageBlit;
 import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.buffer.ImageBarrier;
 import org.sheepy.vulkan.command.graphic.RenderCommandBuffer;
-import org.sheepy.vulkan.descriptor.DescriptorPool;
 import org.sheepy.vulkan.pipeline.graphic.GraphicContext;
 import org.sheepy.vulkan.pipeline.graphic.IGraphicExecutable;
 import org.sheepy.vulkan.pipeline.graphic.IGraphicProcessUnit;
@@ -18,14 +17,9 @@ public class BufferedGraphicPipeline implements IGraphicExecutable, IGraphicProc
 	private GraphicContext context;
 	private Image srcImage;
 
-	public BufferedGraphicPipeline(Image srcImage)
+	public BufferedGraphicPipeline(GraphicContext context, Image srcImage)
 	{
 		this.srcImage = srcImage;
-	}
-
-	@Override
-	public void bindContext(DescriptorPool descriptorPool, GraphicContext context)
-	{
 		this.context = context;
 	}
 
