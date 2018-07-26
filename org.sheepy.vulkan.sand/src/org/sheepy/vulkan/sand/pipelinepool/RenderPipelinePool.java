@@ -6,7 +6,6 @@ import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.command.ECommandStage;
 import org.sheepy.vulkan.concurrent.ISignalEmitter;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.imgui.ImGuiPipeline;
 import org.sheepy.vulkan.pipeline.graphic.GraphicProcess;
 import org.sheepy.vulkan.pipeline.graphic.GraphicProcessPool;
 import org.sheepy.vulkan.sand.graphics.BufferedGraphicPipeline;
@@ -16,16 +15,15 @@ import org.sheepy.vulkan.sand.graphics.SandUIDescriptor;
 
 public class RenderPipelinePool extends GraphicProcessPool
 {
+	private ImGuiGraphicPipeline imguiPipeline;
+
 	public RenderPipelinePool(LogicalDevice logicalDevice, Image image,
 			SandUIDescriptor uiDescriptor, Collection<ISignalEmitter> waitForEmitters)
 	{
 		super(logicalDevice, new BufferedSwapConfiguration(logicalDevice, image, uiDescriptor),
 				true);
 
-		((BufferedSwapConfiguration) configuration).imGui = new ImGuiPipeline(commandPool,
-				configuration, uiDescriptor);
-
-		ImGuiGraphicPipeline imguiPipeline = new ImGuiGraphicPipeline();
+		imguiPipeline = new ImGuiGraphicPipeline(uiDescriptor);
 
 		GraphicProcess process = new GraphicProcess(configuration);
 		process.addProcessUnit(new BufferedGraphicPipeline(image), ECommandStage.PreRender);
@@ -37,9 +35,8 @@ public class RenderPipelinePool extends GraphicProcessPool
 	@Override
 	public void execute()
 	{
-		if (((BufferedSwapConfiguration) configuration).imGui.newFrame())
+		if (imguiPipeline.update())
 		{
-			((BufferedSwapConfiguration) configuration).imGui.updateBuffers();
 			recordCommands();
 		}
 

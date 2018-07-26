@@ -6,13 +6,11 @@ import static org.lwjgl.vulkan.VK10.*;
 
 import org.sheepy.vulkan.buffer.Image;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.imgui.ImGuiPipeline;
 import org.sheepy.vulkan.pipeline.graphic.GraphicConfiguration;
 
 public class BufferedSwapConfiguration extends GraphicConfiguration
 {
 	public Image pixelImage;
-	public ImGuiPipeline imGui;
 
 	public BufferedSwapConfiguration(LogicalDevice logicalDevice, Image pixelImage,
 			SandUIDescriptor uiDescriptor)
