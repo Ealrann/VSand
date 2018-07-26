@@ -5,7 +5,7 @@
 #define HEIGHT 720
 
 #define WORKGROUP_SIZE_X 32
-#define WORKGROUP_SIZE_Y 16
+#define WORKGROUP_SIZE_Y 32
 
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
@@ -27,7 +27,7 @@ layout(binding = 1) readonly buffer buf2
 	int data[WIDTH][HEIGHT];
 }board;
 
-layout(rgba8ui, binding = 2) uniform uimage2D outImage;
+layout(rgba8, binding = 2) uniform image2D outImage;
 
 const uint G_MASK = 255 << 8;
 const uint B_MASK = 255;
@@ -37,9 +37,9 @@ void main()
 	Entry material =
 			configuration.materials[board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y]];
 
-	float r = (material.rgb >> 16);
-	float g = (material.rgb & G_MASK) >> 8;
-	float b = material.rgb & B_MASK;
+	float r = (material.rgb >> 16) / 255.;
+	float g = ((material.rgb & G_MASK) >> 8) / 255.;
+	float b = (material.rgb & B_MASK) / 255.;
 
-	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), uvec4(r, g, b, 1.0));
+	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), vec4(r, g, b, 1.0));
 }

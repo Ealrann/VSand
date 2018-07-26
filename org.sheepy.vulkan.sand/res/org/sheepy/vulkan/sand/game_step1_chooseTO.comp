@@ -4,7 +4,7 @@
 #define HEIGHT 720
 
 #define WORKGROUP_SIZE_X 32
-#define WORKGROUP_SIZE_Y 16
+#define WORKGROUP_SIZE_Y 32
 
 #define UP    0
 #define DOWN  1
@@ -72,6 +72,9 @@ int check(int x, int y, int runoff, int dir, int srcDensity);
  */
 void main()
 {
+	if(gl_GlobalInvocationID.y >= HEIGHT)
+		return;
+
 	int x = int(gl_GlobalInvocationID.x);
 	int y = int(gl_GlobalInvocationID.y);
 

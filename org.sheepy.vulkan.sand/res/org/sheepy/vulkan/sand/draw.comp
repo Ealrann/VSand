@@ -5,7 +5,7 @@
 #define HEIGHT 720
 
 #define WORKGROUP_SIZE_X 32
-#define WORKGROUP_SIZE_Y 16
+#define WORKGROUP_SIZE_Y 32
 
 #define SQUARE		0
 #define CIRCLE		1
@@ -45,29 +45,32 @@ bool testLine(int x, int y);
 
 void main()
 {
-	int x = int(gl_GlobalInvocationID.x);
-	int y = int(gl_GlobalInvocationID.y);
-
-	if (x >= attributes.minX && y >= attributes.minY && x <= attributes.maxX
-			&& y <= attributes.maxY)
+	if (gl_GlobalInvocationID.y < HEIGHT)
 	{
-		bool isInShape = false;
-		switch (attributes.shape)
-		{
-		case SQUARE:
-			isInShape = true;
-			break;
-		case CIRCLE:
-			isInShape = testCircle(x, y);
-			break;
-		case LINE:
-			isInShape = testLine(x, y) || testCircle(x, y);
-			break;
-		}
+		int x = int(gl_GlobalInvocationID.x);
+		int y = int(gl_GlobalInvocationID.y);
 
-		if (isInShape)
+		if (x >= attributes.minX && y >= attributes.minY && x <= attributes.maxX
+				&& y <= attributes.maxY)
 		{
-			board.data[x][y] = attributes.value;
+			bool isInShape = false;
+			switch (attributes.shape)
+			{
+			case SQUARE:
+				isInShape = true;
+				break;
+			case CIRCLE:
+				isInShape = testCircle(x, y);
+				break;
+			case LINE:
+				isInShape = testLine(x, y) || testCircle(x, y);
+				break;
+			}
+
+			if (isInShape)
+			{
+				board.data[x][y] = attributes.value;
+			}
 		}
 	}
 }
