@@ -31,16 +31,4 @@ public class RenderPipelinePool extends GraphicProcessPool
 
 		addProcess(process);
 	}
-
-	@Override
-	public void execute()
-	{
-		if (imguiPipeline.update())
-		{
-			recordCommands();
-		}
-
-		super.execute();
-	}
-
 }

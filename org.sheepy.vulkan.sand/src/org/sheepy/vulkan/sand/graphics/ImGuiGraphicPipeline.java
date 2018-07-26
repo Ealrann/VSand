@@ -24,9 +24,6 @@ public class ImGuiGraphicPipeline implements IGraphicExecutable, IGraphicProcess
 	public void allocate(MemoryStack stack)
 	{
 		imGui.allocate(stack);
-
-		imGui.newFrame();
-		imGui.updateBuffers();
 	}
 
 	@Override
@@ -44,17 +41,13 @@ public class ImGuiGraphicPipeline implements IGraphicExecutable, IGraphicProcess
 	@Override
 	public void execute(RenderCommandBuffer commandBuffer)
 	{
-		imGui.drawFrame(commandBuffer.getVkCommandBuffer());
+		imGui.execute(commandBuffer);
 	}
 
+	@Override
 	public boolean update()
 	{
-		if (imGui.newFrame())
-		{
-			imGui.updateBuffers();
-			return true;
-		}
-		return false;
+		return imGui.update();
 	}
 
 }

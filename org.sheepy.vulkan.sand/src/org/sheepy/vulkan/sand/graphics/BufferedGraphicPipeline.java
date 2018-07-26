@@ -84,4 +84,10 @@ public class BufferedGraphicPipeline implements IGraphicExecutable, IGraphicProc
 
 		barrierEnd.execute(commandBuffer.getVkCommandBuffer());
 	}
+
+	@Override
+	public boolean update()
+	{
+		return false;
+	}
 }
