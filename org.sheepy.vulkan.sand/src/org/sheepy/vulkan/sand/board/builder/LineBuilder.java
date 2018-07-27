@@ -23,11 +23,12 @@ public class LineBuilder implements IShapeBuilder
 
 		if (dx != 0)
 		{
-			vx = dy / dx;
+			vx = (float) dy / dx;
 		}
 		else
 		{
 			vx = 1;
+			vy = 0;
 		}
 
 		Vector2f v1 = new Vector2f(vx, vy);
@@ -35,7 +36,7 @@ public class LineBuilder implements IShapeBuilder
 		if (dx > 0) v1.negate();
 		else if (dx == 0 && dy > 0) v1.negate();
 
-		float halfSize = modification.size.getSize() / 2f;
+		int halfSize = modification.size.getSize() >> 1;
 
 		// Set length of vector to halfSize.
 		v1.normalize(halfSize);
