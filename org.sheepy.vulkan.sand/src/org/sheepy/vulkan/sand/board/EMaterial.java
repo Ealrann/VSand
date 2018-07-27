@@ -10,14 +10,14 @@ public enum EMaterial
 	Water(false, 1, 30, 1, 67, 67, 244),
 
 	Fire(false, -1, 0, 1, 244, 67, 67),
-	FireFinal(true, 0, 0, 1, 244, 67, 67, false),
-	FireStatic(true, 0, 0, 1, 244, 67, 67, false),
+	FireStatic(true, 0, 0, 1, 244, 38, 38, false),
+	FireFinal(true, 0, 0, 1, 255, 0, 0, false),
 
 	Plant(true, 15, 0, 1, 67, 244, 67),
 
 	Wax(true, 20, 0, 1, 254, 254, 231),
 	LiquidWax(false, 2, 1, 1, 231, 254, 254, false),
-
+	
 	;
 
 	public static final int MAX_MATERIAL_NUMBER = 16;
