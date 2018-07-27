@@ -36,11 +36,14 @@ public class BoardDecisionBuffer implements IResource
 	private Buffer buffer;
 	private ByteBuffer javaBuffer;
 
-	private Byte[] scoreArray = {
-			0, 1, 2, 3
+	private Byte[] vScoreArray = {
+			0, 1
+	};
+	private Byte[] hScoreArray = {
+			2, 3
 	};
 
-	Random random = new Random();
+	private Random random = new Random();
 
 	public BoardDecisionBuffer(LogicalDevice logicalDevice, int width, int height)
 	{
@@ -89,10 +92,11 @@ public class BoardDecisionBuffer implements IResource
 
 			int scoreByte = 0;
 
-			scoreByte = scoreByte | scoreArray[0];
-			scoreByte = scoreByte | (scoreArray[1] << 2);
-			scoreByte = scoreByte | (scoreArray[2] << 4);
-			scoreByte = scoreByte | (scoreArray[3] << 6);
+			// The vertical array comes first, we favourise vertical movements
+			scoreByte = scoreByte | vScoreArray[0];
+			scoreByte = scoreByte | (vScoreArray[1] << 2);
+			scoreByte = scoreByte | (hScoreArray[0] << 4);
+			scoreByte = scoreByte | (hScoreArray[1] << 6);
 
 			res = scoreByte << 8;
 
@@ -113,13 +117,21 @@ public class BoardDecisionBuffer implements IResource
 
 	private void shuffleScoreArray()
 	{
-		random.nextInt();
-		for (int i = 0; i < scoreArray.length; i++)
+		// Complicated for just reordering two arrays of two elements...
+		// whatever.
+		for (int i = 0; i < vScoreArray.length; i++)
 		{
-			int change = i + random.nextInt(scoreArray.length - i);
-			Byte tmp = scoreArray[i];
-			scoreArray[i] = scoreArray[change];
-			scoreArray[change] = tmp;
+			int change = i + random.nextInt(vScoreArray.length - i);
+			Byte tmp = vScoreArray[i];
+			vScoreArray[i] = vScoreArray[change];
+			vScoreArray[change] = tmp;
+		}
+		for (int i = 0; i < hScoreArray.length; i++)
+		{
+			int change = i + random.nextInt(hScoreArray.length - i);
+			Byte tmp = hScoreArray[i];
+			hScoreArray[i] = hScoreArray[change];
+			hScoreArray[change] = tmp;
 		}
 	}
 
