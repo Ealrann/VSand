@@ -23,6 +23,26 @@ public enum ETransformation
 	WAX__LIQUIDWAX(EMaterial.FireFinal, EMaterial.Wax, EMaterial.LiquidWax, 650, false),
 	WAX__FINALFIRE(EMaterial.Wax, EMaterial.FireFinal, EMaterial.FireStatic, 1000, false),
 	LIQUIDWAX__ALL(EMaterial.LiquidWax, null, EMaterial.Wax, 100, true),
+	
+
+	LAVA__LAVA(EMaterial.Lava, null, EMaterial.LavaBoiling, 5, false),
+	LAVABOILING__ALL(EMaterial.LavaBoiling, null, EMaterial.Lava, 50, false),
+	VOID__LAVABOILING(EMaterial.Void, EMaterial.LavaBoiling, EMaterial.Fire, 40, false),
+	LAVABOILING__LAVA(EMaterial.LavaBoiling, EMaterial.Lava, EMaterial.Lava, 40, false),
+
+	WAX__LAVA(EMaterial.Wax, EMaterial.Lava, EMaterial.Fire, 250, false),
+	LIQUIDWAX__LAVA(EMaterial.LiquidWax, EMaterial.Lava, EMaterial.Fire, 250, false),
+	PLANT__LAVA(EMaterial.Plant, EMaterial.Lava, EMaterial.Fire, 400, false),
+	SAND__LAVA(EMaterial.Sand, EMaterial.Lava, EMaterial.Fire, 100, false),
+	SAND__LAVABOILING(EMaterial.Sand, EMaterial.LavaBoiling, EMaterial.Lava, 600, false),
+	WALL__LAVA(EMaterial.Wall, EMaterial.Lava, EMaterial.Fire, 5, false),
+	CONCRETE__LAVA(EMaterial.Concrete, EMaterial.Lava, EMaterial.Fire, 5, false),
+	VAPOR__LAVA(EMaterial.Concrete, EMaterial.Lava, EMaterial.Fire, 100, false),
+
+	WATER__LAVA(EMaterial.Water, EMaterial.Lava, EMaterial.Void, 100, false),
+	WATER__LAVABOILING(EMaterial.Water, EMaterial.LavaBoiling, EMaterial.Vapor, 200, false),
+	LAVA_BOILING__WATER(EMaterial.LavaBoiling, EMaterial.Water, EMaterial.Void, 5, false),
+	LAVA__WATER(EMaterial.Lava, EMaterial.Water, EMaterial.Void, 25, false),
 	;
 
 	public final EMaterial reactant;

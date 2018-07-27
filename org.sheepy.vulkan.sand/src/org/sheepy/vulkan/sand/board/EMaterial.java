@@ -3,11 +3,12 @@ package org.sheepy.vulkan.sand.board;
 public enum EMaterial
 {
 
-	Void(false, 0, 0, 0, 0, 0, 0),
-	Sand(false, 3, 1, 2, 244, 244, 67),
+	Void(false, 0, 60, 0, 0, 0, 0),
+	Sand(false, 5, 1, 2, 244, 244, 67),
 	Wall(true, 20, 0, 1, 153, 153, 143),
 	Concrete(false, 20, 4, 1, 94, 94, 85),
-	Water(false, 1, 30, 1, 67, 67, 244),
+	Water(false, 3, 30, 1, 67, 67, 244),
+	Vapor(false, -2, 1, 1, 159, 159, 249),
 
 	Fire(false, -1, 0, 1, 244, 67, 67),
 	FireStatic(true, 0, 0, 1, 244, 38, 38, false),
@@ -16,8 +17,11 @@ public enum EMaterial
 	Plant(true, 15, 0, 1, 67, 244, 67),
 
 	Wax(true, 20, 0, 1, 254, 254, 231),
-	LiquidWax(false, 2, 1, 1, 231, 254, 254, false),
-	
+	LiquidWax(false, 1, 1, 1, 231, 254, 254, false),
+
+	Lava(false, 4, 5, 1, 244, 111, 67),
+	LavaBoiling(false, 3, 6, 1, 244, 244, 67, false),
+
 	;
 
 	public static final int MAX_MATERIAL_NUMBER = 16;

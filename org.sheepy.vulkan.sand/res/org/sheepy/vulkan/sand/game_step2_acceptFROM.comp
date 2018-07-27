@@ -72,7 +72,7 @@ layout(binding = 3) buffer SDecision
  */
 void main()
 {
-	if(gl_GlobalInvocationID.y >= HEIGHT)
+	if (gl_GlobalInvocationID.y >= HEIGHT)
 		return;
 
 	int x = int(gl_GlobalInvocationID.x);
@@ -113,28 +113,29 @@ void main()
 					targetY -= 1;
 					invertDir = TO_DOWN;
 					break;
+				default :
+					continue;
 				}
 
-				if (targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT)
+				bool validTarget = (targetX >= 0) && (targetX < WIDTH) && (targetY >= 0)
+						&& (targetY < HEIGHT);
+				int targetValue = validTarget ? board.data[targetX][targetY] : 0;
+				int targetDensity = configuration.materials[targetValue].density;
+
+				if (targetDensity > density
+						&& (!validTarget || ((decision.data[targetX][targetY] & invertDir) != 0)))
 				{
-					int targetValue = board.data[targetX][targetY];
-					int targetDensity = configuration.materials[targetValue].density;
+					// convert iDir to a mask
+					uint maskDir = 1 << iDir;
 
-					if (targetDensity > density
-							&& (decision.data[targetX][targetY] & invertDir) != 0)
-					{
-						// convert iDir to a mask
-						uint maskDir = 1 << iDir;
+					// Erase the target value to put the new one
+					decision.data[x][y] |= TARGET_VALUE_MASK;
+					decision.data[x][y] ^= TARGET_VALUE_MASK;
 
-						// Erase the target value to put the new one
-						decision.data[x][y] |= TARGET_VALUE_MASK;
-						decision.data[x][y] ^= TARGET_VALUE_MASK;
+					decision.data[x][y] = ((decision.data[x][y] >> 8) << 8) | maskDir
+							| (targetValue << 16);
 
-						decision.data[x][y] = ((decision.data[x][y] >> 8) << 8) | maskDir
-								| (targetValue << 16);
-
-						break;
-					}
+					i = 4; //break;
 				}
 			}
 

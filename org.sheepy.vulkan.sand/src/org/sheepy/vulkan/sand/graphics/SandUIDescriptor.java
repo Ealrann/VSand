@@ -19,7 +19,7 @@ import imgui.WindowFlag;
 public class SandUIDescriptor extends UIDescriptor
 {
 	private final static int CONFIG_WINDOW_WIDTH = 140;
-	private final static int CONFIG_WINDOW_HEIGHT = 400;
+	private final static int CONFIG_WINDOW_HEIGHT = 720;
 
 	private EMaterial material = EMaterial.Sand;
 	private int currentSize = EShapeSize.ES5.ordinal();
