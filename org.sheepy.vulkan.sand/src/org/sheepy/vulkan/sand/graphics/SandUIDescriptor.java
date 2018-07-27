@@ -121,7 +121,13 @@ public class SandUIDescriptor extends UIDescriptor
 				}
 			}
 		}
+		
 
+		imgui.verticalSeparator();
+		
+		imgui.textWrapped("https://github.com/Ealrann/VSand", 0);
+
+		
 		imgui.end();
 
 		return res;

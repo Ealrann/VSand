@@ -22,6 +22,7 @@ import imgui.ImGui;
 
 public class SandApplication extends VulkanApplication
 {
+	private static final String TITLE = "VSand";
 	private static final int WIDTH = 1280;
 	private static final int HEIGHT = 720;
 
@@ -45,7 +46,7 @@ public class SandApplication extends VulkanApplication
 
 	public SandApplication()
 	{
-		super(WIDTH, HEIGHT);
+		super(TITLE, WIDTH, HEIGHT);
 
 		LogicalDevice logicalDevice = initLogicalDevice();
 
