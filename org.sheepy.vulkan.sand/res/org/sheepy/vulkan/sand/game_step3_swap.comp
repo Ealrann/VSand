@@ -22,7 +22,7 @@
 #define RANDOM_4_LOC  14
 
 const uint MOVED_TAG = 1 << 4;
-const uint TO_VALUE_FLAG = 15 << 16;
+const uint TO_VALUE_MASK = 15 << 16;
 
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
@@ -111,7 +111,7 @@ void main()
 		bool validPosition = targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT;
 		if (!validPosition || (decision.data[targetX][targetY] & invertDir) != 0)
 		{
-			uint targetValue = (decision.data[x][y] & TO_VALUE_FLAG) >> 16;
+			uint targetValue = (decision.data[x][y] & TO_VALUE_MASK) >> 16;
 
 			decision.data[x][y] = ((decision.data[x][y] << 8) >> 8) | (targetValue << 24)
 					| MOVED_TAG;

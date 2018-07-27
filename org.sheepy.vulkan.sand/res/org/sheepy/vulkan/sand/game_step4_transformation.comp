@@ -41,7 +41,7 @@ struct Entry
 // The definition of materials.
 layout(binding = 0) uniform SConfiguration
 {
-	Entry materials[16];
+	Entry materials[MATERIAL_COUNT];
 }configuration;
 
 // Random number, change each frame.
