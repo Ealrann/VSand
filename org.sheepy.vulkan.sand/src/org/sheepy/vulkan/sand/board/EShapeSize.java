@@ -2,14 +2,14 @@ package org.sheepy.vulkan.sand.board;
 
 public enum EShapeSize
 {
-	ES1(1),
-	ES2(2),
-	ES3(4),
-	ES4(8),
-	ES5(16),
-	ES6(32),
-	ES7(64),
-	ES8(128);
+	ES1(2),
+	ES2(4),
+	ES3(8),
+	ES4(16),
+	ES5(32),
+	ES6(64),
+	ES7(128),
+	ES8(256);
 	
 	private int size;
 	

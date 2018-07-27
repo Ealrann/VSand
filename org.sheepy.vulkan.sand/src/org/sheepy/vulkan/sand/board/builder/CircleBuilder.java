@@ -12,7 +12,7 @@ public class CircleBuilder implements IShapeBuilder
 		shapeBuffer.putInt(modification.x);
 		shapeBuffer.putInt(modification.y);
 
-		int halfSize = modification.size.getSize() / 2;
+		int halfSize = modification.size.getSize() >> 1; // Divide by 2
 
 		shapeBuffer.putInt(modification.x - halfSize);
 		shapeBuffer.putInt(modification.y - halfSize);

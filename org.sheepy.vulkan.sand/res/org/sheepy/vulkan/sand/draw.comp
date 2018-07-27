@@ -33,8 +33,14 @@ layout(binding = 1) uniform attributeBuffer
 	int maxY;
 
 	// For line, Rectangle to draw
-	ivec4 line1;
-	ivec4 line2;
+	int x1;
+	int y1;
+	int x2;
+	int y2;
+	int x3;
+	int y3;
+	int x4;
+	int y4;
 
 	int value;
 
@@ -42,6 +48,7 @@ layout(binding = 1) uniform attributeBuffer
 
 bool testCircle(int x, int y);
 bool testLine(int x, int y);
+int computeSide(int x, int y, int x1, int y1, int x2, int y2);
 
 void main()
 {
@@ -77,37 +84,42 @@ void main()
 
 bool testCircle(int x, int y)
 {
-	int distX = int((attributes.x - x) * (attributes.x - x));
-	int distY = int((attributes.y - y) * (attributes.y - y));
+	int distX = (attributes.x - x) * (attributes.x - x);
+	int distY = (attributes.y - y) * (attributes.y - y);
 
-	int halfSize = attributes.size / 2;
+	int halfSize = attributes.size >> 1; // divde by 2;
 
-	return (distX + distY) < (halfSize * halfSize);
+	return (distX + distY) <= (halfSize * halfSize);
 }
 
 bool testLine(int x, int y)
 {
-	int ax = attributes.line1.x;
-	int ay = attributes.line1.y;
+	// https://stackoverflow.com/a/2752753/4030058
 
-	int bx = attributes.line1.z;
-	int by = attributes.line1.w;
-	int dx = attributes.line2.z;
-	int dy = attributes.line2.w;
+//	float x = xCurrent + 0.5;
+//	float y = yCurrent + 0.5;
 
-	int bay = by - ay;
-	int bax = bx - ax;
-	int dax = dx - ax;
-	int day = dy - ay;
+	int x1 = attributes.x1;
+	int y1 = attributes.y1;
+	int x2 = attributes.x2;
+	int y2 = attributes.y2;
+	int x3 = attributes.x3;
+	int y3 = attributes.y3;
+	int x4 = attributes.x4;
+	int y4 = attributes.y4;
 
-	if ((x - ax) * bax + (y - ay) * bay < 0.0)
-		return false;
-	if ((x - bx) * bax + (y - by) * bay > 0.0)
-		return false;
-	if ((x - ax) * dax + (y - ay) * day < 0.0)
-		return false;
-	if ((x - dx) * dax + (y - dy) * day > 0.0)
+	if (computeSide(x, y, x1, y1, x2, y2) < 0 || computeSide(x, y, x2, y2, x3, y3) < 0
+			|| computeSide(x, y, x3, y3, x4, y4) < 0 || computeSide(x, y, x4, y4, x1, y1) < 0)
 		return false;
 
 	return true;
+}
+
+int computeSide(int x, int y, int x1, int y1, int x2, int y2)
+{
+	int A = -(y2 - y1);
+	int B = x2 - x1;
+	int C = -(A * x1 + B * y1);
+
+	return A * x + B * y + C;
 }
