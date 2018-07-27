@@ -66,6 +66,7 @@ layout(binding = 3) buffer SDecision
 }decision;
 
 int check(int x, int y, int runoff, int dir, int srcDensity);
+float rand(vec2 co);
 
 /**
  * Here, we will choose one favourite destination.
@@ -92,7 +93,8 @@ void main()
 		// Make a list of available directions
 
 		if (configuration.materials[valueDown].isStatic == 0
-				&& density > configuration.materials[valueDown].density)
+				&& density > configuration.materials[valueDown].density
+				&& rand(vec2(FUB.random, x * y)) < 0.9)
 		{
 			decision.data[x][y] |= TO_DOWN | (valueDown << 16);
 		}
@@ -196,4 +198,14 @@ int check(int x, int y, int runoff, int dir, int srcDensity)
 	}
 
 	return course;
+}
+
+float rand(vec2 co)
+{
+	float a = 12.9898;
+	float b = 78.233;
+	float c = 43758.5453;
+	float dt = dot(co.xy, vec2(a, b));
+	float sn = mod(dt, 3.14);
+	return fract(sin(sn) * c);
 }
