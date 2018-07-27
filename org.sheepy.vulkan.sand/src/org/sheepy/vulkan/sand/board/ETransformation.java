@@ -2,10 +2,11 @@ package org.sheepy.vulkan.sand.board;
 
 public enum ETransformation
 {
-	WATER__PLANT(EMaterial.Water, EMaterial.Plant, EMaterial.Plant, 700, false),
+	WATER__PLANT(EMaterial.Water, EMaterial.Plant, EMaterial.Plant, 800, false),
 	VOID__FIRE(EMaterial.Void, EMaterial.Fire, EMaterial.Fire, 40, false),
 	FIRE__ALL(EMaterial.Fire, null, EMaterial.Void, 300, false),
 	FIRE__WATER(EMaterial.Fire, EMaterial.Water, EMaterial.Void, 1000, false),
+	FIRESTATIC__WATER(EMaterial.FireStatic, EMaterial.Water, EMaterial.Void, 1000, false),
 
 	CONCRETE__ALL(EMaterial.Concrete, null, EMaterial.Wall, 10, true),
 	
@@ -53,7 +54,7 @@ public enum ETransformation
 		for (ETransformation transfo : values())
 		{
 			int value = transfo.target.ordinal();
-			value = value | (transfo.probability << 16);
+			value |= transfo.probability << 16;
 			value |= (transfo.staticTransformation ? 1 : 0) << 30;
 
 			if (transfo.catalyst != null)
