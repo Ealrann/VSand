@@ -100,10 +100,17 @@ public class SandUIDescriptor extends UIDescriptor
 		}
 
 		imgui.sameLine(80);
-
+		
 		imgui.textUnformatted(sizeList.get(currentSize), 0);
 
-		imgui.verticalSeparator();
+		imgui.textUnformatted("", 0);
+		
+		imgui.textUnformatted("Pause: 'Space bar'", 0);
+		imgui.textUnformatted("Next frame: 'n'", 0);
+
+		imgui.separator();
+		imgui.textUnformatted("", 0);
+		
 		imgui.textUnformatted("Materials:", 0);
 		for (EMaterial m : EMaterial.values())
 		{
@@ -121,11 +128,14 @@ public class SandUIDescriptor extends UIDescriptor
 				}
 			}
 		}
-		
 
-		imgui.verticalSeparator();
+		imgui.separator();
 		
-		imgui.textWrapped("https://github.com/Ealrann/VSand", 0);
+		imgui.textUnformatted("", 0);
+		imgui.textUnformatted("", 0);
+		imgui.textUnformatted("", 0);
+		
+		imgui.textWrapped("github.com/Ealrann/VSand", 0);
 
 		
 		imgui.end();
