@@ -21,6 +21,8 @@
 #define RANDOM_3_LOC  12
 #define RANDOM_4_LOC  14
 
+const uint TARGET_VALUE_MASK = 15 << 16;
+
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
 struct Entry
@@ -124,7 +126,11 @@ void main()
 						// convert iDir to a mask
 						uint maskDir = 1 << iDir;
 
-						decision.data[x][y] = ((decisionValue >> 8) << 8) | maskDir
+						// Erase the target value to put the new one
+						decision.data[x][y] |= TARGET_VALUE_MASK;
+						decision.data[x][y] ^= TARGET_VALUE_MASK;
+
+						decision.data[x][y] = ((decision.data[x][y] >> 8) << 8) | maskDir
 								| (targetValue << 16);
 
 						break;
