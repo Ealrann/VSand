@@ -134,6 +134,15 @@ public class SandApplication extends VulkanApplication
 		super.mainLoop();
 	}
 
+	private void computeBoardMousePosition(double[] mousePos)
+	{
+		if (window.getSurface().width != WIDTH && window.getSurface().height != HEIGHT)
+		{
+			mousePos[0] *= (float) WIDTH / window.getSurface().width;
+			mousePos[1] *= (float) HEIGHT / window.getSurface().height;
+		}
+	}
+
 	@Override
 	public void drawFrame()
 	{
@@ -149,6 +158,7 @@ public class SandApplication extends VulkanApplication
 
 		if (drawEnabled)
 		{
+			computeBoardMousePosition(cursorPosition);
 			if (firstDraw)
 			{
 				boardModifications.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
@@ -172,7 +182,7 @@ public class SandApplication extends VulkanApplication
 			boardPool.setSpeed(0);
 			pause = true;
 		}
-		
+
 		renderPool.execute();
 	}
 
