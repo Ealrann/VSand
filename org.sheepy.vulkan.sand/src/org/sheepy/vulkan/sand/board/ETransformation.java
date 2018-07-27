@@ -11,7 +11,7 @@ public enum ETransformation
 	CONCRETE__ALL(EMaterial.Concrete, null, EMaterial.Wall, 10, true),
 	
 	WATER__FIRE(EMaterial.Water, EMaterial.Fire, EMaterial.Vapor, 10, false),
-	VAPOR__ALL(EMaterial.Vapor, null, EMaterial.Water, 5, false),
+	VAPOR__ALL(EMaterial.Vapor, null, EMaterial.Water, 2, false),
 	
 	FIRESTATIC__FINALFIRE(EMaterial.FireStatic, null, EMaterial.FireFinal, 100, false),
 	FIREFINAL__ALL(EMaterial.FireFinal, null, EMaterial.Void, 500, false),
