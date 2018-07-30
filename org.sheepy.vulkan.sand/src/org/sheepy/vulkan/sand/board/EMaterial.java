@@ -11,6 +11,9 @@ public enum EMaterial
 	Water(false, 4, 30, 1, 67, 67, 244),
 	Vapor(false, -2, 1, 1, 159, 159, 249),
 
+	WetDirt(false, 5, 1, 2, 48, 26, 3, false),
+	Grass(true, 1, 0, 0, 11, 193, 11, false),
+	
 	Fire(false, -1, 0, 1, 244, 67, 67),
 	FireStatic(true, 0, 0, 1, 244, 38, 38, false),
 	FireFinal(true, 0, 0, 1, 255, 0, 0, false),

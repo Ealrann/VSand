@@ -12,6 +12,11 @@ public enum ETransformation
 	
 	WATER__FIRE(EMaterial.Water, EMaterial.Fire, EMaterial.Vapor, 20, false),
 	VAPOR__ALL(EMaterial.Vapor, null, EMaterial.Water, 1, false),
+
+	WATER__DIRT(EMaterial.Water, EMaterial.Dirt, EMaterial.WetDirt, 20, false),
+	WETDIRT_DIRT(EMaterial.WetDirt, null, EMaterial.Dirt, 20, true),
+	WETDIRT_Void(EMaterial.WetDirt, EMaterial.Void, EMaterial.Grass, 20, true),
+	DIRT_WETDIRT(EMaterial.Dirt, EMaterial.WetDirt, EMaterial.WetDirt, 10, false),
 	
 	FIRESTATIC__FINALFIRE(EMaterial.FireStatic, null, EMaterial.FireFinal, 100, false),
 	FIREFINAL__ALL(EMaterial.FireFinal, null, EMaterial.Void, 500, false),
@@ -20,6 +25,10 @@ public enum ETransformation
 	PLANT__FIRE(EMaterial.Plant, EMaterial.Fire, EMaterial.FireStatic, 240, false),
 	PLANT__FIRESTATIC(EMaterial.Plant, EMaterial.FireStatic, EMaterial.FireStatic, 240, false),
 	PLANT__FIREFINAL(EMaterial.Plant, EMaterial.FireFinal, EMaterial.FireStatic, 1000, false),
+	
+	GRASS__FIRE(EMaterial.Grass, EMaterial.Fire, EMaterial.FireStatic, 240, false),
+	GRASS__FIRESTATIC(EMaterial.Grass, EMaterial.FireStatic, EMaterial.FireStatic, 240, false),
+	GRASS__FIREFINAL(EMaterial.Grass, EMaterial.FireFinal, EMaterial.FireStatic, 1000, false),
 	
 	WAX__FIRE(EMaterial.Wax, EMaterial.Fire, EMaterial.FireStatic, 200, false),
 	WAX__WAXFIRE(EMaterial.Wax, EMaterial.FireStatic, EMaterial.FireStatic, 15, false),
@@ -39,6 +48,8 @@ public enum ETransformation
 	SAND__LAVA(EMaterial.Sand, EMaterial.Lava, EMaterial.Fire, 200, false),
 	SAND__LAVABOILING(EMaterial.Sand, EMaterial.LavaBoiling, EMaterial.Lava, 500, false),
 	DIRT__LAVA(EMaterial.Dirt, EMaterial.Lava, EMaterial.Void, 200, false),
+	WETDIRT__LAVA(EMaterial.WetDirt, EMaterial.Lava, EMaterial.Vapor, 200, false),
+	GRASS__LAVA(EMaterial.Grass, EMaterial.Lava, EMaterial.Fire, 200, false),
 	DIRT__LAVABOILING(EMaterial.Dirt, EMaterial.LavaBoiling, EMaterial.Lava, 200, false),
 	WALL__LAVA(EMaterial.Wall, EMaterial.Lava, EMaterial.Fire, 4, false),
 	CONCRETE__LAVA(EMaterial.Concrete, EMaterial.Lava, EMaterial.Fire, 5, false),
