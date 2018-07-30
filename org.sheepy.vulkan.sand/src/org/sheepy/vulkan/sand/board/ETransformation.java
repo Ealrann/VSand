@@ -38,7 +38,9 @@ public enum ETransformation
 	PLANT__LAVA(EMaterial.Plant, EMaterial.Lava, EMaterial.Fire, 400, false),
 	SAND__LAVA(EMaterial.Sand, EMaterial.Lava, EMaterial.Fire, 200, false),
 	SAND__LAVABOILING(EMaterial.Sand, EMaterial.LavaBoiling, EMaterial.Lava, 500, false),
-	WALL__LAVA(EMaterial.Wall, EMaterial.Lava, EMaterial.Fire, 5, false),
+	DIRT__LAVA(EMaterial.Dirt, EMaterial.Lava, EMaterial.Void, 200, false),
+	DIRT__LAVABOILING(EMaterial.Dirt, EMaterial.LavaBoiling, EMaterial.Lava, 200, false),
+	WALL__LAVA(EMaterial.Wall, EMaterial.Lava, EMaterial.Fire, 4, false),
 	CONCRETE__LAVA(EMaterial.Concrete, EMaterial.Lava, EMaterial.Fire, 5, false),
 	VAPOR__LAVA(EMaterial.Vapor, EMaterial.Lava, EMaterial.Fire, 100, false),
 

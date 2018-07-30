@@ -5,6 +5,7 @@ public enum EMaterial
 
 	Void(false, 0, 60, 0, 0, 0, 0),
 	Sand(false, 5, 1, 2, 244, 244, 67),
+	Dirt(true, 5, 1, 2, 72, 38, 4),
 	Wall(true, 20, 0, 1, 153, 153, 143),
 	Concrete(false, 20, 4, 1, 94, 94, 85),
 	Water(false, 4, 30, 1, 67, 67, 244),
