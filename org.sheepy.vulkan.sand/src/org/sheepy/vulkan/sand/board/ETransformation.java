@@ -37,7 +37,7 @@ public enum ETransformation
 	LIQUIDWAX__ALL(EMaterial.LiquidWax, null, EMaterial.Wax, 100, true),
 	
 
-	LAVA__LAVA(EMaterial.Lava, null, EMaterial.LavaBoiling, 5, false),
+	LAVA__LAVA(EMaterial.Lava, null, EMaterial.LavaBoiling, 8, false),
 	LAVABOILING__ALL(EMaterial.LavaBoiling, null, EMaterial.Lava, 50, false),
 	VOID__LAVABOILING(EMaterial.Void, EMaterial.LavaBoiling, EMaterial.Fire, 40, false),
 	LAVABOILING__LAVA(EMaterial.LavaBoiling, EMaterial.Lava, EMaterial.Lava, 40, false),
@@ -51,7 +51,7 @@ public enum ETransformation
 	WETDIRT__LAVA(EMaterial.WetDirt, EMaterial.Lava, EMaterial.Vapor, 200, false),
 	GRASS__LAVA(EMaterial.Grass, EMaterial.Lava, EMaterial.Fire, 200, false),
 	DIRT__LAVABOILING(EMaterial.Dirt, EMaterial.LavaBoiling, EMaterial.Lava, 200, false),
-	WALL__LAVA(EMaterial.Wall, EMaterial.Lava, EMaterial.Fire, 4, false),
+	WALL__LAVA(EMaterial.Wall, EMaterial.Lava, EMaterial.Fire, 2, false),
 	CONCRETE__LAVA(EMaterial.Concrete, EMaterial.Lava, EMaterial.Fire, 5, false),
 	VAPOR__LAVA(EMaterial.Vapor, EMaterial.Lava, EMaterial.Fire, 100, false),
 
