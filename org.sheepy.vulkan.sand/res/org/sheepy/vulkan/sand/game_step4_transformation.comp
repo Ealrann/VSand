@@ -24,7 +24,7 @@
 
 #define OLD_VALUE_MASK 4294901760
 
-#define MATERIAL_COUNT 16
+#define MATERIAL_COUNT 32
 
 const uint MOVED_TAG = 1 << 4;
 

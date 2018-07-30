@@ -21,6 +21,8 @@
 #define RANDOM_3_LOC  12
 #define RANDOM_4_LOC  14
 
+#define MATERIAL_COUNT 32
+
 const uint TARGET_VALUE_MASK = 15 << 16;
 
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
@@ -36,7 +38,7 @@ struct Entry
 // The definition of materials.
 layout(binding = 0) uniform SConfiguration
 {
-	Entry materials[16];
+	Entry materials[MATERIAL_COUNT];
 }configuration;
 
 // Random number, change each frame.

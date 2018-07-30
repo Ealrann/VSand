@@ -24,7 +24,7 @@ public enum EMaterial
 
 	;
 
-	public static final int MAX_MATERIAL_NUMBER = 16;
+	public static final int MAX_MATERIAL_NUMBER = 32;
 
 	public final boolean isStatic;
 	public final int density;
