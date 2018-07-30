@@ -116,16 +116,26 @@ public class SandUIDescriptor extends UIDescriptor
 		{
 			if (m.userFriendly)
 			{
-				imgui.textUnformatted(m.name(), 0);
-
-				imgui.sameLine(70);
-
 				if (imgui.colorButton(m.name(), new Vec4(m.r, m.g, m.b, 1f),
 						ColorEditFlag.NoTooltip.getI(), new Vec2(60, 25)))
 				{
 					material = m;
 					res |= true;
+					
+					setDirty(true);
 				}
+				imgui.sameLine(70);
+
+				String text = m.name();
+				
+				if(material == m)
+				{
+					text += " <==";
+				}
+				
+				imgui.textUnformatted(text, 0);
+
+
 			}
 		}
 
