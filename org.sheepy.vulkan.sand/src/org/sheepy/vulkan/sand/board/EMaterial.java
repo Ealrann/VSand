@@ -7,7 +7,7 @@ public enum EMaterial
 	Sand(false, 5, 1, 2, 244, 244, 67),
 	Wall(true, 20, 0, 1, 153, 153, 143),
 	Concrete(false, 20, 4, 1, 94, 94, 85),
-	Water(false, 3, 30, 1, 67, 67, 244),
+	Water(false, 4, 30, 1, 67, 67, 244),
 	Vapor(false, -2, 1, 1, 159, 159, 249),
 
 	Fire(false, -1, 0, 1, 244, 67, 67),
@@ -19,8 +19,8 @@ public enum EMaterial
 	Wax(true, 20, 0, 1, 254, 254, 231),
 	LiquidWax(false, 1, 1, 1, 231, 254, 254, false),
 
-	Lava(false, 4, 5, 1, 244, 111, 67),
-	LavaBoiling(false, 3, 6, 1, 244, 244, 67, false),
+	Lava(false, 3, 5, 1, 244, 111, 67),
+	LavaBoiling(false, 2, 6, 1, 244, 244, 67, false),
 
 	;
 

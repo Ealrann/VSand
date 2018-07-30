@@ -40,12 +40,12 @@ public enum ETransformation
 	SAND__LAVABOILING(EMaterial.Sand, EMaterial.LavaBoiling, EMaterial.Lava, 500, false),
 	WALL__LAVA(EMaterial.Wall, EMaterial.Lava, EMaterial.Fire, 5, false),
 	CONCRETE__LAVA(EMaterial.Concrete, EMaterial.Lava, EMaterial.Fire, 5, false),
-	VAPOR__LAVA(EMaterial.Concrete, EMaterial.Lava, EMaterial.Fire, 100, false),
+	VAPOR__LAVA(EMaterial.Vapor, EMaterial.Lava, EMaterial.Fire, 100, false),
 
-	WATER__LAVA(EMaterial.Water, EMaterial.Lava, EMaterial.Void, 100, false),
-	WATER__LAVABOILING(EMaterial.Water, EMaterial.LavaBoiling, EMaterial.Vapor, 350, false),
+	WATER__LAVA(EMaterial.Water, EMaterial.Lava, EMaterial.Vapor, 400, false),
+	WATER__LAVABOILING(EMaterial.Water, EMaterial.LavaBoiling, EMaterial.Vapor, 800, false),
 	LAVA_BOILING__WATER(EMaterial.LavaBoiling, EMaterial.Water, EMaterial.Void, 5, false),
-	LAVA__WATER(EMaterial.Lava, EMaterial.Water, EMaterial.Void, 25, false),
+	LAVA__WATER(EMaterial.Lava, EMaterial.Water, EMaterial.Vapor, 25, false),
 	;
 
 	public final EMaterial reactant;
