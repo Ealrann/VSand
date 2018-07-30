@@ -17,7 +17,7 @@ import org.sheepy.vulkan.sand.board.EMaterial;
 public class ConfigurationBuffer implements IResource
 {
 
-	private static final int ENTRIES_ARRAY_SIZE = EMaterial.MAX_MATERIAL_NUMBER * 8 * Integer.BYTES;
+	private static final int ENTRIES_ARRAY_SIZE = EMaterial.MAX_MATERIAL_NUMBER * 4 * Integer.BYTES;
 	private Buffer configBuffer;
 	private LogicalDevice logicalDevice;
 
@@ -25,9 +25,7 @@ public class ConfigurationBuffer implements IResource
 	{
 		this.logicalDevice = logicalDevice;
 
-		int byteSize = ENTRIES_ARRAY_SIZE;
-
-		configBuffer = new Buffer(logicalDevice, byteSize,
+		configBuffer = new Buffer(logicalDevice, ENTRIES_ARRAY_SIZE,
 				VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
 				VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 		configBuffer.configureDescriptor(VK_SHADER_STAGE_COMPUTE_BIT,
