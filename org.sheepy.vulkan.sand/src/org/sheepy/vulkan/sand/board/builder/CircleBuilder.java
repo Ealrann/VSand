@@ -2,12 +2,12 @@ package org.sheepy.vulkan.sand.board.builder;
 
 import java.nio.ByteBuffer;
 
-import org.sheepy.vulkan.sand.board.BoardModifications.Modification;
+import org.sheepy.vulkan.sand.board.BoardModification;
 
 public class CircleBuilder implements IShapeBuilder
 {
 	@Override
-	public void fillBuffer(ByteBuffer shapeBuffer, Modification modification)
+	public void fillBuffer(ByteBuffer shapeBuffer, BoardModification modification)
 	{
 		shapeBuffer.putInt(modification.x);
 		shapeBuffer.putInt(modification.y);

@@ -17,10 +17,10 @@ import org.sheepy.vulkan.sand.board.ETransformation;
 
 public class TransformationBuffer implements IResource
 {
-
 	private static final int TRANSFORMATIONS_ARRAY_SIZE = EMaterial.MAX_MATERIAL_NUMBER
 			* EMaterial.MAX_MATERIAL_NUMBER
 			* Integer.BYTES;
+	
 	private Buffer transformationBuffer;
 	private LogicalDevice logicalDevice;
 

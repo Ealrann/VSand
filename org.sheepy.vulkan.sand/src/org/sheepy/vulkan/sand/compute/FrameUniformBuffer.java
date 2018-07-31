@@ -15,7 +15,7 @@ import org.sheepy.vulkan.resource.IResource;
 public class FrameUniformBuffer implements IResource
 {
 	private Buffer uniformBuffer;
-	private Random random = new Random(System.nanoTime() + 1859320);
+	private Random random = new Random(System.nanoTime()); 
 	private ByteBuffer jBuffer;
 
 	public FrameUniformBuffer(LogicalDevice logicalDevice)

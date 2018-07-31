@@ -38,11 +38,6 @@ public class BoardImage implements IDescriptor
 		imageView.load(image.getId(), 1, imageFormat, VK_IMAGE_ASPECT_COLOR_BIT);
 	}
 
-	public Image getImage()
-	{
-		return image;
-	}
-
 	public void free()
 	{
 		imageView.free();
@@ -84,6 +79,11 @@ public class BoardImage implements IDescriptor
 		poolSize.type(VK_DESCRIPTOR_TYPE_STORAGE_IMAGE);
 		poolSize.descriptorCount(1);
 		return poolSize;
+	}
+
+	public Image getImage()
+	{
+		return image;
 	}
 	
 	public int getWidth()

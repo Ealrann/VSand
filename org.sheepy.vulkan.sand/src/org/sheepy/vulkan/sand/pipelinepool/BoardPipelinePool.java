@@ -20,9 +20,12 @@ import org.sheepy.vulkan.pipeline.compute.ComputeBufferBarrier;
 import org.sheepy.vulkan.pipeline.compute.ComputePipeline;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcess;
 import org.sheepy.vulkan.pipeline.compute.ComputeProcessPool;
-import org.sheepy.vulkan.sand.board.BoardModifications;
+import org.sheepy.vulkan.sand.board.EMaterial;
+import org.sheepy.vulkan.sand.board.EShape;
+import org.sheepy.vulkan.sand.board.EShapeSize;
 import org.sheepy.vulkan.sand.compute.BoardDecisionBuffer;
 import org.sheepy.vulkan.sand.compute.BoardImage;
+import org.sheepy.vulkan.sand.compute.BoardModificationBuffer;
 import org.sheepy.vulkan.sand.compute.ConfigurationBuffer;
 import org.sheepy.vulkan.sand.compute.FrameUniformBuffer;
 import org.sheepy.vulkan.sand.compute.PixelComputePipeline;
@@ -43,7 +46,7 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 
 	private FrameUniformBuffer ubo;
 
-	private BoardModifications boardModifications;
+	private BoardModificationBuffer boardModifications;
 	private BoardImage boardImage;
 
 	private BoardDecisionBuffer decision;
@@ -53,12 +56,11 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 
 	private ComputeProcess process;
 
-	public BoardPipelinePool(LogicalDevice logicalDevice, BoardModifications boardModifications,
-			BoardImage boardImage)
+	public BoardPipelinePool(LogicalDevice logicalDevice, BoardImage boardImage, float zoom)
 	{
 		super(logicalDevice, true);
 
-		this.boardModifications = boardModifications;
+		this.boardModifications = new BoardModificationBuffer(logicalDevice, zoom);
 		this.boardImage = boardImage;
 
 		createBuffers();
@@ -95,6 +97,7 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		addResource(ubo);
 		addResource(boardBuffer);
 		addResource(decision);
+		addResource(boardModifications);
 	}
 
 	private void buildPipelines()
@@ -121,8 +124,7 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP3));
 		stepPipeline.addShader(logicalDevice.newComputeShader(SHADER_STEP4));
 
-		pixelCompute = new PixelComputePipeline(context, configBuffer, boardBuffer,
-				boardImage);
+		pixelCompute = new PixelComputePipeline(context, configBuffer, boardBuffer, boardImage);
 
 		process = new ComputeProcess(context);
 		process.addProcessUnit(drawPipeline);
@@ -190,5 +192,14 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		}
 
 		super.execute();
+	}
+
+	public void pushModification(EShape shape,
+			EShapeSize brushSize,
+			int x,
+			int y,
+			EMaterial material)
+	{
+		boardModifications.pushModification(shape, brushSize, x, y, material);
 	}
 }

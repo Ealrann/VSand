@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.board;
+package org.sheepy.vulkan.sand.compute;
 
 import static org.lwjgl.vulkan.VK10.*;
 
@@ -13,14 +13,19 @@ import org.lwjgl.vulkan.VkDescriptorPoolSize;
 import org.lwjgl.vulkan.VkDescriptorSetLayoutBinding;
 import org.lwjgl.vulkan.VkWriteDescriptorSet;
 import org.sheepy.vulkan.buffer.Buffer;
+import org.sheepy.vulkan.common.IAllocable;
 import org.sheepy.vulkan.descriptor.IDescriptor;
 import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.sand.board.BoardModification;
+import org.sheepy.vulkan.sand.board.EMaterial;
+import org.sheepy.vulkan.sand.board.EShape;
+import org.sheepy.vulkan.sand.board.EShapeSize;
 
 /**
  * @author ealrann
  *
  */
-public class BoardModifications implements IDescriptor
+public class BoardModificationBuffer implements IAllocable, IDescriptor
 {
 	private float zoom;
 
@@ -30,9 +35,11 @@ public class BoardModifications implements IDescriptor
 	private static int oldX = 0;
 	private static int oldY = 0;
 
-	private Deque<Modification> boardModifications = new ArrayDeque<>();
+	private Deque<BoardModification> boardModifications = new ArrayDeque<>();
 
-	public BoardModifications(LogicalDevice logicalDevice, float zoom)
+	private static final int BYTE_SiZE = BoardModification.MODIFICATION_BYTE_COUNT * Integer.BYTES;
+
+	public BoardModificationBuffer(LogicalDevice logicalDevice, float zoom)
 	{
 		this.zoom = zoom;
 		int maxShapeSize = 1;
@@ -44,14 +51,19 @@ public class BoardModifications implements IDescriptor
 			}
 		}
 
-		int size = 17 * Integer.BYTES;
-
-		copyBuffer = MemoryUtil.memAlloc(size);
-		modificationBuffer = new Buffer(logicalDevice, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+		modificationBuffer = new Buffer(logicalDevice, BYTE_SiZE,
+				VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
 				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+	}
+
+	@Override
+	public void allocate(MemoryStack stack)
+	{
+		copyBuffer = MemoryUtil.memAlloc(BYTE_SiZE);
 		modificationBuffer.allocate();
 	}
 
+	@Override
 	public void free()
 	{
 		MemoryUtil.memFree(copyBuffer);
@@ -72,7 +84,7 @@ public class BoardModifications implements IDescriptor
 			shape = EShape.Circle;
 		}
 
-		boardModifications.add(new Modification(shape, size, x, y, oldX, oldY, value));
+		boardModifications.add(new BoardModification(shape, size, x, y, oldX, oldY, value));
 
 		oldX = x;
 		oldY = y;
@@ -81,47 +93,11 @@ public class BoardModifications implements IDescriptor
 	public void updateVkBuffer()
 	{
 		copyBuffer.clear();
-		Modification modif = boardModifications.pop();
-		modif.fillBuffer(copyBuffer);
+		BoardModification modif = boardModifications.pop();
+		modif.fillBuffer(copyBuffer, zoom);
 		copyBuffer.flip();
 
 		modificationBuffer.fillWithBuffer(copyBuffer);
-	}
-
-	public class Modification
-	{
-		public final EShape shape;
-		public final EShapeSize size;
-		public final EMaterial value;
-		public final int x;
-		public final int y;
-		public final int oldX;
-		public final int oldY;
-
-		Modification(EShape shape, EShapeSize size, int x, int y, int oldX, int oldY,
-				EMaterial value)
-		{
-			this.shape = shape;
-			this.size = size;
-			this.x = x;
-			this.y = y;
-			this.value = value;
-
-			this.oldX = oldX;
-			this.oldY = oldY;
-		}
-
-		public void fillBuffer(ByteBuffer copyBuffer)
-		{
-			int size = (int) (this.size.getSize() * zoom);
-
-			copyBuffer.putInt(shape.ordinal());
-			copyBuffer.putInt(size);
-
-			shape.getBuilder().fillBuffer(copyBuffer, this);
-
-			copyBuffer.putInt(value.ordinal());
-		}
 	}
 
 	public Buffer getBuffer()

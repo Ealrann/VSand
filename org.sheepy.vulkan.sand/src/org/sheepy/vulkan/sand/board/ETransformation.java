@@ -61,6 +61,8 @@ public enum ETransformation
 	LAVA__WATER(EMaterial.Lava, EMaterial.Water, EMaterial.Vapor, 25, false),
 	;
 
+	private static final int PROBABILITY_LOCATION = 16;
+	private static final int STATIC_FLAG = 1 << 30;
 	public final EMaterial reactant;
 	public final EMaterial catalyst;
 	public final EMaterial target;
@@ -90,8 +92,8 @@ public enum ETransformation
 		for (ETransformation transfo : values())
 		{
 			int value = transfo.target.ordinal();
-			value |= transfo.probability << 16;
-			value |= (transfo.staticTransformation ? 1 : 0) << 30;
+			value |= transfo.probability << PROBABILITY_LOCATION;
+			value |= transfo.staticTransformation ? STATIC_FLAG : 0;
 
 			if (transfo.catalyst != null)
 			{

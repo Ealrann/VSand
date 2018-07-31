@@ -4,12 +4,12 @@ import java.nio.ByteBuffer;
 
 import org.joml.Vector2f;
 import org.joml.Vector2i;
-import org.sheepy.vulkan.sand.board.BoardModifications.Modification;
+import org.sheepy.vulkan.sand.board.BoardModification;
 
 public class LineBuilder implements IShapeBuilder
 {
 	@Override
-	public void fillBuffer(ByteBuffer shapeBuffer, Modification modification)
+	public void fillBuffer(ByteBuffer shapeBuffer, BoardModification modification)
 	{
 		Vector2i p1 = new Vector2i(modification.oldX, modification.oldY);
 		Vector2i p2 = new Vector2i(modification.x, modification.y);

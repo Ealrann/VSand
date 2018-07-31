@@ -9,7 +9,6 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.sheepy.vulkan.VulkanApplication;
 import org.sheepy.vulkan.device.LogicalDevice;
-import org.sheepy.vulkan.sand.board.BoardModifications;
 import org.sheepy.vulkan.sand.board.EShape;
 import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.graphics.SandUIDescriptor;
@@ -34,7 +33,6 @@ public class SandApplication extends VulkanApplication
 
 	private BoardPipelinePool boardPool;
 	private RenderPipelinePool renderPool;
-	private BoardModifications boardModifications;
 
 	private boolean firstDraw = false;
 	private boolean drawEnabled = false;
@@ -105,12 +103,10 @@ public class SandApplication extends VulkanApplication
 			}
 		});
 
-		boardModifications = new BoardModifications(logicalDevice, ZOOM);
-
 		image = new BoardImage(logicalDevice);
 		image.load((int) (WIDTH * ZOOM), (int) (HEIGHT * ZOOM), VK_FORMAT_R8G8B8A8_UNORM);
 
-		boardPool = new BoardPipelinePool(logicalDevice, boardModifications, image);
+		boardPool = new BoardPipelinePool(logicalDevice, image, ZOOM);
 
 		renderPool = new RenderPipelinePool(logicalDevice, image.getImage(), uiDescriptor,
 				Collections.emptyList());
@@ -124,7 +120,6 @@ public class SandApplication extends VulkanApplication
 	public void cleanup()
 	{
 		image.free();
-		boardModifications.free();
 
 		super.cleanup();
 	}
@@ -162,14 +157,14 @@ public class SandApplication extends VulkanApplication
 			computeBoardMousePosition(cursorPosition);
 			if (firstDraw)
 			{
-				boardModifications.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
+				boardPool.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
 						(int) cursorPosition[0], (int) cursorPosition[1],
 						uiDescriptor.getMaterial());
 				firstDraw = false;
 			}
 			else
 			{
-				boardModifications.pushModification(EShape.Line, uiDescriptor.getBrushSize(),
+				boardPool.pushModification(EShape.Line, uiDescriptor.getBrushSize(),
 						(int) cursorPosition[0], (int) cursorPosition[1],
 						uiDescriptor.getMaterial());
 			}
