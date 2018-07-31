@@ -23,7 +23,9 @@
 
 #define MATERIAL_COUNT 32
 
-const uint TARGET_VALUE_MASK = 255 << 16;
+#define TARGET_VALUE_POSITION 16
+
+const uint TARGET_VALUE_MASK = 255 << TARGET_VALUE_POSITION;
 
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
@@ -135,7 +137,7 @@ void main()
 					decision.data[x][y] ^= TARGET_VALUE_MASK;
 
 					decision.data[x][y] = ((decision.data[x][y] >> 8) << 8) | maskDir
-							| (targetValue << 16);
+							| (targetValue << TARGET_VALUE_POSITION);
 
 					i = 4; //break;
 				}

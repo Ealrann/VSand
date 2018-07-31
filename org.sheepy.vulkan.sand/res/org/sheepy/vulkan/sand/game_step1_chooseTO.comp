@@ -23,6 +23,9 @@
 
 #define MATERIAL_COUNT 32
 
+#define TARGET_VALUE_POSITION 16
+#define INITIAL_VALUE_POSITION 24
+
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
 struct Entry
@@ -67,7 +70,7 @@ layout(binding = 3) buffer SDecision
 	uint data[WIDTH][HEIGHT];
 }decision;
 
-int check(int x, int y, int runoff, int dir, int srcDensity);
+int checkFree(int x, int y, int runoff, int dir, int srcDensity);
 float rand(vec2 co);
 
 /**
@@ -75,7 +78,7 @@ float rand(vec2 co);
  */
 void main()
 {
-	if(gl_GlobalInvocationID.y >= HEIGHT)
+	if (gl_GlobalInvocationID.y >= HEIGHT)
 		return;
 
 	int x = int(gl_GlobalInvocationID.x);
@@ -85,7 +88,8 @@ void main()
 	// Erase Tag,
 	// Erase previous value
 	// and Store the current value to the decision buffer.
-	decision.data[x][y] = (((decision.data[x][y] >> 8) << 24) >> 16) | (currentValue << 24);
+	decision.data[x][y] = (((decision.data[x][y] >> 8) << 24) >> 16)
+			| (currentValue << INITIAL_VALUE_POSITION);
 
 	if (configuration.materials[currentValue].isStatic == 0)
 	{
@@ -98,7 +102,7 @@ void main()
 				&& density > configuration.materials[valueDown].density
 				&& rand(vec2(FUB.random, x * y)) < 0.9)
 		{
-			decision.data[x][y] |= TO_DOWN | (valueDown << 16);
+			decision.data[x][y] |= TO_DOWN | (valueDown << TARGET_VALUE_POSITION);
 		}
 		else
 		{
@@ -112,11 +116,11 @@ void main()
 
 			if (configuration.materials[valueLeft].density < density)
 			{
-				distLeft = check(x - 1, y + 1, runoff, -1, density);
+				distLeft = checkFree(x - 1, y + 1, runoff, -1, density);
 			}
 			if (configuration.materials[valueRight].density < density)
 			{
-				distRight = check(x + 1, y + 1, runoff, 1, density);
+				distRight = checkFree(x + 1, y + 1, runoff, 1, density);
 			}
 
 			bool right = distRight < runoff;
@@ -138,10 +142,10 @@ void main()
 						tag = TO_LEFT;
 						targetValue = valueLeft;
 					}
-					else // if (distLeft == fistRight)
+					else // if (distLeft == distRight)
 					{
 						// We prefer left side. Right is naturally favourized due to
-						// the course of the shader, left to right.
+						// the course of the shader: left to right.
 						if (mod(FUB.random, 3) == 0)
 						{
 							tag = TO_RIGHT;
@@ -167,13 +171,13 @@ void main()
 						targetValue = valueLeft;
 					}
 				}
-				decision.data[x][y] |= tag | (targetValue << 16);
+				decision.data[x][y] |= tag | (targetValue << TARGET_VALUE_POSITION);
 			}
 		}
 	}
 }
 
-int check(int x, int y, int runoff, int dir, int srcDensity)
+int checkFree(int x, int y, int runoff, int dir, int srcDensity)
 {
 	int course = 0;
 	if (y >= 0 || y < HEIGHT)

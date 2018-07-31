@@ -96,11 +96,7 @@ bool testCircle(int x, int y)
 
 bool testLine(int x, int y)
 {
-	// https://stackoverflow.com/a/2752753/4030058
-
-//	float x = xCurrent + 0.5;
-//	float y = yCurrent + 0.5;
-
+	// Algo from https://stackoverflow.com/a/2752753/4030058
 	int x1 = attributes.x1;
 	int y1 = attributes.y1;
 	int x2 = attributes.x2;
