@@ -83,16 +83,28 @@ void main()
 	int y = int(gl_GlobalInvocationID.y);
 	int value = board.data[x][y];
 
+	bool validTarget;
+	int targetValue;
+	int targetDensity;
+	int density;
+	int rLocation;
+	int invertDir;
+	int targetX;
+	int targetY;
+	uint decisionValue;
+	uint maskDir;
+	uint iDir;
+
 	if (configuration.materials[value].isStatic == 0)
 	{
-		int density = configuration.materials[value].density;
-		int rLocation = RANDOM_1_LOC;
+		density = configuration.materials[value].density;
+		rLocation = RANDOM_1_LOC;
 
-		uint decisionValue = decision.data[x][y];
+		decisionValue = decision.data[x][y];
 
 		for (int i = 0; i < 4; i++)
 		{
-			uint iDir = (decisionValue & (3 << rLocation)) >> rLocation;
+			iDir = (decisionValue & (3 << rLocation)) >> rLocation;
 			// iDir should be between 0 and 3 (included) here
 
 			// The down is impossible here:
@@ -100,9 +112,9 @@ void main()
 			if (iDir != DOWN)
 			{
 				// resolve the direction
-				uint invertDir = 0;
-				int targetX = x;
-				int targetY = y;
+				invertDir = -1;
+				targetX = x;
+				targetY = y;
 				switch (iDir)
 				{
 				case RIGHT:
@@ -117,29 +129,37 @@ void main()
 					targetY -= 1;
 					invertDir = TO_DOWN;
 					break;
-				default :
-					continue;
+				default:
+					break;
 				}
 
-				bool validTarget = (targetX >= 0) && (targetX < WIDTH) && (targetY >= 0)
-						&& (targetY < HEIGHT);
-				int targetValue = validTarget ? board.data[targetX][targetY] : 0;
-				int targetDensity = configuration.materials[targetValue].density;
-
-				if (targetDensity > density
-						&& (!validTarget || ((decision.data[targetX][targetY] & invertDir) != 0)))
+				if (invertDir != -1)
 				{
-					// convert iDir to a mask
-					uint maskDir = 1 << iDir;
+					validTarget = (targetX >= 0) && (targetX < WIDTH)
+							&& (targetY >= 0) && (targetY < HEIGHT);
+					targetValue =
+							validTarget ? board.data[targetX][targetY] : 0;
+					targetDensity =
+							configuration.materials[targetValue].density;
 
-					// Erase the target value to put the new one
-					decision.data[x][y] |= TARGET_VALUE_MASK;
-					decision.data[x][y] ^= TARGET_VALUE_MASK;
+					if (targetDensity > density
+							&& (!validTarget
+									|| ((decision.data[targetX][targetY]
+											& invertDir) != 0)))
+					{
+						// convert iDir to a mask
+						maskDir = 1 << iDir;
 
-					decision.data[x][y] = ((decision.data[x][y] >> 8) << 8) | maskDir
-							| (targetValue << TARGET_VALUE_POSITION);
+						// Erase the target value to put the new one
+						decision.data[x][y] |= TARGET_VALUE_MASK;
+						decision.data[x][y] ^= TARGET_VALUE_MASK;
 
-					i = 4; //break;
+						decision.data[x][y] = ((decision.data[x][y] >> 8) << 8)
+								| maskDir
+								| (targetValue << TARGET_VALUE_POSITION);
+
+						i = 4; //break;
+					}
 				}
 			}
 

@@ -83,17 +83,27 @@ void main()
 
 	int x = int(gl_GlobalInvocationID.x);
 	int y = int(gl_GlobalInvocationID.y);
+	
+	int direction;
+	int iterateY;
+	int targetX;
+	int targetY;
+	int value;
+	uint targetValue;
+	uint invertDir;
+	bool validPosition;
+	bool end;
 
 	// We will take the value of our target neighbor if he do the same move.
 	uint dir = decision.data[x][y] & 15;
 
 	if (dir != 0)
 	{
-		int value = board.data[x][y];
+		value = board.data[x][y];
 		// resolve the direction
-		uint invertDir = 0;
-		int targetX = x;
-		int targetY = y;
+		invertDir = 0;
+		targetX = x;
+		targetY = y;
 		switch (dir)
 		{
 		case TO_RIGHT:
@@ -111,12 +121,13 @@ void main()
 		default:
 			targetY += 1;
 			invertDir = TO_UP;
+			break;
 		}
 
-		bool validPosition = targetX >= 0 && targetX < WIDTH && targetY >= 0 && targetY < HEIGHT;
+		validPosition = (targetX >= 0) && (targetX < WIDTH) && (targetY >= 0) && (targetY < HEIGHT);
 		if (!validPosition || (decision.data[targetX][targetY] & invertDir) != 0)
 		{
-			uint targetValue = (decision.data[x][y] & TARGET_VALUE_MASK) >> TARGET_VALUE_POSITION;
+			targetValue = (decision.data[x][y] & TARGET_VALUE_MASK) >> TARGET_VALUE_POSITION;
 
 			decision.data[x][y] = ((decision.data[x][y] << 8) >> 8) | (targetValue << INITIAL_VALUE_POSITION)
 					| MOVED_TAG;
@@ -124,11 +135,11 @@ void main()
 			// If we swap on Air, we will try to swap a full column.
 			if (targetValue == 0 && (dir == TO_UP || dir == TO_DOWN))
 			{
-				int direction = y < targetY ? -1 : 1;
-				bool end = false;
+				direction = y < targetY ? -1 : 1;
+				end = false;
 				while (!end)
 				{
-					int iterateY = y + direction;
+					iterateY = y + direction;
 					if (iterateY >= 0 && iterateY < HEIGHT && board.data[x][iterateY] == value
 							&& (decision.data[x][iterateY] & (MOVED_TAG | 15)) == 0)
 					{
