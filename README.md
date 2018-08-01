@@ -17,9 +17,36 @@ You can find the last release here:
 
 https://github.com/Ealrann/VSand/releases
 
+### Game
+
+Here some materials you can find in the game:
+
+#### Sand
+![Sand](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/sand.gif)
+
+#### Water
+![Water](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/water.gif)
+
+#### Plant
+![Plant](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/plant.gif)
+![Plant1](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/plant2.gif)
+![Plant2](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/plant_fire.gif)
+
+#### Wax
+![Wax](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/wax.gif)
+
+#### Lava
+![Lava](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/lava.gif)
+
+#### Concrete
+![Concrete](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/concrete.gif)
+
+#### Dirt
+![Dirt](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/dirt.gif)
+
 ### Contribution
 
-Feel free to add a new issue if you want to see new things in the game, or if you find a bug. 
+Feel free to add a new issues if you want to see new things in the game, or if you find a bug. 
 
 You can also contribute by sending me new pull requests.
 
