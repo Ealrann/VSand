@@ -5,12 +5,17 @@ This implementation use *parallel computing* (your graphic card) to powerup the 
 
 The game is under the license GPL-3.0. Feel free to redistribute it (just let me know).
 
+### Requirements
+
+To launch the game, you need to intall:
+* Java version 9 or more.
+* A recent graphic driver, with Vulkan 1.1 compatibility.
+
 ### Download
 
 You can find the last release here:
 
 https://github.com/Ealrann/VSand/releases
-
 
 ### Contribution
 
