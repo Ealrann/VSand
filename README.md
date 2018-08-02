@@ -9,7 +9,7 @@ The game is under the license GPL-3.0. Feel free to redistribute it (just let me
 
 To launch the game, you need to intall:
 * Java version 9 or more.
-* A recent graphic driver, with Vulkan 1.1 compatibility.
+* A **recent** graphic driver, with Vulkan 1.0 compatibility.
 
 ### Download
 
