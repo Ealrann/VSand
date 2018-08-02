@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
 	id 'java-library'
 	id 'application'
@@ -5,6 +7,8 @@ plugins {
 }
 
 mainClassName = 'org.sheepy.vulkan.sand.SandApplication'
+
+project.ext.current_version = 'v1.0_RC2'
 
 dependencies {
 
@@ -14,8 +18,21 @@ dependencies {
 	api project(':org.sheepy.vulkan.imgui')
 }
 
+
+switch ( OperatingSystem.current() ) {
+	case OperatingSystem.WINDOWS:
+		project.ext.OS = "win"
+		break
+	case OperatingSystem.LINUX:
+		project.ext.OS = "linux"
+		break
+	case OperatingSystem.MAC_OS:
+		project.ext.OS = "macos"
+		break
+}
+
 distributions {
 	main {
-		baseName = 'VSand'
+		baseName = "VSand_${current_version}_$OS"
 	}
 }
