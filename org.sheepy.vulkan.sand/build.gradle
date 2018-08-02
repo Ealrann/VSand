@@ -1,6 +1,7 @@
 plugins {
 	id 'java-library'
 	id 'application'
+	id 'distribution'
 }
 
 mainClassName = 'org.sheepy.vulkan.sand.SandApplication'
@@ -13,3 +14,8 @@ dependencies {
 	api project(':org.sheepy.vulkan.imgui')
 }
 
+distributions {
+	main {
+		baseName = 'VSand'
+	}
+}
