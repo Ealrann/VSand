@@ -34,8 +34,8 @@ public class SandApplication extends VulkanApplication
 	private BoardPipelinePool boardPool;
 	private RenderPipelinePool renderPool;
 
-	private boolean firstDraw = false;
-	private boolean drawEnabled = false;
+	private boolean firstDrawLeft = false;
+	private boolean drawEnabledLeft = false;
 	private SandUIDescriptor uiDescriptor;
 
 	private BoardImage image;
@@ -64,15 +64,15 @@ public class SandApplication extends VulkanApplication
 					io.getMouseDown()[0] = action == GLFW_PRESS;
 					if (io.getWantCaptureMouse() == false && action == GLFW_PRESS)
 					{
-						if (drawEnabled == false)
+						if (drawEnabledLeft == false)
 						{
-							firstDraw = true;
+							firstDrawLeft = true;
 						}
-						drawEnabled = true;
+						drawEnabledLeft = true;
 					}
 					else
 					{
-						drawEnabled = false;
+						drawEnabledLeft = false;
 					}
 					break;
 				case GLFW_MOUSE_BUTTON_RIGHT:
@@ -124,12 +124,6 @@ public class SandApplication extends VulkanApplication
 		super.cleanup();
 	}
 
-	@Override
-	public void mainLoop()
-	{
-		super.mainLoop();
-	}
-
 	private void computeBoardMousePosition(double[] mousePos)
 	{
 		if (window.getSurface().width != WIDTH && window.getSurface().height != HEIGHT)
@@ -152,22 +146,13 @@ public class SandApplication extends VulkanApplication
 		if (pause != true) boardPool.setSpeed(uiDescriptor.speed);
 		else boardPool.setSpeed(0);
 
-		if (drawEnabled)
+		// Main draw
+		if (drawEnabledLeft)
 		{
-			computeBoardMousePosition(cursorPosition);
-			if (firstDraw)
-			{
-				boardPool.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
-						(int) cursorPosition[0], (int) cursorPosition[1],
-						uiDescriptor.getMaterial());
-				firstDraw = false;
-			}
-			else
-			{
-				boardPool.pushModification(EShape.Line, uiDescriptor.getBrushSize(),
-						(int) cursorPosition[0], (int) cursorPosition[1],
-						uiDescriptor.getMaterial());
-			}
+			draw(cursorPosition, uiDescriptor.getMaterial(), firstDrawLeft);
+			firstDrawLeft = false;
+		}
+
 		}
 
 		boardPool.execute();
@@ -180,6 +165,21 @@ public class SandApplication extends VulkanApplication
 		}
 
 		renderPool.execute();
+	}
+
+	private void draw(double[] cursorPosition, EMaterial material, boolean firstDraw)
+	{
+		computeBoardMousePosition(cursorPosition);
+		if (firstDraw)
+		{
+			boardPool.pushModification(EShape.Circle, uiDescriptor.getBrushSize(),
+					(int) cursorPosition[0], (int) cursorPosition[1], material);
+		}
+		else
+		{
+			boardPool.pushModification(EShape.Line, uiDescriptor.getBrushSize(),
+					(int) cursorPosition[0], (int) cursorPosition[1], material);
+		}
 	}
 
 	public static void main(String[] args)
