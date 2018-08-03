@@ -23,7 +23,7 @@ dependencies {
 
 switch ( OperatingSystem.current() ) {
 	case OperatingSystem.WINDOWS:
-		project.ext.OS = "win"
+		project.ext.OS = "windows"
 		break
 	case OperatingSystem.LINUX:
 		project.ext.OS = "linux"
