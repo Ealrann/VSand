@@ -16,8 +16,6 @@ startScripts {
 
 dependencies {
 
-	implementation 'com.google.guava:guava:24.1-jre'
-	
 	api project(':org.sheepy.vulkan')
 	api project(':org.sheepy.vulkan.imgui')
 }
