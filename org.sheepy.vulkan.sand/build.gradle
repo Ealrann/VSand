@@ -1,7 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-	id 'java-library'
+	id 'java'
 	id 'application'
 	id 'distribution'
 }
@@ -16,8 +16,8 @@ startScripts {
 
 dependencies {
 
-	api project(':org.sheepy.vulkan')
-	api project(':org.sheepy.vulkan.imgui')
+	implementation project(':org.sheepy.vulkan')
+	implementation project(':org.sheepy.vulkan.imgui')
 }
 
 
