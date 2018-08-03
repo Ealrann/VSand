@@ -15,7 +15,8 @@ public enum ETransformation
 
 	WATER__DIRT(EMaterial.Water, EMaterial.Dirt, EMaterial.WetDirt, 20, false),
 	WETDIRT_DIRT(EMaterial.WetDirt, null, EMaterial.Dirt, 20, true),
-	WETDIRT_Void(EMaterial.WetDirt, EMaterial.Void, EMaterial.Grass, 20, true),
+	WETDIRT_VOID(EMaterial.WetDirt, EMaterial.Void, EMaterial.Grass, 20, true),
+	WETDIRT_WATER(EMaterial.WetDirt, EMaterial.Water, EMaterial.Grass, 15, true),
 	DIRT_WETDIRT(EMaterial.Dirt, EMaterial.WetDirt, EMaterial.WetDirt, 10, false),
 	
 	FIRESTATIC__FINALFIRE(EMaterial.FireStatic, null, EMaterial.FireFinal, 100, false),
@@ -29,6 +30,7 @@ public enum ETransformation
 	GRASS__FIRE(EMaterial.Grass, EMaterial.Fire, EMaterial.FireStatic, 240, false),
 	GRASS__FIRESTATIC(EMaterial.Grass, EMaterial.FireStatic, EMaterial.FireStatic, 240, false),
 	GRASS__FIREFINAL(EMaterial.Grass, EMaterial.FireFinal, EMaterial.FireStatic, 1000, false),
+	GRASS__WATER(EMaterial.Water, EMaterial.Grass, EMaterial.Grass, 1, false),
 	
 	WAX__FIRE(EMaterial.Wax, EMaterial.Fire, EMaterial.FireStatic, 200, false),
 	WAX__WAXFIRE(EMaterial.Wax, EMaterial.FireStatic, EMaterial.FireStatic, 15, false),
