@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.sheepy.vulkan.VulkanApplication;
 import org.sheepy.vulkan.device.LogicalDevice;
+import org.sheepy.vulkan.sand.board.EMaterial;
 import org.sheepy.vulkan.sand.board.EShape;
 import org.sheepy.vulkan.sand.compute.BoardImage;
 import org.sheepy.vulkan.sand.graphics.SandUIDescriptor;
@@ -36,6 +37,8 @@ public class SandApplication extends VulkanApplication
 
 	private boolean firstDrawLeft = false;
 	private boolean drawEnabledLeft = false;
+	private boolean firstDrawRight = false;
+	private boolean drawEnabledRight = false;
 	private SandUIDescriptor uiDescriptor;
 
 	private BoardImage image;
@@ -77,6 +80,18 @@ public class SandApplication extends VulkanApplication
 					break;
 				case GLFW_MOUSE_BUTTON_RIGHT:
 					io.getMouseDown()[1] = action == GLFW_PRESS;
+					if (io.getWantCaptureMouse() == false && action == GLFW_PRESS)
+					{
+						if (drawEnabledRight == false)
+						{
+							firstDrawRight = true;
+						}
+						drawEnabledRight = true;
+					}
+					else
+					{
+						drawEnabledRight = false;
+					}
 					break;
 				case GLFW_MOUSE_BUTTON_MIDDLE:
 					io.getMouseDown()[2] = action == GLFW_PRESS;
@@ -153,6 +168,11 @@ public class SandApplication extends VulkanApplication
 			firstDrawLeft = false;
 		}
 
+		// Right draw: erase.
+		if (drawEnabledRight)
+		{
+			draw(cursorPosition, EMaterial.Void, firstDrawRight);
+			firstDrawRight = false;
 		}
 
 		boardPool.execute();
