@@ -14,6 +14,13 @@ startScripts {
     applicationName = 'VSand'
 }
 
+sourceSets {
+	main {
+		java.srcDirs = ['src/']
+		resources.srcDirs = ['res/']
+	}
+}
+
 dependencies {
 
 	implementation project(':org.sheepy.vulkan')

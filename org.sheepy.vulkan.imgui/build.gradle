@@ -1,0 +1,21 @@
+plugins {
+	id 'java-library'
+}
+
+sourceSets {
+	main {
+		java.srcDirs = ['src/']
+		resources.srcDirs = ['res/']
+	}
+}
+
+dependencies {
+
+	api project(':org.sheepy.vulkan')
+
+	api('com.github.kotlin-graphics:imgui:v1.63-beta-01:light'){
+		exclude group: 'org.lwjgl', module: 'lwjgl-opengl'
+		exclude group: 'org.lwjgl', module: 'lwjgl-openal'
+		exclude group: 'graphics.scenery', module: 'spirvcrossj'
+	}
+}
