@@ -21,6 +21,15 @@ If you like the game, and want to buy me coffee:
 
 [![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZETXTGG9ZGENU)
 
+### Any problem?
+
+The game run smooth on my computers, but I cannot test it on every existing configurations. If you find any problem (game doesn´t launch, crash, particles don´t move...), please considers openning an issue:
+
+* First, try to launch the game in debug mode; edit the .bat file to add the debug option:
+```set DEFAULT_JVM_OPTS="-Ddebug='true'"```
+* Try to reproduce the bug, and see if there is any error in the console.
+* Open a new issue. Please describe your problem, how it happens, and paste the log from the console.
+
 ### Game
 
 Here some materials you can find in the game:
