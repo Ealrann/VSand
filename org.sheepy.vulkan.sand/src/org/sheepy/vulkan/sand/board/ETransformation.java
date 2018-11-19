@@ -13,7 +13,7 @@ public enum ETransformation
 	WATER__FIRE(EMaterial.Water, EMaterial.Fire, EMaterial.Vapor, 20, false),
 	VAPOR__ALL(EMaterial.Vapor, null, EMaterial.Water, 1, false),
 
-	WATER__DIRT(EMaterial.Water, EMaterial.Dirt, EMaterial.WetDirt, 20, false),
+	WATER__DIRT(EMaterial.Dirt, EMaterial.Water, EMaterial.WetDirt, 20, false),
 	WETDIRT_DIRT(EMaterial.WetDirt, null, EMaterial.Dirt, 20, true),
 	WETDIRT_VOID(EMaterial.WetDirt, EMaterial.Void, EMaterial.Grass, 20, true),
 	WETDIRT_WATER(EMaterial.WetDirt, EMaterial.Water, EMaterial.Grass, 15, true),
