@@ -4,7 +4,6 @@ import static org.lwjgl.vulkan.VK10.*;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.lwjgl.system.MemoryStack;
@@ -34,6 +33,8 @@ import org.sheepy.vulkan.util.ModuleResource;
 
 public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 {
+	private static final int WRITE_ACCESS = VK_ACCESS_MEMORY_WRITE_BIT;
+	private static final int READ_ACCESS = VK_ACCESS_MEMORY_READ_BIT;
 	private static final String SHADER_STEP1 = "org/sheepy/vulkan/sand/game_step1_chooseTO.comp.spv";
 	private static final String SHADER_STEP2 = "org/sheepy/vulkan/sand/game_step2_acceptFROM.comp.spv";
 	private static final String SHADER_STEP3 = "org/sheepy/vulkan/sand/game_step3_swap.comp.spv";
@@ -113,32 +114,30 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		stepDescriptors.add(decision.getBuffer());
 		stepDescriptors.add(tranformationBuffer.getBuffer());
 
-		Module vSandModule = this.getClass().getModule();
+		var vSandModule = this.getClass().getModule();
+		var shaderStep1 = new ModuleResource(vSandModule, SHADER_STEP1);
+		var shaderStep2 = new ModuleResource(vSandModule, SHADER_STEP2);
+		var shaderStep3 = new ModuleResource(vSandModule, SHADER_STEP3);
+		var shaderStep4 = new ModuleResource(vSandModule, SHADER_STEP4);
+		var shaderDraw = new ModuleResource(vSandModule, SHADER_DRAW);
 
 		drawPipeline = new ComputePipeline(context, width, height, 1,
-				Arrays.asList(boardBuffer, boardModifications),
-				new ModuleResource(vSandModule, SHADER_DRAW));
+				List.of(boardBuffer, boardModifications), shaderDraw);
 		drawPipeline.setEnabled(false);
 
 		stepPipeline = new RepeatComputePipeline(context, width, height, 1, stepDescriptors);
-		stepPipeline.addShader(
-				logicalDevice.newComputeShader(new ModuleResource(vSandModule, SHADER_STEP1)));
-		stepPipeline.addShader(
-				logicalDevice.newComputeShader(new ModuleResource(vSandModule, SHADER_STEP2)));
-		stepPipeline.addPipelineBarrier(new ComputeBufferBarrier(boardBuffer,
-				VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_MEMORY_WRITE_BIT));
-		stepPipeline.addShader(
-				logicalDevice.newComputeShader(new ModuleResource(vSandModule, SHADER_STEP3)));
-		stepPipeline.addShader(
-				logicalDevice.newComputeShader(new ModuleResource(vSandModule, SHADER_STEP4)));
+		stepPipeline.addShader(logicalDevice.newComputeShader(shaderStep1));
+		stepPipeline.addShader(logicalDevice.newComputeShader(shaderStep2));
+		stepPipeline.addShader(logicalDevice.newComputeShader(shaderStep3));
+		stepPipeline.addShader(logicalDevice.newComputeShader(shaderStep4));
 
 		pixelCompute = new PixelComputePipeline(context, configBuffer, boardBuffer, boardImage);
 
 		process = new ComputeProcess(context);
+		process.addProcessUnit(new ComputeBufferBarrier(boardBuffer, READ_ACCESS, WRITE_ACCESS));
 		process.addProcessUnit(drawPipeline);
 		process.addProcessUnit(stepPipeline);
-		process.addProcessUnit(new ComputeBufferBarrier(boardBuffer, VK_ACCESS_MEMORY_WRITE_BIT,
-				VK_ACCESS_MEMORY_READ_BIT));
+		process.addProcessUnit(new ComputeBufferBarrier(boardBuffer, WRITE_ACCESS, READ_ACCESS));
 		process.addProcessUnit(pixelCompute);
 
 		addProcess(process);
@@ -203,11 +202,11 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 		vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
 	}
 
-	public void pushModification(EShape shape,
-			EShapeSize brushSize,
-			int x,
-			int y,
-			EMaterial material)
+	public void pushModification(	EShape shape,
+									EShapeSize brushSize,
+									int x,
+									int y,
+									EMaterial material)
 	{
 		boardModifications.pushModification(shape, brushSize, x, y, material);
 	}
