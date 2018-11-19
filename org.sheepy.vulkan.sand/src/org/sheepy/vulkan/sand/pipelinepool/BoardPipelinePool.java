@@ -195,11 +195,12 @@ public class BoardPipelinePool extends ComputeProcessPool implements IAllocable
 
 		if (process.isDirty())
 		{
-			vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
 			recordCommands();
 		}
 
 		super.execute();
+
+		vkQueueWaitIdle(logicalDevice.getQueueManager().getComputeQueue());
 	}
 
 	public void pushModification(EShape shape,
