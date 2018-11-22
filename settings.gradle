@@ -1,11 +1,43 @@
-rootProject.name = "Vulkan"
+rootProject.name = "VSand"
 
 
-include ':org.sheepy.vulkan'
-include ':org.sheepy.vulkan.imgui'
 include ':org.sheepy.vulkan.sand'
-include ':org.sheepy.vulkan.test'
+include ':org.sheepy.vulkan.nuklear'
+
+// Common
+include ':org.sheepy.common.api'
+project(':org.sheepy.common.api').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/org.sheepy.common.api')
+
+include ':org.sheepy.common.impl'
+project(':org.sheepy.common.impl').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/org.sheepy.common.impl')
+
+// EMF
+include 'org.eclipse.emf.common'
+include 'org.eclipse.emf.ecore'
+include 'org.eclipse.emf.ecore.xmi'
+project(':org.eclipse.emf.common').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/EMF/org.eclipse.emf.common')
+project(':org.eclipse.emf.ecore').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/EMF/org.eclipse.emf.ecore')
+project(':org.eclipse.emf.ecore.xmi').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/EMF/org.eclipse.emf.ecore.xmi')
+
+// Vulkan
+include ':org.sheepy.vulkan.api'
+include ':org.sheepy.vulkan.common'
+include ':org.sheepy.vulkan.resource'
+include ':org.sheepy.vulkan.process'
+include ':org.sheepy.vulkan.process.graphic'
+include ':org.sheepy.vulkan.process.compute'
+
+project(':org.sheepy.vulkan.api').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.api')
+project(':org.sheepy.vulkan.common').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.common')
+project(':org.sheepy.vulkan.resource').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.resource')
+project(':org.sheepy.vulkan.process').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.process')
+project(':org.sheepy.vulkan.process.graphic').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.process.graphic')
+project(':org.sheepy.vulkan.process.compute').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.process.compute')
 
 
-project(':org.sheepy.vulkan').projectDir = new File(settingsDir, 'vulkan_lib/org.sheepy.vulkan')
-project(':org.sheepy.vulkan.test').projectDir = new File(settingsDir, 'vulkan_lib/org.sheepy.vulkan.test')
+// DEMO
+include ':org.sheepy.vulkan.demo'
+include ':org.sheepy.vulkan.gameoflife'
+
+project(':org.sheepy.vulkan.demo').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.demo')
+project(':org.sheepy.vulkan.gameoflife').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.gameoflife')

@@ -1,0 +1,120 @@
+@GenModel(modelDirectory="/org.sheepy.vulkan.sand.model/src/generated/java")
+@GenModel(editDirectory="/org.sheepy.vulkan.sand.model.edit/src/generated/java")
+@GenModel(editorDirectory="/org.sheepy.vulkan.sand.model.editor/src/generated/java", creationSubmenus="true",
+	multipleEditorPages="false")
+@GenModel(modelName="VSand", prefix="VSand")
+@GenModel(publicConstructors="true", complianceLevel="11.0", resource="XMI")
+@GenModel(childCreationExtenders="true")
+
+package org.sheepy.vulkan.sand.model
+
+import org.sheepy.common.model.application.Application
+import org.sheepy.common.model.presentation.IPanel
+import org.sheepy.common.model.ui.Button
+import org.sheepy.vulkan.model.process.compute.ComputePipeline
+import org.sheepy.vulkan.model.process.compute.ComputeProcess
+import org.sheepy.vulkan.model.process.graphic.GraphicProcess
+import org.sheepy.vulkan.model.resource.AbstractConstants
+import org.sheepy.vulkan.nuklear.model.NuklearPipeline
+
+class VSandApplication extends Application
+{
+	contains Materials[1..1] materials
+	contains Transformations[1..1] transformations
+	
+	refers Material mainMaterial
+	refers Material secondaryMaterial
+	
+	int brushSize = "4"
+}
+
+class Materials
+{
+	contains Material[] materials
+}
+
+class Material
+{
+	@GenModel(propertyCategory="Basic")
+	String name
+	@GenModel(propertyCategory="Basic")
+	boolean isStatic
+	@GenModel(propertyCategory="Basic")
+	int density
+	@GenModel(propertyCategory="Basic")
+	int runoff
+	
+	@GenModel(propertyCategory="Color")
+	int r = "0"
+	@GenModel(propertyCategory="Color")
+	int g = "0"
+	@GenModel(propertyCategory="Color")
+	int b = "0"
+	
+	@GenModel(propertyCategory="UI")
+	boolean userFriendly = "true"
+}
+
+class Transformations
+{
+	contains Transformation[] transformations
+}
+
+class Transformation
+{
+	String name
+	refers Material reactant
+	refers Material catalyst
+	refers Material target
+	int probability
+	boolean isStaticTransformation
+}
+
+class RepeatComputePipeline extends ComputePipeline
+{
+	int repeatCount = "1"
+}
+
+class VSandConstants extends AbstractConstants
+{
+	boolean firstPass = "true"
+}
+
+class MaterialSelectorPanel extends IPanel
+{
+	@GenModel(propertyCategory="UI")
+	int lineHeight = "32"
+	
+	@GenModel(propertyCategory="Primary Color")
+	int primaryR = "255"
+	@GenModel(propertyCategory="Primary Color")
+	int primaryG = "50"
+	@GenModel(propertyCategory="Primary Color")
+	int primaryB = "50"
+	
+	@GenModel(propertyCategory="Secondary Color")
+	int secondaryR = "50"
+	@GenModel(propertyCategory="Secondary Color")
+	int secondaryG = "50"
+	@GenModel(propertyCategory="Secondary Color")
+	int secondaryB = "255"
+	
+}
+
+// Dummy objects, for child extenders
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=274884
+interface VSandButton extends Button
+{
+}
+
+interface VSandNuklearPipeline extends NuklearPipeline
+{
+}
+
+class VSandGraphicProcess extends GraphicProcess
+{
+}
+
+class VSandComputeProcess extends ComputeProcess
+{
+}

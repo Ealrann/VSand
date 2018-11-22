@@ -4,21 +4,28 @@ plugins {
 	id 'java'
 	id 'application'
 	id 'distribution'
+	id 'org.beryx.jlink' version '2.3.0'
 }
 
-mainClassName = 'org.sheepy.vulkan.sand.SandApplication'
+jlink {
+		moduleName = 'org.sheepy.vulkan.sand'
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher{
+        name = 'VSand'
+        jvmArgs = ['-Dlog4j.configurationFile=./log4j2.xml']
+    }
+}
 
-project.ext.current_version = 'v1.0.2'
+mainClassName = 'org.sheepy.vulkan.sand/org.sheepy.vulkan.sand.SandApplication'
+jar {
+    manifest {
+        attributes 'Implementation-Title': "modular-hello",
+                'Main-Class': 'org.sheepy.vulkan.sand.SandApplication'
+    }
+}
 
 startScripts {
     applicationName = 'VSand'
-}
-
-sourceSets {
-	main {
-		java.srcDirs = ['src/']
-		resources.srcDirs = ['res/']
-	}
 }
 
 if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
@@ -28,11 +35,14 @@ if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
 }
 
 dependencies {
+	implementation project(':org.sheepy.common.impl')
 
-	implementation project(':org.sheepy.vulkan')
-	implementation project(':org.sheepy.vulkan.imgui')
+	implementation project(':org.sheepy.vulkan.api')
+	implementation project(':org.sheepy.vulkan.process.compute')
+	implementation project(':org.sheepy.vulkan.process.graphic')
+
+	implementation project(':org.sheepy.vulkan.nuklear')
 }
-
 
 switch ( OperatingSystem.current() ) {
 	case OperatingSystem.WINDOWS:
@@ -48,6 +58,14 @@ switch ( OperatingSystem.current() ) {
 
 distributions {
 	main {
-		baseName = "VSand_${current_version}_$OS"
+		baseName = "VSand_$OS"
+	}
+}
+
+sourceSets {
+	main {
+		java.srcDirs = ['src/generated/java',
+			'src/main/java']
+		resources.srcDirs = ['src/main/resources']
 	}
 }

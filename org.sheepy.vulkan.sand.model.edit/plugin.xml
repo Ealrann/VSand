@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated VSand -->
+      <factory
+            uri="org.sheepy.vulkan.sand.model"
+            class="org.sheepy.vulkan.sand.model.provider.VSandItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.childCreationExtenders">
+      <!-- @generated VSand -->
+      <extender
+            uri="org.sheepy.vulkan.model.process"
+            class="org.sheepy.vulkan.sand.model.provider.VSandItemProviderAdapterFactory$ProcessChildCreationExtender"/>
+      <extender
+            uri="org.sheepy.vulkan.model"
+            class="org.sheepy.vulkan.sand.model.provider.VSandItemProviderAdapterFactory$VulkanChildCreationExtender"/>
+      <extender
+            uri="org.sheepy.common.model.presentation"
+            class="org.sheepy.vulkan.sand.model.provider.VSandItemProviderAdapterFactory$PresentationChildCreationExtender"/>
+   </extension>
+
+</plugin>

@@ -1,0 +1,185 @@
+#version 450
+
+#define WIDTH 1280
+#define HEIGHT 720
+
+#define CHUNK_WIDTH 40
+#define CHUNK_HEIGHT 23
+
+#define WORKGROUP_SIZE_X 32
+#define WORKGROUP_SIZE_Y 32
+
+#define UP    0
+#define DOWN  1
+#define RIGHT 2
+#define LEFT  3
+
+#define TO_UP    1 << 0
+#define TO_DOWN  1 << 1
+#define TO_RIGHT 1 << 2
+#define TO_LEFT  1 << 3
+
+#define RANDOM_1_LOC  8
+#define RANDOM_2_LOC  10
+#define RANDOM_3_LOC  12
+#define RANDOM_4_LOC  14
+
+#define MATERIAL_COUNT 32
+
+#define TARGET_VALUE_POSITION 16
+#define INITIAL_VALUE_POSITION 24
+
+const uint MOVED_TAG = 1 << 4;
+const uint TARGET_VALUE_MASK = 255 << TARGET_VALUE_POSITION;
+
+layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	uint rgb;
+};
+
+// Random number, change each frame.
+layout (push_constant) uniform PushConstants {
+	uint random;
+	int firstPass;
+} pushConstants;
+
+// The definition of materials.
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+}configuration;
+
+// The game board, with all the values.
+layout(binding = 1) buffer SBoard
+{
+	int data[WIDTH][HEIGHT];
+	int chunks[CHUNK_WIDTH][CHUNK_HEIGHT];
+}board;
+
+// DecisionBoard store necessary informations around movement.
+// Each 32 bit value (one per cell) stores:
+// 8 bits for the initial value
+// 8 bits for the swapped value
+// 8 bits with a random value.
+//		This value is divided in 4 value of 2 bit, and represent
+// 		a random array containing all the unique values : 0, 1, 2 and 3.
+//		Used to have a favourite neighboors per cells.
+// 3 unused bits.
+// 1 bit, true if the cell is swapped.
+// 4 bits for the direction we intend to swap.
+layout(binding = 2) buffer SDecision
+{
+	uint data[WIDTH][HEIGHT];
+}decision;
+
+/**
+ * Here, we will apply the swap
+ */
+void main()
+{
+	if(gl_GlobalInvocationID.y >= HEIGHT)
+		return;
+
+	if((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 1) == 0)
+	{
+		return;
+	}
+
+	int x = int(gl_GlobalInvocationID.x);
+	int y = int(gl_GlobalInvocationID.y);
+
+	int direction;
+	int iterateY;
+	int targetX;
+	int targetY;
+	int value;
+	uint targetValue;
+	uint invertDir;
+	bool validPosition;
+	bool end;
+
+	// We will take the value of our target neighbor if he do the same move.
+	uint dir = decision.data[x][y] & 15;
+	int localY = int(gl_LocalInvocationID.y);
+	int workgroupOffset = 0;
+
+	if (dir != 0)
+	{
+		value = board.data[x][y];
+		// resolve the direction
+		invertDir = 0;
+		targetX = x;
+		targetY = y;
+		switch (dir)
+		{
+		case TO_RIGHT:
+			targetX += 1;
+			invertDir = TO_LEFT;
+			break;
+		case TO_LEFT:
+			targetX -= 1;
+			invertDir = TO_RIGHT;
+			break;
+		case TO_UP:
+			targetY -= 1;
+			invertDir = TO_DOWN;
+			break;
+		default:
+			targetY += 1;
+			invertDir = TO_UP;
+			break;
+		}
+
+		validPosition = (targetX >= 0) && (targetX < WIDTH) && (targetY >= 0) && (targetY < HEIGHT);
+		if (!validPosition || (decision.data[targetX][targetY] & invertDir) != 0)
+		{
+			targetValue = (decision.data[x][y] & TARGET_VALUE_MASK) >> TARGET_VALUE_POSITION;
+
+			decision.data[x][y] = ((decision.data[x][y] << 8) >> 8) | (targetValue << INITIAL_VALUE_POSITION)
+					| MOVED_TAG;
+
+			// If we swap on Air, we will try to swap a full column.
+			if (targetValue == 0 && dir == TO_DOWN)
+			{
+				direction = y < targetY ? -1 : 1;
+				end = false;
+
+				while (!end)
+				{
+					iterateY = y + direction;
+					if (iterateY >= 0 && iterateY < HEIGHT && board.data[x][iterateY] == value
+							&& (decision.data[x][iterateY] & (MOVED_TAG | 15)) == 0)
+					{
+						y = iterateY;
+						decision.data[x][y] |= MOVED_TAG;
+
+
+						localY += direction;
+						if(localY < 0)
+						{
+							localY = WORKGROUP_SIZE_Y - 1;
+							workgroupOffset --;
+						}
+						else if (localY == WORKGROUP_SIZE_Y)
+						{
+							localY = 0;
+							workgroupOffset ++;
+						}
+					}
+					else
+					{
+						end = true;
+					}
+				}
+			}
+
+			board.data[x][y] = int(targetValue);
+			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y + workgroupOffset] = 2;
+		}
+	}
+}

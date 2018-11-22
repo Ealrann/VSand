@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Nuklear -->
+      <package
+            uri="org.sheepy.vulkan.nuklear.model"
+            class="org.sheepy.vulkan.nuklear.model.NuklearPackage"
+            genModel="src/main/xcore/Nuklear.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated Nuklear -->
+      <parser
+            type="nuklear"
+            class="org.sheepy.vulkan.nuklear.model.util.NuklearResourceFactoryImpl"/>
+   </extension>
+
+</plugin>

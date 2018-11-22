@@ -4,13 +4,15 @@ buildscript {
 		mavenCentral()
 		maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 		maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-		maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
-		maven { url 'https://jitpack.io' }
+		maven { url "https://plugins.gradle.org/m2/" }
 		jcenter()
 	}
 	dependencies {
-
+		classpath "org.javamodularity:moduleplugin:1.4.0"
 	}
+}
+
+plugins {
 }
 
 repositories {
@@ -18,18 +20,52 @@ repositories {
 	mavenCentral()
 	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 	maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-	maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
-	maven { url 'https://jitpack.io' }
 }
+
+import org.gradle.internal.os.OperatingSystem
+
+switch ( OperatingSystem.current() ) {
+	case OperatingSystem.WINDOWS:
+		project.ext.lwjglNatives = "natives-windows"
+		break
+	case OperatingSystem.LINUX:
+		project.ext.lwjglNatives = "natives-linux"
+		break
+	case OperatingSystem.MAC_OS:
+		project.ext.lwjglNatives = "natives-macos"
+		break
+}
+
+project.ext.jomlVersion = "1.9.12"
+project.ext.lwjglVersion = "3.2.2-SNAPSHOT"
 
 subprojects {
 
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
+	apply plugin: "org.javamodularity.moduleplugin"
 
-	sourceSets {
-		main {
-			java.exclude "**/module-info.java"
+	version "1.0.2"
+
+	sourceCompatibility = 11
+	targetCompatibility = 11
+
+	eclipse {
+		classpath {
+			file {
+				whenMerged {
+					//Define a module as being either a library or a project dependency.
+					//Test sources are excluded because eclipse wants them on the classpath for some reason (1)
+					entries.findAll { isModule(it) }.each {
+						it.entryAttributes['module'] = 'true'
+					}
+
+					//Test-scoped stuff should set the appropriate flag
+					entries.findAll { isTest(it) }.each {
+						it.entryAttributes['test'] = 'true'
+					}
+				}
+			}
 		}
 	}
 
@@ -38,8 +74,15 @@ subprojects {
 			jcenter()
 			maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 			maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-			maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
-			maven { url 'https://jitpack.io' }
 		}
 	}
 }
+
+boolean isLibrary(entry) { return entry instanceof org.gradle.plugins.ide.eclipse.model.Library }
+boolean isProjectDependency(entry) { return entry instanceof org.gradle.plugins.ide.eclipse.model.ProjectDependency }
+
+boolean isTestScope(entry) { return entry.entryAttributes.get('gradle_used_by_scope').equals('test'); }
+boolean isSource(entry) { return entry.properties.kind.equals('src'); }
+
+boolean isModule(entry) { (isLibrary(entry) || isProjectDependency(entry)) && !isTestScope(entry); }
+boolean isTest(entry) { (isSource(entry) || isLibrary(entry)) && isTestScope(entry); }

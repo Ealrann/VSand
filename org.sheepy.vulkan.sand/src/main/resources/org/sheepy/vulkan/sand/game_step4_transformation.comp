@@ -1,0 +1,165 @@
+#version 450
+
+#define WIDTH 1280
+#define HEIGHT 720
+
+#define CHUNK_WIDTH 40
+#define CHUNK_HEIGHT 23
+
+#define WORKGROUP_SIZE_X 32
+#define WORKGROUP_SIZE_Y 32
+
+#define UP    0
+#define DOWN  1
+#define RIGHT 2
+#define LEFT  3
+
+#define TO_UP    1 << 0
+#define TO_DOWN  1 << 1
+#define TO_RIGHT 1 << 2
+#define TO_LEFT  1 << 3
+
+#define RANDOM_1_LOC  8
+#define RANDOM_2_LOC  10
+#define RANDOM_3_LOC  12
+#define RANDOM_4_LOC  14
+
+#define OLD_VALUE_MASK 4294901760
+
+#define MATERIAL_COUNT 32
+
+const uint MOVED_TAG = 1 << 4;
+
+layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	uint rgb;
+};
+
+// Random number, change each frame.
+layout (push_constant) uniform PushConstants {
+	uint random;
+	int firstPass;
+} pushConstants;
+
+// The definition of materials.
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+}configuration;
+
+// The game board, with all the values.
+layout(binding = 1) buffer SBoard
+{
+	int data[WIDTH][HEIGHT];
+	int chunks[CHUNK_WIDTH][CHUNK_HEIGHT];
+}board;
+
+// DecisionBoard store necessary informations around movement.
+// Each 32 bit value (one per cell) stores:
+// 8 bits for the initial value
+// 8 bits for the swapped value
+// 8 bits with a random value.
+//		This value is divided in 4 value of 2 bit, and represent
+// 		a random array containing all the unique values : 0, 1, 2 and 3.
+//		Used to have a favourite neighboors per cells.
+// 3 unused bits.
+// 1 bit, true if the cell is swapped.
+// 4 bits for the direction we intend to swap.
+layout(binding = 2) buffer SDecision
+{
+	uint data[WIDTH][HEIGHT];
+}decision;
+
+// The description of the transformations.
+// Each cell contains :
+// 1 bit for the sign
+// 1 bit for isStatic (if the transformation should occur only if the material doesn't move.
+// 14 bits for the probability (not all used, probability is only an integer from 0 to 1000).
+// 16 bits for the target value.
+
+layout(binding = 3) readonly buffer STransformation
+{
+	uint data[MATERIAL_COUNT * MATERIAL_COUNT];
+}transformations;
+
+bool transform(int x, int y, uint value, uint otherValue);
+float rand(vec2 co);
+
+/**
+ * Here, we will apply the transformations
+ */
+void main()
+{
+	if(gl_GlobalInvocationID.y >= HEIGHT)
+		return;
+
+
+	if(gl_LocalInvocationIndex == 0)
+	{
+		if((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 2) != 0)
+		{
+			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 4;
+		}
+		else if (pushConstants.firstPass == 1)
+		{
+			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 0;
+		}
+	}
+
+	int x = int(gl_GlobalInvocationID.x);
+	int y = int(gl_GlobalInvocationID.y);
+
+	uint currentValue = decision.data[x][y] >> 24;
+
+	uint valueUp = y > 0 ? decision.data[x][y - 1] >> 24 : 0;
+	uint valueDown = y < (HEIGHT - 1) ? decision.data[x][y + 1] >> 24 : 0;
+	uint valueRight = x < (WIDTH - 1) ? decision.data[x + 1][y] >> 24 : 0;
+	uint valueLeft = x > 0 ? decision.data[x - 1][y] >> 24 : 0;
+
+	// Purpose here is to call transform one by one, and stop at the first that is true.
+	!(currentValue == valueUp || !transform(x, y, currentValue, valueUp))
+			|| !(currentValue == valueDown || !transform(x, y, currentValue, valueDown))
+			|| !(currentValue == valueRight || !transform(x, y, currentValue, valueRight))
+			|| !(currentValue == valueLeft || !transform(x, y, currentValue, valueLeft));
+}
+
+bool transform(int x, int y, uint value, uint otherValue)
+{
+	bool res = false;
+	uint targetValue = transformations.data[otherValue * MATERIAL_COUNT + value];
+
+	if (targetValue != -1)
+	{
+		uint probability = (targetValue << 2) >> 18;
+		bool staticTransfo = (targetValue & (1 << 30)) != 0;
+
+		// If not static, or if we didn't move (no change Value)
+		if (!staticTransfo || (decision.data[x][y] & (15 | MOVED_TAG)) == 0)
+		{
+			highp float rand = rand(vec2(pushConstants.random, x * y));
+			if (rand * 1000. <= float(probability))
+			{
+				board.data[x][y] = int((targetValue << 16) >> 16);
+				board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 6;
+				res = true;
+			}
+		}
+	}
+
+	return res;
+}
+
+highp float rand(vec2 co)
+{
+	float a = 12.9898;
+	float b = 78.233;
+	float c = 43758.5453;
+	float dt = dot(co.xy, vec2(a, b));
+	float sn = mod(dt, 3.14);
+	return fract(sin(sn) * c);
+}

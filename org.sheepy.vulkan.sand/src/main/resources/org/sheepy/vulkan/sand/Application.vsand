@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.vulkan.model.process.compute" xmlns:graphic="org.sheepy.vulkan.model.process.graphic" xmlns:model="org.sheepy.vulkan.sand.model" xmlns:model_1="org.sheepy.vulkan.model" xmlns:model_2="org.sheepy.vulkan.nuklear.model" xmlns:presentation="org.sheepy.common.model.presentation" xmlns:process="org.sheepy.vulkan.model.process" xmlns:resource="org.sheepy.vulkan.model.resource" xmlns:ui="org.sheepy.common.model.ui" xmlns:variable="org.sheepy.common.model.variable" size="1280;720" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3">
+  <views xsi:type="presentation:TranparentUIView" currentUIPage="//@views.0/@uiPages.0">
+    <uiPages>
+      <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
+        <controls xsi:type="ui:DynamicRowLayout"/>
+        <controls xsi:type="ui:VariableLabel" text="Speed">
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vulkan.sand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@units.1"/>
+        </controls>
+        <controls xsi:type="ui:Slider" minValue="1" maxValue="16">
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vulkan.sand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@units.1"/>
+        </controls>
+        <controls xsi:type="ui:VariableLabel" text="Brush Size">
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vulkan.sand.model#VSandApplication#brushSize" target="/"/>
+        </controls>
+        <controls xsi:type="ui:Slider" minValue="1" maxValue="8">
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vulkan.sand.model#VSandApplication#brushSize" target="/"/>
+        </controls>
+      </panels>
+      <panels xsi:type="model:MaterialSelectorPanel" name="Materials" verticalRelative="MIDDLE" horizontalRelative="RIGHT"/>
+      <panels xsi:type="ui:Panel" name="Controls" width="300" height="210" showTitle="true" minimizable="true" minimized="true">
+        <controls xsi:type="ui:DynamicRowLayout" columnCount="2"/>
+        <controls xsi:type="ui:Label" text="Primary material"/>
+        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Scroll"/>
+        <controls xsi:type="ui:Label" text="Secondary material"/>
+        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Shift + Scroll"/>
+        <controls xsi:type="ui:Label" text="Speed"/>
+        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text=" /  *"/>
+        <controls xsi:type="ui:Label" text="Brush"/>
+        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text=" -  +"/>
+        <controls xsi:type="ui:Label" text="Pause"/>
+        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Space bar"/>
+        <controls xsi:type="ui:Label" text="Next Frame"/>
+        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="n"/>
+        <controls xsi:type="ui:Label"/>
+        <controls xsi:type="ui:Label"/>
+        <controls xsi:type="ui:DynamicRowLayout"/>
+        <controls xsi:type="ui:Label" text="https://github.com/ealrann/VSand"/>
+      </panels>
+    </uiPages>
+  </views>
+  <engines xsi:type="model_1:VulkanEngine">
+    <sharedResources>
+      <resources xsi:type="resource:Image" descriptorType="STORAGE_IMAGE" name="Board Image" width="1280" height="720" format="R8G8B8A8_UNORM"/>
+    </sharedResources>
+    <processes xsi:type="model:VSandComputeProcess" resetAllowed="true">
+      <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Board Buffer">
+        <shaderStages>COMPUTE_BIT</shaderStages>
+        <usages>STORAGE_BUFFER_BIT</usages>
+        <usages>TRANSFER_SRC_BIT</usages>
+        <usages>TRANSFER_DST_BIT</usages>
+        <properties>DEVICE_LOCAL_BIT</properties>
+      </resources>
+      <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="Configuration">
+        <shaderStages>COMPUTE_BIT</shaderStages>
+        <usages>UNIFORM_BUFFER_BIT</usages>
+        <usages>TRANSFER_DST_BIT</usages>
+        <properties>DEVICE_LOCAL_BIT</properties>
+      </resources>
+      <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Transformation">
+        <shaderStages>COMPUTE_BIT</shaderStages>
+        <usages>TRANSFER_DST_BIT</usages>
+        <usages>STORAGE_BUFFER_BIT</usages>
+        <properties>DEVICE_LOCAL_BIT</properties>
+      </resources>
+      <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Decision">
+        <shaderStages>COMPUTE_BIT</shaderStages>
+        <usages>TRANSFER_DST_BIT</usages>
+        <usages>STORAGE_BUFFER_BIT</usages>
+        <properties>DEVICE_LOCAL_BIT</properties>
+      </resources>
+      <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="Modification">
+        <shaderStages>COMPUTE_BIT</shaderStages>
+        <usages>UNIFORM_BUFFER_BIT</usages>
+        <properties>HOST_VISIBLE_BIT</properties>
+        <properties>HOST_COHERENT_BIT</properties>
+      </resources>
+      <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
+        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/draw.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+      </resources>
+      <resources xsi:type="resource:Shader" name="step1" stage="COMPUTE_BIT">
+        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/game_step1_chooseTO.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+      </resources>
+      <resources xsi:type="resource:Shader" name="step2" stage="COMPUTE_BIT">
+        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/game_step2_acceptFROM.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+      </resources>
+      <resources xsi:type="resource:Shader" name="step3" stage="COMPUTE_BIT">
+        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/game_step3_swap.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+      </resources>
+      <resources xsi:type="resource:Shader" name="step4" stage="COMPUTE_BIT">
+        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/game_step4_transformation.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+      </resources>
+      <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
+        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/board_to_pixel.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+      </resources>
+      <resources xsi:type="model:VSandConstants" stage="COMPUTE_BIT"/>
+      <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resources.1 //@engines.0/@processes.0/@resources.0 //@engines.0/@processes.0/@resources.3 //@engines.0/@processes.0/@resources.2"/>
+      <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resources.0 //@engines.0/@processes.0/@resources.4"/>
+      <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@resources.1 //@engines.0/@processes.0/@resources.0 //@engines.0/@sharedResources/@resources.0"/>
+      <units xsi:type="compute:ComputePipeline" enabled="false" stage="Compute" name="Draw" descriptorSet="//@engines.0/@processes.0/@descriptorSets.1" width="1280" height="720" depth="1">
+        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="BoardReadToWrite">
+          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+        </units>
+        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="ModificationWriteToRead">
+          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.4" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+        </units>
+        <units xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resources.5"/>
+        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="BoardWriteToRead">
+          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+        </units>
+        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="ModificationReadToWrite">
+          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.4" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+        </units>
+      </units>
+      <units xsi:type="model:RepeatComputePipeline" stage="Compute" name="Step" descriptorSet="//@engines.0/@processes.0/@descriptorSets.0" constants="//@engines.0/@processes.0/@resources.11" width="1280" height="720" depth="1">
+        <units xsi:type="process:PushConstant"/>
+        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="DecisionReadToWrite">
+          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.3" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+        </units>
+        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="BoardReadToWrite">
+          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+        </units>
+        <units xsi:type="compute:Computer" name="Step1" shader="//@engines.0/@processes.0/@resources.6"/>
+        <units xsi:type="compute:Computer" name="Step2" shader="//@engines.0/@processes.0/@resources.7"/>
+        <units xsi:type="compute:Computer" name="Step3" shader="//@engines.0/@processes.0/@resources.8"/>
+        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="DecisionWriteToRead">
+          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.3" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+        </units>
+        <units xsi:type="compute:Computer" name="Step4" shader="//@engines.0/@processes.0/@resources.9"/>
+        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="BoardWriteToRead">
+          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+        </units>
+      </units>
+      <units xsi:type="compute:ComputePipeline" stage="Compute" name="Board to Pixel" descriptorSet="//@engines.0/@processes.0/@descriptorSets.2" width="1280" height="720" depth="1">
+        <units xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resources.10"/>
+      </units>
+    </processes>
+    <processes xsi:type="model:VSandGraphicProcess" resetAllowed="true">
+      <units xsi:type="graphic:ImagePipeline" image="//@engines.0/@sharedResources/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="COLOR_ATTACHMENT_OUTPUT_BIT" imageSrcAccess="64" imageDstAccess="64"/>
+      <units xsi:type="model_2:NuklearPipeline" subpass="1">
+        <indexBuffer/>
+        <font descriptorType="SAMPLED_IMAGE">
+          <shaderStages>FRAGMENT_BIT</shaderStages>
+          <file xsi:type="resource:StringModuleResource" path="org/sheepy/vulkan/sand/FiraSans-Regular.ttf" moduleName="org.sheepy.vulkan.sand"/>
+        </font>
+        <pushConstant/>
+      </units>
+      <configuration clearBeforeRender="false" presentationMode="Fifo" acquireWaitStage="COMPUTE_SHADER_BIT">
+        <swapImageUsages>TransferDst</swapImageUsages>
+        <swapImageUsages>ColorAttachment</swapImageUsages>
+        <colorDomain/>
+      </configuration>
+      <renderPassInfo>
+        <attachments name="Swapchain" loadOp="DONT_CARE" stencilLoadOp="DONT_CARE" stencilStoreOp="DONT_CARE" finalLayout="PRESENT_SRC_KHR"/>
+        <subpasses name="Image">
+          <refs attachement="//@engines.0/@processes.1/@renderPassInfo/@attachments.0" layout="TRANSFER_DST_OPTIMAL"/>
+        </subpasses>
+        <subpasses name="UI">
+          <refs attachement="//@engines.0/@processes.1/@renderPassInfo/@attachments.0" layout="COLOR_ATTACHMENT_OPTIMAL"/>
+        </subpasses>
+        <dependencies dstSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.0" srcStageMask="COMPUTE_SHADER_BIT" dstStageMask="TRANSFER_BIT">
+          <dstAccesses>TRANSFER_WRITE_BIT</dstAccesses>
+        </dependencies>
+        <dependencies srcSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.0" dstSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.1" srcStageMask="TRANSFER_BIT" dstStageMask="FRAGMENT_SHADER_BIT">
+          <srcAccesses>TRANSFER_WRITE_BIT</srcAccesses>
+          <dstAccesses>SHADER_WRITE_BIT</dstAccesses>
+        </dependencies>
+      </renderPassInfo>
+    </processes>
+  </engines>
+  <materials>
+    <materials name="Void" runoff="60"/>
+    <materials name="Sand" density="5" runoff="1" r="244" g="244" b="67"/>
+    <materials name="Dirt" isStatic="true" density="5" runoff="1" r="72" g="38" b="4"/>
+    <materials name="Wall" isStatic="true" density="20" r="153" g="153" b="143"/>
+    <materials name="Concrete" density="20" runoff="4" r="94" g="94" b="85"/>
+    <materials name="Water" density="4" runoff="30" r="67" g="67" b="244"/>
+    <materials name="Vapor" density="-2" runoff="1" r="159" g="159" b="249"/>
+    <materials name="WetDirt" density="5" runoff="1" r="48" g="26" b="3" userFriendly="false"/>
+    <materials name="Grass" isStatic="true" density="1" r="11" g="193" b="11" userFriendly="false"/>
+    <materials name="Fire" density="-1" r="244" g="67" b="67"/>
+    <materials name="FireStatic" isStatic="true" r="244" g="38" b="38" userFriendly="false"/>
+    <materials name="FireFinal" isStatic="true" r="255" userFriendly="false"/>
+    <materials name="Plant" isStatic="true" density="15" r="67" g="244" b="67"/>
+    <materials name="Wax" isStatic="true" density="20" r="254" g="254" b="231"/>
+    <materials name="LiquidWax" density="1" runoff="1" r="231" g="254" b="254" userFriendly="false"/>
+    <materials name="Lava" density="3" runoff="5" r="244" g="111" b="67"/>
+    <materials name="LavaBoiling" density="2" runoff="6" r="244" g="244" b="67" userFriendly="false"/>
+  </materials>
+  <transformations>
+    <transformations name="WATER__PLANT" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.12" target="//@materials/@materials.12" probability="800"/>
+    <transformations name="VOID__FIRE" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.9" target="//@materials/@materials.9" probability="40"/>
+    <transformations name="FIRE__ALL" reactant="//@materials/@materials.9" target="//@materials/@materials.0" probability="300"/>
+    <transformations name="FIRE__WATER" reactant="//@materials/@materials.9" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="1000"/>
+    <transformations name="FIRESTATIC__WATER" reactant="//@materials/@materials.10" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="1000"/>
+    <transformations name="CONCRETE__ALL" reactant="//@materials/@materials.4" target="//@materials/@materials.3" probability="10" isStaticTransformation="true"/>
+    <transformations name="WATER__FIRE" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.9" target="//@materials/@materials.6" probability="20"/>
+    <transformations name="VAPOR__ALL" reactant="//@materials/@materials.6" target="//@materials/@materials.5" probability="1"/>
+    <transformations name="WATER__DIRT" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.5" target="//@materials/@materials.7" probability="20"/>
+    <transformations name="WETDIRT_DIRT" reactant="//@materials/@materials.7" target="//@materials/@materials.2" probability="20" isStaticTransformation="true"/>
+    <transformations name="WETDIRT_VOID" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.0" target="//@materials/@materials.8" probability="20" isStaticTransformation="true"/>
+    <transformations name="WETDIRT_WATER" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.5" target="//@materials/@materials.8" probability="15" isStaticTransformation="true"/>
+    <transformations name="DIRT_WETDIRT" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.7" target="//@materials/@materials.7" probability="10"/>
+    <transformations name="FIRESTATIC__FINALFIRE" reactant="//@materials/@materials.10" target="//@materials/@materials.11" probability="100"/>
+    <transformations name="FIREFINAL__ALL" reactant="//@materials/@materials.11" target="//@materials/@materials.0" probability="500"/>
+    <transformations name="FIREFINAL__VOID" reactant="//@materials/@materials.11" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="500"/>
+    <transformations name="PLANT__FIRE" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.9" target="//@materials/@materials.10" probability="240"/>
+    <transformations name="PLANT__FIRESTATIC" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.10" target="//@materials/@materials.10" probability="240"/>
+    <transformations name="PLANT__FIREFINAL" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000"/>
+    <transformations name="GRASS__FIRE" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.9" target="//@materials/@materials.10" probability="240"/>
+    <transformations name="GRASS__FIRESTATIC" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.10" target="//@materials/@materials.10" probability="240"/>
+    <transformations name="GRASS__FIREFINAL" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000"/>
+    <transformations name="GRASS__WATER" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.8" target="//@materials/@materials.8" probability="1"/>
+    <transformations name="WAX__FIRE" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.9" target="//@materials/@materials.10" probability="200"/>
+    <transformations name="WAX__WAXFIRE" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.10" target="//@materials/@materials.10" probability="15"/>
+    <transformations name="WAX__LIQUIDWAX" reactant="//@materials/@materials.11" catalyst="//@materials/@materials.13" target="//@materials/@materials.14" probability="650"/>
+    <transformations name="WAX__FINALFIRE" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000"/>
+    <transformations name="LIQUIDWAX__ALL" reactant="//@materials/@materials.14" target="//@materials/@materials.13" probability="100" isStaticTransformation="true"/>
+    <transformations name="LIQUIDWAX__FIRE" reactant="//@materials/@materials.14" catalyst="//@materials/@materials.9" target="//@materials/@materials.10" probability="1000" isStaticTransformation="true"/>
+    <transformations name="LIQUIDWAX__WAXFIRE" reactant="//@materials/@materials.14" catalyst="//@materials/@materials.10" target="//@materials/@materials.10" probability="1000" isStaticTransformation="true"/>
+    <transformations name="LIQUIDWAX__FINALFIRE" reactant="//@materials/@materials.14" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000" isStaticTransformation="true"/>
+    <transformations name="LAVA__LAVA" reactant="//@materials/@materials.15" target="//@materials/@materials.16" probability="8"/>
+    <transformations name="LAVABOILING__ALL" reactant="//@materials/@materials.16" target="//@materials/@materials.15" probability="50"/>
+    <transformations name="VOID__LAVABOILING" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="40"/>
+    <transformations name="LAVABOILING__LAVA" reactant="//@materials/@materials.16" catalyst="//@materials/@materials.15" target="//@materials/@materials.15" probability="40"/>
+    <transformations name="WAX__LAVA" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="250"/>
+    <transformations name="LIQUIDWAX__LAVA" reactant="//@materials/@materials.14" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="250"/>
+    <transformations name="PLANT__LAVA" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="400"/>
+    <transformations name="SAND__LAVA" reactant="//@materials/@materials.1" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="200"/>
+    <transformations name="SAND__LAVABOILING" reactant="//@materials/@materials.1" catalyst="//@materials/@materials.16" target="//@materials/@materials.15" probability="500"/>
+    <transformations name="DIRT__LAVA" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.15" target="//@materials/@materials.0" probability="200"/>
+    <transformations name="WETDIRT__LAVA" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.15" target="//@materials/@materials.6" probability="200"/>
+    <transformations name="GRASS__LAVA" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="200"/>
+    <transformations name="DIRT__LAVABOILING" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.16" target="//@materials/@materials.15" probability="200"/>
+    <transformations name="WALL__LAVA" reactant="//@materials/@materials.3" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="2"/>
+    <transformations name="CONCRETE__LAVA" reactant="//@materials/@materials.4" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="5"/>
+    <transformations name="VAPOR__LAVA" reactant="//@materials/@materials.6" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="100"/>
+    <transformations name="WATER__LAVA" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.15" target="//@materials/@materials.6" probability="400"/>
+    <transformations name="WATER__LAVABOILING" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.16" target="//@materials/@materials.6" probability="800"/>
+    <transformations name="LAVA_BOILING__WATER" reactant="//@materials/@materials.16" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="5"/>
+    <transformations name="LAVA__WATER" reactant="//@materials/@materials.15" catalyst="//@materials/@materials.5" target="//@materials/@materials.6" probability="25"/>
+  </transformations>
+</model:VSandApplication>
