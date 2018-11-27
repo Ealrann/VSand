@@ -8,8 +8,8 @@ The game is under the license GPL-3.0. Feel free to redistribute it (just let me
 ### Requirements
 
 To launch the game, you need to intall:
-* Java version 9 or more.
-* A **recent** graphic driver, with Vulkan 1.0 compatibility.
+* [Java](https://www.oracle.com/technetwork/java/javase/downloads/index.html) (version 9 or more).
+* A recent [graphic driver](https://www.howtogeek.com/135976/how-to-update-your-graphics-drivers-for-maximum-gaming-performance/), with [Vulkan 1.0 compatibility](https://en.wikipedia.org/wiki/Vulkan_(API)#Compatibility).
 
 ### Download
 
