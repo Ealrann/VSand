@@ -1,11 +1,26 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
 	id 'java-library'
+}
+
+switch (targetPlatform) {
+	case OperatingSystem.WINDOWS:
+		project.ext.lwjglNatives = "natives-windows"
+		break
+	case OperatingSystem.LINUX:
+		project.ext.lwjglNatives = "natives-linux"
+		break
+	case OperatingSystem.MAC_OS:
+		project.ext.lwjglNatives = "natives-macos"
+		break
 }
 
 dependencies {
 	api project(':org.sheepy.vulkan.process.graphic')
 
 	api "org.lwjgl:lwjgl-nuklear:$lwjglVersion"
+
 	implementation "org.lwjgl:lwjgl-nuklear:$lwjglVersion:$lwjglNatives"
 }
 

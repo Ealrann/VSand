@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+
 buildscript {
 	repositories {
 		mavenLocal()
@@ -22,19 +24,8 @@ repositories {
 	maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 }
 
-import org.gradle.internal.os.OperatingSystem
+project.ext.targetPlatform = OperatingSystem.current()
 
-switch ( OperatingSystem.current() ) {
-	case OperatingSystem.WINDOWS:
-		project.ext.lwjglNatives = "natives-windows"
-		break
-	case OperatingSystem.LINUX:
-		project.ext.lwjglNatives = "natives-linux"
-		break
-	case OperatingSystem.MAC_OS:
-		project.ext.lwjglNatives = "natives-macos"
-		break
-}
 
 project.ext.jomlVersion = "1.9.12"
 project.ext.lwjglVersion = "3.2.1"
