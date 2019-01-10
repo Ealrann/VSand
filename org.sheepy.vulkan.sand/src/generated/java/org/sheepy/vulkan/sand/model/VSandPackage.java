@@ -1374,6 +1374,15 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS__RESET_ALLOWED = GraphicPackage.GRAPHIC_PROCESS__RESET_ALLOWED;
 
 	/**
+	 * The feature id for the '<em><b>Wait For Submissions</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_GRAPHIC_PROCESS__WAIT_FOR_SUBMISSIONS = GraphicPackage.GRAPHIC_PROCESS__WAIT_FOR_SUBMISSIONS;
+
+	/**
 	 * The feature id for the '<em><b>Configuration</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1535,6 +1544,15 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int VSAND_COMPUTE_PROCESS__RESET_ALLOWED = ComputePackage.COMPUTE_PROCESS__RESET_ALLOWED;
+
+	/**
+	 * The feature id for the '<em><b>Wait For Submissions</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_COMPUTE_PROCESS__WAIT_FOR_SUBMISSIONS = ComputePackage.COMPUTE_PROCESS__WAIT_FOR_SUBMISSIONS;
 
 	/**
 	 * The number of structural features of the '<em>Compute Process</em>' class.

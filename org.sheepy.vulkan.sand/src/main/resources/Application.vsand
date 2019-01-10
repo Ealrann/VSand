@@ -43,7 +43,7 @@
     <sharedResources>
       <resources xsi:type="resource:Image" descriptorType="STORAGE_IMAGE" name="Board Image" width="1280" height="720" format="R8G8B8A8_UNORM"/>
     </sharedResources>
-    <processes xsi:type="model:VSandComputeProcess" resetAllowed="true">
+    <processes xsi:type="model:VSandComputeProcess" name="Board Compute" resetAllowed="true">
       <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Board Buffer">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>STORAGE_BUFFER_BIT</usages>
@@ -135,7 +135,7 @@
         <units xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resources.10"/>
       </units>
     </processes>
-    <processes xsi:type="model:VSandGraphicProcess" resetAllowed="true">
+    <processes xsi:type="model:VSandGraphicProcess" resetAllowed="true" waitForSubmissions="//@engines.0/@processes.0">
       <units xsi:type="graphic:ImagePipeline" image="//@engines.0/@sharedResources/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="COLOR_ATTACHMENT_OUTPUT_BIT" imageSrcAccess="64" imageDstAccess="64"/>
       <units xsi:type="model_2:NuklearPipeline" subpass="1">
         <indexBuffer/>
