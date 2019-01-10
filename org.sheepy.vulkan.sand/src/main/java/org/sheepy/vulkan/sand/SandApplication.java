@@ -10,7 +10,7 @@ import org.sheepy.common.model.application.Application;
 
 public class SandApplication
 {
-	private static final String APPLICATION_PATH = "org/sheepy/vulkan/sand/Application.vsand";
+	private static final String APPLICATION_PATH = "Application.vsand";
 
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;

@@ -26,7 +26,6 @@ module org.sheepy.vulkan.nuklear
 
 	opens org.sheepy.vulkan.nuklear.adapter;
 	opens org.sheepy.vulkan.nuklear.pipeline;
-	opens org.sheepy.vulkan.nuklear;
 
 	provides IAdapter with NuklearPipelineAdapter, NuklearConstantsAdapter,
 			NuklearVertexBufferAdapter, ButtonAdapter, PanelAdapter, LabelAdapter,

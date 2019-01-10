@@ -22,8 +22,8 @@ import org.sheepy.vulkan.resource.texture.FontAdapter;
 
 public class NuklearResources
 {
-	private final static String GUI_VERT_SHADER = "org/sheepy/vulkan/nuklear/ui.vert.spv";
-	private final static String GUI_FRAG_SHADER = "org/sheepy/vulkan/nuklear/ui.frag.spv";
+	private final static String GUI_VERT_SHADER = "ui.vert.spv";
+	private final static String GUI_FRAG_SHADER = "ui.frag.spv";
 
 	private final NuklearPipeline nkPipeline;
 

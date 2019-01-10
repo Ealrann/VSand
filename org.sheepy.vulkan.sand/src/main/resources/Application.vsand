@@ -76,22 +76,22 @@
         <properties>HOST_COHERENT_BIT</properties>
       </resources>
       <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/draw.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="step1" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/game_step1_chooseTO.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="game_step1_chooseTO.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="step2" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/game_step2_acceptFROM.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="game_step2_acceptFROM.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="step3" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/game_step3_swap.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="game_step3_swap.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="step4" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/game_step4_transformation.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="game_step4_transformation.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="org/sheepy/vulkan/sand/board_to_pixel.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
       </resources>
       <resources xsi:type="model:VSandConstants" stage="COMPUTE_BIT"/>
       <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resources.1 //@engines.0/@processes.0/@resources.0 //@engines.0/@processes.0/@resources.3 //@engines.0/@processes.0/@resources.2"/>
@@ -141,7 +141,7 @@
         <indexBuffer/>
         <font descriptorType="SAMPLED_IMAGE">
           <shaderStages>FRAGMENT_BIT</shaderStages>
-          <file xsi:type="resource:StringModuleResource" path="org/sheepy/vulkan/sand/FiraSans-Regular.ttf" moduleName="org.sheepy.vulkan.sand"/>
+          <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vulkan.sand"/>
         </font>
         <pushConstant/>
       </units>
