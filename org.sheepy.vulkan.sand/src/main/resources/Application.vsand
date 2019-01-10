@@ -145,7 +145,7 @@
         </font>
         <pushConstant/>
       </units>
-      <configuration clearBeforeRender="false" presentationMode="Fifo" acquireWaitStage="COMPUTE_SHADER_BIT">
+      <configuration clearBeforeRender="false" presentationMode="Fifo" requiredSwapImageCount="2" acquireWaitStage="COMPUTE_SHADER_BIT">
         <swapImageUsages>TransferDst</swapImageUsages>
         <swapImageUsages>ColorAttachment</swapImageUsages>
         <colorDomain/>
