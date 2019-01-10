@@ -1,6 +1,11 @@
 package org.sheepy.vulkan.sand;
 
+import static org.lwjgl.glfw.GLFW.*;
+
+import java.util.concurrent.TimeUnit;
+
 import org.eclipse.emf.common.util.EList;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.sheepy.common.api.cadence.IMainLoop;
 import org.sheepy.common.api.input.IInputManager;
 import org.sheepy.common.api.input.IInputManager.IInputListener;
@@ -59,6 +64,8 @@ public class VSandMainLoop implements IMainLoop
 	private IInputManager inputManager;
 	private VSandApplication application;
 	private boolean shiftPressed;
+	private long refreshTimeAvailableNs;
+	private long lastPresentDate = 0;
 
 	@Override
 	public void load(Application _application)
@@ -110,11 +117,16 @@ public class VSandMainLoop implements IMainLoop
 
 		engineAdapter.allocate();
 		window = engineAdapter.getWindow();
+
+		long monitor = glfwGetPrimaryMonitor();
+		GLFWVidMode glfwGetVideoMode = glfwGetVideoMode(monitor);
+		refreshTimeAvailableNs = (long) (1. / glfwGetVideoMode.refreshRate() * 1e9);
 	}
 
 	@Override
 	public void step(Application _application)
 	{
+
 		if (application.isDebug()) fpsCounter.step();
 
 		SVector2f cursorPosition = inputManager.getMouseLocation();
@@ -148,6 +160,28 @@ public class VSandMainLoop implements IMainLoop
 
 		renderProcessAdapter.prepare();
 		renderProcessAdapter.execute();
+		
+		vsyncGuard();
+	}
+
+	private void vsyncGuard()
+	{
+		long ellapsedSinceLastPresent = System.nanoTime() - lastPresentDate;
+		long remaining = refreshTimeAvailableNs - ellapsedSinceLastPresent;
+		remaining -= 100000;
+		if (remaining > 0)
+		{
+			try
+			{
+				TimeUnit.NANOSECONDS.sleep(remaining);
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+
+		lastPresentDate = System.nanoTime();
 	}
 
 	private void updateBoard()
