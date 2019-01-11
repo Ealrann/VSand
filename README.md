@@ -7,9 +7,7 @@ The game is under the license GPL-3.0. Feel free to redistribute it (just let me
 
 ### Requirements
 
-To launch the game, you need to intall:
-* [Java](https://www.oracle.com/technetwork/java/javase/downloads/index.html) (version 9 or more).
-* A recent [graphic driver](https://www.howtogeek.com/135976/how-to-update-your-graphics-drivers-for-maximum-gaming-performance/), with [Vulkan 1.0 compatibility](https://en.wikipedia.org/wiki/Vulkan_(API)#Compatibility).
+To launch the game, you only need to intall a recent [graphic driver](https://www.howtogeek.com/135976/how-to-update-your-graphics-drivers-for-maximum-gaming-performance/), with [Vulkan 1.0 compatibility](https://en.wikipedia.org/wiki/Vulkan_(API)#Compatibility).
 
 ### Download
 
@@ -23,12 +21,7 @@ If you like the game, and want to buy me a coffee:
 
 ### Any problem?
 
-The game run smooth on my computers, but I cannot test it on every existing configurations. If you find any problem (game doesn´t launch, crash, particles don´t move...), please considers openning an issue:
-
-* First, try to launch the game in debug mode; edit the .bat file to add the debug option:
-```set DEFAULT_JVM_OPTS="-Ddebug='true'"```
-* Try to reproduce the bug, and see if there is any error in the console.
-* Open a new issue. Please describe your problem, how it happens, and paste the log from the console.
+The game run smooth on my computers, but I cannot test it on every existing configurations. If you find any problem (game doesn´t launch, crash, particles don´t move...), please considers opening an issue, or directly contact me.
 
 ### Game
 
@@ -59,7 +52,7 @@ Here some materials you can find in the game:
 
 ### Contribution
 
-Feel free to add a new issues if you want to see new things in the game, or if you find a bug. 
+Feel free to add a new issues if you want to see new things in the game, or if you find a bug.
 
 You can also contribute by sending me new pull requests.
 
