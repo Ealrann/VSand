@@ -65,7 +65,7 @@ public class VSandMainLoop implements IMainLoop
 	private VSandApplication application;
 	private boolean shiftPressed;
 	private long refreshTimeAvailableNs;
-	private long lastPresentDate = 0;
+	private long nextFrameEndDateNs = 0;
 
 	@Override
 	public void load(Application _application)
@@ -121,6 +121,7 @@ public class VSandMainLoop implements IMainLoop
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode glfwGetVideoMode = glfwGetVideoMode(monitor);
 		refreshTimeAvailableNs = (long) (1. / glfwGetVideoMode.refreshRate() * 1e9);
+		nextFrameEndDateNs = System.nanoTime() + refreshTimeAvailableNs;
 	}
 
 	@Override
@@ -164,24 +165,29 @@ public class VSandMainLoop implements IMainLoop
 		vsyncGuard();
 	}
 
+	// The Vulkan spec doesn't impose any vsync, even with Fifo (even if generally, drivers waits VSync when Fifo 
+	// is enabled).
+	// We ensure "VSync" here, in order to not consume all CPU/GPU resources.
 	private void vsyncGuard()
 	{
-		long ellapsedSinceLastPresent = System.nanoTime() - lastPresentDate;
-		long remaining = refreshTimeAvailableNs - ellapsedSinceLastPresent;
-		remaining -= 100000;
-		if (remaining > 0)
+		long remainingUntilDeadlineNs = nextFrameEndDateNs - System.nanoTime();
+		if (remainingUntilDeadlineNs > 0)
 		{
 			try
 			{
-				TimeUnit.NANOSECONDS.sleep(remaining);
+				TimeUnit.NANOSECONDS.sleep(remainingUntilDeadlineNs);
 			} catch (InterruptedException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		
+		else
+		{
+			// We are late, so let's recalibrate the clock
+			nextFrameEndDateNs = System.nanoTime();
+		}
 
-		lastPresentDate = System.nanoTime();
+		nextFrameEndDateNs += refreshTimeAvailableNs;
 	}
 
 	private void updateBoard()
