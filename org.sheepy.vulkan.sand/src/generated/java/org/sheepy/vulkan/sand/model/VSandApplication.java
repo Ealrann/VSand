@@ -17,6 +17,7 @@ import org.sheepy.common.model.application.Application;
  *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#getTransformations <em>Transformations</em>}</li>
  *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#getMainMaterial <em>Main Material</em>}</li>
  *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}</li>
+ *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#isNextMode <em>Next Mode</em>}</li>
  *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#getBrushSize <em>Brush Size</em>}</li>
  * </ul>
  *
@@ -130,6 +131,33 @@ public interface VSandApplication extends Application
 	 * @generated
 	 */
 	void setSecondaryMaterial(Material value);
+
+	/**
+	 * Returns the value of the '<em><b>Next Mode</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Next Mode</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Next Mode</em>' attribute.
+	 * @see #setNextMode(boolean)
+	 * @see org.sheepy.vulkan.sand.model.VSandPackage#getVSandApplication_NextMode()
+	 * @model default="false" unique="false"
+	 * @generated
+	 */
+	boolean isNextMode();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vulkan.sand.model.VSandApplication#isNextMode <em>Next Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Next Mode</em>' attribute.
+	 * @see #isNextMode()
+	 * @generated
+	 */
+	void setNextMode(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Brush Size</b></em>' attribute.

@@ -211,13 +211,22 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__SECONDARY_MATERIAL = ApplicationPackage.APPLICATION_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Next Mode</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__NEXT_MODE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Brush Size</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 4;
+	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Application</em>' class.
@@ -226,7 +235,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 5;
+	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 6;
 
 	/**
 	 * The operation id for the '<em>LInference Object</em>' operation.
@@ -1672,6 +1681,17 @@ public interface VSandPackage extends EPackage
 	EReference getVSandApplication_SecondaryMaterial();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.VSandApplication#isNextMode <em>Next Mode</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Next Mode</em>'.
+	 * @see org.sheepy.vulkan.sand.model.VSandApplication#isNextMode()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EAttribute getVSandApplication_NextMode();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.VSandApplication#getBrushSize <em>Brush Size</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2132,6 +2152,14 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EReference VSAND_APPLICATION__SECONDARY_MATERIAL = eINSTANCE.getVSandApplication_SecondaryMaterial();
+
+		/**
+		 * The meta object literal for the '<em><b>Next Mode</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VSAND_APPLICATION__NEXT_MODE = eINSTANCE.getVSandApplication_NextMode();
 
 		/**
 		 * The meta object literal for the '<em><b>Brush Size</b></em>' attribute feature.

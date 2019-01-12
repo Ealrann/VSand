@@ -25,6 +25,9 @@ class VSandApplication extends Application
 	refers Material mainMaterial
 	refers Material secondaryMaterial
 	
+	// Will render one frame, then pause.
+	boolean nextMode = "false"
+	
 	int brushSize = "4"
 }
 

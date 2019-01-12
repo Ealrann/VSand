@@ -58,6 +58,7 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 
 			addMainMaterialPropertyDescriptor(object);
 			addSecondaryMaterialPropertyDescriptor(object);
+			addNextModePropertyDescriptor(object);
 			addBrushSizePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -105,6 +106,29 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 				 false,
 				 true,
 				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Next Mode feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addNextModePropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandApplication_nextMode_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_nextMode_feature", "_UI_VSandApplication_type"),
+				 VSandPackage.Literals.VSAND_APPLICATION__NEXT_MODE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -209,6 +233,7 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 
 		switch (notification.getFeatureID(VSandApplication.class))
 		{
+			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

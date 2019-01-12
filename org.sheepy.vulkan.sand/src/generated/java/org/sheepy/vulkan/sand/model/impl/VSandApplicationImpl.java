@@ -26,6 +26,7 @@ import org.sheepy.vulkan.sand.model.VSandPackage;
  *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#getTransformations <em>Transformations</em>}</li>
  *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#getMainMaterial <em>Main Material</em>}</li>
  *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#getSecondaryMaterial <em>Secondary Material</em>}</li>
+ *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#isNextMode <em>Next Mode</em>}</li>
  *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#getBrushSize <em>Brush Size</em>}</li>
  * </ul>
  *
@@ -72,6 +73,26 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @ordered
 	 */
 	protected Material secondaryMaterial;
+
+	/**
+	 * The default value of the '{@link #isNextMode() <em>Next Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isNextMode()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean NEXT_MODE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isNextMode() <em>Next Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isNextMode()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean nextMode = NEXT_MODE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getBrushSize() <em>Brush Size</em>}' attribute.
@@ -310,6 +331,31 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @generated
 	 */
 	@Override
+	public boolean isNextMode()
+	{
+		return nextMode;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setNextMode(boolean newNextMode)
+	{
+		boolean oldNextMode = nextMode;
+		nextMode = newNextMode;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__NEXT_MODE, oldNextMode, nextMode));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public int getBrushSize()
 	{
 		return brushSize;
@@ -367,6 +413,8 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__SECONDARY_MATERIAL:
 				if (resolve) return getSecondaryMaterial();
 				return basicGetSecondaryMaterial();
+			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
+				return isNextMode();
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				return getBrushSize();
 		}
@@ -395,6 +443,9 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return;
 			case VSandPackage.VSAND_APPLICATION__SECONDARY_MATERIAL:
 				setSecondaryMaterial((Material)newValue);
+				return;
+			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
+				setNextMode((Boolean)newValue);
 				return;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				setBrushSize((Integer)newValue);
@@ -425,6 +476,9 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__SECONDARY_MATERIAL:
 				setSecondaryMaterial((Material)null);
 				return;
+			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
+				setNextMode(NEXT_MODE_EDEFAULT);
+				return;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				setBrushSize(BRUSH_SIZE_EDEFAULT);
 				return;
@@ -450,6 +504,8 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return mainMaterial != null;
 			case VSandPackage.VSAND_APPLICATION__SECONDARY_MATERIAL:
 				return secondaryMaterial != null;
+			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
+				return nextMode != NEXT_MODE_EDEFAULT;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				return brushSize != BRUSH_SIZE_EDEFAULT;
 		}
@@ -467,7 +523,9 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 		if (eIsProxy()) return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (brushSize: ");
+		result.append(" (nextMode: ");
+		result.append(nextMode);
+		result.append(", brushSize: ");
 		result.append(brushSize);
 		result.append(')');
 		return result.toString();

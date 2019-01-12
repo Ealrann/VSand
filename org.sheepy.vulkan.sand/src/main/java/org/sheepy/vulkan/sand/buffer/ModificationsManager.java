@@ -6,6 +6,7 @@ import java.util.Deque;
 import java.util.concurrent.TimeUnit;
 
 import org.lwjgl.system.MemoryUtil;
+import org.sheepy.common.api.types.SVector2i;
 import org.sheepy.vulkan.api.concurrent.IFence;
 import org.sheepy.vulkan.model.enumeration.EBufferUsage;
 import org.sheepy.vulkan.model.enumeration.EDescriptorType;
@@ -43,15 +44,20 @@ public class ModificationsManager
 		copyBuffer = MemoryUtil.memAlloc(BYTE_SIZE);
 	}
 
-	public void pushModification(EShape shape, EShapeSize size, int x, int y, Material value)
+	public void pushModification(DrawData data)
 	{
+		var shape = data.shape;
+		int x = data.position.x;
+		int y = data.position.y;
+
 		// We cannot draw a line if nothing moved
 		if (shape == EShape.Line && x == oldX && y == oldY)
 		{
 			shape = EShape.Circle;
 		}
 
-		var modification = new BoardModification(shape, size, x, y, oldX, oldY, value);
+		var modification = new BoardModification(shape, data.size, x, y, oldX, oldY,
+				data.material);
 		modificationQueue.add(modification);
 
 		oldX = x;
@@ -61,7 +67,7 @@ public class ModificationsManager
 	public void update(IFence waitFence)
 	{
 		waitForFence(waitFence);
-		
+
 		copyBuffer.clear();
 		BoardModification modif = modificationQueue.pop();
 		modif.fillBuffer(copyBuffer);
@@ -73,7 +79,7 @@ public class ModificationsManager
 	private static void waitForFence(IFence waitFence)
 	{
 		int timeoff = 20;
-		while(waitFence.isSignaled() == false || timeoff-- <= 0)
+		while (waitFence.isSignaled() == false || timeoff-- <= 0)
 		{
 			try
 			{
@@ -88,5 +94,21 @@ public class ModificationsManager
 	public boolean isEmpty()
 	{
 		return modificationQueue.isEmpty();
+	}
+
+	public static class DrawData
+	{
+		public final EShapeSize size;
+		public final EShape shape;
+		public final SVector2i position;
+		public final Material material;
+
+		public DrawData(EShapeSize size, EShape shape, SVector2i position, Material material)
+		{
+			this.size = size;
+			this.shape = shape;
+			this.position = position;
+			this.material = material;
+		}
 	}
 }
