@@ -3,10 +3,10 @@ import org.sheepy.common.api.cadence.IMainLoop;
 import org.sheepy.common.api.input.IInputManager;
 import org.sheepy.common.api.resource.IModelExtension;
 import org.sheepy.vulkan.sand.VSandMainLoop;
-import org.sheepy.vulkan.sand.VSandModelExtension;
 import org.sheepy.vulkan.sand.adapter.MaterialSelectorPanelAdapter;
 import org.sheepy.vulkan.sand.adapter.RepeatComputePipelineAdapter;
 import org.sheepy.vulkan.sand.adapter.VSandConstantAdapter;
+import org.sheepy.vulkan.sand.model.VSandModelExtension;
 
 module org.sheepy.vulkan.sand
 {

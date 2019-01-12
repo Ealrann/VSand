@@ -16,11 +16,11 @@ jlink {
     }
 }
 
-mainClassName = 'org.sheepy.vulkan.sand/org.sheepy.vulkan.sand.SandApplication'
+mainClassName = 'org.sheepy.vulkan.sand/org.sheepy.vulkan.sand.VSandApplicationLauncher'
 jar {
     manifest {
         attributes 'Implementation-Title': "modular-hello",
-                'Main-Class': 'org.sheepy.vulkan.sand.SandApplication'
+                'Main-Class': 'org.sheepy.vulkan.sand.VSandApplicationLauncher'
     }
 }
 

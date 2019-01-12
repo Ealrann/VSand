@@ -248,10 +248,10 @@ public class VSandMainLoop implements IMainLoop
 	{
 		int width = window.getSurface().width;
 		int height = window.getSurface().height;
-		if (width != SandApplication.WIDTH && height != SandApplication.HEIGHT)
+		if (width != VSandApplicationLauncher.WIDTH && height != VSandApplicationLauncher.HEIGHT)
 		{
-			mousePos.x *= (float) SandApplication.WIDTH / width;
-			mousePos.y *= (float) SandApplication.HEIGHT / height;
+			mousePos.x *= (float) VSandApplicationLauncher.WIDTH / width;
+			mousePos.y *= (float) VSandApplicationLauncher.HEIGHT / height;
 		}
 	}
 

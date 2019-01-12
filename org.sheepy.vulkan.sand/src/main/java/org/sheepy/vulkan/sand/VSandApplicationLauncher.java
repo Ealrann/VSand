@@ -8,7 +8,7 @@ import org.sheepy.common.api.application.ApplicationLauncher;
 import org.sheepy.common.api.resource.IResourceLoader;
 import org.sheepy.common.model.application.Application;
 
-public class SandApplication
+public class VSandApplicationLauncher
 {
 	private static final String APPLICATION_PATH = "Application.vsand";
 
@@ -19,7 +19,7 @@ public class SandApplication
 
 	public static void main(String[] args)
 	{
-		Module module = SandApplication.class.getModule();
+		Module module = VSandApplicationLauncher.class.getModule();
 		Resource resource = null;
 		try
 		{

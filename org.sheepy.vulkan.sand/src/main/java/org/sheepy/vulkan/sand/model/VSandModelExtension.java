@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand;
+package org.sheepy.vulkan.sand.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
