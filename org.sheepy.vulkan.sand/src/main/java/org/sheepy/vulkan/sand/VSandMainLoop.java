@@ -2,8 +2,6 @@ package org.sheepy.vulkan.sand;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import java.util.concurrent.TimeUnit;
-
 import org.eclipse.emf.common.util.EList;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.sheepy.common.api.cadence.IMainLoop;
@@ -31,6 +29,7 @@ import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
 import org.sheepy.vulkan.sand.model.VSandApplication;
 import org.sheepy.vulkan.sand.model.VSandConstants;
 import org.sheepy.vulkan.sand.util.FPSCounter;
+import org.sheepy.vulkan.sand.util.VSyncGuard;
 
 public class VSandMainLoop implements IMainLoop
 {
@@ -50,8 +49,8 @@ public class VSandMainLoop implements IMainLoop
 	private ComputePipeline drawPipeline;
 	private IInputManager inputManager;
 	private VSandApplication application;
-	private long refreshTimeAvailableNs;
-	private long nextFrameEndDateNs = 0;
+
+	private VSyncGuard vsyncGuard;
 
 	private IFence drawFence;
 	private VSandInputManager vsandInputManager;
@@ -116,8 +115,10 @@ public class VSandMainLoop implements IMainLoop
 
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode glfwGetVideoMode = glfwGetVideoMode(monitor);
-		refreshTimeAvailableNs = (long) (1. / glfwGetVideoMode.refreshRate() * 1e9);
-		nextFrameEndDateNs = System.nanoTime() + refreshTimeAvailableNs;
+		long refreshTimeAvailableNs = (long) (1. / glfwGetVideoMode.refreshRate() * 1e9);
+
+		vsyncGuard = new VSyncGuard(refreshTimeAvailableNs);
+		vsyncGuard.start();
 	}
 
 	@Override
@@ -126,9 +127,7 @@ public class VSandMainLoop implements IMainLoop
 		if (application.isDebug()) fpsCounter.step();
 
 		manageInput();
-
-		// meter.startRecord();
-		updateBoard();
+		updateDrawManager();
 
 		boardProcessAdapter.getQueue().waitIdle();
 		constant.setFirstPass(true);
@@ -136,7 +135,6 @@ public class VSandMainLoop implements IMainLoop
 
 		drawFence.reset();
 		boardProcessAdapter.execute(drawFence);
-		// meter.endRecord();
 
 		if (application.isNextMode() == true)
 		{
@@ -147,36 +145,10 @@ public class VSandMainLoop implements IMainLoop
 		renderProcessAdapter.prepare();
 		renderProcessAdapter.execute();
 
-		vsyncGuard();
+		vsyncGuard.step();
 	}
 
-	// The Vulkan spec doesn't impose any vsync, even with Fifo (even if generally, drivers waits
-	// VSync when Fifo
-	// is enabled).
-	// We ensure "VSync" here, in order to not consume all CPU/GPU resources.
-	private void vsyncGuard()
-	{
-		long remainingUntilDeadlineNs = nextFrameEndDateNs - System.nanoTime();
-		if (remainingUntilDeadlineNs > 0)
-		{
-			try
-			{
-				TimeUnit.NANOSECONDS.sleep(remainingUntilDeadlineNs);
-			} catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			// We are late, so let's recalibrate the clock
-			nextFrameEndDateNs = System.nanoTime();
-		}
-
-		nextFrameEndDateNs += refreshTimeAvailableNs;
-	}
-
-	private void updateBoard()
+	private void updateDrawManager()
 	{
 		if (modificationsManager.isEmpty() == false)
 		{
