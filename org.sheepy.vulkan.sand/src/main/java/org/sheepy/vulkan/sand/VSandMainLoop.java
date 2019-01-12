@@ -18,6 +18,7 @@ import org.sheepy.common.model.types.EKeyState;
 import org.sheepy.common.model.types.EMouseButton;
 import org.sheepy.vulkan.api.adapter.IProcessAdapter;
 import org.sheepy.vulkan.api.adapter.IVulkanEngineAdapter;
+import org.sheepy.vulkan.api.concurrent.IFence;
 import org.sheepy.vulkan.api.window.IWindow;
 import org.sheepy.vulkan.model.IProcess;
 import org.sheepy.vulkan.model.VulkanEngine;
@@ -66,6 +67,8 @@ public class VSandMainLoop implements IMainLoop
 	private boolean shiftPressed;
 	private long refreshTimeAvailableNs;
 	private long nextFrameEndDateNs = 0;
+
+	private IFence drawFence;
 
 	@Override
 	public void load(Application _application)
@@ -118,6 +121,8 @@ public class VSandMainLoop implements IMainLoop
 		engineAdapter.allocate();
 		window = engineAdapter.getWindow();
 
+		drawFence = engineAdapter.newFence();
+
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode glfwGetVideoMode = glfwGetVideoMode(monitor);
 		refreshTimeAvailableNs = (long) (1. / glfwGetVideoMode.refreshRate() * 1e9);
@@ -127,7 +132,6 @@ public class VSandMainLoop implements IMainLoop
 	@Override
 	public void step(Application _application)
 	{
-
 		if (application.isDebug()) fpsCounter.step();
 
 		SVector2f cursorPosition = inputManager.getMouseLocation();
@@ -150,7 +154,9 @@ public class VSandMainLoop implements IMainLoop
 		boardProcessAdapter.getQueue().waitIdle();
 		constant.setFirstPass(true);
 		boardProcessAdapter.prepare();
-		boardProcessAdapter.execute();
+
+		drawFence.reset();
+		boardProcessAdapter.execute(drawFence);
 		// meter.endRecord();
 
 		if (next == true)
@@ -161,11 +167,12 @@ public class VSandMainLoop implements IMainLoop
 
 		renderProcessAdapter.prepare();
 		renderProcessAdapter.execute();
-		
+
 		vsyncGuard();
 	}
 
-	// The Vulkan spec doesn't impose any vsync, even with Fifo (even if generally, drivers waits VSync when Fifo 
+	// The Vulkan spec doesn't impose any vsync, even with Fifo (even if generally, drivers waits
+	// VSync when Fifo
 	// is enabled).
 	// We ensure "VSync" here, in order to not consume all CPU/GPU resources.
 	private void vsyncGuard()
@@ -195,7 +202,7 @@ public class VSandMainLoop implements IMainLoop
 		if (modificationsManager.isEmpty() == false)
 		{
 			drawPipeline.setEnabled(true);
-			modificationsManager.update();
+			modificationsManager.update(drawFence);
 		}
 		else if (drawPipeline.isEnabled())
 		{

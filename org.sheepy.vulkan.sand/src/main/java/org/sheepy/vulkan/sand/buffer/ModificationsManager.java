@@ -3,8 +3,10 @@ package org.sheepy.vulkan.sand.buffer;
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.concurrent.TimeUnit;
 
 import org.lwjgl.system.MemoryUtil;
+import org.sheepy.vulkan.api.concurrent.IFence;
 import org.sheepy.vulkan.model.enumeration.EBufferUsage;
 import org.sheepy.vulkan.model.enumeration.EDescriptorType;
 import org.sheepy.vulkan.model.enumeration.EMemoryProperty;
@@ -56,14 +58,31 @@ public class ModificationsManager
 		oldY = y;
 	}
 
-	public void update()
+	public void update(IFence waitFence)
 	{
+		waitForFence(waitFence);
+		
 		copyBuffer.clear();
 		BoardModification modif = modificationQueue.pop();
 		modif.fillBuffer(copyBuffer);
 		copyBuffer.flip();
 
 		adapter.pushData(copyBuffer);
+	}
+
+	private static void waitForFence(IFence waitFence)
+	{
+		int timeoff = 20;
+		while(waitFence.isSignaled() == false || timeoff-- <= 0)
+		{
+			try
+			{
+				TimeUnit.MILLISECONDS.sleep(1);
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public boolean isEmpty()
