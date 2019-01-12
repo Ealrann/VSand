@@ -70,6 +70,30 @@ public class VSandMainLoop implements IMainLoop
 		var boardImage = (Image) vulkanEngine.getSharedResources().getResources().get(0);
 		BoardImageLoader.load(boardImage, width, height);
 
+		gatherAndLoadProcesses(width, height, vulkanEngine);
+
+		vsandInputManager = new VSandInputManager(application, stepPipeline);
+		inputManager.addListener(vsandInputManager);
+
+		engineAdapter.allocate();
+		var window = (Window) engineAdapter.getWindow();
+
+		mainDrawManager = new DrawManager(application, window, inputManager, modificationsManager);
+		secondaryDrawManager = new DrawManager(application, window, inputManager,
+				modificationsManager);
+
+		drawFence = engineAdapter.newFence();
+
+		long monitor = glfwGetPrimaryMonitor();
+		GLFWVidMode glfwGetVideoMode = glfwGetVideoMode(monitor);
+		long refreshTimeAvailableNs = (long) (1. / glfwGetVideoMode.refreshRate() * 1e9);
+
+		vsyncGuard = new VSyncGuard(refreshTimeAvailableNs);
+		vsyncGuard.start();
+	}
+
+	private void gatherAndLoadProcesses(int width, int height, VulkanEngine vulkanEngine)
+	{
 		EList<IProcess> processes = vulkanEngine.getProcesses();
 		for (IProcess process : processes)
 		{
@@ -100,25 +124,6 @@ public class VSandMainLoop implements IMainLoop
 				renderProcessAdapter = IProcessAdapter.adapt(process);
 			}
 		}
-
-		vsandInputManager = new VSandInputManager(application, stepPipeline);
-		inputManager.addListener(vsandInputManager);
-
-		engineAdapter.allocate();
-		var window = (Window) engineAdapter.getWindow();
-
-		mainDrawManager = new DrawManager(application, window, inputManager, modificationsManager);
-		secondaryDrawManager = new DrawManager(application, window, inputManager,
-				modificationsManager);
-
-		drawFence = engineAdapter.newFence();
-
-		long monitor = glfwGetPrimaryMonitor();
-		GLFWVidMode glfwGetVideoMode = glfwGetVideoMode(monitor);
-		long refreshTimeAvailableNs = (long) (1. / glfwGetVideoMode.refreshRate() * 1e9);
-
-		vsyncGuard = new VSyncGuard(refreshTimeAvailableNs);
-		vsyncGuard.start();
 	}
 
 	@Override
@@ -126,7 +131,6 @@ public class VSandMainLoop implements IMainLoop
 	{
 		if (application.isDebug()) fpsCounter.step();
 
-		manageInput();
 		updateDrawManager();
 
 		boardProcessAdapter.getQueue().waitIdle();
@@ -150,6 +154,15 @@ public class VSandMainLoop implements IMainLoop
 
 	private void updateDrawManager()
 	{
+		// Main draw
+		mainDrawManager.manage(application.getMainMaterial(),
+				vsandInputManager.isLeftClicPressed());
+
+		// Secondary draw
+		secondaryDrawManager.manage(application.getSecondaryMaterial(),
+				vsandInputManager.isRightClicPressed());
+
+		// Enable drawManager
 		if (modificationsManager.isEmpty() == false)
 		{
 			if (drawPipeline.isEnabled() == false)
@@ -158,21 +171,10 @@ public class VSandMainLoop implements IMainLoop
 			}
 			modificationsManager.update(drawFence);
 		}
+		// disable drawManager
 		else if (drawPipeline.isEnabled())
 		{
 			drawPipeline.setEnabled(false);
 		}
 	}
-
-	private void manageInput()
-	{
-		// Main draw
-		mainDrawManager.manage(application.getMainMaterial(),
-				vsandInputManager.isLeftClicPressed());
-
-		// Secondary draw
-		secondaryDrawManager.manage(application.getSecondaryMaterial(),
-				vsandInputManager.isRightClicPressed());
-	}
-
 }
