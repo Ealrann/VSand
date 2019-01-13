@@ -40,7 +40,7 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 		VERTEX_LAYOUT.position(2).attribute(NK_VERTEX_COLOR).format(NK_FORMAT_R8G8B8A8).offset(16);
 		VERTEX_LAYOUT.position(3).attribute(NK_VERTEX_ATTRIBUTE_COUNT).format(NK_FORMAT_COUNT)
 				.offset(0);
-		VERTEX_LAYOUT.flip();
+		VERTEX_LAYOUT.position(4).flip();
 	}
 
 	private final NkDrawNullTexture nkNullTexture = NkDrawNullTexture.create();
@@ -147,11 +147,8 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 		PointerBuffer vertexMemory = vertexMemories[currentIndexBuffer];
 		PointerBuffer indexMemory = indexMemories[currentIndexBuffer];
 
-		nk_buffer_init_fixed(vertices, vertexMemory.getByteBuffer((int) vertexSize));
-		nk_buffer_init_fixed(elements, indexMemory.getByteBuffer((int) indexSize));
-
-		vertexMemory.flip();
-		indexMemory.flip();
+		nnk_buffer_init_fixed(vertices.address(), vertexMemory.get(0), vertexSize);
+		nnk_buffer_init_fixed(elements.address(), indexMemory.get(0), indexSize);
 
 		// load draw vertices & elements directly into vertex + element buffer
 		nk_convert(ctx, cmds, vertices, elements, config);
