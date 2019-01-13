@@ -136,7 +136,10 @@
       </units>
     </processes>
     <processes xsi:type="model:VSandGraphicProcess" resetAllowed="true" waitForSubmissions="//@engines.0/@processes.0">
-      <units xsi:type="graphic:ImagePipeline" image="//@engines.0/@sharedResources/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="COLOR_ATTACHMENT_OUTPUT_BIT" imageSrcAccess="64" imageDstAccess="64"/>
+      <units xsi:type="graphic:ImagePipeline" stage="PreRender" image="//@engines.0/@sharedResources/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="COMPUTE_SHADER_BIT">
+        <imageSrcAccessMask>SHADER_WRITE_BIT</imageSrcAccessMask>
+        <imageDstAccessMask>SHADER_WRITE_BIT</imageDstAccessMask>
+      </units>
       <units xsi:type="model_2:NuklearPipeline" subpass="1">
         <indexBuffer/>
         <font descriptorType="SAMPLED_IMAGE">
@@ -151,17 +154,13 @@
         <colorDomain/>
       </configuration>
       <renderPassInfo>
-        <attachments name="Swapchain" loadOp="DONT_CARE" stencilLoadOp="DONT_CARE" stencilStoreOp="DONT_CARE" finalLayout="PRESENT_SRC_KHR"/>
-        <subpasses name="Image">
-          <refs attachement="//@engines.0/@processes.1/@renderPassInfo/@attachments.0" layout="TRANSFER_DST_OPTIMAL"/>
-        </subpasses>
+        <attachments name="Swapchain" stencilLoadOp="DONT_CARE" stencilStoreOp="DONT_CARE" initialLayout="TRANSFER_DST_OPTIMAL" finalLayout="PRESENT_SRC_KHR"/>
         <subpasses name="UI">
           <refs attachement="//@engines.0/@processes.1/@renderPassInfo/@attachments.0" layout="COLOR_ATTACHMENT_OPTIMAL"/>
         </subpasses>
-        <dependencies dstSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.0" srcStageMask="COMPUTE_SHADER_BIT" dstStageMask="TRANSFER_BIT">
-          <dstAccesses>TRANSFER_WRITE_BIT</dstAccesses>
-        </dependencies>
-        <dependencies srcSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.0" dstSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.1" srcStageMask="TRANSFER_BIT" dstStageMask="FRAGMENT_SHADER_BIT">
+        <dependencies dstSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.0">
+          <srcStageMask>TRANSFER_BIT</srcStageMask>
+          <dstStageMask>FRAGMENT_SHADER_BIT</dstStageMask>
           <srcAccesses>TRANSFER_WRITE_BIT</srcAccesses>
           <dstAccesses>SHADER_WRITE_BIT</dstAccesses>
         </dependencies>
