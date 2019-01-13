@@ -82,7 +82,7 @@ public class VSandMainLoop implements IMainLoop
 		secondaryDrawManager = new DrawManager(application, window, inputManager,
 				modificationsManager);
 
-		drawFence = engineAdapter.newFence();
+		drawFence = engineAdapter.newFence(true);
 
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode glfwGetVideoMode = glfwGetVideoMode(monitor);

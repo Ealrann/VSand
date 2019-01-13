@@ -3,7 +3,6 @@ package org.sheepy.vulkan.sand.buffer;
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.concurrent.TimeUnit;
 
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.common.api.types.SVector2i;
@@ -56,8 +55,7 @@ public class ModificationsManager
 			shape = EShape.Circle;
 		}
 
-		var modification = new BoardModification(shape, data.size, x, y, oldX, oldY,
-				data.material);
+		var modification = new BoardModification(shape, data.size, x, y, oldX, oldY, data.material);
 		modificationQueue.add(modification);
 
 		oldX = x;
@@ -66,7 +64,7 @@ public class ModificationsManager
 
 	public void update(IFence waitFence)
 	{
-		waitForFence(waitFence);
+		waitFence.waitForSignal(20);
 
 		copyBuffer.clear();
 		BoardModification modif = modificationQueue.pop();
@@ -74,21 +72,6 @@ public class ModificationsManager
 		copyBuffer.flip();
 
 		adapter.pushData(copyBuffer);
-	}
-
-	private static void waitForFence(IFence waitFence)
-	{
-		int timeoff = 20;
-		while (waitFence.isSignaled() == false || timeoff-- <= 0)
-		{
-			try
-			{
-				TimeUnit.MILLISECONDS.sleep(1);
-			} catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public boolean isEmpty()
