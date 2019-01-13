@@ -27,8 +27,8 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 {
 	public static final NuklearVertexDescriptor VERTEX_DESCRIPTOR = new NuklearVertexDescriptor();
 
-	private static final int MAX_VERTEX_COUNT = 10000;
-	private static final int MAX_INDEX_COUNT = 16000;
+	private static final int VERTEX_BUFFER_SIZE = 512 * 1024;
+	private static final int INDEX_BUFFER_SIZE = 128 * 1024;
 
 	private static final NkDrawVertexLayoutElement.Buffer VERTEX_LAYOUT;
 
@@ -77,7 +77,7 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 		for (int i = 0; i < 2; i++)
 		{
 			indexBuffers[i] = new IndexBuffer<GuiVertex>(executionManager, VERTEX_DESCRIPTOR,
-					MAX_VERTEX_COUNT, MAX_INDEX_COUNT);
+					VERTEX_BUFFER_SIZE, INDEX_BUFFER_SIZE);
 			indexBuffers[i].allocate(stack);
 
 			long vertexMemoryAddress = indexBuffers[i].getVertexBufferMemoryId();
