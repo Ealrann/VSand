@@ -92,11 +92,11 @@ public class VSandInputManager implements IInputListener
 		int index = materials.indexOf(mainMaterial);
 		Material next = null;
 
-		if (event.yOffset > 0)
+		if (event.yOffset > 0f)
 		{
 			next = findNextUserFriendlyMaterial(materials, index, -1);
 		}
-		else
+		else if (event.yOffset < 0f)
 		{
 			next = findNextUserFriendlyMaterial(materials, index, 1);
 		}
