@@ -69,10 +69,10 @@ public class DrawManager
 
 		int width = window.getSurface().width;
 		int height = window.getSurface().height;
-		if (width != VSandApplicationLauncher.WIDTH && height != VSandApplicationLauncher.HEIGHT)
+		if (width != VSandApplicationLauncher.WIDTH || height != VSandApplicationLauncher.HEIGHT)
 		{
-			res.x *= VSandApplicationLauncher.WIDTH / width;
-			res.y *= VSandApplicationLauncher.HEIGHT / height;
+			res.x *= (float) VSandApplicationLauncher.WIDTH / width;
+			res.y *= (float) VSandApplicationLauncher.HEIGHT / height;
 		}
 
 		return res;
