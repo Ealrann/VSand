@@ -45,7 +45,7 @@ public class DrawRecorder
 
 		if (debug && previousDrawedIndexes != drawedIndexes)
 		{
-			System.out.println("Index count:" + drawedIndexes);
+			System.out.println("Nuklear Index count:" + drawedIndexes);
 			previousDrawedIndexes = drawedIndexes;
 		}
 
