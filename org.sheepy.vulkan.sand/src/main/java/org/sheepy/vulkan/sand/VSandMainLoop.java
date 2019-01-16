@@ -154,7 +154,7 @@ public class VSandMainLoop implements IMainLoop
 
 		renderProcessAdapter.prepare();
 		renderProcessAdapter.execute();
-
+		
 		vsyncGuard.step();
 	}
 

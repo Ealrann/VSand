@@ -13,7 +13,6 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VkCommandBuffer;
 import org.lwjgl.vulkan.VkMappedMemoryRange;
 import org.sheepy.common.api.adapter.IServiceAdapterFactory;
-import org.sheepy.vulkan.common.device.LogicalDevice;
 import org.sheepy.vulkan.common.execution.ExecutionManager;
 import org.sheepy.vulkan.nuklear.model.NuklearIndexBuffer;
 import org.sheepy.vulkan.nuklear.model.NuklearPackage;
@@ -46,8 +45,6 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 
 	private IndexBuffer<?> indexBuffer;
 
-	private LogicalDevice logicalDevice;
-
 	private NullTexture nullTexture = null;
 	private NkBuffer vbuf;
 	private NkBuffer ebuf;
@@ -64,8 +61,6 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 	{
 		nkNullTexture.texture().ptr(nullTexture.getSamplerId());
 		nkNullTexture.uv().set(0.5f, 0.5f);
-
-		logicalDevice = executionManager.getLogicalDevice();
 
 		vbuf = NkBuffer.calloc();
 		ebuf = NkBuffer.calloc();
