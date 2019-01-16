@@ -6,7 +6,6 @@ import java.util.Deque;
 
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.common.api.types.SVector2i;
-import org.sheepy.vulkan.api.concurrent.IFence;
 import org.sheepy.vulkan.model.enumeration.EBufferUsage;
 import org.sheepy.vulkan.model.enumeration.EDescriptorType;
 import org.sheepy.vulkan.model.enumeration.EShaderStage;
@@ -60,7 +59,7 @@ public class ModificationsManager
 		oldY = y;
 	}
 
-	public void update(IFence waitFence)
+	public void update()
 	{
 		copyBuffer.clear();
 		BoardModification modif = modificationQueue.pop();

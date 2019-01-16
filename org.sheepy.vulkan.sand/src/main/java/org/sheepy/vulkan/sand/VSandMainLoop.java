@@ -33,6 +33,8 @@ import org.sheepy.vulkan.sand.util.VSyncGuard;
 
 public class VSandMainLoop implements IMainLoop
 {
+	private static final long FENCE_TIMEOUT_NS = (long) (500 * 1e6);
+
 	private IVulkanEngineAdapter engineAdapter;
 
 	private DrawManager mainDrawManager;
@@ -126,8 +128,6 @@ public class VSandMainLoop implements IMainLoop
 		}
 	}
 
-	private static final long FENCE_TIMEOUT_NS = (long) (500 * 1e6);
-
 	@Override
 	public void step(Application _application)
 	{
@@ -141,11 +141,6 @@ public class VSandMainLoop implements IMainLoop
 		boardProcessAdapter.prepare();
 		boardProcessAdapter.execute(drawFence);
 
-		if (drawFence.waitForSignal(FENCE_TIMEOUT_NS) == false)
-		{
-			System.err.println("Frame too long");
-		}
-
 		if (application.isNextMode() == true)
 		{
 			application.setNextMode(false);
@@ -154,7 +149,7 @@ public class VSandMainLoop implements IMainLoop
 
 		renderProcessAdapter.prepare();
 		renderProcessAdapter.execute();
-		
+
 		vsyncGuard.step();
 	}
 
@@ -175,7 +170,11 @@ public class VSandMainLoop implements IMainLoop
 			{
 				drawPipeline.setEnabled(true);
 			}
-			modificationsManager.update(drawFence);
+			if (drawFence.waitForSignal(FENCE_TIMEOUT_NS) == false)
+			{
+				System.err.println("Frame too long");
+			}
+			modificationsManager.update();
 		}
 		// disable drawManager
 		else if (drawPipeline.isEnabled())
