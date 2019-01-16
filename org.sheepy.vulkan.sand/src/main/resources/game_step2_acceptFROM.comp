@@ -42,7 +42,7 @@ struct Entry
 
 // Random number, change each frame.
 layout (push_constant) uniform PushConstants {
-	uint random;
+	float random;
 	int firstPass;
 } pushConstants;
 

@@ -42,7 +42,7 @@ struct Entry
 
 // Random number, change each frame.
 layout (push_constant) uniform PushConstants {
-	uint random;
+	float random;
 	int firstPass;
 } pushConstants;
 
@@ -89,6 +89,7 @@ layout(binding = 3) readonly buffer STransformation
 
 bool transform(int x, int y, uint value, uint otherValue);
 float rand(vec2 co);
+float gold_noise(in ivec2 coordinate, in float seed);
 
 /**
  * Here, we will apply the transformations
@@ -141,7 +142,8 @@ bool transform(int x, int y, uint value, uint otherValue)
 		// If not static, or if we didn't move (no change Value)
 		if (!staticTransfo || (decision.data[x][y] & (15 | MOVED_TAG)) == 0)
 		{
-			highp float rand = rand(vec2(pushConstants.random, x * y));
+			// highp float rand = rand(vec2(pushConstants.random, x * y));
+			float rand = gold_noise(ivec2(x, y), pushConstants.random);
 			if (rand * 1000. <= float(probability))
 			{
 				board.data[x][y] = int((targetValue << 16) >> 16);
@@ -154,7 +156,16 @@ bool transform(int x, int y, uint value, uint otherValue)
 	return res;
 }
 
-highp float rand(vec2 co)
+const float PHI = 1.61803398874989484820459 * 00000.1; // Golden Ratio
+const float PI  = 3.14159265358979323846264 * 00000.1; // PI
+const float SQ2 = 1.41421356237309504880169 * 10000.0; // Square Root of Two
+
+float gold_noise(in ivec2 coordinate, in float seed)
+{
+    return fract(tan(distance(coordinate*(seed+PHI), vec2(PHI, PI)))*SQ2);
+}
+
+float rand(vec2 co)
 {
 	float a = 12.9898;
 	float b = 78.233;

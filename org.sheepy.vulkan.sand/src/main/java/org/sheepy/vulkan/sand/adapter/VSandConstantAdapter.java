@@ -47,9 +47,9 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IF
 			pc.setFirstPass(false);
 		}
 
-		int rNumber = random.nextInt();
+		float rNumber = random.nextFloat();
 
-		buffer.putInt(rNumber);
+		buffer.putFloat(rNumber);
 		buffer.putInt(firstPass);
 		buffer.flip();
 
