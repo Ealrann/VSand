@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.vulkan.model.enumeration.EBufferUsage;
 import org.sheepy.vulkan.model.enumeration.EDescriptorType;
-import org.sheepy.vulkan.model.enumeration.EMemoryProperty;
 import org.sheepy.vulkan.model.enumeration.EShaderStage;
 import org.sheepy.vulkan.model.resource.Buffer;
 import org.sheepy.vulkan.sand.logic.MaterialUtil;
@@ -26,7 +25,6 @@ public class TransformationBufferLoader
 		buffer.setSize(BYTE_SIZE);
 		buffer.getUsages().add(EBufferUsage.STORAGE_BUFFER_BIT);
 		buffer.getUsages().add(EBufferUsage.TRANSFER_DST_BIT);
-		buffer.getProperties().add(EMemoryProperty.DEVICE_LOCAL_BIT);
 		buffer.setDescriptorType(EDescriptorType.STORAGE_BUFFER);
 		buffer.getShaderStages().add(EShaderStage.COMPUTE_BIT);
 

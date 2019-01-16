@@ -49,31 +49,25 @@
         <usages>STORAGE_BUFFER_BIT</usages>
         <usages>TRANSFER_SRC_BIT</usages>
         <usages>TRANSFER_DST_BIT</usages>
-        <properties>DEVICE_LOCAL_BIT</properties>
       </resources>
       <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="Configuration">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>UNIFORM_BUFFER_BIT</usages>
         <usages>TRANSFER_DST_BIT</usages>
-        <properties>DEVICE_LOCAL_BIT</properties>
       </resources>
       <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Transformation">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>TRANSFER_DST_BIT</usages>
         <usages>STORAGE_BUFFER_BIT</usages>
-        <properties>DEVICE_LOCAL_BIT</properties>
       </resources>
       <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Decision">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>TRANSFER_DST_BIT</usages>
         <usages>STORAGE_BUFFER_BIT</usages>
-        <properties>DEVICE_LOCAL_BIT</properties>
       </resources>
-      <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="Modification">
+      <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="Modification" gpuBuffer="false">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>UNIFORM_BUFFER_BIT</usages>
-        <properties>HOST_VISIBLE_BIT</properties>
-        <properties>HOST_COHERENT_BIT</properties>
       </resources>
       <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
         <file xsi:type="resource:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vulkan.sand"/>

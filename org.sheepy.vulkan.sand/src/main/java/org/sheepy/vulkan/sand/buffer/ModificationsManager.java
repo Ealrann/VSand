@@ -9,7 +9,6 @@ import org.sheepy.common.api.types.SVector2i;
 import org.sheepy.vulkan.api.concurrent.IFence;
 import org.sheepy.vulkan.model.enumeration.EBufferUsage;
 import org.sheepy.vulkan.model.enumeration.EDescriptorType;
-import org.sheepy.vulkan.model.enumeration.EMemoryProperty;
 import org.sheepy.vulkan.model.enumeration.EShaderStage;
 import org.sheepy.vulkan.model.resource.Buffer;
 import org.sheepy.vulkan.resource.buffer.BufferAdapter;
@@ -35,8 +34,7 @@ public class ModificationsManager
 
 		buffer.setSize(BYTE_SIZE);
 		buffer.getUsages().add(EBufferUsage.UNIFORM_BUFFER_BIT);
-		buffer.getProperties().add(EMemoryProperty.HOST_VISIBLE_BIT);
-		buffer.getProperties().add(EMemoryProperty.HOST_COHERENT_BIT);
+		buffer.setGpuBuffer(false);
 		buffer.setDescriptorType(EDescriptorType.UNIFORM_BUFFER);
 		buffer.getShaderStages().add(EShaderStage.COMPUTE_BIT);
 

@@ -28,7 +28,7 @@ project.ext.targetPlatform = OperatingSystem.current()
 
 
 project.ext.jomlVersion = "1.9.12"
-project.ext.lwjglVersion = "3.2.1"
+project.ext.lwjglVersion = "3.2.2-SNAPSHOT"
 
 subprojects {
 

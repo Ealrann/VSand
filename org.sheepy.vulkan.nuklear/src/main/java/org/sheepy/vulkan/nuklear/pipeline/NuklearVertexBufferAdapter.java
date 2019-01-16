@@ -4,16 +4,14 @@ import static org.lwjgl.nuklear.Nuklear.*;
 import static org.lwjgl.vulkan.VK10.*;
 
 import org.eclipse.emf.ecore.EClass;
-import org.lwjgl.PointerBuffer;
 import org.lwjgl.nuklear.NkBuffer;
 import org.lwjgl.nuklear.NkContext;
 import org.lwjgl.nuklear.NkConvertConfig;
 import org.lwjgl.nuklear.NkDrawNullTexture;
 import org.lwjgl.nuklear.NkDrawVertexLayoutElement;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.vulkan.VkCommandBuffer;
-import org.lwjgl.vulkan.VkDevice;
+import org.lwjgl.vulkan.VkMappedMemoryRange;
 import org.sheepy.common.api.adapter.IServiceAdapterFactory;
 import org.sheepy.vulkan.common.device.LogicalDevice;
 import org.sheepy.vulkan.common.execution.ExecutionManager;
@@ -46,21 +44,20 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 	private final NkDrawNullTexture nkNullTexture = NkDrawNullTexture.create();
 	private final NkConvertConfig config = NkConvertConfig.create();
 
-	private final IndexBuffer<?>[] indexBuffers = new IndexBuffer[2];
-	private int currentIndexBuffer = -1;
+	private IndexBuffer<?> indexBuffer;
 
 	private LogicalDevice logicalDevice;
 
 	private NullTexture nullTexture = null;
-	private NkBuffer.Buffer vbuf;
-	private NkBuffer.Buffer ebuf;
-
-	private PointerBuffer[] vertexMemories = new PointerBuffer[2];
-	private PointerBuffer[] indexMemories = new PointerBuffer[2];
-
+	private NkBuffer vbuf;
+	private NkBuffer ebuf;
+	private long vertexMemoryMap;
+	private long indexMemoryMap;
 	private long vertexSize;
-
 	private long indexSize;
+
+	private VkMappedMemoryRange rangeVertex;
+	private VkMappedMemoryRange rangeIndex;
 
 	@Override
 	public void allocate(MemoryStack stack, ExecutionManager executionManager)
@@ -69,32 +66,19 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 		nkNullTexture.uv().set(0.5f, 0.5f);
 
 		logicalDevice = executionManager.getLogicalDevice();
-		VkDevice vkDevice = logicalDevice.getVkDevice();
 
-		vbuf = NkBuffer.calloc(2);
-		ebuf = NkBuffer.calloc(2);
+		vbuf = NkBuffer.calloc();
+		ebuf = NkBuffer.calloc();
 
-		for (int i = 0; i < 2; i++)
-		{
-			indexBuffers[i] = new IndexBuffer<GuiVertex>(executionManager, VERTEX_DESCRIPTOR,
-					VERTEX_BUFFER_SIZE, INDEX_BUFFER_SIZE);
-			indexBuffers[i].allocate(stack);
+		indexBuffer = new IndexBuffer<GuiVertex>(executionManager, VERTEX_DESCRIPTOR,
+				VERTEX_BUFFER_SIZE, INDEX_BUFFER_SIZE, true);
+		indexBuffer.allocate(stack);
 
-			long vertexMemoryAddress = indexBuffers[i].getVertexBufferMemoryId();
-			long indexMemoryAddress = indexBuffers[i].getIndexBufferMemoryId();
+		vertexSize = indexBuffer.getVertexBuffer().getInfos().size;
+		indexSize = indexBuffer.getIndexBuffer().getInfos().size;
 
-			vertexSize = indexBuffers[i].getVertexBuffer().getInfos().size;
-			indexSize = indexBuffers[i].getIndexBuffer().getInfos().size;
-
-			vertexMemories[i] = MemoryUtil.memAllocPointer(1);
-			indexMemories[i] = MemoryUtil.memAllocPointer(1);
-
-			PointerBuffer vertexMemory = vertexMemories[i];
-			PointerBuffer indexMemory = indexMemories[i];
-
-			vkMapMemory(vkDevice, vertexMemoryAddress, 0, vertexSize, 0, vertexMemory);
-			vkMapMemory(vkDevice, indexMemoryAddress, 0, indexSize, 0, indexMemory);
-		}
+		vertexMemoryMap = indexBuffer.mapVertexMemory();
+		indexMemoryMap = indexBuffer.mapIndexMemory();
 
 		config.null_texture(nkNullTexture);
 		config.vertex_layout(VERTEX_LAYOUT);
@@ -106,58 +90,43 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 		config.global_alpha(1.0f);
 		config.shape_AA(NK_ANTI_ALIASING_ON);
 		config.line_AA(NK_ANTI_ALIASING_ON);
+
+		rangeVertex = VkMappedMemoryRange.calloc();
+		rangeVertex.set(VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, VK_NULL_HANDLE,
+				indexBuffer.getVertexBufferMemoryId(), 0, vertexSize);
+		rangeIndex = VkMappedMemoryRange.calloc();
+		rangeIndex.set(VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, VK_NULL_HANDLE,
+				indexBuffer.getIndexBufferMemoryId(), 0, indexSize);
 	}
 
 	@Override
 	public void free()
 	{
-		VkDevice vkDevice = logicalDevice.getVkDevice();
+		indexBuffer.unmapVertexMemory();
+		indexBuffer.unmapIndexMemory();
 
-		for (int i = 0; i < 2; i++)
-		{
-			vkUnmapMemory(vkDevice, indexBuffers[i].getVertexBufferMemoryId());
-			vkUnmapMemory(vkDevice, indexBuffers[i].getIndexBufferMemoryId());
-
-			indexBuffers[i].free();
-			indexBuffers[i] = null;
-
-			MemoryUtil.memFree(vertexMemories[i]);
-			MemoryUtil.memFree(indexMemories[i]);
-		}
+		indexBuffer.free();
+		indexBuffer = null;
 
 		vbuf.free();
 		ebuf.free();
 		vbuf = null;
 		ebuf = null;
-
-		vertexMemories = null;
-		indexMemories = null;
 	}
 
 	public void update(NkContext ctx, NkBuffer cmds)
 	{
-		currentIndexBuffer++;
-		if (currentIndexBuffer == 2)
-		{
-			currentIndexBuffer = 0;
-		}
-		NkBuffer vertices = vbuf.get(currentIndexBuffer);
-		NkBuffer elements = ebuf.get(currentIndexBuffer);
-
-		PointerBuffer vertexMemory = vertexMemories[currentIndexBuffer];
-		PointerBuffer indexMemory = indexMemories[currentIndexBuffer];
-
-		nnk_buffer_init_fixed(vertices.address(), vertexMemory.get(0), vertexSize);
-		nnk_buffer_init_fixed(elements.address(), indexMemory.get(0), indexSize);
+		nnk_buffer_init_fixed(vbuf.address(), vertexMemoryMap, vertexSize);
+		nnk_buffer_init_fixed(ebuf.address(), indexMemoryMap, indexSize);
 
 		// load draw vertices & elements directly into vertex + element buffer
-		nk_convert(ctx, cmds, vertices, elements, config);
+		nk_convert(ctx, cmds, vbuf, ebuf, config);
+
+		indexBuffer.pushFromMemoryMap();
 	}
 
 	public void bind(VkCommandBuffer commandBuffer)
 	{
-		var indexBuffer = indexBuffers[currentIndexBuffer];
-
 		// Bind vertex and index buffer
 		long[] pBuffer = {
 				indexBuffer.getVertexBufferId()
