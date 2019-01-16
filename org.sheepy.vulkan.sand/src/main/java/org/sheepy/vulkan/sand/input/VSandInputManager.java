@@ -101,8 +101,17 @@ public class VSandInputManager implements IInputListener
 			next = findNextUserFriendlyMaterial(materials, index, 1);
 		}
 
-		if (shiftPressed) application.setSecondaryMaterial(next);
-		else application.setMainMaterial(next);
+		if (next != null)
+		{
+			if (shiftPressed)
+			{
+				application.setSecondaryMaterial(next);
+			}
+			else
+			{
+				application.setMainMaterial(next);
+			}
+		}
 	}
 
 	private static Material findNextUserFriendlyMaterial(	EList<Material> materials,
