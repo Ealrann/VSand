@@ -13,10 +13,7 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.sheepy.vulkan.model.process.ProcessPackage;
 import org.sheepy.vulkan.model.process.compute.provider.ComputePipelineItemProvider;
-
-import org.sheepy.vulkan.model.process.graphic.GraphicFactory;
 import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
 import org.sheepy.vulkan.sand.model.VSandPackage;
 
@@ -140,11 +137,6 @@ public class RepeatComputePipelineItemProvider extends ComputePipelineItemProvid
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object)
 	{
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PIPELINE__UNITS,
-				 GraphicFactory.eINSTANCE.createPipelineImageBarrier()));
 	}
 
 	/**

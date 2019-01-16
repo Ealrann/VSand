@@ -141,11 +141,6 @@ public class VSandComputeProcessItemProvider extends ComputeProcessItemProvider
 			(createChildParameter
 				(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
 				 GraphicFactory.eINSTANCE.createImagePipeline()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
-				 GraphicFactory.eINSTANCE.createPipelineImageBarrier()));
 	}
 
 	/**

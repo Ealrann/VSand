@@ -21,7 +21,6 @@ import org.sheepy.vulkan.sand.model.Material;
 public class ModificationsManager
 {
 	private static final int BYTE_SIZE = BoardModification.MODIFICATION_BYTE_COUNT * Integer.BYTES;
-	private static final long FENCE_TIMEOUT_NS = (long) (500 * 1e6);
 
 	private final BufferAdapter adapter;
 	private final Deque<BoardModification> modificationQueue = new ArrayDeque<>();
@@ -65,11 +64,6 @@ public class ModificationsManager
 
 	public void update(IFence waitFence)
 	{
-		if(waitFence.waitForSignal(FENCE_TIMEOUT_NS) == false)
-		{
-			System.err.println("Frame too long");
-		}
-
 		copyBuffer.clear();
 		BoardModification modif = modificationQueue.pop();
 		modif.fillBuffer(copyBuffer);

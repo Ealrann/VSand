@@ -98,47 +98,53 @@
       <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resources.0 //@engines.0/@processes.0/@resources.4"/>
       <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@resources.1 //@engines.0/@processes.0/@resources.0 //@engines.0/@sharedResources/@resources.0"/>
       <units xsi:type="compute:ComputePipeline" enabled="false" stage="Compute" name="Draw" descriptorSet="//@engines.0/@processes.0/@descriptorSets.1" width="1280" height="720" depth="1">
-        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="BoardReadToWrite">
-          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+        <units xsi:type="process:PipelineBarrier" stage="Compute" name="BoardReadToWrite">
+          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
         </units>
-        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="ModificationWriteToRead">
-          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.4" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+        <units xsi:type="process:PipelineBarrier" stage="Compute" name="ModificationWriteToRead">
+          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.4" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
         </units>
         <units xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resources.5"/>
-        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="BoardWriteToRead">
-          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+        <units xsi:type="process:PipelineBarrier" stage="Compute" name="BoardWriteToRead">
+          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
         </units>
-        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="ModificationReadToWrite">
-          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.4" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+        <units xsi:type="process:PipelineBarrier" stage="Compute" name="ModificationReadToWrite">
+          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.4" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
         </units>
       </units>
       <units xsi:type="model:RepeatComputePipeline" stage="Compute" name="Step" descriptorSet="//@engines.0/@processes.0/@descriptorSets.0" constants="//@engines.0/@processes.0/@resources.11" width="1280" height="720" depth="1">
         <units xsi:type="process:PushConstant"/>
-        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="DecisionReadToWrite">
-          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.3" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+        <units xsi:type="process:PipelineBarrier" stage="Compute" name="DecisionReadToWrite">
+          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.3" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
         </units>
-        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="BoardReadToWrite">
-          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+        <units xsi:type="process:PipelineBarrier" stage="Compute" name="BoardReadToWrite">
+          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
         </units>
         <units xsi:type="compute:Computer" name="Step1" shader="//@engines.0/@processes.0/@resources.6"/>
         <units xsi:type="compute:Computer" name="Step2" shader="//@engines.0/@processes.0/@resources.7"/>
         <units xsi:type="compute:Computer" name="Step3" shader="//@engines.0/@processes.0/@resources.8"/>
-        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="DecisionWriteToRead">
-          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.3" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+        <units xsi:type="process:PipelineBarrier" stage="Compute" name="DecisionWriteToRead">
+          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.3" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
         </units>
         <units xsi:type="compute:Computer" name="Step4" shader="//@engines.0/@processes.0/@resources.9"/>
-        <units xsi:type="process:PipelineBufferBarrier" stage="Compute" name="BoardWriteToRead">
-          <bufferBarrier srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+        <units xsi:type="process:PipelineBarrier" stage="Compute" name="BoardWriteToRead">
+          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
         </units>
       </units>
       <units xsi:type="compute:ComputePipeline" stage="Compute" name="Board to Pixel" descriptorSet="//@engines.0/@processes.0/@descriptorSets.2" width="1280" height="720" depth="1">
+        <units xsi:type="process:PipelineBarrier" stage="Compute">
+          <barrier xsi:type="resource:ImageBarrier" dstStage="COMPUTE_SHADER_BIT" image="//@engines.0/@sharedResources/@resources.0">
+            <transitions dstLayout="GENERAL">
+              <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+            </transitions>
+          </barrier>
+        </units>
         <units xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resources.10"/>
       </units>
     </processes>
     <processes xsi:type="model:VSandGraphicProcess" resetAllowed="true" waitForSubmissions="//@engines.0/@processes.0">
-      <units xsi:type="graphic:ImagePipeline" stage="PreRender" image="//@engines.0/@sharedResources/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="COMPUTE_SHADER_BIT">
+      <units xsi:type="graphic:ImagePipeline" stage="PreRender" image="//@engines.0/@sharedResources/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="BOTTOM_OF_PIPE_BIT" srcQueue="//@engines.0/@processes.0">
         <imageSrcAccessMask>SHADER_WRITE_BIT</imageSrcAccessMask>
-        <imageDstAccessMask>SHADER_WRITE_BIT</imageDstAccessMask>
       </units>
       <units xsi:type="model_2:NuklearPipeline" subpass="1">
         <indexBuffer/>
@@ -148,7 +154,7 @@
         </font>
         <pushConstant/>
       </units>
-      <configuration clearBeforeRender="false" presentationMode="Immediate" requiredSwapImageCount="2" acquireWaitStage="COMPUTE_SHADER_BIT">
+      <configuration clearBeforeRender="false" presentationMode="Immediate" requiredSwapImageCount="2">
         <swapImageUsages>TransferDst</swapImageUsages>
         <swapImageUsages>ColorAttachment</swapImageUsages>
         <colorDomain/>
@@ -160,9 +166,10 @@
         </subpasses>
         <dependencies dstSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.0">
           <srcStageMask>TRANSFER_BIT</srcStageMask>
-          <dstStageMask>FRAGMENT_SHADER_BIT</dstStageMask>
+          <dstStageMask>COLOR_ATTACHMENT_OUTPUT_BIT</dstStageMask>
           <srcAccesses>TRANSFER_WRITE_BIT</srcAccesses>
-          <dstAccesses>SHADER_WRITE_BIT</dstAccesses>
+          <dstAccesses>COLOR_ATTACHMENT_READ_BIT</dstAccesses>
+          <dstAccesses>COLOR_ATTACHMENT_WRITE_BIT</dstAccesses>
         </dependencies>
       </renderPassInfo>
     </processes>

@@ -2,6 +2,7 @@ package org.sheepy.vulkan.sand.buffer;
 
 import static org.lwjgl.vulkan.VK10.*;
 
+import org.sheepy.vulkan.model.enumeration.EAccess;
 import org.sheepy.vulkan.model.enumeration.EDescriptorType;
 import org.sheepy.vulkan.model.enumeration.EFormat;
 import org.sheepy.vulkan.model.enumeration.EImageLayout;
@@ -21,7 +22,7 @@ public class BoardImageLoader
 		ImageLayout initialLayout = new ImageLayoutImpl();
 		initialLayout.setStage(EPipelineStage.COMPUTE_SHADER_BIT);
 		initialLayout.setLayout(EImageLayout.GENERAL);
-		initialLayout.setAccess(VK_ACCESS_SHADER_WRITE_BIT);
+		initialLayout.getAccessMask().add(EAccess.SHADER_WRITE_BIT);
 
 		image.setWidth(width);
 		image.setHeight(height);

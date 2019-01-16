@@ -126,6 +126,8 @@ public class VSandMainLoop implements IMainLoop
 		}
 	}
 
+	private static final long FENCE_TIMEOUT_NS = (long) (500 * 1e6);
+
 	@Override
 	public void step(Application _application)
 	{
@@ -133,12 +135,16 @@ public class VSandMainLoop implements IMainLoop
 
 		updateDrawManager();
 
-		boardProcessAdapter.getQueue().waitIdle();
 		constant.setFirstPass(true);
-		boardProcessAdapter.prepare();
 
 		drawFence.reset();
+		boardProcessAdapter.prepare();
 		boardProcessAdapter.execute(drawFence);
+
+		if (drawFence.waitForSignal(FENCE_TIMEOUT_NS) == false)
+		{
+			System.err.println("Frame too long");
+		}
 
 		if (application.isNextMode() == true)
 		{
