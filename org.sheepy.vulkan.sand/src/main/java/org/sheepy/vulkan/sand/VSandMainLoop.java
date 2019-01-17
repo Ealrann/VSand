@@ -137,9 +137,16 @@ public class VSandMainLoop implements IMainLoop
 
 		constant.setFirstPass(true);
 
-		drawFence.reset();
 		boardProcessAdapter.prepare();
-		boardProcessAdapter.execute(drawFence);
+		if (drawPipeline.isEnabled())
+		{
+			drawFence.reset();
+			boardProcessAdapter.execute(drawFence);
+		}
+		else
+		{
+			boardProcessAdapter.execute();
+		}
 
 		if (application.isNextMode() == true)
 		{
