@@ -1,9 +1,9 @@
 # Vulkanized Sand
-Rewrite of the [**Falling Sand**](https://en.wikipedia.org/wiki/Falling-sand_game) game with Vulkan (LWJGL3).
+Rewrite of the [**Falling Sand**](https://en.wikipedia.org/wiki/Falling-sand_game) game with Vulkan ([LWJGL3](https://www.lwjgl.org/)).
 
-This implementation use *parallel computing* (your graphic card) to powerup the game.
+Since that kind of game requires a lot of computing power, I wanted to exploit the graphic card capabilities to process AND to display the particles (*parallel computing*).
 
-The game is under the license GPL-3.0. Feel free to redistribute it (just let me know).
+License GPL-3.0. Feel free to redistribute (please let me know).
 
 ### Requirements
 
@@ -54,7 +54,10 @@ Here some materials you can find in the game:
 
 Feel free to add a new issues if you want to see new things in the game, or if you find a bug.
 
-You can also contribute by sending me new pull requests.
+If you want to contribute to the code, you first need to install:
+- Git.
+- Git-lfs (linux only)
+- Gradle
 
 Clone the repo and download the submodule:
 
@@ -67,3 +70,17 @@ Test the game:
 Prepare the project for eclipse environment:
 
 `gradle eclipse`
+
+### Frameworks/API used
+#### Graphic
+- [**LWJGL 3**](https://www.lwjgl.org/)
+- [**Vulkan**](https://www.khronos.org/vulkan/)
+- [**Nuklear**](https://github.com/vurtun/nuklear)
+#### Design/Code
+- [**EMF** (Eclipse Modeling Framework)](https://www.eclipse.org/modeling/emf/)
+- [**Java** (especially jigsaw)](https://openjdk.java.net/projects/jigsaw/)
+#### Build
+- [**Gradle**](https://gradle.org/)
+- [**Java9-modularity**](https://github.com/java9-modularity/gradle-modules-plugin)
+- [**JLink**](https://docs.oracle.com/javase/9/tools/jlink.htm)
+- [**Badass-jlink-plugin**](https://github.com/beryx/badass-jlink-plugin)
