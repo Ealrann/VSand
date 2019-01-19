@@ -50,8 +50,6 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 	private NkBuffer ebuf;
 	private long vertexMemoryMap;
 	private long indexMemoryMap;
-	private long vertexSize;
-	private long indexSize;
 
 	private VkMappedMemoryRange rangeVertex;
 	private VkMappedMemoryRange rangeIndex;
@@ -69,9 +67,6 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 				VERTEX_BUFFER_SIZE, INDEX_BUFFER_SIZE, true);
 		indexBuffer.allocate(stack);
 
-		vertexSize = indexBuffer.getVertexBuffer().getInfos().size;
-		indexSize = indexBuffer.getIndexBuffer().getInfos().size;
-
 		vertexMemoryMap = indexBuffer.mapVertexMemory();
 		indexMemoryMap = indexBuffer.mapIndexMemory();
 
@@ -88,10 +83,10 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 
 		rangeVertex = VkMappedMemoryRange.calloc();
 		rangeVertex.set(VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, VK_NULL_HANDLE,
-				indexBuffer.getVertexBufferMemoryId(), 0, vertexSize);
+				indexBuffer.getVertexBufferMemoryId(), 0, VERTEX_BUFFER_SIZE);
 		rangeIndex = VkMappedMemoryRange.calloc();
 		rangeIndex.set(VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, VK_NULL_HANDLE,
-				indexBuffer.getIndexBufferMemoryId(), 0, indexSize);
+				indexBuffer.getIndexBufferMemoryId(), 0, INDEX_BUFFER_SIZE);
 	}
 
 	@Override
@@ -111,8 +106,8 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 
 	public void update(NkContext ctx, NkBuffer cmds)
 	{
-		nnk_buffer_init_fixed(vbuf.address(), vertexMemoryMap, vertexSize);
-		nnk_buffer_init_fixed(ebuf.address(), indexMemoryMap, indexSize);
+		nnk_buffer_init_fixed(vbuf.address(), vertexMemoryMap, VERTEX_BUFFER_SIZE);
+		nnk_buffer_init_fixed(ebuf.address(), indexMemoryMap, INDEX_BUFFER_SIZE);
 
 		// load draw vertices & elements directly into vertex + element buffer
 		nk_convert(ctx, cmds, vbuf, ebuf, config);
