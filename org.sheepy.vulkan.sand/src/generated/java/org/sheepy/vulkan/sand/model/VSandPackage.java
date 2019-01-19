@@ -1374,6 +1374,15 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS__UNITS = GraphicPackage.GRAPHIC_PROCESS__UNITS;
 
 	/**
+	 * The feature id for the '<em><b>Semaphores</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_GRAPHIC_PROCESS__SEMAPHORES = GraphicPackage.GRAPHIC_PROCESS__SEMAPHORES;
+
+	/**
 	 * The feature id for the '<em><b>Reset Allowed</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1383,13 +1392,22 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS__RESET_ALLOWED = GraphicPackage.GRAPHIC_PROCESS__RESET_ALLOWED;
 
 	/**
-	 * The feature id for the '<em><b>Wait For Submissions</b></em>' reference list.
+	 * The feature id for the '<em><b>Initialized Signalized Semaphore</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_GRAPHIC_PROCESS__WAIT_FOR_SUBMISSIONS = GraphicPackage.GRAPHIC_PROCESS__WAIT_FOR_SUBMISSIONS;
+	int VSAND_GRAPHIC_PROCESS__INITIALIZED_SIGNALIZED_SEMAPHORE = GraphicPackage.GRAPHIC_PROCESS__INITIALIZED_SIGNALIZED_SEMAPHORE;
+
+	/**
+	 * The feature id for the '<em><b>Dependent Processes</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_GRAPHIC_PROCESS__DEPENDENT_PROCESSES = GraphicPackage.GRAPHIC_PROCESS__DEPENDENT_PROCESSES;
 
 	/**
 	 * The feature id for the '<em><b>Configuration</b></em>' containment reference.
@@ -1546,6 +1564,15 @@ public interface VSandPackage extends EPackage
 	int VSAND_COMPUTE_PROCESS__UNITS = ComputePackage.COMPUTE_PROCESS__UNITS;
 
 	/**
+	 * The feature id for the '<em><b>Semaphores</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_COMPUTE_PROCESS__SEMAPHORES = ComputePackage.COMPUTE_PROCESS__SEMAPHORES;
+
+	/**
 	 * The feature id for the '<em><b>Reset Allowed</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1555,13 +1582,22 @@ public interface VSandPackage extends EPackage
 	int VSAND_COMPUTE_PROCESS__RESET_ALLOWED = ComputePackage.COMPUTE_PROCESS__RESET_ALLOWED;
 
 	/**
-	 * The feature id for the '<em><b>Wait For Submissions</b></em>' reference list.
+	 * The feature id for the '<em><b>Initialized Signalized Semaphore</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_COMPUTE_PROCESS__WAIT_FOR_SUBMISSIONS = ComputePackage.COMPUTE_PROCESS__WAIT_FOR_SUBMISSIONS;
+	int VSAND_COMPUTE_PROCESS__INITIALIZED_SIGNALIZED_SEMAPHORE = ComputePackage.COMPUTE_PROCESS__INITIALIZED_SIGNALIZED_SEMAPHORE;
+
+	/**
+	 * The feature id for the '<em><b>Dependent Processes</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_COMPUTE_PROCESS__DEPENDENT_PROCESSES = ComputePackage.COMPUTE_PROCESS__DEPENDENT_PROCESSES;
 
 	/**
 	 * The number of structural features of the '<em>Compute Process</em>' class.

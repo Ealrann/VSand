@@ -43,7 +43,7 @@
     <sharedResources>
       <resources xsi:type="resource:Image" descriptorType="STORAGE_IMAGE" name="Board Image" width="1280" height="720" format="R8G8B8A8_UNORM"/>
     </sharedResources>
-    <processes xsi:type="model:VSandComputeProcess" name="Board Compute" resetAllowed="true">
+    <processes xsi:type="model:VSandComputeProcess" name="Board Compute" resetAllowed="true" dependentProcesses="//@engines.0/@processes.1/@semaphores.0">
       <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Board Buffer">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>STORAGE_BUFFER_BIT</usages>
@@ -135,8 +135,9 @@
         </units>
         <units xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resources.10"/>
       </units>
+      <semaphores process="//@engines.0/@processes.1"/>
     </processes>
-    <processes xsi:type="model:VSandGraphicProcess" resetAllowed="true" waitForSubmissions="//@engines.0/@processes.0">
+    <processes xsi:type="model:VSandGraphicProcess" resetAllowed="true" initializedSignalizedSemaphore="true" dependentProcesses="//@engines.0/@processes.0/@semaphores.0">
       <units xsi:type="graphic:ImagePipeline" stage="PreRender" image="//@engines.0/@sharedResources/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="BOTTOM_OF_PIPE_BIT" srcQueue="//@engines.0/@processes.0">
         <imageSrcAccessMask>SHADER_WRITE_BIT</imageSrcAccessMask>
       </units>
@@ -148,7 +149,8 @@
         </font>
         <pushConstant/>
       </units>
-      <configuration clearBeforeRender="false" presentationMode="Immediate" requiredSwapImageCount="2">
+      <semaphores process="//@engines.0/@processes.0" waitStage="COMPUTE_SHADER_BIT"/>
+      <configuration clearBeforeRender="false" presentationMode="Immediate" requiredSwapImageCount="2" acquireWaitStage="COMPUTE_SHADER_BIT">
         <swapImageUsages>TransferDst</swapImageUsages>
         <swapImageUsages>ColorAttachment</swapImageUsages>
         <colorDomain/>

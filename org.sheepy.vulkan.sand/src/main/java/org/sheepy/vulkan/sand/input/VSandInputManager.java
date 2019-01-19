@@ -34,11 +34,11 @@ public class VSandInputManager implements IInputListener
 		{
 		// Shift
 		case 340:
-			if(event.state == EKeyState.PRESSED)
+			if (event.state == EKeyState.PRESSED)
 			{
 				shiftPressed = true;
 			}
-			else if(event.state == EKeyState.RELEASED)
+			else if (event.state == EKeyState.RELEASED)
 			{
 				shiftPressed = false;
 			}
