@@ -1,10 +1,10 @@
 #version 450
 
-#define WIDTH 1280
-#define HEIGHT 720
+#define WIDTH 1248
+#define HEIGHT 704
 
-#define CHUNK_WIDTH 40
-#define CHUNK_HEIGHT 23
+#define CHUNK_WIDTH 39
+#define CHUNK_HEIGHT 22
 
 #define WORKGROUP_SIZE_X 32
 #define WORKGROUP_SIZE_Y 32
