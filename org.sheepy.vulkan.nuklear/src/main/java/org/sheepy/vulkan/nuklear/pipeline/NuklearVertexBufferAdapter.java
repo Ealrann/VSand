@@ -92,6 +92,11 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 	@Override
 	public void free()
 	{
+		rangeIndex.free();
+		rangeVertex.free();
+		rangeIndex = null;
+		rangeVertex = null;
+
 		indexBuffer.unmapVertexMemory();
 		indexBuffer.unmapIndexMemory();
 
