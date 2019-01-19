@@ -3,7 +3,6 @@ package org.sheepy.vulkan.nuklear.pipeline;
 import static org.lwjgl.vulkan.VK10.*;
 
 import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.vulkan.VkPipelineVertexInputStateCreateInfo;
@@ -41,9 +40,8 @@ public class NuklearVertexDescriptor implements IIndexBufferDescriptor<GuiVertex
 
 	public static VkVertexInputBindingDescription.Buffer allocBindingDescription()
 	{
-		VkVertexInputBindingDescription.Buffer bindingDescription = VkVertexInputBindingDescription
-				.calloc(1);
-		
+		var bindingDescription = VkVertexInputBindingDescription.create(1);
+
 		bindingDescription.binding(0);
 		bindingDescription.stride(SIZE_OF);
 		bindingDescription.inputRate(VK_VERTEX_INPUT_RATE_VERTEX);
@@ -53,29 +51,25 @@ public class NuklearVertexDescriptor implements IIndexBufferDescriptor<GuiVertex
 
 	public static VkVertexInputAttributeDescription.Buffer allocAttributeDescriptions()
 	{
-		VkVertexInputAttributeDescription.Buffer attributeDescriptions = VkVertexInputAttributeDescription
-				.calloc(3);
+		var attributeDescriptions = VkVertexInputAttributeDescription.create(3);
 
-		
-		VkVertexInputAttributeDescription attributeDescriptionPosition = attributeDescriptions
-				.get(0);
-		attributeDescriptionPosition.binding(0);
-		attributeDescriptionPosition.location(0);
-		attributeDescriptionPosition.format(VK_FORMAT_R32G32_SFLOAT);
-		attributeDescriptionPosition.offset(POSITION_OFFSET);
+		var positionAttribute = attributeDescriptions.get(0);
+		positionAttribute.binding(0);
+		positionAttribute.location(0);
+		positionAttribute.format(VK_FORMAT_R32G32_SFLOAT);
+		positionAttribute.offset(POSITION_OFFSET);
 
-		VkVertexInputAttributeDescription attributeDescriptionTexCoord = attributeDescriptions
-				.get(2);
-		attributeDescriptionTexCoord.binding(0);
-		attributeDescriptionTexCoord.location(1);
-		attributeDescriptionTexCoord.format(VK_FORMAT_R32G32_SFLOAT);
-		attributeDescriptionTexCoord.offset(TEX_COORD_OFFSET);
+		var texCoordAttribute = attributeDescriptions.get(1);
+		texCoordAttribute.binding(0);
+		texCoordAttribute.location(1);
+		texCoordAttribute.format(VK_FORMAT_R32G32_SFLOAT);
+		texCoordAttribute.offset(TEX_COORD_OFFSET);
 
-		VkVertexInputAttributeDescription attributeDescriptionColor = attributeDescriptions.get(1);
-		attributeDescriptionColor.binding(0);
-		attributeDescriptionColor.location(2);
-		attributeDescriptionColor.format(VK_FORMAT_R8G8B8A8_UNORM);
-		attributeDescriptionColor.offset(COLOR_OFFSET);
+		var colorAttribute = attributeDescriptions.get(2);
+		colorAttribute.binding(0);
+		colorAttribute.location(2);
+		colorAttribute.format(VK_FORMAT_R8G8B8A8_UNORM);
+		colorAttribute.offset(COLOR_OFFSET);
 
 		return attributeDescriptions;
 	}
@@ -86,7 +80,7 @@ public class NuklearVertexDescriptor implements IIndexBufferDescriptor<GuiVertex
 		vertexInputInfo.free();
 		bindingDescription.free();
 		attributeDescriptions.free();
-		
+
 		vertexInputInfo = null;
 		bindingDescription = null;
 		attributeDescriptions = null;
@@ -106,20 +100,19 @@ public class NuklearVertexDescriptor implements IIndexBufferDescriptor<GuiVertex
 	public ByteBuffer toVertexBuffer(GuiVertex[] vertices)
 	{
 		ByteBuffer res = MemoryUtil.memAlloc(SIZE_OF * vertices.length);
-		FloatBuffer fb = res.asFloatBuffer();
 
 		for (GuiVertex vertex : vertices)
 		{
-			fb.put(vertex.posX);
-			fb.put(vertex.posY);
-			fb.put(vertex.uvX);
-			fb.put(vertex.uvY);
-			fb.put(vertex.tex);
+			res.putFloat(vertex.posX);
+			res.putFloat(vertex.posY);
+			res.putFloat(vertex.uvX);
+			res.putFloat(vertex.uvY);
+			res.putInt(vertex.tex);
 		}
 
 		return res;
 	}
-	
+
 	public class GuiVertex implements IVertex
 	{
 		float posX;

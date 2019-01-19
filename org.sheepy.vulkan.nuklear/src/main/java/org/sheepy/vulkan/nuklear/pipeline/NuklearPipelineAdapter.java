@@ -269,12 +269,6 @@ public class NuklearPipelineAdapter extends IGraphicsPipelineAdapter
 	}
 
 	@Override
-	public boolean isApplicable(EClass eClass)
-	{
-		return NuklearPackage.Literals.NUKLEAR_PIPELINE == eClass;
-	}
-
-	@Override
 	protected AbstractConstants getConstants()
 	{
 		return nkPipeline.getPushConstant();
@@ -322,5 +316,11 @@ public class NuklearPipelineAdapter extends IGraphicsPipelineAdapter
 	protected int getSubpass()
 	{
 		return nkPipeline.getSubpass();
+	}
+
+	@Override
+	public boolean isApplicable(EClass eClass)
+	{
+		return NuklearPackage.Literals.NUKLEAR_PIPELINE == eClass;
 	}
 }

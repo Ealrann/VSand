@@ -136,17 +136,6 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 	}
 
 	@Override
-	public boolean isApplicable(EClass eClass)
-	{
-		return NuklearPackage.Literals.NUKLEAR_INDEX_BUFFER == eClass;
-	}
-
-	public static NuklearVertexBufferAdapter adapt(NuklearIndexBuffer buffer)
-	{
-		return IServiceAdapterFactory.INSTANCE.adapt(buffer, NuklearVertexBufferAdapter.class);
-	}
-
-	@Override
 	public boolean isAllocationDirty()
 	{
 		return false;
@@ -155,5 +144,16 @@ public class NuklearVertexBufferAdapter extends ResourceAdapter
 	public void setNullTexture(NullTexture nullTexture)
 	{
 		this.nullTexture = nullTexture;
+	}
+
+	@Override
+	public boolean isApplicable(EClass eClass)
+	{
+		return NuklearPackage.Literals.NUKLEAR_INDEX_BUFFER == eClass;
+	}
+
+	public static NuklearVertexBufferAdapter adapt(NuklearIndexBuffer buffer)
+	{
+		return IServiceAdapterFactory.INSTANCE.adapt(buffer, NuklearVertexBufferAdapter.class);
 	}
 }
