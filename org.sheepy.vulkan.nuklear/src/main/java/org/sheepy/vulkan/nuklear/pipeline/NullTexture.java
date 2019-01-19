@@ -17,9 +17,7 @@ import org.sheepy.vulkan.resource.nativehelper.VkTexture;
 public class NullTexture implements IResourceAllocable
 {
 	private static final int FORMAT = VK_FORMAT_R8G8B8A8_UNORM;
-	private static final int USAGE = VK_IMAGE_USAGE_TRANSFER_SRC_BIT
-			| VK_IMAGE_USAGE_TRANSFER_DST_BIT
-			| VK_IMAGE_USAGE_SAMPLED_BIT;
+	private static final int USAGE = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
 
 	private static final Sampler sampler = new SamplerImpl();
 	static
