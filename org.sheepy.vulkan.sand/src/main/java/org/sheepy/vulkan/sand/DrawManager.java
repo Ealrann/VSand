@@ -3,7 +3,6 @@ package org.sheepy.vulkan.sand;
 import org.sheepy.common.api.input.IInputManager;
 import org.sheepy.common.api.types.SVector2f;
 import org.sheepy.common.api.types.SVector2i;
-import org.sheepy.vulkan.common.window.Window;
 import org.sheepy.vulkan.sand.buffer.ModificationsManager;
 import org.sheepy.vulkan.sand.buffer.ModificationsManager.DrawData;
 import org.sheepy.vulkan.sand.logic.EShape;
@@ -18,17 +17,17 @@ public class DrawManager
 	private final ModificationsManager modificationsManager;
 
 	private boolean wasUsed = false;
-	private final Window window;
+	private final SVector2i boardSize;
 
 	public DrawManager(	VSandApplication application,
-						Window window,
 						IInputManager inputManager,
-						ModificationsManager modificationsManager)
+						ModificationsManager modificationsManager,
+						SVector2i boardSize)
 	{
 		this.application = application;
-		this.window = window;
 		this.inputManager = inputManager;
 		this.modificationsManager = modificationsManager;
+		this.boardSize = boardSize;
 	}
 
 	public void manage(Material material, boolean needDraw)
@@ -67,12 +66,15 @@ public class DrawManager
 	{
 		SVector2i res = new SVector2i((int) mousePos.x, (int) mousePos.y);
 
-		int width = window.getSurface().width;
-		int height = window.getSurface().height;
-		if (width != VSandApplicationLauncher.WIDTH || height != VSandApplicationLauncher.HEIGHT)
+		int boardWidth = boardSize.x;
+		int boardHeight = boardSize.y;
+
+		int width = application.getSize().x;
+		int height = application.getSize().y;
+		if (width != boardWidth || height != boardHeight)
 		{
-			res.x *= (float) VSandApplicationLauncher.WIDTH / width;
-			res.y *= (float) VSandApplicationLauncher.HEIGHT / height;
+			res.x *= (float) boardWidth / width;
+			res.y *= (float) boardHeight / height;
 		}
 
 		return res;

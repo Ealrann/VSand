@@ -6,11 +6,11 @@ import org.eclipse.emf.common.util.EList;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.sheepy.common.api.cadence.IMainLoop;
 import org.sheepy.common.api.input.IInputManager;
+import org.sheepy.common.api.types.SVector2i;
 import org.sheepy.common.model.application.Application;
 import org.sheepy.vulkan.api.adapter.IProcessAdapter;
 import org.sheepy.vulkan.api.adapter.IVulkanEngineAdapter;
 import org.sheepy.vulkan.api.concurrent.IFence;
-import org.sheepy.vulkan.common.window.Window;
 import org.sheepy.vulkan.model.IProcess;
 import org.sheepy.vulkan.model.VulkanEngine;
 import org.sheepy.vulkan.model.process.compute.ComputePipeline;
@@ -78,11 +78,12 @@ public class VSandMainLoop implements IMainLoop
 		inputManager.addListener(vsandInputManager);
 
 		engineAdapter.allocate();
-		var window = (Window) engineAdapter.getWindow();
 
-		mainDrawManager = new DrawManager(application, window, inputManager, modificationsManager);
-		secondaryDrawManager = new DrawManager(application, window, inputManager,
-				modificationsManager);
+		SVector2i boardSize = new SVector2i(stepPipeline.getWidth(), stepPipeline.getHeight());
+		mainDrawManager = new DrawManager(application, inputManager, modificationsManager,
+				boardSize);
+		secondaryDrawManager = new DrawManager(application, inputManager, modificationsManager,
+				boardSize);
 
 		drawFence = engineAdapter.newFence(true);
 

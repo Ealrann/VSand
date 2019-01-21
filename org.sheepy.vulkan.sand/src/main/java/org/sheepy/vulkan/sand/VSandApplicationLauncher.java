@@ -12,9 +12,6 @@ public class VSandApplicationLauncher
 {
 	private static final String APPLICATION_PATH = "Application.vsand";
 
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = 720;
-
 	private static final IResourceLoader resourceLoader = IResourceLoader.INSTANCE;
 
 	public static void main(String[] args)
