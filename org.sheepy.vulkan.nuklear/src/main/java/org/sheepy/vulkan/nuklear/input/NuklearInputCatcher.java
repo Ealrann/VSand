@@ -21,7 +21,7 @@ import org.sheepy.vulkan.nuklear.pipeline.NuklearPipelineAdapter;
 
 public class NuklearInputCatcher implements IInputCatcher
 {
-	private static final NkVec2 scroll = NkVec2.malloc();
+	private static final NkVec2 scroll = NkVec2.create();
 
 	private NkContext nkContext;
 	private long window;

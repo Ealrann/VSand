@@ -6,7 +6,7 @@ import java.nio.IntBuffer;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EClass;
-import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.BufferUtils;
 import org.sheepy.common.api.adapter.impl.AbstractStatefullAdapter;
 import org.sheepy.common.api.variable.IVariableResolverAdapter;
 import org.sheepy.common.api.variable.IVariableResolverAdapter.IVariableListener;
@@ -17,7 +17,7 @@ import org.sheepy.common.model.variable.IVariableResolver;
 
 public class SliderAdapter extends AbstractStatefullAdapter implements IUIElementAdapter
 {
-	private IntBuffer buffer;
+	private final IntBuffer buffer = BufferUtils.createIntBuffer(1);
 
 	private final IVariableListener listener = new IVariableListener()
 	{
@@ -43,7 +43,6 @@ public class SliderAdapter extends AbstractStatefullAdapter implements IUIElemen
 		variableResolver = slider.getVariableResolver();
 		resolverAdapter = IVariableResolverAdapter.adapt(variableResolver);
 
-		buffer = MemoryUtil.memAllocInt(1);
 		updateValue();
 
 		resolverAdapter.addListener(listener);
