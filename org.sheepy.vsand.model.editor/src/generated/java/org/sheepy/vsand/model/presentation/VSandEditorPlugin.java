@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.lily.vulkan.sand.model.presentation;
+package org.sheepy.vsand.model.presentation;
 
 import org.eclipse.emf.common.EMFPlugin;
 

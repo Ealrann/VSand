@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.lily.vulkan.sand.model.provider;
+package org.sheepy.vsand.model.provider;
 
 
 import java.util.Collection;
@@ -21,11 +21,11 @@ import org.sheepy.lily.vulkan.model.process.graphic.GraphicPackage;
 
 import org.sheepy.lily.vulkan.model.process.graphic.provider.GraphicProcessItemProvider;
 import org.sheepy.lily.vulkan.nuklear.model.NuklearFactory;
-import org.sheepy.lily.vulkan.sand.model.VSandFactory;
-import org.sheepy.lily.vulkan.sand.model.VSandGraphicProcess;
+import org.sheepy.vsand.model.VSandFactory;
+import org.sheepy.vsand.model.VSandGraphicProcess;
 
 /**
- * This is the item provider adapter for a {@link org.sheepy.lily.vulkan.sand.model.VSandGraphicProcess} object.
+ * This is the item provider adapter for a {@link org.sheepy.vsand.model.VSandGraphicProcess} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated

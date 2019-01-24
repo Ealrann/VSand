@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.lily.vulkan.sand.model.provider;
+package org.sheepy.vsand.model.provider;
 
 
 import java.util.Collection;
@@ -20,12 +20,12 @@ import org.sheepy.lily.core.model.application.provider.ApplicationItemProvider;
 import org.sheepy.lily.core.model.presentation.PresentationFactory;
 import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.vulkan.model.VulkanFactory;
-import org.sheepy.lily.vulkan.sand.model.VSandApplication;
-import org.sheepy.lily.vulkan.sand.model.VSandFactory;
-import org.sheepy.lily.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.model.VSandFactory;
+import org.sheepy.vsand.model.VSandPackage;
 
 /**
- * This is the item provider adapter for a {@link org.sheepy.lily.vulkan.sand.model.VSandApplication} object.
+ * This is the item provider adapter for a {@link org.sheepy.vsand.model.VSandApplication} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated

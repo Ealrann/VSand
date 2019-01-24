@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.input;
+package org.sheepy.vsand.input;
 
 import org.eclipse.emf.common.util.EList;
 import org.sheepy.lily.core.api.input.IInputManager.IInputListener;
@@ -7,9 +7,9 @@ import org.sheepy.lily.core.api.input.event.MouseButtonEvent;
 import org.sheepy.lily.core.api.input.event.ScrollEvent;
 import org.sheepy.lily.core.api.types.SVector2f;
 import org.sheepy.lily.core.model.types.EKeyState;
-import org.sheepy.vulkan.sand.model.Material;
-import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
-import org.sheepy.vulkan.sand.model.VSandApplication;
+import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.RepeatComputePipeline;
+import org.sheepy.vsand.model.VSandApplication;
 
 public class VSandInputManager implements IInputListener
 {

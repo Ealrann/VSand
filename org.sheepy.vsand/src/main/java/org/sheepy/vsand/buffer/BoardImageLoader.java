@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.buffer;
+package org.sheepy.vsand.buffer;
 
 import static org.lwjgl.vulkan.VK10.*;
 

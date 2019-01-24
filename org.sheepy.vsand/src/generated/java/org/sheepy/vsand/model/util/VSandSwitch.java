@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.util;
+package org.sheepy.vsand.model.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -33,7 +33,7 @@ import org.sheepy.lily.vulkan.model.process.graphic.IGraphicsPipeline;
 import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
 import org.sheepy.lily.vulkan.model.resource.BasicResource;
 import org.sheepy.vulkan.nuklear.model.NuklearPipeline;
-import org.sheepy.vulkan.sand.model.*;
+import org.sheepy.vsand.model.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,7 +45,7 @@ import org.sheepy.vulkan.sand.model.*;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see org.sheepy.vulkan.sand.model.VSandPackage
+ * @see org.sheepy.vsand.model.VSandPackage
  * @generated
  */
 public class VSandSwitch<T> extends Switch<T>

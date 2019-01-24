@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.adapter;
+package org.sheepy.vsand.adapter;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
@@ -6,8 +6,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.sheepy.lily.core.api.adapter.IServiceAdapterFactory;
 import org.sheepy.lily.vulkan.process.compute.execution.ComputeCommandBuffer;
 import org.sheepy.lily.vulkan.process.compute.pipeline.ComputePipelineAdapter;
-import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.RepeatComputePipeline;
+import org.sheepy.vsand.model.VSandPackage;
 
 public class RepeatComputePipelineAdapter extends ComputePipelineAdapter
 {

@@ -1,11 +1,11 @@
-package org.sheepy.vulkan.sand.model;
+package org.sheepy.vsand.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.sheepy.lily.core.api.resource.IModelExtension;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.VSandPackage;
 
 public class VSandModelExtension implements IModelExtension
 {

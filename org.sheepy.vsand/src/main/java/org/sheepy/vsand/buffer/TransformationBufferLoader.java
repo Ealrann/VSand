@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.buffer;
+package org.sheepy.vsand.buffer;
 
 import java.nio.ByteBuffer;
 
@@ -8,9 +8,9 @@ import org.sheepy.lily.vulkan.model.enumeration.EBufferUsage;
 import org.sheepy.lily.vulkan.model.enumeration.EDescriptorType;
 import org.sheepy.lily.vulkan.model.enumeration.EShaderStage;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
-import org.sheepy.vulkan.sand.logic.MaterialUtil;
-import org.sheepy.vulkan.sand.logic.TransformationUtil;
-import org.sheepy.vulkan.sand.model.VSandApplication;
+import org.sheepy.vsand.logic.MaterialUtil;
+import org.sheepy.vsand.logic.TransformationUtil;
+import org.sheepy.vsand.model.VSandApplication;
 
 public class TransformationBufferLoader
 {

@@ -1,8 +1,8 @@
-package org.sheepy.vulkan.sand.logic.builder;
+package org.sheepy.vsand.logic.builder;
 
 import java.nio.ByteBuffer;
 
-import org.sheepy.vulkan.sand.logic.BoardModification;
+import org.sheepy.vsand.logic.BoardModification;
 
 public interface IShapeBuilder
 {

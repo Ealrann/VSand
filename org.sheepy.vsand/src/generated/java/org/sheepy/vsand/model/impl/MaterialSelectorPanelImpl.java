@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.impl;
+package org.sheepy.vsand.model.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ import org.sheepy.lily.core.model.types.EHorizontalRelative;
 import org.sheepy.lily.core.model.types.EVerticalRelative;
 import org.sheepy.lily.core.model.types.TypesFactory;
 import org.sheepy.lily.core.model.types.TypesPackage;
-import org.sheepy.vulkan.sand.model.MaterialSelectorPanel;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.MaterialSelectorPanel;
+import org.sheepy.vsand.model.VSandPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -43,18 +43,18 @@ import org.sheepy.vulkan.sand.model.VSandPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getContentObjects <em>Content Objects</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getPosition <em>Position</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getVerticalRelative <em>Vertical Relative</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getHorizontalRelative <em>Horizontal Relative</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getLineHeight <em>Line Height</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getPrimaryR <em>Primary R</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getPrimaryG <em>Primary G</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getPrimaryB <em>Primary B</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getSecondaryR <em>Secondary R</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getSecondaryG <em>Secondary G</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl#getSecondaryB <em>Secondary B</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getContentObjects <em>Content Objects</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getPosition <em>Position</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getVerticalRelative <em>Vertical Relative</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getHorizontalRelative <em>Horizontal Relative</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getLineHeight <em>Line Height</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getPrimaryR <em>Primary R</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getPrimaryG <em>Primary G</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getPrimaryB <em>Primary B</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getSecondaryR <em>Secondary R</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getSecondaryG <em>Secondary G</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl#getSecondaryB <em>Secondary B</em>}</li>
  * </ul>
  *
  * @generated

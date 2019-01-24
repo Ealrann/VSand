@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.adapter;
+package org.sheepy.vsand.adapter;
 
 import java.nio.ByteBuffer;
 import java.util.Random;
@@ -8,8 +8,8 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.vulkan.common.allocation.adapter.IFlatAllocableAdapter;
 import org.sheepy.lily.vulkan.resource.buffer.AbstractConstantsAdapter;
-import org.sheepy.vulkan.sand.model.VSandConstants;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.VSandConstants;
+import org.sheepy.vsand.model.VSandPackage;
 
 public class VSandConstantAdapter extends AbstractConstantsAdapter implements IFlatAllocableAdapter
 {

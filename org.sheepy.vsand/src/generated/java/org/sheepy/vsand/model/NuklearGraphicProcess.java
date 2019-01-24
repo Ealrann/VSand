@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model;
+package org.sheepy.vsand.model;
 
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
 
@@ -10,7 +10,7 @@ import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
  * <!-- end-user-doc -->
  *
  *
- * @see org.sheepy.vulkan.sand.model.VSandPackage#getNuklearGraphicProcess()
+ * @see org.sheepy.vsand.model.VSandPackage#getNuklearGraphicProcess()
  * @model interface="true" abstract="true"
  * @generated
  */

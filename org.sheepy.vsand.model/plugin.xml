@@ -9,8 +9,8 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated GameOfLife -->
       <package
-            uri="org.sheepy.lily.vulkan.sand.model"
-            class="org.sheepy.lily.vulkan.sand.model.VSandPackage"
+            uri="org.sheepy.vsand.model"
+            class="org.sheepy.vsand.model.VSandPackage"
             genModel="src/main/xcore/VSand.xcore"/>
    </extension>
 
@@ -18,7 +18,7 @@
       <!-- @generated VSand -->
       <parser
             type="vsand"
-            class="org.sheepy.lily.vulkan.sand.model.util.VSandResourceFactoryImpl"/>
+            class="org.sheepy.vsand.model.util.VSandResourceFactoryImpl"/>
    </extension>
 
 </plugin>

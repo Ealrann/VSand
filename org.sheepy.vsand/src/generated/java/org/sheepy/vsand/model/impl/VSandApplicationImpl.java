@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.impl;
+package org.sheepy.vsand.model.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -8,11 +8,11 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.sheepy.lily.core.model.application.impl.ApplicationImpl;
-import org.sheepy.vulkan.sand.model.Material;
-import org.sheepy.vulkan.sand.model.Materials;
-import org.sheepy.vulkan.sand.model.Transformations;
-import org.sheepy.vulkan.sand.model.VSandApplication;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.Materials;
+import org.sheepy.vsand.model.Transformations;
+import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.model.VSandPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,12 +22,12 @@ import org.sheepy.vulkan.sand.model.VSandPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#getMaterials <em>Materials</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#getTransformations <em>Transformations</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#getMainMaterial <em>Main Material</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#getSecondaryMaterial <em>Secondary Material</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#isNextMode <em>Next Mode</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl#getBrushSize <em>Brush Size</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getMaterials <em>Materials</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getTransformations <em>Transformations</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getMainMaterial <em>Main Material</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getSecondaryMaterial <em>Secondary Material</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isNextMode <em>Next Mode</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBrushSize <em>Brush Size</em>}</li>
  * </ul>
  *
  * @generated

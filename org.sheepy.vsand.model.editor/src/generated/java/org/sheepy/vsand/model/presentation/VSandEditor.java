@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.lily.vulkan.sand.model.presentation;
+package org.sheepy.vsand.model.presentation;
 
 
 import java.io.IOException;
@@ -145,7 +145,7 @@ import org.eclipse.emf.edit.ui.util.EditUIUtil;
 
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 
-import org.sheepy.lily.vulkan.sand.model.provider.VSandItemProviderAdapterFactory;
+import org.sheepy.vsand.model.provider.VSandItemProviderAdapterFactory;
 
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.sheepy.lily.core.model.action.provider.ActionItemProviderAdapterFactory;
@@ -651,7 +651,7 @@ public class VSandEditor
 			BasicDiagnostic diagnostic =
 				new BasicDiagnostic
 					(Diagnostic.OK,
-					 "org.sheepy.lily.vulkan.sand.model.editor",
+					 "org.sheepy.vsand.model.editor",
 					 0,
 					 null,
 					 new Object [] { editingDomain.getResourceSet() });
@@ -1066,7 +1066,7 @@ public class VSandEditor
 			BasicDiagnostic basicDiagnostic =
 				new BasicDiagnostic
 					(hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
-					 "org.sheepy.lily.vulkan.sand.model.editor",
+					 "org.sheepy.vsand.model.editor",
 					 0,
 					 getString("_UI_CreateModelError_message", resource.getURI()),
 					 new Object [] { exception == null ? (Object)resource : exception });
@@ -1078,7 +1078,7 @@ public class VSandEditor
 			return
 				new BasicDiagnostic
 					(Diagnostic.ERROR,
-					 "org.sheepy.lily.vulkan.sand.model.editor",
+					 "org.sheepy.vsand.model.editor",
 					 0,
 					 getString("_UI_CreateModelError_message", resource.getURI()),
 					 new Object[] { exception });

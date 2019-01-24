@@ -1,10 +1,10 @@
-package org.sheepy.vulkan.sand.logic.builder;
+package org.sheepy.vsand.logic.builder;
 
 import java.nio.ByteBuffer;
 
 import org.joml.Vector2f;
 import org.joml.Vector2i;
-import org.sheepy.vulkan.sand.logic.BoardModification;
+import org.sheepy.vsand.logic.BoardModification;
 
 public class LineBuilder implements IShapeBuilder
 {

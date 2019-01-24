@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.util;
+package org.sheepy.vsand.util;
 
 public class FPSCounter
 {

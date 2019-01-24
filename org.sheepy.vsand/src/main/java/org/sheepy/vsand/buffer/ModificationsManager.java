@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.buffer;
+package org.sheepy.vsand.buffer;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
@@ -11,10 +11,10 @@ import org.sheepy.lily.vulkan.model.enumeration.EDescriptorType;
 import org.sheepy.lily.vulkan.model.enumeration.EShaderStage;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.lily.vulkan.resource.buffer.BufferAdapter;
-import org.sheepy.vulkan.sand.logic.BoardModification;
-import org.sheepy.vulkan.sand.logic.EShape;
-import org.sheepy.vulkan.sand.logic.EShapeSize;
-import org.sheepy.vulkan.sand.model.Material;
+import org.sheepy.vsand.logic.BoardModification;
+import org.sheepy.vsand.logic.EShape;
+import org.sheepy.vsand.logic.EShapeSize;
+import org.sheepy.vsand.model.Material;
 
 public class ModificationsManager
 {

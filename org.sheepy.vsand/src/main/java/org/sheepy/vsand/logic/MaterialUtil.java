@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.logic;
+package org.sheepy.vsand.logic;
 
 public class MaterialUtil
 {

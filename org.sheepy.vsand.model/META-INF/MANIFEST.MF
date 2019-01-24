@@ -1,16 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.sheepy.lily.vulkan.sand.model;singleton:=true
-Automatic-Module-Name: org.sheepy.lily.vulkan.sand.model
+Bundle-SymbolicName: org.sheepy.vsand.model;singleton:=true
+Automatic-Module-Name: org.sheepy.vsand.model
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: org.sheepy.lily.vulkan.sand.model,
- org.sheepy.lily.vulkan.sand.model.impl,
- org.sheepy.lily.vulkan.sand.model.util
+Export-Package: org.sheepy.vsand.model,
+ org.sheepy.vsand.model.impl,
+ org.sheepy.vsand.model.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.xtext.xbase.lib,

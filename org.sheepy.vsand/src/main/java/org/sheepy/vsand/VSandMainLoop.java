@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand;
+package org.sheepy.vsand;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -18,18 +18,18 @@ import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.lily.vulkan.model.resource.Image;
-import org.sheepy.vulkan.sand.buffer.BoardBufferLoader;
-import org.sheepy.vulkan.sand.buffer.BoardDecisionLoader;
-import org.sheepy.vulkan.sand.buffer.BoardImageLoader;
-import org.sheepy.vulkan.sand.buffer.ConfigurationBufferLoader;
-import org.sheepy.vulkan.sand.buffer.ModificationsManager;
-import org.sheepy.vulkan.sand.buffer.TransformationBufferLoader;
-import org.sheepy.vulkan.sand.input.VSandInputManager;
-import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
-import org.sheepy.vulkan.sand.model.VSandApplication;
-import org.sheepy.vulkan.sand.model.VSandConstants;
-import org.sheepy.vulkan.sand.util.FPSCounter;
-import org.sheepy.vulkan.sand.util.VSyncGuard;
+import org.sheepy.vsand.buffer.BoardBufferLoader;
+import org.sheepy.vsand.buffer.BoardDecisionLoader;
+import org.sheepy.vsand.buffer.BoardImageLoader;
+import org.sheepy.vsand.buffer.ConfigurationBufferLoader;
+import org.sheepy.vsand.buffer.ModificationsManager;
+import org.sheepy.vsand.buffer.TransformationBufferLoader;
+import org.sheepy.vsand.input.VSandInputManager;
+import org.sheepy.vsand.model.RepeatComputePipeline;
+import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.model.VSandConstants;
+import org.sheepy.vsand.util.FPSCounter;
+import org.sheepy.vsand.util.VSyncGuard;
 
 public class VSandMainLoop implements IMainLoop
 {

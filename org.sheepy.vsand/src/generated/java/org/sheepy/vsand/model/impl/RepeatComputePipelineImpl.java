@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.impl;
+package org.sheepy.vsand.model.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -10,8 +10,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.sheepy.lily.vulkan.model.process.compute.impl.ComputePipelineImpl;
 
-import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.RepeatComputePipeline;
+import org.sheepy.vsand.model.VSandPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +21,7 @@ import org.sheepy.vulkan.sand.model.VSandPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.RepeatComputePipelineImpl#getRepeatCount <em>Repeat Count</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.RepeatComputePipelineImpl#getRepeatCount <em>Repeat Count</em>}</li>
  * </ul>
  *
  * @generated

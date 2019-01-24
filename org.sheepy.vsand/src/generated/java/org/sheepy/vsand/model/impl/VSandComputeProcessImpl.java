@@ -1,13 +1,13 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.impl;
+package org.sheepy.vsand.model.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.sheepy.lily.vulkan.model.process.compute.impl.ComputeProcessImpl;
 
-import org.sheepy.vulkan.sand.model.VSandComputeProcess;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.VSandComputeProcess;
+import org.sheepy.vsand.model.VSandPackage;
 
 /**
  * <!-- begin-user-doc -->

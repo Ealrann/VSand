@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.adapter.drawer;
+package org.sheepy.vsand.adapter.drawer;
 
 import static org.lwjgl.nuklear.Nuklear.*;
 
@@ -7,8 +7,8 @@ import java.nio.ByteBuffer;
 import org.lwjgl.nuklear.NkColor;
 import org.lwjgl.nuklear.NkContext;
 import org.lwjgl.nuklear.NkRect;
-import org.sheepy.vulkan.sand.adapter.MaterialSelectorPanelAdapter.LineData;
-import org.sheepy.vulkan.sand.model.Material;
+import org.sheepy.vsand.adapter.MaterialSelectorPanelAdapter.LineData;
+import org.sheepy.vsand.model.Material;
 
 public class MaterialDrawer
 {

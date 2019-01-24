@@ -1,9 +1,9 @@
-package org.sheepy.vulkan.sand.logic;
+package org.sheepy.vsand.logic;
 
 import org.eclipse.emf.common.util.EList;
-import org.sheepy.vulkan.sand.model.Material;
-import org.sheepy.vulkan.sand.model.Transformation;
-import org.sheepy.vulkan.sand.model.VSandApplication;
+import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.Transformation;
+import org.sheepy.vsand.model.VSandApplication;
 
 public class TransformationUtil
 {

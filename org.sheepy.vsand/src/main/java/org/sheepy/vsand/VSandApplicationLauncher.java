@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand;
+package org.sheepy.vsand;
 
 import java.io.IOException;
 import java.io.InputStream;

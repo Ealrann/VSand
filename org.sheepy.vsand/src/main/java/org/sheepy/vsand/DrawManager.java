@@ -1,14 +1,14 @@
-package org.sheepy.vulkan.sand;
+package org.sheepy.vsand;
 
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.types.SVector2f;
 import org.sheepy.lily.core.api.types.SVector2i;
-import org.sheepy.vulkan.sand.buffer.ModificationsManager;
-import org.sheepy.vulkan.sand.buffer.ModificationsManager.DrawData;
-import org.sheepy.vulkan.sand.logic.EShape;
-import org.sheepy.vulkan.sand.logic.EShapeSize;
-import org.sheepy.vulkan.sand.model.Material;
-import org.sheepy.vulkan.sand.model.VSandApplication;
+import org.sheepy.vsand.buffer.ModificationsManager;
+import org.sheepy.vsand.buffer.ModificationsManager.DrawData;
+import org.sheepy.vsand.logic.EShape;
+import org.sheepy.vsand.logic.EShapeSize;
+import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.VSandApplication;
 
 public class DrawManager
 {

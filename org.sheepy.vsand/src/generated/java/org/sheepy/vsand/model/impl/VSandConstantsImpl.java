@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.impl;
+package org.sheepy.vsand.model.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -8,8 +8,8 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.sheepy.lily.vulkan.model.resource.impl.AbstractConstantsImpl;
-import org.sheepy.vulkan.sand.model.VSandConstants;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.VSandConstants;
+import org.sheepy.vsand.model.VSandPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,7 +19,7 @@ import org.sheepy.vulkan.sand.model.VSandPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.sheepy.vulkan.sand.model.impl.VSandConstantsImpl#isFirstPass <em>First Pass</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandConstantsImpl#isFirstPass <em>First Pass</em>}</li>
  * </ul>
  *
  * @generated

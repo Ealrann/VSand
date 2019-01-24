@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model;
+package org.sheepy.vsand.model;
 
 import org.sheepy.vulkan.nuklear.model.NuklearPipeline;
 
@@ -10,7 +10,7 @@ import org.sheepy.vulkan.nuklear.model.NuklearPipeline;
  * <!-- end-user-doc -->
  *
  *
- * @see org.sheepy.vulkan.sand.model.VSandPackage#getVSandNuklearPipeline()
+ * @see org.sheepy.vsand.model.VSandPackage#getVSandNuklearPipeline()
  * @model interface="true" abstract="true"
  * @generated
  */

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vulkan.sand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:model_2="org.sheepy.vulkan.nuklear.model" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3">
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:model_2="org.sheepy.vulkan.nuklear.model" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3">
   <views xsi:type="presentation:TranparentUIView" currentUIPage="//@views.0/@uiPages.0">
     <uiPages>
       <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
         <controls xsi:type="ui:DynamicRowLayout"/>
         <controls xsi:type="ui:VariableLabel" text="Speed">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vulkan.sand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@units.1"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@units.1"/>
         </controls>
         <controls xsi:type="ui:Slider" minValue="1" maxValue="16">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vulkan.sand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@units.1"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@units.1"/>
         </controls>
         <controls xsi:type="ui:VariableLabel" text="Brush Size">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vulkan.sand.model#VSandApplication#brushSize" target="/"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
         </controls>
         <controls xsi:type="ui:Slider" minValue="1" maxValue="8">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vulkan.sand.model#VSandApplication#brushSize" target="/"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
         </controls>
       </panels>
       <panels xsi:type="model:MaterialSelectorPanel" name="Materials" verticalRelative="MIDDLE" horizontalRelative="RIGHT" secondaryR="100" secondaryG="255"/>
@@ -70,22 +70,22 @@
         <usages>UNIFORM_BUFFER_BIT</usages>
       </resources>
       <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="step1" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="game_step1_chooseTO.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="game_step1_chooseTO.comp.spv" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="step2" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="game_step2_acceptFROM.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="game_step2_acceptFROM.comp.spv" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="step3" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="game_step3_swap.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="game_step3_swap.comp.spv" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="step4" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="game_step4_transformation.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="game_step4_transformation.comp.spv" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
-        <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vulkan.sand"/>
+        <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="model:VSandConstants" stage="COMPUTE_BIT"/>
       <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resources.1 //@engines.0/@processes.0/@resources.0 //@engines.0/@processes.0/@resources.3 //@engines.0/@processes.0/@resources.2"/>
@@ -145,7 +145,7 @@
         <indexBuffer/>
         <font descriptorType="SAMPLED_IMAGE">
           <shaderStages>FRAGMENT_BIT</shaderStages>
-          <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vulkan.sand"/>
+          <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
         </font>
         <pushConstant/>
       </units>

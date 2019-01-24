@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.impl;
+package org.sheepy.vsand.model.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -28,20 +28,20 @@ import org.sheepy.lily.vulkan.model.process.compute.ComputePackage;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicPackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 import org.sheepy.vulkan.nuklear.model.NuklearPackage;
-import org.sheepy.vulkan.sand.model.Material;
-import org.sheepy.vulkan.sand.model.MaterialSelectorPanel;
-import org.sheepy.vulkan.sand.model.Materials;
-import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
-import org.sheepy.vulkan.sand.model.Transformation;
-import org.sheepy.vulkan.sand.model.Transformations;
-import org.sheepy.vulkan.sand.model.VSandApplication;
-import org.sheepy.vulkan.sand.model.VSandButton;
-import org.sheepy.vulkan.sand.model.VSandComputeProcess;
-import org.sheepy.vulkan.sand.model.VSandConstants;
-import org.sheepy.vulkan.sand.model.VSandFactory;
-import org.sheepy.vulkan.sand.model.VSandGraphicProcess;
-import org.sheepy.vulkan.sand.model.VSandNuklearPipeline;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.MaterialSelectorPanel;
+import org.sheepy.vsand.model.Materials;
+import org.sheepy.vsand.model.RepeatComputePipeline;
+import org.sheepy.vsand.model.Transformation;
+import org.sheepy.vsand.model.Transformations;
+import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.model.VSandButton;
+import org.sheepy.vsand.model.VSandComputeProcess;
+import org.sheepy.vsand.model.VSandConstants;
+import org.sheepy.vsand.model.VSandFactory;
+import org.sheepy.vsand.model.VSandGraphicProcess;
+import org.sheepy.vsand.model.VSandNuklearPipeline;
+import org.sheepy.vsand.model.VSandPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -146,7 +146,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see org.sheepy.vulkan.sand.model.VSandPackage#eNS_URI
+	 * @see org.sheepy.vsand.model.VSandPackage#eNS_URI
 	 * @see #init()
 	 * @generated
 	 */

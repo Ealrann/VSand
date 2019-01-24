@@ -1,9 +1,9 @@
-package org.sheepy.vulkan.sand.logic;
+package org.sheepy.vsand.logic;
 
 import java.nio.ByteBuffer;
 
-import org.sheepy.vulkan.sand.model.Material;
-import org.sheepy.vulkan.sand.model.Materials;
+import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.Materials;
 
 public class BoardModification
 {

@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model;
+package org.sheepy.vsand.model;
 
 import org.sheepy.lily.core.model.ui.Widget;
 
@@ -13,10 +13,10 @@ import org.sheepy.lily.core.model.ui.Widget;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.sheepy.vulkan.sand.model.MaterialSelector#getLineHeight <em>Line Height</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.MaterialSelector#getLineHeight <em>Line Height</em>}</li>
  * </ul>
  *
- * @see org.sheepy.vulkan.sand.model.VSandPackage#getMaterialSelector()
+ * @see org.sheepy.vsand.model.VSandPackage#getMaterialSelector()
  * @model
  * @generated
  */
@@ -33,14 +33,14 @@ public interface MaterialSelector extends Widget
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Line Height</em>' attribute.
 	 * @see #setLineHeight(int)
-	 * @see org.sheepy.vulkan.sand.model.VSandPackage#getMaterialSelector_LineHeight()
+	 * @see org.sheepy.vsand.model.VSandPackage#getMaterialSelector_LineHeight()
 	 * @model unique="false"
 	 * @generated
 	 */
 	int getLineHeight();
 
 	/**
-	 * Sets the value of the '{@link org.sheepy.vulkan.sand.model.MaterialSelector#getLineHeight <em>Line Height</em>}' attribute.
+	 * Sets the value of the '{@link org.sheepy.vsand.model.MaterialSelector#getLineHeight <em>Line Height</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Line Height</em>' attribute.

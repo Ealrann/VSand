@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model;
+package org.sheepy.vsand.model;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -26,9 +26,9 @@ import org.sheepy.vulkan.nuklear.model.NuklearPackage;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * @see org.sheepy.vulkan.sand.model.VSandFactory
+ * @see org.sheepy.vsand.model.VSandFactory
  * @model kind="package"
- *        annotation="http://www.eclipse.org/emf/2002/GenModel modelDirectory='/org.sheepy.vulkan.sand.model/src/generated/java' editDirectory='/org.sheepy.vulkan.sand.model.edit/src/generated/java' editorDirectory='/org.sheepy.vulkan.sand.model.editor/src/generated/java' creationSubmenus='true' multipleEditorPages='false' modelName='VSand' prefix='VSand' publicConstructors='true' complianceLevel='11.0' resource='XMI' childCreationExtenders='true' basePackage='org.sheepy.vulkan.sand'"
+ *        annotation="http://www.eclipse.org/emf/2002/GenModel modelDirectory='/org.sheepy.vsand.model/src/generated/java' editDirectory='/org.sheepy.vsand.model.edit/src/generated/java' editorDirectory='/org.sheepy.vsand.model.editor/src/generated/java' creationSubmenus='true' multipleEditorPages='false' modelName='VSand' prefix='VSand' publicConstructors='true' complianceLevel='11.0' resource='XMI' childCreationExtenders='true' basePackage='org.sheepy.vsand'"
  * @generated
  */
 public interface VSandPackage extends EPackage
@@ -47,7 +47,7 @@ public interface VSandPackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "org.sheepy.vulkan.sand.model";
+	String eNS_URI = "org.sheepy.vsand.model";
 
 	/**
 	 * The package namespace name.
@@ -63,14 +63,14 @@ public interface VSandPackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	VSandPackage eINSTANCE = org.sheepy.vulkan.sand.model.impl.VSandPackageImpl.init();
+	VSandPackage eINSTANCE = org.sheepy.vsand.model.impl.VSandPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl <em>Application</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.VSandApplicationImpl <em>Application</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandApplication()
+	 * @see org.sheepy.vsand.model.impl.VSandApplicationImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandApplication()
 	 * @generated
 	 */
 	int VSAND_APPLICATION = 0;
@@ -292,11 +292,11 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION_OPERATION_COUNT = ApplicationPackage.APPLICATION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.MaterialsImpl <em>Materials</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MaterialsImpl <em>Materials</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.MaterialsImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getMaterials()
+	 * @see org.sheepy.vsand.model.impl.MaterialsImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterials()
 	 * @generated
 	 */
 	int MATERIALS = 1;
@@ -329,11 +329,11 @@ public interface VSandPackage extends EPackage
 	int MATERIALS_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.MaterialImpl <em>Material</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MaterialImpl <em>Material</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.MaterialImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getMaterial()
+	 * @see org.sheepy.vsand.model.impl.MaterialImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterial()
 	 * @generated
 	 */
 	int MATERIAL = 2;
@@ -429,11 +429,11 @@ public interface VSandPackage extends EPackage
 	int MATERIAL_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.TransformationsImpl <em>Transformations</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.TransformationsImpl <em>Transformations</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.TransformationsImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getTransformations()
+	 * @see org.sheepy.vsand.model.impl.TransformationsImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getTransformations()
 	 * @generated
 	 */
 	int TRANSFORMATIONS = 3;
@@ -466,11 +466,11 @@ public interface VSandPackage extends EPackage
 	int TRANSFORMATIONS_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.TransformationImpl <em>Transformation</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.TransformationImpl <em>Transformation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.TransformationImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getTransformation()
+	 * @see org.sheepy.vsand.model.impl.TransformationImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getTransformation()
 	 * @generated
 	 */
 	int TRANSFORMATION = 4;
@@ -548,11 +548,11 @@ public interface VSandPackage extends EPackage
 	int TRANSFORMATION_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.RepeatComputePipelineImpl <em>Repeat Compute Pipeline</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.RepeatComputePipelineImpl <em>Repeat Compute Pipeline</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.RepeatComputePipelineImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getRepeatComputePipeline()
+	 * @see org.sheepy.vsand.model.impl.RepeatComputePipelineImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getRepeatComputePipeline()
 	 * @generated
 	 */
 	int REPEAT_COMPUTE_PIPELINE = 5;
@@ -748,11 +748,11 @@ public interface VSandPackage extends EPackage
 
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.VSandConstantsImpl <em>Constants</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.VSandConstantsImpl <em>Constants</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandConstantsImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandConstants()
+	 * @see org.sheepy.vsand.model.impl.VSandConstantsImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandConstants()
 	 * @generated
 	 */
 	int VSAND_CONSTANTS = 6;
@@ -803,21 +803,21 @@ public interface VSandPackage extends EPackage
 	int VSAND_CONSTANTS_OPERATION_COUNT = ResourcePackage.ABSTRACT_CONSTANTS_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.VSandButton <em>Button</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.VSandButton <em>Button</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.VSandButton
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandButton()
+	 * @see org.sheepy.vsand.model.VSandButton
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandButton()
 	 * @generated
 	 */
 	int VSAND_BUTTON = 8;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getMaterialSelectorPanel()
+	 * @see org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialSelectorPanel()
 	 * @generated
 	 */
 	int MATERIAL_SELECTOR_PANEL = 7;
@@ -1165,11 +1165,11 @@ public interface VSandPackage extends EPackage
 	int VSAND_BUTTON_OPERATION_COUNT = UiPackage.BUTTON_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.VSandNuklearPipeline <em>Nuklear Pipeline</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.VSandNuklearPipeline <em>Nuklear Pipeline</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.VSandNuklearPipeline
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandNuklearPipeline()
+	 * @see org.sheepy.vsand.model.VSandNuklearPipeline
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandNuklearPipeline()
 	 * @generated
 	 */
 	int VSAND_NUKLEAR_PIPELINE = 9;
@@ -1310,11 +1310,11 @@ public interface VSandPackage extends EPackage
 	int VSAND_NUKLEAR_PIPELINE_OPERATION_COUNT = NuklearPackage.NUKLEAR_PIPELINE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.VSandGraphicProcessImpl <em>Graphic Process</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.VSandGraphicProcessImpl <em>Graphic Process</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandGraphicProcessImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandGraphicProcess()
+	 * @see org.sheepy.vsand.model.impl.VSandGraphicProcessImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandGraphicProcess()
 	 * @generated
 	 */
 	int VSAND_GRAPHIC_PROCESS = 10;
@@ -1500,11 +1500,11 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS_OPERATION_COUNT = GraphicPackage.GRAPHIC_PROCESS_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.sand.model.impl.VSandComputeProcessImpl <em>Compute Process</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.VSandComputeProcessImpl <em>Compute Process</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandComputeProcessImpl
-	 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandComputeProcess()
+	 * @see org.sheepy.vsand.model.impl.VSandComputeProcessImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandComputeProcess()
 	 * @generated
 	 */
 	int VSAND_COMPUTE_PROCESS = 11;
@@ -1663,461 +1663,461 @@ public interface VSandPackage extends EPackage
 	int VSAND_COMPUTE_PROCESS_OPERATION_COUNT = ComputePackage.COMPUTE_PROCESS_OPERATION_COUNT + 0;
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.VSandApplication <em>Application</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandApplication <em>Application</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Application</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandApplication
+	 * @see org.sheepy.vsand.model.VSandApplication
 	 * @generated
 	 */
 	EClass getVSandApplication();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.sheepy.vulkan.sand.model.VSandApplication#getMaterials <em>Materials</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.sheepy.vsand.model.VSandApplication#getMaterials <em>Materials</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Materials</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandApplication#getMaterials()
+	 * @see org.sheepy.vsand.model.VSandApplication#getMaterials()
 	 * @see #getVSandApplication()
 	 * @generated
 	 */
 	EReference getVSandApplication_Materials();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.sheepy.vulkan.sand.model.VSandApplication#getTransformations <em>Transformations</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.sheepy.vsand.model.VSandApplication#getTransformations <em>Transformations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Transformations</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandApplication#getTransformations()
+	 * @see org.sheepy.vsand.model.VSandApplication#getTransformations()
 	 * @see #getVSandApplication()
 	 * @generated
 	 */
 	EReference getVSandApplication_Transformations();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.sheepy.vulkan.sand.model.VSandApplication#getMainMaterial <em>Main Material</em>}'.
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.VSandApplication#getMainMaterial <em>Main Material</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Main Material</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandApplication#getMainMaterial()
+	 * @see org.sheepy.vsand.model.VSandApplication#getMainMaterial()
 	 * @see #getVSandApplication()
 	 * @generated
 	 */
 	EReference getVSandApplication_MainMaterial();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.sheepy.vulkan.sand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}'.
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Secondary Material</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandApplication#getSecondaryMaterial()
+	 * @see org.sheepy.vsand.model.VSandApplication#getSecondaryMaterial()
 	 * @see #getVSandApplication()
 	 * @generated
 	 */
 	EReference getVSandApplication_SecondaryMaterial();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.VSandApplication#isNextMode <em>Next Mode</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#isNextMode <em>Next Mode</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Next Mode</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandApplication#isNextMode()
+	 * @see org.sheepy.vsand.model.VSandApplication#isNextMode()
 	 * @see #getVSandApplication()
 	 * @generated
 	 */
 	EAttribute getVSandApplication_NextMode();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.VSandApplication#getBrushSize <em>Brush Size</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Brush Size</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandApplication#getBrushSize()
+	 * @see org.sheepy.vsand.model.VSandApplication#getBrushSize()
 	 * @see #getVSandApplication()
 	 * @generated
 	 */
 	EAttribute getVSandApplication_BrushSize();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.Materials <em>Materials</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.Materials <em>Materials</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Materials</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Materials
+	 * @see org.sheepy.vsand.model.Materials
 	 * @generated
 	 */
 	EClass getMaterials();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.sheepy.vulkan.sand.model.Materials#getMaterials <em>Materials</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.sheepy.vsand.model.Materials#getMaterials <em>Materials</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Materials</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Materials#getMaterials()
+	 * @see org.sheepy.vsand.model.Materials#getMaterials()
 	 * @see #getMaterials()
 	 * @generated
 	 */
 	EReference getMaterials_Materials();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.Material <em>Material</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.Material <em>Material</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Material</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Material
+	 * @see org.sheepy.vsand.model.Material
 	 * @generated
 	 */
 	EClass getMaterial();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Material#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Material#getName()
+	 * @see org.sheepy.vsand.model.Material#getName()
 	 * @see #getMaterial()
 	 * @generated
 	 */
 	EAttribute getMaterial_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Material#isIsStatic <em>Is Static</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#isIsStatic <em>Is Static</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Static</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Material#isIsStatic()
+	 * @see org.sheepy.vsand.model.Material#isIsStatic()
 	 * @see #getMaterial()
 	 * @generated
 	 */
 	EAttribute getMaterial_IsStatic();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Material#getDensity <em>Density</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#getDensity <em>Density</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Density</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Material#getDensity()
+	 * @see org.sheepy.vsand.model.Material#getDensity()
 	 * @see #getMaterial()
 	 * @generated
 	 */
 	EAttribute getMaterial_Density();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Material#getRunoff <em>Runoff</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#getRunoff <em>Runoff</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Runoff</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Material#getRunoff()
+	 * @see org.sheepy.vsand.model.Material#getRunoff()
 	 * @see #getMaterial()
 	 * @generated
 	 */
 	EAttribute getMaterial_Runoff();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Material#getR <em>R</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#getR <em>R</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>R</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Material#getR()
+	 * @see org.sheepy.vsand.model.Material#getR()
 	 * @see #getMaterial()
 	 * @generated
 	 */
 	EAttribute getMaterial_R();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Material#getG <em>G</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#getG <em>G</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>G</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Material#getG()
+	 * @see org.sheepy.vsand.model.Material#getG()
 	 * @see #getMaterial()
 	 * @generated
 	 */
 	EAttribute getMaterial_G();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Material#getB <em>B</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#getB <em>B</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>B</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Material#getB()
+	 * @see org.sheepy.vsand.model.Material#getB()
 	 * @see #getMaterial()
 	 * @generated
 	 */
 	EAttribute getMaterial_B();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Material#isUserFriendly <em>User Friendly</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#isUserFriendly <em>User Friendly</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>User Friendly</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Material#isUserFriendly()
+	 * @see org.sheepy.vsand.model.Material#isUserFriendly()
 	 * @see #getMaterial()
 	 * @generated
 	 */
 	EAttribute getMaterial_UserFriendly();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.Transformations <em>Transformations</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.Transformations <em>Transformations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Transformations</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Transformations
+	 * @see org.sheepy.vsand.model.Transformations
 	 * @generated
 	 */
 	EClass getTransformations();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.sheepy.vulkan.sand.model.Transformations#getTransformations <em>Transformations</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.sheepy.vsand.model.Transformations#getTransformations <em>Transformations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Transformations</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Transformations#getTransformations()
+	 * @see org.sheepy.vsand.model.Transformations#getTransformations()
 	 * @see #getTransformations()
 	 * @generated
 	 */
 	EReference getTransformations_Transformations();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.Transformation <em>Transformation</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.Transformation <em>Transformation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Transformation</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Transformation
+	 * @see org.sheepy.vsand.model.Transformation
 	 * @generated
 	 */
 	EClass getTransformation();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Transformation#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Transformation#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Transformation#getName()
+	 * @see org.sheepy.vsand.model.Transformation#getName()
 	 * @see #getTransformation()
 	 * @generated
 	 */
 	EAttribute getTransformation_Name();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.sheepy.vulkan.sand.model.Transformation#getReactant <em>Reactant</em>}'.
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.Transformation#getReactant <em>Reactant</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Reactant</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Transformation#getReactant()
+	 * @see org.sheepy.vsand.model.Transformation#getReactant()
 	 * @see #getTransformation()
 	 * @generated
 	 */
 	EReference getTransformation_Reactant();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.sheepy.vulkan.sand.model.Transformation#getCatalyst <em>Catalyst</em>}'.
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.Transformation#getCatalyst <em>Catalyst</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Catalyst</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Transformation#getCatalyst()
+	 * @see org.sheepy.vsand.model.Transformation#getCatalyst()
 	 * @see #getTransformation()
 	 * @generated
 	 */
 	EReference getTransformation_Catalyst();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.sheepy.vulkan.sand.model.Transformation#getTarget <em>Target</em>}'.
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.Transformation#getTarget <em>Target</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Target</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Transformation#getTarget()
+	 * @see org.sheepy.vsand.model.Transformation#getTarget()
 	 * @see #getTransformation()
 	 * @generated
 	 */
 	EReference getTransformation_Target();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Transformation#getProbability <em>Probability</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Transformation#getProbability <em>Probability</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Probability</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Transformation#getProbability()
+	 * @see org.sheepy.vsand.model.Transformation#getProbability()
 	 * @see #getTransformation()
 	 * @generated
 	 */
 	EAttribute getTransformation_Probability();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.Transformation#isIsStaticTransformation <em>Is Static Transformation</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Transformation#isIsStaticTransformation <em>Is Static Transformation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Static Transformation</em>'.
-	 * @see org.sheepy.vulkan.sand.model.Transformation#isIsStaticTransformation()
+	 * @see org.sheepy.vsand.model.Transformation#isIsStaticTransformation()
 	 * @see #getTransformation()
 	 * @generated
 	 */
 	EAttribute getTransformation_IsStaticTransformation();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.RepeatComputePipeline <em>Repeat Compute Pipeline</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.RepeatComputePipeline <em>Repeat Compute Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Repeat Compute Pipeline</em>'.
-	 * @see org.sheepy.vulkan.sand.model.RepeatComputePipeline
+	 * @see org.sheepy.vsand.model.RepeatComputePipeline
 	 * @generated
 	 */
 	EClass getRepeatComputePipeline();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.RepeatComputePipeline#getRepeatCount <em>Repeat Count</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.RepeatComputePipeline#getRepeatCount <em>Repeat Count</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Repeat Count</em>'.
-	 * @see org.sheepy.vulkan.sand.model.RepeatComputePipeline#getRepeatCount()
+	 * @see org.sheepy.vsand.model.RepeatComputePipeline#getRepeatCount()
 	 * @see #getRepeatComputePipeline()
 	 * @generated
 	 */
 	EAttribute getRepeatComputePipeline_RepeatCount();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.VSandConstants <em>Constants</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandConstants <em>Constants</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Constants</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandConstants
+	 * @see org.sheepy.vsand.model.VSandConstants
 	 * @generated
 	 */
 	EClass getVSandConstants();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.VSandConstants#isFirstPass <em>First Pass</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandConstants#isFirstPass <em>First Pass</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>First Pass</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandConstants#isFirstPass()
+	 * @see org.sheepy.vsand.model.VSandConstants#isFirstPass()
 	 * @see #getVSandConstants()
 	 * @generated
 	 */
 	EAttribute getVSandConstants_FirstPass();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.VSandButton <em>Button</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandButton <em>Button</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Button</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandButton
+	 * @see org.sheepy.vsand.model.VSandButton
 	 * @generated
 	 */
 	EClass getVSandButton();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.VSandNuklearPipeline <em>Nuklear Pipeline</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandNuklearPipeline <em>Nuklear Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Nuklear Pipeline</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandNuklearPipeline
+	 * @see org.sheepy.vsand.model.VSandNuklearPipeline
 	 * @generated
 	 */
 	EClass getVSandNuklearPipeline();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.VSandGraphicProcess <em>Graphic Process</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandGraphicProcess <em>Graphic Process</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Graphic Process</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandGraphicProcess
+	 * @see org.sheepy.vsand.model.VSandGraphicProcess
 	 * @generated
 	 */
 	EClass getVSandGraphicProcess();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.VSandComputeProcess <em>Compute Process</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandComputeProcess <em>Compute Process</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Compute Process</em>'.
-	 * @see org.sheepy.vulkan.sand.model.VSandComputeProcess
+	 * @see org.sheepy.vsand.model.VSandComputeProcess
 	 * @generated
 	 */
 	EClass getVSandComputeProcess();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel <em>Material Selector Panel</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.MaterialSelectorPanel <em>Material Selector Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Material Selector Panel</em>'.
-	 * @see org.sheepy.vulkan.sand.model.MaterialSelectorPanel
+	 * @see org.sheepy.vsand.model.MaterialSelectorPanel
 	 * @generated
 	 */
 	EClass getMaterialSelectorPanel();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getLineHeight <em>Line Height</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getLineHeight <em>Line Height</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Line Height</em>'.
-	 * @see org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getLineHeight()
+	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getLineHeight()
 	 * @see #getMaterialSelectorPanel()
 	 * @generated
 	 */
 	EAttribute getMaterialSelectorPanel_LineHeight();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getPrimaryR <em>Primary R</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryR <em>Primary R</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Primary R</em>'.
-	 * @see org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getPrimaryR()
+	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryR()
 	 * @see #getMaterialSelectorPanel()
 	 * @generated
 	 */
 	EAttribute getMaterialSelectorPanel_PrimaryR();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getPrimaryG <em>Primary G</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryG <em>Primary G</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Primary G</em>'.
-	 * @see org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getPrimaryG()
+	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryG()
 	 * @see #getMaterialSelectorPanel()
 	 * @generated
 	 */
 	EAttribute getMaterialSelectorPanel_PrimaryG();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getPrimaryB <em>Primary B</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryB <em>Primary B</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Primary B</em>'.
-	 * @see org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getPrimaryB()
+	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryB()
 	 * @see #getMaterialSelectorPanel()
 	 * @generated
 	 */
 	EAttribute getMaterialSelectorPanel_PrimaryB();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getSecondaryR <em>Secondary R</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryR <em>Secondary R</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Secondary R</em>'.
-	 * @see org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getSecondaryR()
+	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryR()
 	 * @see #getMaterialSelectorPanel()
 	 * @generated
 	 */
 	EAttribute getMaterialSelectorPanel_SecondaryR();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getSecondaryG <em>Secondary G</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryG <em>Secondary G</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Secondary G</em>'.
-	 * @see org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getSecondaryG()
+	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryG()
 	 * @see #getMaterialSelectorPanel()
 	 * @generated
 	 */
 	EAttribute getMaterialSelectorPanel_SecondaryG();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getSecondaryB <em>Secondary B</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryB <em>Secondary B</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Secondary B</em>'.
-	 * @see org.sheepy.vulkan.sand.model.MaterialSelectorPanel#getSecondaryB()
+	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryB()
 	 * @see #getMaterialSelectorPanel()
 	 * @generated
 	 */
@@ -2148,11 +2148,11 @@ public interface VSandPackage extends EPackage
 	interface Literals
 	{
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl <em>Application</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.VSandApplicationImpl <em>Application</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandApplicationImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandApplication()
+		 * @see org.sheepy.vsand.model.impl.VSandApplicationImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandApplication()
 		 * @generated
 		 */
 		EClass VSAND_APPLICATION = eINSTANCE.getVSandApplication();
@@ -2206,11 +2206,11 @@ public interface VSandPackage extends EPackage
 		EAttribute VSAND_APPLICATION__BRUSH_SIZE = eINSTANCE.getVSandApplication_BrushSize();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.MaterialsImpl <em>Materials</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MaterialsImpl <em>Materials</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.MaterialsImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getMaterials()
+		 * @see org.sheepy.vsand.model.impl.MaterialsImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterials()
 		 * @generated
 		 */
 		EClass MATERIALS = eINSTANCE.getMaterials();
@@ -2224,11 +2224,11 @@ public interface VSandPackage extends EPackage
 		EReference MATERIALS__MATERIALS = eINSTANCE.getMaterials_Materials();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.MaterialImpl <em>Material</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MaterialImpl <em>Material</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.MaterialImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getMaterial()
+		 * @see org.sheepy.vsand.model.impl.MaterialImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterial()
 		 * @generated
 		 */
 		EClass MATERIAL = eINSTANCE.getMaterial();
@@ -2298,11 +2298,11 @@ public interface VSandPackage extends EPackage
 		EAttribute MATERIAL__USER_FRIENDLY = eINSTANCE.getMaterial_UserFriendly();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.TransformationsImpl <em>Transformations</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.TransformationsImpl <em>Transformations</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.TransformationsImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getTransformations()
+		 * @see org.sheepy.vsand.model.impl.TransformationsImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getTransformations()
 		 * @generated
 		 */
 		EClass TRANSFORMATIONS = eINSTANCE.getTransformations();
@@ -2316,11 +2316,11 @@ public interface VSandPackage extends EPackage
 		EReference TRANSFORMATIONS__TRANSFORMATIONS = eINSTANCE.getTransformations_Transformations();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.TransformationImpl <em>Transformation</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.TransformationImpl <em>Transformation</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.TransformationImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getTransformation()
+		 * @see org.sheepy.vsand.model.impl.TransformationImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getTransformation()
 		 * @generated
 		 */
 		EClass TRANSFORMATION = eINSTANCE.getTransformation();
@@ -2374,11 +2374,11 @@ public interface VSandPackage extends EPackage
 		EAttribute TRANSFORMATION__IS_STATIC_TRANSFORMATION = eINSTANCE.getTransformation_IsStaticTransformation();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.RepeatComputePipelineImpl <em>Repeat Compute Pipeline</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.RepeatComputePipelineImpl <em>Repeat Compute Pipeline</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.RepeatComputePipelineImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getRepeatComputePipeline()
+		 * @see org.sheepy.vsand.model.impl.RepeatComputePipelineImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getRepeatComputePipeline()
 		 * @generated
 		 */
 		EClass REPEAT_COMPUTE_PIPELINE = eINSTANCE.getRepeatComputePipeline();
@@ -2392,11 +2392,11 @@ public interface VSandPackage extends EPackage
 		EAttribute REPEAT_COMPUTE_PIPELINE__REPEAT_COUNT = eINSTANCE.getRepeatComputePipeline_RepeatCount();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.VSandConstantsImpl <em>Constants</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.VSandConstantsImpl <em>Constants</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandConstantsImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandConstants()
+		 * @see org.sheepy.vsand.model.impl.VSandConstantsImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandConstants()
 		 * @generated
 		 */
 		EClass VSAND_CONSTANTS = eINSTANCE.getVSandConstants();
@@ -2410,51 +2410,51 @@ public interface VSandPackage extends EPackage
 		EAttribute VSAND_CONSTANTS__FIRST_PASS = eINSTANCE.getVSandConstants_FirstPass();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.VSandButton <em>Button</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.VSandButton <em>Button</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.VSandButton
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandButton()
+		 * @see org.sheepy.vsand.model.VSandButton
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandButton()
 		 * @generated
 		 */
 		EClass VSAND_BUTTON = eINSTANCE.getVSandButton();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.VSandNuklearPipeline <em>Nuklear Pipeline</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.VSandNuklearPipeline <em>Nuklear Pipeline</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.VSandNuklearPipeline
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandNuklearPipeline()
+		 * @see org.sheepy.vsand.model.VSandNuklearPipeline
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandNuklearPipeline()
 		 * @generated
 		 */
 		EClass VSAND_NUKLEAR_PIPELINE = eINSTANCE.getVSandNuklearPipeline();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.VSandGraphicProcessImpl <em>Graphic Process</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.VSandGraphicProcessImpl <em>Graphic Process</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandGraphicProcessImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandGraphicProcess()
+		 * @see org.sheepy.vsand.model.impl.VSandGraphicProcessImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandGraphicProcess()
 		 * @generated
 		 */
 		EClass VSAND_GRAPHIC_PROCESS = eINSTANCE.getVSandGraphicProcess();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.VSandComputeProcessImpl <em>Compute Process</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.VSandComputeProcessImpl <em>Compute Process</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandComputeProcessImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getVSandComputeProcess()
+		 * @see org.sheepy.vsand.model.impl.VSandComputeProcessImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandComputeProcess()
 		 * @generated
 		 */
 		EClass VSAND_COMPUTE_PROCESS = eINSTANCE.getVSandComputeProcess();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.sand.model.impl.MaterialSelectorPanelImpl
-		 * @see org.sheepy.vulkan.sand.model.impl.VSandPackageImpl#getMaterialSelectorPanel()
+		 * @see org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialSelectorPanel()
 		 * @generated
 		 */
 		EClass MATERIAL_SELECTOR_PANEL = eINSTANCE.getMaterialSelectorPanel();

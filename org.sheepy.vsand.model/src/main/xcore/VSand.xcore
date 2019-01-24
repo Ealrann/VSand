@@ -1,12 +1,12 @@
-@GenModel(modelDirectory="/org.sheepy.lily.vulkan.sand.model/src/generated/java")
-@GenModel(editDirectory="/org.sheepy.lily.vulkan.sand.model.edit/src/generated/java")
-@GenModel(editorDirectory="/org.sheepy.lily.vulkan.sand.model.editor/src/generated/java", creationSubmenus="true",
+@GenModel(modelDirectory="/org.sheepy.vsand.model/src/generated/java")
+@GenModel(editDirectory="/org.sheepy.vsand.model.edit/src/generated/java")
+@GenModel(editorDirectory="/org.sheepy.vsand.model.editor/src/generated/java", creationSubmenus="true",
 	multipleEditorPages="false")
 @GenModel(modelName="VSand", prefix="VSand")
 @GenModel(publicConstructors="true", complianceLevel="11.0", resource="XMI")
 @GenModel(childCreationExtenders="true")
 
-package org.sheepy.lily.vulkan.sand.model
+package org.sheepy.vsand.model
 
 import org.sheepy.lily.core.model.application.Application
 import org.sheepy.lily.core.model.presentation.IPanel

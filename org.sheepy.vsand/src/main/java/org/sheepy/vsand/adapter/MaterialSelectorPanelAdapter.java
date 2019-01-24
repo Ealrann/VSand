@@ -1,4 +1,4 @@
-package org.sheepy.vulkan.sand.adapter;
+package org.sheepy.vsand.adapter;
 
 import static org.lwjgl.nuklear.Nuklear.*;
 
@@ -22,11 +22,11 @@ import org.sheepy.lily.vulkan.api.window.IWindowListener;
 import org.sheepy.lily.vulkan.api.window.Surface;
 import org.sheepy.lily.vulkan.common.ui.UIUtil;
 import org.sheepy.vulkan.nuklear.adapter.IUIElementAdapter;
-import org.sheepy.vulkan.sand.adapter.drawer.MaterialDrawer;
-import org.sheepy.vulkan.sand.model.Material;
-import org.sheepy.vulkan.sand.model.MaterialSelectorPanel;
-import org.sheepy.vulkan.sand.model.VSandApplication;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.vsand.adapter.drawer.MaterialDrawer;
+import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.MaterialSelectorPanel;
+import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.model.VSandPackage;
 
 public class MaterialSelectorPanelAdapter extends AbstractStatefullAdapter
 		implements IUIElementAdapter

@@ -2,13 +2,13 @@ import org.sheepy.lily.core.api.adapter.IAdapter;
 import org.sheepy.lily.core.api.cadence.IMainLoop;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.resource.IModelExtension;
-import org.sheepy.vulkan.sand.VSandMainLoop;
-import org.sheepy.vulkan.sand.adapter.MaterialSelectorPanelAdapter;
-import org.sheepy.vulkan.sand.adapter.RepeatComputePipelineAdapter;
-import org.sheepy.vulkan.sand.adapter.VSandConstantAdapter;
-import org.sheepy.vulkan.sand.model.VSandModelExtension;
+import org.sheepy.vsand.VSandMainLoop;
+import org.sheepy.vsand.adapter.MaterialSelectorPanelAdapter;
+import org.sheepy.vsand.adapter.RepeatComputePipelineAdapter;
+import org.sheepy.vsand.adapter.VSandConstantAdapter;
+import org.sheepy.vsand.model.VSandModelExtension;
 
-module org.sheepy.vulkan.sand
+module org.sheepy.vsand
 {
 	requires org.sheepy.vulkan.nuklear;
 
@@ -21,8 +21,8 @@ module org.sheepy.vulkan.sand
 	requires org.sheepy.lily.vulkan.process.graphic;
 	requires org.sheepy.lily.vulkan.resource;
 
-	opens org.sheepy.vulkan.sand.adapter;
-	opens org.sheepy.vulkan.sand;
+	opens org.sheepy.vsand.adapter;
+	opens org.sheepy.vsand;
 
 	uses IInputManager;
 

@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.util;
+package org.sheepy.vsand.model.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -35,14 +35,14 @@ import org.sheepy.lily.vulkan.model.process.graphic.IGraphicsPipeline;
 import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
 import org.sheepy.lily.vulkan.model.resource.BasicResource;
 import org.sheepy.vulkan.nuklear.model.NuklearPipeline;
-import org.sheepy.vulkan.sand.model.*;
+import org.sheepy.vsand.model.*;
 
 /**
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see org.sheepy.vulkan.sand.model.VSandPackage
+ * @see org.sheepy.vsand.model.VSandPackage
  * @generated
  */
 public class VSandAdapterFactory extends AdapterFactoryImpl
@@ -318,13 +318,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.VSandApplication <em>Application</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.VSandApplication <em>Application</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.VSandApplication
+	 * @see org.sheepy.vsand.model.VSandApplication
 	 * @generated
 	 */
 	public Adapter createVSandApplicationAdapter()
@@ -333,13 +333,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.Materials <em>Materials</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.Materials <em>Materials</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.Materials
+	 * @see org.sheepy.vsand.model.Materials
 	 * @generated
 	 */
 	public Adapter createMaterialsAdapter()
@@ -348,13 +348,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.Material <em>Material</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.Material <em>Material</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.Material
+	 * @see org.sheepy.vsand.model.Material
 	 * @generated
 	 */
 	public Adapter createMaterialAdapter()
@@ -363,13 +363,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.Transformations <em>Transformations</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.Transformations <em>Transformations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.Transformations
+	 * @see org.sheepy.vsand.model.Transformations
 	 * @generated
 	 */
 	public Adapter createTransformationsAdapter()
@@ -378,13 +378,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.Transformation <em>Transformation</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.Transformation <em>Transformation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.Transformation
+	 * @see org.sheepy.vsand.model.Transformation
 	 * @generated
 	 */
 	public Adapter createTransformationAdapter()
@@ -393,13 +393,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.RepeatComputePipeline <em>Repeat Compute Pipeline</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.RepeatComputePipeline <em>Repeat Compute Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.RepeatComputePipeline
+	 * @see org.sheepy.vsand.model.RepeatComputePipeline
 	 * @generated
 	 */
 	public Adapter createRepeatComputePipelineAdapter()
@@ -408,13 +408,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.VSandConstants <em>Constants</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.VSandConstants <em>Constants</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.VSandConstants
+	 * @see org.sheepy.vsand.model.VSandConstants
 	 * @generated
 	 */
 	public Adapter createVSandConstantsAdapter()
@@ -423,13 +423,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.VSandButton <em>Button</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.VSandButton <em>Button</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.VSandButton
+	 * @see org.sheepy.vsand.model.VSandButton
 	 * @generated
 	 */
 	public Adapter createVSandButtonAdapter()
@@ -438,13 +438,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.VSandNuklearPipeline <em>Nuklear Pipeline</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.VSandNuklearPipeline <em>Nuklear Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.VSandNuklearPipeline
+	 * @see org.sheepy.vsand.model.VSandNuklearPipeline
 	 * @generated
 	 */
 	public Adapter createVSandNuklearPipelineAdapter()
@@ -453,13 +453,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.VSandGraphicProcess <em>Graphic Process</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.VSandGraphicProcess <em>Graphic Process</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.VSandGraphicProcess
+	 * @see org.sheepy.vsand.model.VSandGraphicProcess
 	 * @generated
 	 */
 	public Adapter createVSandGraphicProcessAdapter()
@@ -468,13 +468,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.VSandComputeProcess <em>Compute Process</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.VSandComputeProcess <em>Compute Process</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.VSandComputeProcess
+	 * @see org.sheepy.vsand.model.VSandComputeProcess
 	 * @generated
 	 */
 	public Adapter createVSandComputeProcessAdapter()
@@ -528,13 +528,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel <em>Material Selector Panel</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.MaterialSelectorPanel <em>Material Selector Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.sand.model.MaterialSelectorPanel
+	 * @see org.sheepy.vsand.model.MaterialSelectorPanel
 	 * @generated
 	 */
 	public Adapter createMaterialSelectorPanelAdapter()

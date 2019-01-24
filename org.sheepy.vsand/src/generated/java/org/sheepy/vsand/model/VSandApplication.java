@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model;
+package org.sheepy.vsand.model;
 
 import org.sheepy.lily.core.model.application.Application;
 
@@ -13,15 +13,15 @@ import org.sheepy.lily.core.model.application.Application;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#getMaterials <em>Materials</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#getTransformations <em>Transformations</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#getMainMaterial <em>Main Material</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#isNextMode <em>Next Mode</em>}</li>
- *   <li>{@link org.sheepy.vulkan.sand.model.VSandApplication#getBrushSize <em>Brush Size</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getMaterials <em>Materials</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getTransformations <em>Transformations</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getMainMaterial <em>Main Material</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#isNextMode <em>Next Mode</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}</li>
  * </ul>
  *
- * @see org.sheepy.vulkan.sand.model.VSandPackage#getVSandApplication()
+ * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication()
  * @model
  * @generated
  */
@@ -38,14 +38,14 @@ public interface VSandApplication extends Application
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Materials</em>' containment reference.
 	 * @see #setMaterials(Materials)
-	 * @see org.sheepy.vulkan.sand.model.VSandPackage#getVSandApplication_Materials()
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_Materials()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	Materials getMaterials();
 
 	/**
-	 * Sets the value of the '{@link org.sheepy.vulkan.sand.model.VSandApplication#getMaterials <em>Materials</em>}' containment reference.
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getMaterials <em>Materials</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Materials</em>' containment reference.
@@ -64,14 +64,14 @@ public interface VSandApplication extends Application
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Transformations</em>' containment reference.
 	 * @see #setTransformations(Transformations)
-	 * @see org.sheepy.vulkan.sand.model.VSandPackage#getVSandApplication_Transformations()
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_Transformations()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	Transformations getTransformations();
 
 	/**
-	 * Sets the value of the '{@link org.sheepy.vulkan.sand.model.VSandApplication#getTransformations <em>Transformations</em>}' containment reference.
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getTransformations <em>Transformations</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Transformations</em>' containment reference.
@@ -90,14 +90,14 @@ public interface VSandApplication extends Application
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Main Material</em>' reference.
 	 * @see #setMainMaterial(Material)
-	 * @see org.sheepy.vulkan.sand.model.VSandPackage#getVSandApplication_MainMaterial()
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_MainMaterial()
 	 * @model
 	 * @generated
 	 */
 	Material getMainMaterial();
 
 	/**
-	 * Sets the value of the '{@link org.sheepy.vulkan.sand.model.VSandApplication#getMainMaterial <em>Main Material</em>}' reference.
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getMainMaterial <em>Main Material</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Main Material</em>' reference.
@@ -116,14 +116,14 @@ public interface VSandApplication extends Application
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Secondary Material</em>' reference.
 	 * @see #setSecondaryMaterial(Material)
-	 * @see org.sheepy.vulkan.sand.model.VSandPackage#getVSandApplication_SecondaryMaterial()
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_SecondaryMaterial()
 	 * @model
 	 * @generated
 	 */
 	Material getSecondaryMaterial();
 
 	/**
-	 * Sets the value of the '{@link org.sheepy.vulkan.sand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}' reference.
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Secondary Material</em>' reference.
@@ -143,14 +143,14 @@ public interface VSandApplication extends Application
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Next Mode</em>' attribute.
 	 * @see #setNextMode(boolean)
-	 * @see org.sheepy.vulkan.sand.model.VSandPackage#getVSandApplication_NextMode()
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_NextMode()
 	 * @model default="false" unique="false"
 	 * @generated
 	 */
 	boolean isNextMode();
 
 	/**
-	 * Sets the value of the '{@link org.sheepy.vulkan.sand.model.VSandApplication#isNextMode <em>Next Mode</em>}' attribute.
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#isNextMode <em>Next Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Next Mode</em>' attribute.
@@ -170,14 +170,14 @@ public interface VSandApplication extends Application
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Brush Size</em>' attribute.
 	 * @see #setBrushSize(int)
-	 * @see org.sheepy.vulkan.sand.model.VSandPackage#getVSandApplication_BrushSize()
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_BrushSize()
 	 * @model default="4" unique="false"
 	 * @generated
 	 */
 	int getBrushSize();
 
 	/**
-	 * Sets the value of the '{@link org.sheepy.vulkan.sand.model.VSandApplication#getBrushSize <em>Brush Size</em>}' attribute.
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Brush Size</em>' attribute.
