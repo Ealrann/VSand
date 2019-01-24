@@ -27,7 +27,6 @@ import org.sheepy.lily.vulkan.model.process.compute.ComputePackage;
 
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicPackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
-import org.sheepy.vulkan.nuklear.model.NuklearPackage;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.Materials;
@@ -42,6 +41,7 @@ import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandGraphicProcess;
 import org.sheepy.vsand.model.VSandNuklearPipeline;
 import org.sheepy.vsand.model.VSandPackage;
+import org.sheepy.vulkan.nuklear.model.NuklearPackage;
 
 /**
  * <!-- begin-user-doc -->

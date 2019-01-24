@@ -1,10 +1,10 @@
-@GenModel(modelDirectory="/org.sheepy.lily.vulkan.nuklear.model/src/generated/java")
-@GenModel(editDirectory="/org.sheepy.lily.vulkan.nuklear.model.edit/src/generated/java")
+@GenModel(modelDirectory="/org.sheepy.vulkan.nuklear.model/src/generated/java")
+@GenModel(editDirectory="/org.sheepy.vulkan.nuklear.model.edit/src/generated/java")
 @GenModel(modelName="Nuklear", prefix="Nuklear")
 @GenModel(publicConstructors="true", complianceLevel="11.0", resource="XMI")
 @GenModel(childCreationExtenders="true")
 
-package org.sheepy.lily.vulkan.nuklear.model
+package org.sheepy.vulkan.nuklear.model
 
 import org.sheepy.lily.vulkan.model.process.IPipeline
 import org.sheepy.lily.vulkan.model.process.graphic.IGUIPipeline
@@ -18,7 +18,7 @@ class NuklearPipeline extends IPipeline, IGUIPipeline
 	contains Font[1..1] font
 
 	contains NuklearConstants[1..1] pushConstant
-	
+
 	int subpass = "0"
 }
 

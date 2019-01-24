@@ -15,7 +15,7 @@ import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess
 import org.sheepy.lily.vulkan.model.resource.AbstractConstants
-import org.sheepy.lily.vulkan.nuklear.model.NuklearPipeline
+import org.sheepy.vulkan.nuklear.model.NuklearPipeline
 
 class VSandApplication extends Application
 {

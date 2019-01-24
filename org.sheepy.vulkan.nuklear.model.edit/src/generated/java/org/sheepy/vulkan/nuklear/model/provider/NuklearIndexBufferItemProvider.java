@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.lily.vulkan.nuklear.model.provider;
+package org.sheepy.vulkan.nuklear.model.provider;
 
 
 import java.util.Collection;
@@ -14,10 +14,11 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import org.sheepy.lily.vulkan.model.resource.provider.IndexedBufferItemProvider;
-import org.sheepy.lily.vulkan.nuklear.model.NuklearIndexBuffer;
+
+import org.sheepy.vulkan.nuklear.model.NuklearIndexBuffer;
 
 /**
- * This is the item provider adapter for a {@link org.sheepy.lily.vulkan.nuklear.model.NuklearIndexBuffer} object.
+ * This is the item provider adapter for a {@link org.sheepy.vulkan.nuklear.model.NuklearIndexBuffer} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated

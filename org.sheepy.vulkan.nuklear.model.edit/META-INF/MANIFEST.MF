@@ -5,11 +5,11 @@ Bundle-SymbolicName: org.sheepy.lily.vulkan.nuklear.model.edit;singleton:=true
 Automatic-Module-Name: org.sheepy.lily.vulkan.nuklear.model.edit
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: org.sheepy.lily.vulkan.nuklear.model.provider.NuklearEditPlugin$Implementation
+Bundle-Activator: org.sheepy.vulkan.nuklear.model.provider.NuklearEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: org.sheepy.lily.vulkan.nuklear.model.provider
+Export-Package: org.sheepy.vulkan.nuklear.model.provider
 Require-Bundle: org.eclipse.core.runtime,
  org.sheepy.lily.vulkan.nuklear.model;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,

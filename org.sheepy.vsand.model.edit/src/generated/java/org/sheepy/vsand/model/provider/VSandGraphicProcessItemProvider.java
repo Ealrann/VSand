@@ -20,9 +20,9 @@ import org.sheepy.lily.vulkan.model.process.compute.ComputeFactory;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicPackage;
 
 import org.sheepy.lily.vulkan.model.process.graphic.provider.GraphicProcessItemProvider;
-import org.sheepy.lily.vulkan.nuklear.model.NuklearFactory;
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandGraphicProcess;
+import org.sheepy.vulkan.nuklear.model.NuklearFactory;
 
 /**
  * This is the item provider adapter for a {@link org.sheepy.vsand.model.VSandGraphicProcess} object.
