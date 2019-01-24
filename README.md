@@ -61,7 +61,7 @@ If you want to contribute to the code, you first need to install:
 
 Clone the repo and download the submodule:
 
-`git clone --recursive https://github.com/Ealrann/Vulkanize.git`
+`git clone --recursive https://github.com/Ealrann/VSand.git`
 
 Test the game:
 
