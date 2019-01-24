@@ -1,7 +1,7 @@
 rootProject.name = "VSand"
 
 
-include ':org.sheepy.vulkan.sand'
+include ':org.sheepy.vsand'
 include ':org.sheepy.vulkan.nuklear'
 
 // Common
