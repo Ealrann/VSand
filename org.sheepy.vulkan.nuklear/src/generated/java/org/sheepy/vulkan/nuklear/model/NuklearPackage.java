@@ -6,8 +6,8 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.sheepy.vulkan.model.process.ProcessPackage;
-import org.sheepy.vulkan.model.resource.ResourcePackage;
+import org.sheepy.lily.vulkan.model.process.ProcessPackage;
+import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 
 /**
  * <!-- begin-user-doc -->

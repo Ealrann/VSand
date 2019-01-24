@@ -6,12 +6,12 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.sheepy.common.model.application.ApplicationPackage;
-import org.sheepy.common.model.presentation.PresentationPackage;
-import org.sheepy.common.model.ui.UiPackage;
-import org.sheepy.vulkan.model.process.compute.ComputePackage;
-import org.sheepy.vulkan.model.process.graphic.GraphicPackage;
-import org.sheepy.vulkan.model.resource.ResourcePackage;
+import org.sheepy.lily.core.model.application.ApplicationPackage;
+import org.sheepy.lily.core.model.presentation.PresentationPackage;
+import org.sheepy.lily.core.model.ui.UiPackage;
+import org.sheepy.lily.vulkan.model.process.compute.ComputePackage;
+import org.sheepy.lily.vulkan.model.process.graphic.GraphicPackage;
+import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 import org.sheepy.vulkan.nuklear.model.NuklearPackage;
 
 /**

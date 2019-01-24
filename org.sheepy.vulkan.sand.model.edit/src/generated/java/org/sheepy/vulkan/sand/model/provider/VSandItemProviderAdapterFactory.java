@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.provider;
+package org.sheepy.lily.vulkan.sand.model.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,23 +30,23 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.sheepy.common.model.presentation.PresentationPackage;
-import org.sheepy.common.model.presentation.UIPage;
-import org.sheepy.common.model.presentation.util.PresentationSwitch;
-import org.sheepy.vulkan.model.SharedResources;
-import org.sheepy.vulkan.model.VulkanEngine;
-import org.sheepy.vulkan.model.VulkanPackage;
+import org.sheepy.lily.core.model.presentation.PresentationPackage;
+import org.sheepy.lily.core.model.presentation.UIPage;
+import org.sheepy.lily.core.model.presentation.util.PresentationSwitch;
+import org.sheepy.lily.vulkan.model.SharedResources;
+import org.sheepy.lily.vulkan.model.VulkanEngine;
+import org.sheepy.lily.vulkan.model.VulkanPackage;
 
-import org.sheepy.vulkan.model.process.AbstractCompositePipeline;
-import org.sheepy.vulkan.model.process.AbstractProcess;
-import org.sheepy.vulkan.model.process.ProcessPackage;
+import org.sheepy.lily.vulkan.model.process.AbstractCompositePipeline;
+import org.sheepy.lily.vulkan.model.process.AbstractProcess;
+import org.sheepy.lily.vulkan.model.process.ProcessPackage;
 
-import org.sheepy.vulkan.model.process.util.ProcessSwitch;
+import org.sheepy.lily.vulkan.model.process.util.ProcessSwitch;
 
-import org.sheepy.vulkan.model.util.VulkanSwitch;
+import org.sheepy.lily.vulkan.model.util.VulkanSwitch;
 
-import org.sheepy.vulkan.sand.model.VSandFactory;
-import org.sheepy.vulkan.sand.model.util.VSandAdapterFactory;
+import org.sheepy.lily.vulkan.sand.model.VSandFactory;
+import org.sheepy.lily.vulkan.sand.model.util.VSandAdapterFactory;
 
 /**
  * This is the factory that is used to provide the interfaces needed to support Viewers.
@@ -99,7 +99,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.VSandApplication} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.VSandApplication} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -107,7 +107,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected VSandApplicationItemProvider vSandApplicationItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.VSandApplication}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.VSandApplication}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -124,7 +124,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.Materials} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.Materials} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -132,7 +132,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected MaterialsItemProvider materialsItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.Materials}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.Materials}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -149,7 +149,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.Material} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.Material} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -157,7 +157,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected MaterialItemProvider materialItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.Material}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.Material}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -174,7 +174,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.Transformations} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.Transformations} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -182,7 +182,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected TransformationsItemProvider transformationsItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.Transformations}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.Transformations}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -199,7 +199,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.Transformation} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.Transformation} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -207,7 +207,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected TransformationItemProvider transformationItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.Transformation}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.Transformation}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -224,7 +224,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.RepeatComputePipeline} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.RepeatComputePipeline} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -232,7 +232,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected RepeatComputePipelineItemProvider repeatComputePipelineItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.RepeatComputePipeline}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.RepeatComputePipeline}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -249,7 +249,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.VSandConstants} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.VSandConstants} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -257,7 +257,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected VSandConstantsItemProvider vSandConstantsItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.VSandConstants}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.VSandConstants}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -274,7 +274,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.MaterialSelectorPanel} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -282,7 +282,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected MaterialSelectorPanelItemProvider materialSelectorPanelItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.MaterialSelectorPanel}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -299,7 +299,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.VSandGraphicProcess} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.VSandGraphicProcess} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -307,7 +307,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected VSandGraphicProcessItemProvider vSandGraphicProcessItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.VSandGraphicProcess}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.VSandGraphicProcess}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -324,7 +324,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.sand.model.VSandComputeProcess} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.sand.model.VSandComputeProcess} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -332,7 +332,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	protected VSandComputeProcessItemProvider vSandComputeProcessItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.vulkan.sand.model.VSandComputeProcess}.
+	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.sand.model.VSandComputeProcess}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated

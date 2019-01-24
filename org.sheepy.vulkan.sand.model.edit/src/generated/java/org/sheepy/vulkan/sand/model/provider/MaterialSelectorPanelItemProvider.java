@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.provider;
+package org.sheepy.lily.vulkan.sand.model.provider;
 
 
 import java.util.Collection;
@@ -21,13 +21,13 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.sheepy.common.model.presentation.PresentationPackage;
-import org.sheepy.common.model.types.TypesPackage;
-import org.sheepy.vulkan.sand.model.MaterialSelectorPanel;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.lily.core.model.presentation.PresentationPackage;
+import org.sheepy.lily.core.model.types.TypesPackage;
+import org.sheepy.lily.vulkan.sand.model.MaterialSelectorPanel;
+import org.sheepy.lily.vulkan.sand.model.VSandPackage;
 
 /**
- * This is the item provider adapter for a {@link org.sheepy.vulkan.sand.model.MaterialSelectorPanel} object.
+ * This is the item provider adapter for a {@link org.sheepy.lily.vulkan.sand.model.MaterialSelectorPanel} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated

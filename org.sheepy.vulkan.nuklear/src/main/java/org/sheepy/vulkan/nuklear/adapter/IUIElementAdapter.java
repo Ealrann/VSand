@@ -3,11 +3,11 @@ package org.sheepy.vulkan.nuklear.adapter;
 import java.util.List;
 
 import org.lwjgl.nuklear.NkContext;
-import org.sheepy.common.api.adapter.IAdapter;
-import org.sheepy.common.api.adapter.IServiceAdapterFactory;
-import org.sheepy.common.api.input.event.IInputEvent;
-import org.sheepy.common.model.presentation.IUIElement;
-import org.sheepy.vulkan.common.window.Window;
+import org.sheepy.lily.core.api.adapter.IAdapter;
+import org.sheepy.lily.core.api.adapter.IServiceAdapterFactory;
+import org.sheepy.lily.core.api.input.event.IInputEvent;
+import org.sheepy.lily.core.model.presentation.IUIElement;
+import org.sheepy.lily.vulkan.common.window.Window;
 
 public interface IUIElementAdapter extends IAdapter
 {

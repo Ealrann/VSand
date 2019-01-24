@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.gameoflife.model.util;
+package org.sheepy.lily.vulkan.gameoflife.model.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -9,20 +9,20 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.sheepy.vulkan.gameoflife.model.*;
+import org.sheepy.lily.vulkan.gameoflife.model.*;
 
-import org.sheepy.vulkan.model.resource.IDescriptor;
-import org.sheepy.vulkan.model.resource.Image;
-import org.sheepy.vulkan.model.resource.Resource;
-import org.sheepy.vulkan.model.resource.SizedBuffer;
-import org.sheepy.vulkan.model.resource.VulkanBuffer;
+import org.sheepy.lily.vulkan.model.resource.IDescriptor;
+import org.sheepy.lily.vulkan.model.resource.Image;
+import org.sheepy.lily.vulkan.model.resource.Resource;
+import org.sheepy.lily.vulkan.model.resource.SizedBuffer;
+import org.sheepy.lily.vulkan.model.resource.VulkanBuffer;
 
 /**
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see org.sheepy.vulkan.gameoflife.model.GameOfLifePackage
+ * @see org.sheepy.lily.vulkan.gameoflife.model.GameOfLifePackage
  * @generated
  */
 public class GameOfLifeAdapterFactory extends AdapterFactoryImpl
@@ -128,13 +128,13 @@ public class GameOfLifeAdapterFactory extends AdapterFactoryImpl
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.gameoflife.model.BoardBuffer <em>Board Buffer</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.gameoflife.model.BoardBuffer <em>Board Buffer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.gameoflife.model.BoardBuffer
+	 * @see org.sheepy.lily.vulkan.gameoflife.model.BoardBuffer
 	 * @generated
 	 */
 	public Adapter createBoardBufferAdapter()
@@ -143,13 +143,13 @@ public class GameOfLifeAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.gameoflife.model.BoardImage <em>Board Image</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.gameoflife.model.BoardImage <em>Board Image</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.gameoflife.model.BoardImage
+	 * @see org.sheepy.lily.vulkan.gameoflife.model.BoardImage
 	 * @generated
 	 */
 	public Adapter createBoardImageAdapter()
@@ -158,13 +158,13 @@ public class GameOfLifeAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.resource.Resource <em>Resource</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.Resource <em>Resource</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.resource.Resource
+	 * @see org.sheepy.lily.vulkan.model.resource.Resource
 	 * @generated
 	 */
 	public Adapter createResourceAdapter()
@@ -173,13 +173,13 @@ public class GameOfLifeAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.resource.VulkanBuffer <em>Vulkan Buffer</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.VulkanBuffer <em>Vulkan Buffer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.resource.VulkanBuffer
+	 * @see org.sheepy.lily.vulkan.model.resource.VulkanBuffer
 	 * @generated
 	 */
 	public Adapter createVulkanBufferAdapter()
@@ -188,13 +188,13 @@ public class GameOfLifeAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.resource.IDescriptor <em>IDescriptor</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.IDescriptor <em>IDescriptor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.resource.IDescriptor
+	 * @see org.sheepy.lily.vulkan.model.resource.IDescriptor
 	 * @generated
 	 */
 	public Adapter createIDescriptorAdapter()
@@ -203,13 +203,13 @@ public class GameOfLifeAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.resource.SizedBuffer <em>Sized Buffer</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.SizedBuffer <em>Sized Buffer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.resource.SizedBuffer
+	 * @see org.sheepy.lily.vulkan.model.resource.SizedBuffer
 	 * @generated
 	 */
 	public Adapter createSizedBufferAdapter()
@@ -218,13 +218,13 @@ public class GameOfLifeAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.resource.Image <em>Image</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.Image <em>Image</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.resource.Image
+	 * @see org.sheepy.lily.vulkan.model.resource.Image
 	 * @generated
 	 */
 	public Adapter createImageAdapter()

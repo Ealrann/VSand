@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.emf.ecore.EPackage;
-import org.sheepy.common.api.resource.IModelExtension;
+import org.sheepy.lily.core.api.resource.IModelExtension;
 import org.sheepy.vulkan.sand.model.VSandPackage;
 
 public class VSandModelExtension implements IModelExtension

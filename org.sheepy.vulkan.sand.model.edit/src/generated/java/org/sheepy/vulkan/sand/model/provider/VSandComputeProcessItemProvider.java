@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.provider;
+package org.sheepy.lily.vulkan.sand.model.provider;
 
 
 import java.util.Collection;
@@ -13,17 +13,17 @@ import org.eclipse.emf.common.util.ResourceLocator;
 
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
-import org.sheepy.vulkan.model.process.ProcessPackage;
+import org.sheepy.lily.vulkan.model.process.ProcessPackage;
 
-import org.sheepy.vulkan.model.process.compute.provider.ComputeProcessItemProvider;
+import org.sheepy.lily.vulkan.model.process.compute.provider.ComputeProcessItemProvider;
 
-import org.sheepy.vulkan.model.process.graphic.GraphicFactory;
-import org.sheepy.vulkan.nuklear.model.NuklearFactory;
-import org.sheepy.vulkan.sand.model.VSandComputeProcess;
-import org.sheepy.vulkan.sand.model.VSandFactory;
+import org.sheepy.lily.vulkan.model.process.graphic.GraphicFactory;
+import org.sheepy.lily.vulkan.nuklear.model.NuklearFactory;
+import org.sheepy.lily.vulkan.sand.model.VSandComputeProcess;
+import org.sheepy.lily.vulkan.sand.model.VSandFactory;
 
 /**
- * This is the item provider adapter for a {@link org.sheepy.vulkan.sand.model.VSandComputeProcess} object.
+ * This is the item provider adapter for a {@link org.sheepy.lily.vulkan.sand.model.VSandComputeProcess} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated

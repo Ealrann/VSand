@@ -3,10 +3,10 @@ package org.sheepy.vulkan.sand.buffer;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.vulkan.model.enumeration.EBufferUsage;
-import org.sheepy.vulkan.model.enumeration.EDescriptorType;
-import org.sheepy.vulkan.model.enumeration.EShaderStage;
-import org.sheepy.vulkan.model.resource.Buffer;
+import org.sheepy.lily.vulkan.model.enumeration.EBufferUsage;
+import org.sheepy.lily.vulkan.model.enumeration.EDescriptorType;
+import org.sheepy.lily.vulkan.model.enumeration.EShaderStage;
+import org.sheepy.lily.vulkan.model.resource.Buffer;
 
 public class BoardBufferLoader
 {

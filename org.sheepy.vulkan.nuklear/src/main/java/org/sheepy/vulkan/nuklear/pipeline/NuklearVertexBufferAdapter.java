@@ -12,13 +12,13 @@ import org.lwjgl.nuklear.NkDrawVertexLayoutElement;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VkCommandBuffer;
 import org.lwjgl.vulkan.VkMappedMemoryRange;
-import org.sheepy.common.api.adapter.IServiceAdapterFactory;
-import org.sheepy.vulkan.common.execution.ExecutionManager;
+import org.sheepy.lily.core.api.adapter.IServiceAdapterFactory;
+import org.sheepy.lily.vulkan.common.execution.ExecutionManager;
 import org.sheepy.vulkan.nuklear.model.NuklearIndexBuffer;
 import org.sheepy.vulkan.nuklear.model.NuklearPackage;
 import org.sheepy.vulkan.nuklear.pipeline.NuklearVertexDescriptor.GuiVertex;
-import org.sheepy.vulkan.resource.ResourceAdapter;
-import org.sheepy.vulkan.resource.indexed.IndexBuffer;
+import org.sheepy.lily.vulkan.resource.ResourceAdapter;
+import org.sheepy.lily.vulkan.resource.indexed.IndexBuffer;
 
 public class NuklearVertexBufferAdapter extends ResourceAdapter
 {

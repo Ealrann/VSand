@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.presentation;
+package org.sheepy.lily.vulkan.sand.model.presentation;
 
 
 import java.util.ArrayList;
@@ -69,9 +69,9 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ISetSelectionTarget;
 
-import org.sheepy.vulkan.sand.model.VSandFactory;
-import org.sheepy.vulkan.sand.model.VSandPackage;
-import org.sheepy.vulkan.sand.model.provider.VSandEditPlugin;
+import org.sheepy.lily.vulkan.sand.model.VSandFactory;
+import org.sheepy.lily.vulkan.sand.model.VSandPackage;
+import org.sheepy.lily.vulkan.sand.model.provider.VSandEditPlugin;
 
 
 import org.eclipse.core.runtime.Path;

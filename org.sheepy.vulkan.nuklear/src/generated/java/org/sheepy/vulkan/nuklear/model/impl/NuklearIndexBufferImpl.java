@@ -4,7 +4,7 @@ package org.sheepy.vulkan.nuklear.model.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.sheepy.vulkan.model.resource.impl.IndexedBufferImpl;
+import org.sheepy.lily.vulkan.model.resource.impl.IndexedBufferImpl;
 
 import org.sheepy.vulkan.nuklear.model.NuklearIndexBuffer;
 import org.sheepy.vulkan.nuklear.model.NuklearPackage;

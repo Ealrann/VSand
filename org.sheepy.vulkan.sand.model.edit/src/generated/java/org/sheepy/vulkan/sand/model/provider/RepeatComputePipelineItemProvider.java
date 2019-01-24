@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.provider;
+package org.sheepy.lily.vulkan.sand.model.provider;
 
 
 import java.util.Collection;
@@ -13,12 +13,12 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.sheepy.vulkan.model.process.compute.provider.ComputePipelineItemProvider;
-import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.lily.vulkan.model.process.compute.provider.ComputePipelineItemProvider;
+import org.sheepy.lily.vulkan.sand.model.RepeatComputePipeline;
+import org.sheepy.lily.vulkan.sand.model.VSandPackage;
 
 /**
- * This is the item provider adapter for a {@link org.sheepy.vulkan.sand.model.RepeatComputePipeline} object.
+ * This is the item provider adapter for a {@link org.sheepy.lily.vulkan.sand.model.RepeatComputePipeline} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated

@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.presentation;
+package org.sheepy.lily.vulkan.sand.model.presentation;
 
 
 import java.io.IOException;
@@ -145,26 +145,26 @@ import org.eclipse.emf.edit.ui.util.EditUIUtil;
 
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 
-import org.sheepy.vulkan.sand.model.provider.VSandItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.sand.model.provider.VSandItemProviderAdapterFactory;
 
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.sheepy.common.model.action.provider.ActionItemProviderAdapterFactory;
-import org.sheepy.common.model.application.provider.ApplicationItemProviderAdapterFactory;
-import org.sheepy.common.model.inference.provider.InferenceItemProviderAdapterFactory;
-import org.sheepy.common.model.presentation.provider.PresentationItemProviderAdapterFactory;
-import org.sheepy.common.model.root.provider.RootItemProviderAdapterFactory;
-import org.sheepy.common.model.types.provider.TypesItemProviderAdapterFactory;
-import org.sheepy.common.model.ui.provider.UiItemProviderAdapterFactory;
-import org.sheepy.common.model.variable.provider.VariableItemProviderAdapterFactory;
-import org.sheepy.vulkan.model.process.compute.provider.ComputeItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.action.provider.ActionItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.application.provider.ApplicationItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.inference.provider.InferenceItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.presentation.provider.PresentationItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.root.provider.RootItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.types.provider.TypesItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.ui.provider.UiItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.variable.provider.VariableItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.model.process.compute.provider.ComputeItemProviderAdapterFactory;
 
-import org.sheepy.vulkan.model.process.graphic.provider.GraphicItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.model.process.graphic.provider.GraphicItemProviderAdapterFactory;
 
-import org.sheepy.vulkan.model.process.provider.ProcessItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.model.process.provider.ProcessItemProviderAdapterFactory;
 
-import org.sheepy.vulkan.model.provider.VulkanItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.model.provider.VulkanItemProviderAdapterFactory;
 
-import org.sheepy.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory;
 
 
 /**
@@ -651,7 +651,7 @@ public class VSandEditor
 			BasicDiagnostic diagnostic =
 				new BasicDiagnostic
 					(Diagnostic.OK,
-					 "org.sheepy.vulkan.sand.model.editor",
+					 "org.sheepy.lily.vulkan.sand.model.editor",
 					 0,
 					 null,
 					 new Object [] { editingDomain.getResourceSet() });
@@ -751,7 +751,7 @@ public class VSandEditor
 		adapterFactory.addAdapterFactory(new ComputeItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ProcessItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new TypesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new org.sheepy.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.sheepy.lily.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new VulkanItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new PresentationItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new UiItemProviderAdapterFactory());
@@ -1066,7 +1066,7 @@ public class VSandEditor
 			BasicDiagnostic basicDiagnostic =
 				new BasicDiagnostic
 					(hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
-					 "org.sheepy.vulkan.sand.model.editor",
+					 "org.sheepy.lily.vulkan.sand.model.editor",
 					 0,
 					 getString("_UI_CreateModelError_message", resource.getURI()),
 					 new Object [] { exception == null ? (Object)resource : exception });
@@ -1078,7 +1078,7 @@ public class VSandEditor
 			return
 				new BasicDiagnostic
 					(Diagnostic.ERROR,
-					 "org.sheepy.vulkan.sand.model.editor",
+					 "org.sheepy.lily.vulkan.sand.model.editor",
 					 0,
 					 getString("_UI_CreateModelError_message", resource.getURI()),
 					 new Object[] { exception });

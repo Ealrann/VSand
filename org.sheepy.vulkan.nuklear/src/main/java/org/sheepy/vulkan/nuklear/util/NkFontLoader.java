@@ -14,8 +14,8 @@ import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.stb.STBTTPackedchar;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.vulkan.model.resource.Font;
-import org.sheepy.vulkan.resource.texture.FontAdapter;
+import org.sheepy.lily.vulkan.model.resource.Font;
+import org.sheepy.lily.vulkan.resource.texture.FontAdapter;
 
 public class NkFontLoader
 {

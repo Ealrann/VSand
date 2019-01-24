@@ -1,11 +1,11 @@
 /**
  */
-package org.sheepy.vulkan.gameoflife.model;
+package org.sheepy.lily.vulkan.gameoflife.model;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
-import org.sheepy.vulkan.model.resource.ResourcePackage;
+import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,9 +18,9 @@ import org.sheepy.vulkan.model.resource.ResourcePackage;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * @see org.sheepy.vulkan.gameoflife.model.GameOfLifeFactory
+ * @see org.sheepy.lily.vulkan.gameoflife.model.GameOfLifeFactory
  * @model kind="package"
- *        annotation="http://www.eclipse.org/emf/2002/GenModel modelDirectory='/org.sheepy.vulkan.gameoflife.model/src/generated/java' modelName='GameOfLife' prefix='GameOfLife' publicConstructors='true' basePackage='org.sheepy.vulkan.gameoflife'"
+ *        annotation="http://www.eclipse.org/emf/2002/GenModel modelDirectory='/org.sheepy.lily.vulkan.gameoflife.model/src/generated/java' modelName='GameOfLife' prefix='GameOfLife' publicConstructors='true' basePackage='org.sheepy.lily.vulkan.gameoflife'"
  * @generated
  */
 public interface GameOfLifePackage extends EPackage
@@ -39,7 +39,7 @@ public interface GameOfLifePackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "org.sheepy.vulkan.gameoflife.model";
+	String eNS_URI = "org.sheepy.lily.vulkan.gameoflife.model";
 
 	/**
 	 * The package namespace name.
@@ -55,14 +55,14 @@ public interface GameOfLifePackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	GameOfLifePackage eINSTANCE = org.sheepy.vulkan.gameoflife.model.impl.GameOfLifePackageImpl.init();
+	GameOfLifePackage eINSTANCE = org.sheepy.lily.vulkan.gameoflife.model.impl.GameOfLifePackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.gameoflife.model.impl.BoardBufferImpl <em>Board Buffer</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.lily.vulkan.gameoflife.model.impl.BoardBufferImpl <em>Board Buffer</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.gameoflife.model.impl.BoardBufferImpl
-	 * @see org.sheepy.vulkan.gameoflife.model.impl.GameOfLifePackageImpl#getBoardBuffer()
+	 * @see org.sheepy.lily.vulkan.gameoflife.model.impl.BoardBufferImpl
+	 * @see org.sheepy.lily.vulkan.gameoflife.model.impl.GameOfLifePackageImpl#getBoardBuffer()
 	 * @generated
 	 */
 	int BOARD_BUFFER = 0;
@@ -77,11 +77,11 @@ public interface GameOfLifePackage extends EPackage
 	int BOARD_BUFFER_FEATURE_COUNT = ResourcePackage.VULKAN_BUFFER_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vulkan.gameoflife.model.impl.BoardImageImpl <em>Board Image</em>}' class.
+	 * The meta object id for the '{@link org.sheepy.lily.vulkan.gameoflife.model.impl.BoardImageImpl <em>Board Image</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vulkan.gameoflife.model.impl.BoardImageImpl
-	 * @see org.sheepy.vulkan.gameoflife.model.impl.GameOfLifePackageImpl#getBoardImage()
+	 * @see org.sheepy.lily.vulkan.gameoflife.model.impl.BoardImageImpl
+	 * @see org.sheepy.lily.vulkan.gameoflife.model.impl.GameOfLifePackageImpl#getBoardImage()
 	 * @generated
 	 */
 	int BOARD_IMAGE = 1;
@@ -97,21 +97,21 @@ public interface GameOfLifePackage extends EPackage
 
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.gameoflife.model.BoardBuffer <em>Board Buffer</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.lily.vulkan.gameoflife.model.BoardBuffer <em>Board Buffer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Board Buffer</em>'.
-	 * @see org.sheepy.vulkan.gameoflife.model.BoardBuffer
+	 * @see org.sheepy.lily.vulkan.gameoflife.model.BoardBuffer
 	 * @generated
 	 */
 	EClass getBoardBuffer();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vulkan.gameoflife.model.BoardImage <em>Board Image</em>}'.
+	 * Returns the meta object for class '{@link org.sheepy.lily.vulkan.gameoflife.model.BoardImage <em>Board Image</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Board Image</em>'.
-	 * @see org.sheepy.vulkan.gameoflife.model.BoardImage
+	 * @see org.sheepy.lily.vulkan.gameoflife.model.BoardImage
 	 * @generated
 	 */
 	EClass getBoardImage();
@@ -140,21 +140,21 @@ public interface GameOfLifePackage extends EPackage
 	interface Literals
 	{
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.gameoflife.model.impl.BoardBufferImpl <em>Board Buffer</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.lily.vulkan.gameoflife.model.impl.BoardBufferImpl <em>Board Buffer</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.gameoflife.model.impl.BoardBufferImpl
-		 * @see org.sheepy.vulkan.gameoflife.model.impl.GameOfLifePackageImpl#getBoardBuffer()
+		 * @see org.sheepy.lily.vulkan.gameoflife.model.impl.BoardBufferImpl
+		 * @see org.sheepy.lily.vulkan.gameoflife.model.impl.GameOfLifePackageImpl#getBoardBuffer()
 		 * @generated
 		 */
 		EClass BOARD_BUFFER = eINSTANCE.getBoardBuffer();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vulkan.gameoflife.model.impl.BoardImageImpl <em>Board Image</em>}' class.
+		 * The meta object literal for the '{@link org.sheepy.lily.vulkan.gameoflife.model.impl.BoardImageImpl <em>Board Image</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vulkan.gameoflife.model.impl.BoardImageImpl
-		 * @see org.sheepy.vulkan.gameoflife.model.impl.GameOfLifePackageImpl#getBoardImage()
+		 * @see org.sheepy.lily.vulkan.gameoflife.model.impl.BoardImageImpl
+		 * @see org.sheepy.lily.vulkan.gameoflife.model.impl.GameOfLifePackageImpl#getBoardImage()
 		 * @generated
 		 */
 		EClass BOARD_IMAGE = eINSTANCE.getBoardImage();

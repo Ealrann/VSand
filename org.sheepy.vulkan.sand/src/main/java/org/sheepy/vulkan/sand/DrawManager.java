@@ -1,8 +1,8 @@
 package org.sheepy.vulkan.sand;
 
-import org.sheepy.common.api.input.IInputManager;
-import org.sheepy.common.api.types.SVector2f;
-import org.sheepy.common.api.types.SVector2i;
+import org.sheepy.lily.core.api.input.IInputManager;
+import org.sheepy.lily.core.api.types.SVector2f;
+import org.sheepy.lily.core.api.types.SVector2i;
 import org.sheepy.vulkan.sand.buffer.ModificationsManager;
 import org.sheepy.vulkan.sand.buffer.ModificationsManager.DrawData;
 import org.sheepy.vulkan.sand.logic.EShape;

@@ -2,7 +2,7 @@
  */
 package org.sheepy.vulkan.sand.model;
 
-import org.sheepy.common.model.application.Application;
+import org.sheepy.lily.core.model.application.Application;
 
 /**
  * <!-- begin-user-doc -->

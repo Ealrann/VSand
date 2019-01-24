@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.provider;
+package org.sheepy.lily.vulkan.sand.model.provider;
 
 
 import java.util.Collection;
@@ -15,17 +15,17 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.sheepy.common.model.application.ApplicationPackage;
-import org.sheepy.common.model.application.provider.ApplicationItemProvider;
-import org.sheepy.common.model.presentation.PresentationFactory;
-import org.sheepy.common.model.root.LObject;
-import org.sheepy.vulkan.model.VulkanFactory;
-import org.sheepy.vulkan.sand.model.VSandApplication;
-import org.sheepy.vulkan.sand.model.VSandFactory;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.lily.core.model.application.ApplicationPackage;
+import org.sheepy.lily.core.model.application.provider.ApplicationItemProvider;
+import org.sheepy.lily.core.model.presentation.PresentationFactory;
+import org.sheepy.lily.core.model.root.LObject;
+import org.sheepy.lily.vulkan.model.VulkanFactory;
+import org.sheepy.lily.vulkan.sand.model.VSandApplication;
+import org.sheepy.lily.vulkan.sand.model.VSandFactory;
+import org.sheepy.lily.vulkan.sand.model.VSandPackage;
 
 /**
- * This is the item provider adapter for a {@link org.sheepy.vulkan.sand.model.VSandApplication} object.
+ * This is the item provider adapter for a {@link org.sheepy.lily.vulkan.sand.model.VSandApplication} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated

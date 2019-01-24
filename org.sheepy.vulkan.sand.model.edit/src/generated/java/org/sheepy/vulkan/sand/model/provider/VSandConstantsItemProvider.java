@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.provider;
+package org.sheepy.lily.vulkan.sand.model.provider;
 
 
 import java.util.Collection;
@@ -13,13 +13,13 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.sheepy.vulkan.model.resource.provider.AbstractConstantsItemProvider;
+import org.sheepy.lily.vulkan.model.resource.provider.AbstractConstantsItemProvider;
 
-import org.sheepy.vulkan.sand.model.VSandConstants;
-import org.sheepy.vulkan.sand.model.VSandPackage;
+import org.sheepy.lily.vulkan.sand.model.VSandConstants;
+import org.sheepy.lily.vulkan.sand.model.VSandPackage;
 
 /**
- * This is the item provider adapter for a {@link org.sheepy.vulkan.sand.model.VSandConstants} object.
+ * This is the item provider adapter for a {@link org.sheepy.lily.vulkan.sand.model.VSandConstants} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated

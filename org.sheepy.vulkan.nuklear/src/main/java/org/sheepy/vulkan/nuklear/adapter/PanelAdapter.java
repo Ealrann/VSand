@@ -9,15 +9,15 @@ import org.eclipse.emf.ecore.EClass;
 import org.lwjgl.nuklear.NkRect;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.common.api.adapter.impl.AbstractStatefullAdapter;
-import org.sheepy.common.model.presentation.IUIElement;
-import org.sheepy.common.model.ui.IControl;
-import org.sheepy.common.model.ui.Panel;
-import org.sheepy.common.model.ui.UiPackage;
-import org.sheepy.vulkan.api.window.IWindowListener;
-import org.sheepy.vulkan.api.window.Surface;
-import org.sheepy.vulkan.common.ui.UIUtil;
-import org.sheepy.vulkan.common.window.Window;
+import org.sheepy.lily.core.api.adapter.impl.AbstractStatefullAdapter;
+import org.sheepy.lily.core.model.presentation.IUIElement;
+import org.sheepy.lily.core.model.ui.IControl;
+import org.sheepy.lily.core.model.ui.Panel;
+import org.sheepy.lily.core.model.ui.UiPackage;
+import org.sheepy.lily.vulkan.api.window.IWindowListener;
+import org.sheepy.lily.vulkan.api.window.Surface;
+import org.sheepy.lily.vulkan.common.ui.UIUtil;
+import org.sheepy.lily.vulkan.common.window.Window;
 
 public class PanelAdapter extends AbstractStatefullAdapter implements IUIElementAdapter
 {

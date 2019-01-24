@@ -7,13 +7,13 @@ import java.nio.IntBuffer;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EClass;
 import org.lwjgl.BufferUtils;
-import org.sheepy.common.api.adapter.impl.AbstractStatefullAdapter;
-import org.sheepy.common.api.variable.IVariableResolverAdapter;
-import org.sheepy.common.api.variable.IVariableResolverAdapter.IVariableListener;
-import org.sheepy.common.model.presentation.IUIElement;
-import org.sheepy.common.model.ui.Slider;
-import org.sheepy.common.model.ui.UiPackage;
-import org.sheepy.common.model.variable.IVariableResolver;
+import org.sheepy.lily.core.api.adapter.impl.AbstractStatefullAdapter;
+import org.sheepy.lily.core.api.variable.IVariableResolverAdapter;
+import org.sheepy.lily.core.api.variable.IVariableResolverAdapter.IVariableListener;
+import org.sheepy.lily.core.model.presentation.IUIElement;
+import org.sheepy.lily.core.model.ui.Slider;
+import org.sheepy.lily.core.model.ui.UiPackage;
+import org.sheepy.lily.core.model.variable.IVariableResolver;
 
 public class SliderAdapter extends AbstractStatefullAdapter implements IUIElementAdapter
 {

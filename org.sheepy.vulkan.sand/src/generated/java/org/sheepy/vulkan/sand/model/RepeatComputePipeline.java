@@ -2,7 +2,7 @@
  */
 package org.sheepy.vulkan.sand.model;
 
-import org.sheepy.vulkan.model.process.compute.ComputePipeline;
+import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 
 /**
  * <!-- begin-user-doc -->

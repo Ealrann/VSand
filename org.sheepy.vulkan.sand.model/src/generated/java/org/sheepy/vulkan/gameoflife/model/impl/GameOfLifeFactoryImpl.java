@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.gameoflife.model.impl;
+package org.sheepy.lily.vulkan.gameoflife.model.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-import org.sheepy.vulkan.gameoflife.model.*;
+import org.sheepy.lily.vulkan.gameoflife.model.*;
 
 /**
  * <!-- begin-user-doc -->

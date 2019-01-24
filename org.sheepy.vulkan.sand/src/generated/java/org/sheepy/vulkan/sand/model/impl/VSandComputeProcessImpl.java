@@ -4,7 +4,7 @@ package org.sheepy.vulkan.sand.model.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.sheepy.vulkan.model.process.compute.impl.ComputeProcessImpl;
+import org.sheepy.lily.vulkan.model.process.compute.impl.ComputeProcessImpl;
 
 import org.sheepy.vulkan.sand.model.VSandComputeProcess;
 import org.sheepy.vulkan.sand.model.VSandPackage;

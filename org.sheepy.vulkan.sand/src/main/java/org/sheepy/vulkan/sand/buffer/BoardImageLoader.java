@@ -2,16 +2,16 @@ package org.sheepy.vulkan.sand.buffer;
 
 import static org.lwjgl.vulkan.VK10.*;
 
-import org.sheepy.vulkan.model.enumeration.EAccess;
-import org.sheepy.vulkan.model.enumeration.EDescriptorType;
-import org.sheepy.vulkan.model.enumeration.EFormat;
-import org.sheepy.vulkan.model.enumeration.EImageLayout;
-import org.sheepy.vulkan.model.enumeration.EImageUsage;
-import org.sheepy.vulkan.model.enumeration.EPipelineStage;
-import org.sheepy.vulkan.model.enumeration.EShaderStage;
-import org.sheepy.vulkan.model.resource.Image;
-import org.sheepy.vulkan.model.resource.ImageLayout;
-import org.sheepy.vulkan.model.resource.impl.ImageLayoutImpl;
+import org.sheepy.lily.vulkan.model.enumeration.EAccess;
+import org.sheepy.lily.vulkan.model.enumeration.EDescriptorType;
+import org.sheepy.lily.vulkan.model.enumeration.EFormat;
+import org.sheepy.lily.vulkan.model.enumeration.EImageLayout;
+import org.sheepy.lily.vulkan.model.enumeration.EImageUsage;
+import org.sheepy.lily.vulkan.model.enumeration.EPipelineStage;
+import org.sheepy.lily.vulkan.model.enumeration.EShaderStage;
+import org.sheepy.lily.vulkan.model.resource.Image;
+import org.sheepy.lily.vulkan.model.resource.ImageLayout;
+import org.sheepy.lily.vulkan.model.resource.impl.ImageLayoutImpl;
 
 public class BoardImageLoader
 {

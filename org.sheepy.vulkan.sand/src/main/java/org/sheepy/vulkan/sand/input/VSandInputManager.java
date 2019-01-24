@@ -1,12 +1,12 @@
 package org.sheepy.vulkan.sand.input;
 
 import org.eclipse.emf.common.util.EList;
-import org.sheepy.common.api.input.IInputManager.IInputListener;
-import org.sheepy.common.api.input.event.KeyEvent;
-import org.sheepy.common.api.input.event.MouseButtonEvent;
-import org.sheepy.common.api.input.event.ScrollEvent;
-import org.sheepy.common.api.types.SVector2f;
-import org.sheepy.common.model.types.EKeyState;
+import org.sheepy.lily.core.api.input.IInputManager.IInputListener;
+import org.sheepy.lily.core.api.input.event.KeyEvent;
+import org.sheepy.lily.core.api.input.event.MouseButtonEvent;
+import org.sheepy.lily.core.api.input.event.ScrollEvent;
+import org.sheepy.lily.core.api.types.SVector2f;
+import org.sheepy.lily.core.model.types.EKeyState;
 import org.sheepy.vulkan.sand.model.Material;
 import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
 import org.sheepy.vulkan.sand.model.VSandApplication;

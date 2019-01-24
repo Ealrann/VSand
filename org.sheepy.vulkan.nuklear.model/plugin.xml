@@ -9,8 +9,8 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated Nuklear -->
       <package
-            uri="org.sheepy.vulkan.nuklear.model"
-            class="org.sheepy.vulkan.nuklear.model.NuklearPackage"
+            uri="org.sheepy.lily.vulkan.nuklear.model"
+            class="org.sheepy.lily.vulkan.nuklear.model.NuklearPackage"
             genModel="src/main/xcore/Nuklear.xcore"/>
    </extension>
 
@@ -18,7 +18,7 @@
       <!-- @generated Nuklear -->
       <parser
             type="nuklear"
-            class="org.sheepy.vulkan.nuklear.model.util.NuklearResourceFactoryImpl"/>
+            class="org.sheepy.lily.vulkan.nuklear.model.util.NuklearResourceFactoryImpl"/>
    </extension>
 
 </plugin>

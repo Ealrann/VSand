@@ -2,7 +2,7 @@
  */
 package org.sheepy.vulkan.nuklear.model;
 
-import org.sheepy.vulkan.model.resource.Constants;
+import org.sheepy.lily.vulkan.model.resource.Constants;
 
 /**
  * <!-- begin-user-doc -->

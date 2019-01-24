@@ -1,13 +1,13 @@
 /**
  */
-package org.sheepy.vulkan.gameoflife.model.impl;
+package org.sheepy.lily.vulkan.gameoflife.model.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.sheepy.vulkan.gameoflife.model.BoardImage;
-import org.sheepy.vulkan.gameoflife.model.GameOfLifePackage;
+import org.sheepy.lily.vulkan.gameoflife.model.BoardImage;
+import org.sheepy.lily.vulkan.gameoflife.model.GameOfLifePackage;
 
-import org.sheepy.vulkan.model.resource.impl.ImageImpl;
+import org.sheepy.lily.vulkan.model.resource.impl.ImageImpl;
 
 /**
  * <!-- begin-user-doc -->

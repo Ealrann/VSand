@@ -8,32 +8,32 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
-import org.sheepy.common.model.application.Application;
-import org.sheepy.common.model.inference.IInferenceObject;
-import org.sheepy.common.model.presentation.IPanel;
-import org.sheepy.common.model.presentation.IPositionElement;
-import org.sheepy.common.model.presentation.ISizedElement;
-import org.sheepy.common.model.presentation.IUIElement;
-import org.sheepy.common.model.root.LObject;
-import org.sheepy.common.model.types.LNamedElement;
-import org.sheepy.common.model.ui.AbstractButton;
-import org.sheepy.common.model.ui.Button;
-import org.sheepy.common.model.ui.IControl;
-import org.sheepy.common.model.ui.Widget;
-import org.sheepy.vulkan.model.IEnginePart;
-import org.sheepy.vulkan.model.IProcess;
-import org.sheepy.vulkan.model.IResource;
-import org.sheepy.vulkan.model.process.AbstractPipeline;
-import org.sheepy.vulkan.model.process.AbstractProcess;
-import org.sheepy.vulkan.model.process.IPipeline;
-import org.sheepy.vulkan.model.process.IProcessUnit;
-import org.sheepy.vulkan.model.process.compute.ComputePipeline;
-import org.sheepy.vulkan.model.process.compute.ComputeProcess;
-import org.sheepy.vulkan.model.process.graphic.GraphicProcess;
-import org.sheepy.vulkan.model.process.graphic.IGUIPipeline;
-import org.sheepy.vulkan.model.process.graphic.IGraphicsPipeline;
-import org.sheepy.vulkan.model.resource.AbstractConstants;
-import org.sheepy.vulkan.model.resource.BasicResource;
+import org.sheepy.lily.core.model.application.Application;
+import org.sheepy.lily.core.model.inference.IInferenceObject;
+import org.sheepy.lily.core.model.presentation.IPanel;
+import org.sheepy.lily.core.model.presentation.IPositionElement;
+import org.sheepy.lily.core.model.presentation.ISizedElement;
+import org.sheepy.lily.core.model.presentation.IUIElement;
+import org.sheepy.lily.core.model.root.LObject;
+import org.sheepy.lily.core.model.types.LNamedElement;
+import org.sheepy.lily.core.model.ui.AbstractButton;
+import org.sheepy.lily.core.model.ui.Button;
+import org.sheepy.lily.core.model.ui.IControl;
+import org.sheepy.lily.core.model.ui.Widget;
+import org.sheepy.lily.vulkan.model.IEnginePart;
+import org.sheepy.lily.vulkan.model.IProcess;
+import org.sheepy.lily.vulkan.model.IResource;
+import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
+import org.sheepy.lily.vulkan.model.process.AbstractProcess;
+import org.sheepy.lily.vulkan.model.process.IPipeline;
+import org.sheepy.lily.vulkan.model.process.IProcessUnit;
+import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
+import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
+import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
+import org.sheepy.lily.vulkan.model.process.graphic.IGUIPipeline;
+import org.sheepy.lily.vulkan.model.process.graphic.IGraphicsPipeline;
+import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
+import org.sheepy.lily.vulkan.model.resource.BasicResource;
 import org.sheepy.vulkan.nuklear.model.NuklearPipeline;
 import org.sheepy.vulkan.sand.model.*;
 
@@ -483,13 +483,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.inference.IInferenceObject <em>IInference Object</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.inference.IInferenceObject <em>IInference Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.inference.IInferenceObject
+	 * @see org.sheepy.lily.core.model.inference.IInferenceObject
 	 * @generated
 	 */
 	public Adapter createIInferenceObjectAdapter()
@@ -498,13 +498,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.root.LObject <em>LObject</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.root.LObject <em>LObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.root.LObject
+	 * @see org.sheepy.lily.core.model.root.LObject
 	 * @generated
 	 */
 	public Adapter createLObjectAdapter()
@@ -513,13 +513,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.application.Application <em>Application</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.application.Application <em>Application</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.application.Application
+	 * @see org.sheepy.lily.core.model.application.Application
 	 * @generated
 	 */
 	public Adapter createApplicationAdapter()
@@ -543,13 +543,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.process.IProcessUnit <em>IProcess Unit</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.IProcessUnit <em>IProcess Unit</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.process.IProcessUnit
+	 * @see org.sheepy.lily.vulkan.model.process.IProcessUnit
 	 * @generated
 	 */
 	public Adapter createIProcessUnitAdapter()
@@ -558,13 +558,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.types.LNamedElement <em>LNamed Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.types.LNamedElement <em>LNamed Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.types.LNamedElement
+	 * @see org.sheepy.lily.core.model.types.LNamedElement
 	 * @generated
 	 */
 	public Adapter createLNamedElementAdapter()
@@ -573,13 +573,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.process.IPipeline <em>IPipeline</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.IPipeline <em>IPipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.process.IPipeline
+	 * @see org.sheepy.lily.vulkan.model.process.IPipeline
 	 * @generated
 	 */
 	public Adapter createIPipelineAdapter()
@@ -588,13 +588,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.process.AbstractPipeline <em>Abstract Pipeline</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.AbstractPipeline <em>Abstract Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.process.AbstractPipeline
+	 * @see org.sheepy.lily.vulkan.model.process.AbstractPipeline
 	 * @generated
 	 */
 	public Adapter createAbstractPipelineAdapter()
@@ -603,13 +603,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.process.compute.ComputePipeline <em>Pipeline</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.compute.ComputePipeline <em>Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.process.compute.ComputePipeline
+	 * @see org.sheepy.lily.vulkan.model.process.compute.ComputePipeline
 	 * @generated
 	 */
 	public Adapter createComputePipelineAdapter()
@@ -618,13 +618,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.IResource <em>IResource</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IResource <em>IResource</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.IResource
+	 * @see org.sheepy.lily.vulkan.model.IResource
 	 * @generated
 	 */
 	public Adapter createIResourceAdapter()
@@ -633,13 +633,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.resource.BasicResource <em>Basic Resource</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.BasicResource <em>Basic Resource</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.resource.BasicResource
+	 * @see org.sheepy.lily.vulkan.model.resource.BasicResource
 	 * @generated
 	 */
 	public Adapter createBasicResourceAdapter()
@@ -648,13 +648,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.resource.AbstractConstants <em>Abstract Constants</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.AbstractConstants <em>Abstract Constants</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.resource.AbstractConstants
+	 * @see org.sheepy.lily.vulkan.model.resource.AbstractConstants
 	 * @generated
 	 */
 	public Adapter createAbstractConstantsAdapter()
@@ -663,13 +663,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.presentation.IUIElement <em>IUI Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.presentation.IUIElement <em>IUI Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.presentation.IUIElement
+	 * @see org.sheepy.lily.core.model.presentation.IUIElement
 	 * @generated
 	 */
 	public Adapter createIUIElementAdapter()
@@ -678,13 +678,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.ui.IControl <em>IControl</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.ui.IControl <em>IControl</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.ui.IControl
+	 * @see org.sheepy.lily.core.model.ui.IControl
 	 * @generated
 	 */
 	public Adapter createIControlAdapter()
@@ -693,13 +693,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.presentation.IPositionElement <em>IPosition Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.presentation.IPositionElement <em>IPosition Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.presentation.IPositionElement
+	 * @see org.sheepy.lily.core.model.presentation.IPositionElement
 	 * @generated
 	 */
 	public Adapter createIPositionElementAdapter()
@@ -708,13 +708,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.presentation.IPanel <em>IPanel</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.presentation.IPanel <em>IPanel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.presentation.IPanel
+	 * @see org.sheepy.lily.core.model.presentation.IPanel
 	 * @generated
 	 */
 	public Adapter createIPanelAdapter()
@@ -723,13 +723,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.presentation.ISizedElement <em>ISized Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.presentation.ISizedElement <em>ISized Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.presentation.ISizedElement
+	 * @see org.sheepy.lily.core.model.presentation.ISizedElement
 	 * @generated
 	 */
 	public Adapter createISizedElementAdapter()
@@ -738,13 +738,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.ui.Widget <em>Widget</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.ui.Widget <em>Widget</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.ui.Widget
+	 * @see org.sheepy.lily.core.model.ui.Widget
 	 * @generated
 	 */
 	public Adapter createWidgetAdapter()
@@ -753,13 +753,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.ui.AbstractButton <em>Abstract Button</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.ui.AbstractButton <em>Abstract Button</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.ui.AbstractButton
+	 * @see org.sheepy.lily.core.model.ui.AbstractButton
 	 * @generated
 	 */
 	public Adapter createAbstractButtonAdapter()
@@ -768,13 +768,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.common.model.ui.Button <em>Button</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.ui.Button <em>Button</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.common.model.ui.Button
+	 * @see org.sheepy.lily.core.model.ui.Button
 	 * @generated
 	 */
 	public Adapter createButtonAdapter()
@@ -783,13 +783,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.process.graphic.IGraphicsPipeline <em>IGraphics Pipeline</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.graphic.IGraphicsPipeline <em>IGraphics Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.process.graphic.IGraphicsPipeline
+	 * @see org.sheepy.lily.vulkan.model.process.graphic.IGraphicsPipeline
 	 * @generated
 	 */
 	public Adapter createIGraphicsPipelineAdapter()
@@ -798,13 +798,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.process.graphic.IGUIPipeline <em>IGUI Pipeline</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.graphic.IGUIPipeline <em>IGUI Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.process.graphic.IGUIPipeline
+	 * @see org.sheepy.lily.vulkan.model.process.graphic.IGUIPipeline
 	 * @generated
 	 */
 	public Adapter createIGUIPipelineAdapter()
@@ -828,13 +828,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.IEnginePart <em>IEngine Part</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IEnginePart <em>IEngine Part</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.IEnginePart
+	 * @see org.sheepy.lily.vulkan.model.IEnginePart
 	 * @generated
 	 */
 	public Adapter createIEnginePartAdapter()
@@ -843,13 +843,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.IProcess <em>IProcess</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IProcess <em>IProcess</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.IProcess
+	 * @see org.sheepy.lily.vulkan.model.IProcess
 	 * @generated
 	 */
 	public Adapter createIProcessAdapter()
@@ -858,13 +858,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.process.AbstractProcess <em>Abstract Process</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.AbstractProcess <em>Abstract Process</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.process.AbstractProcess
+	 * @see org.sheepy.lily.vulkan.model.process.AbstractProcess
 	 * @generated
 	 */
 	public Adapter createAbstractProcessAdapter()
@@ -873,13 +873,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.process.graphic.GraphicProcess <em>Process</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess <em>Process</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.process.graphic.GraphicProcess
+	 * @see org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess
 	 * @generated
 	 */
 	public Adapter createGraphicProcessAdapter()
@@ -888,13 +888,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.model.process.compute.ComputeProcess <em>Process</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.compute.ComputeProcess <em>Process</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.model.process.compute.ComputeProcess
+	 * @see org.sheepy.lily.vulkan.model.process.compute.ComputeProcess
 	 * @generated
 	 */
 	public Adapter createComputeProcessAdapter()

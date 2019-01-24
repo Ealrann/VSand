@@ -5,13 +5,13 @@ import java.nio.ByteBuffer;
 import org.eclipse.emf.ecore.EClass;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.vulkan.api.window.IWindowListener;
-import org.sheepy.vulkan.api.window.Surface;
-import org.sheepy.vulkan.common.allocation.adapter.IFlatAllocableAdapter;
-import org.sheepy.vulkan.common.device.LogicalDevice;
+import org.sheepy.lily.vulkan.api.window.IWindowListener;
+import org.sheepy.lily.vulkan.api.window.Surface;
+import org.sheepy.lily.vulkan.common.allocation.adapter.IFlatAllocableAdapter;
+import org.sheepy.lily.vulkan.common.device.LogicalDevice;
 import org.sheepy.vulkan.nuklear.model.NuklearPackage;
-import org.sheepy.vulkan.process.graphic.process.IGraphicContextAdapter;
-import org.sheepy.vulkan.resource.buffer.AbstractConstantsAdapter;
+import org.sheepy.lily.vulkan.process.graphic.process.IGraphicContextAdapter;
+import org.sheepy.lily.vulkan.resource.buffer.AbstractConstantsAdapter;
 
 public class NuklearConstantsAdapter extends AbstractConstantsAdapter
 		implements IFlatAllocableAdapter

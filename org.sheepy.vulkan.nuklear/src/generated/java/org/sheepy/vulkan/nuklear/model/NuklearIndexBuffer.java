@@ -2,7 +2,7 @@
  */
 package org.sheepy.vulkan.nuklear.model;
 
-import org.sheepy.vulkan.model.resource.IndexedBuffer;
+import org.sheepy.lily.vulkan.model.resource.IndexedBuffer;
 
 /**
  * <!-- begin-user-doc -->

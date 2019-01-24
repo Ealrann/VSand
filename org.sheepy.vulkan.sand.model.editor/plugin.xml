@@ -12,9 +12,9 @@
             id="org.eclipse.emf.ecore.Wizard.category.ID"
             name="%_UI_Wizard_category"/>
       <wizard
-            id="org.sheepy.vulkan.sand.model.presentation.VSandModelWizardID"
+            id="org.sheepy.lily.vulkan.sand.model.presentation.VSandModelWizardID"
             name="%_UI_VSandModelWizard_label"
-            class="org.sheepy.vulkan.sand.model.presentation.VSandModelWizard"
+            class="org.sheepy.lily.vulkan.sand.model.presentation.VSandModelWizard"
             category="org.eclipse.emf.ecore.Wizard.category.ID"
             icon="icons/full/obj16/VSandModelFile.gif">
          <description>%_UI_VSandModelWizard_description</description>
@@ -25,12 +25,12 @@
    <extension point="org.eclipse.ui.editors">
       <!-- @generated VSand -->
       <editor
-            id="org.sheepy.vulkan.sand.model.presentation.VSandEditorID"
+            id="org.sheepy.lily.vulkan.sand.model.presentation.VSandEditorID"
             name="%_UI_VSandEditor_label"
             icon="icons/full/obj16/VSandModelFile.gif"
             extensions="vsand"
-            class="org.sheepy.vulkan.sand.model.presentation.VSandEditor"
-            contributorClass="org.sheepy.vulkan.sand.model.presentation.VSandActionBarContributor">
+            class="org.sheepy.lily.vulkan.sand.model.presentation.VSandEditor"
+            contributorClass="org.sheepy.lily.vulkan.sand.model.presentation.VSandActionBarContributor">
       </editor>
    </extension>
 

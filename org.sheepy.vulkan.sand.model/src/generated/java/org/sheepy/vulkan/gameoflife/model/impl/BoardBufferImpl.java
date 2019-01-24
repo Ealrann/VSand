@@ -1,13 +1,13 @@
 /**
  */
-package org.sheepy.vulkan.gameoflife.model.impl;
+package org.sheepy.lily.vulkan.gameoflife.model.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.sheepy.vulkan.gameoflife.model.BoardBuffer;
-import org.sheepy.vulkan.gameoflife.model.GameOfLifePackage;
+import org.sheepy.lily.vulkan.gameoflife.model.BoardBuffer;
+import org.sheepy.lily.vulkan.gameoflife.model.GameOfLifePackage;
 
 /**
  * <!-- begin-user-doc -->

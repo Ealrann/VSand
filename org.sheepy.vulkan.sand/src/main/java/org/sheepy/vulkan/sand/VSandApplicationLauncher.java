@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sheepy.common.api.application.ApplicationLauncher;
-import org.sheepy.common.api.resource.IResourceLoader;
-import org.sheepy.common.model.application.Application;
+import org.sheepy.lily.core.api.application.ApplicationLauncher;
+import org.sheepy.lily.core.api.resource.IResourceLoader;
+import org.sheepy.lily.core.model.application.Application;
 
 public class VSandApplicationLauncher
 {

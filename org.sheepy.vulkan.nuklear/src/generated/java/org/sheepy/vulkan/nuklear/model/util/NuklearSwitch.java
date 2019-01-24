@@ -6,18 +6,18 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
-import org.sheepy.common.model.inference.IInferenceObject;
-import org.sheepy.common.model.root.LObject;
-import org.sheepy.common.model.types.LNamedElement;
-import org.sheepy.vulkan.model.IResource;
-import org.sheepy.vulkan.model.process.IPipeline;
-import org.sheepy.vulkan.model.process.IProcessUnit;
-import org.sheepy.vulkan.model.process.graphic.IGUIPipeline;
-import org.sheepy.vulkan.model.process.graphic.IGraphicsPipeline;
-import org.sheepy.vulkan.model.resource.AbstractConstants;
-import org.sheepy.vulkan.model.resource.BasicResource;
-import org.sheepy.vulkan.model.resource.Constants;
-import org.sheepy.vulkan.model.resource.IndexedBuffer;
+import org.sheepy.lily.core.model.inference.IInferenceObject;
+import org.sheepy.lily.core.model.root.LObject;
+import org.sheepy.lily.core.model.types.LNamedElement;
+import org.sheepy.lily.vulkan.model.IResource;
+import org.sheepy.lily.vulkan.model.process.IPipeline;
+import org.sheepy.lily.vulkan.model.process.IProcessUnit;
+import org.sheepy.lily.vulkan.model.process.graphic.IGUIPipeline;
+import org.sheepy.lily.vulkan.model.process.graphic.IGraphicsPipeline;
+import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
+import org.sheepy.lily.vulkan.model.resource.BasicResource;
+import org.sheepy.lily.vulkan.model.resource.Constants;
+import org.sheepy.lily.vulkan.model.resource.IndexedBuffer;
 import org.sheepy.vulkan.nuklear.model.*;
 
 /**

@@ -7,10 +7,10 @@ import java.nio.ByteBuffer;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EClass;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.common.api.adapter.impl.AbstractStatefullAdapter;
-import org.sheepy.common.model.presentation.IUIElement;
-import org.sheepy.common.model.ui.Label;
-import org.sheepy.common.model.ui.UiPackage;
+import org.sheepy.lily.core.api.adapter.impl.AbstractStatefullAdapter;
+import org.sheepy.lily.core.model.presentation.IUIElement;
+import org.sheepy.lily.core.model.ui.Label;
+import org.sheepy.lily.core.model.ui.UiPackage;
 
 public class LabelAdapter extends AbstractStatefullAdapter implements IUIElementAdapter
 {

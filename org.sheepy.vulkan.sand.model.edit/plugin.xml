@@ -9,8 +9,8 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated VSand -->
       <factory
-            uri="org.sheepy.vulkan.sand.model"
-            class="org.sheepy.vulkan.sand.model.provider.VSandItemProviderAdapterFactory"
+            uri="org.sheepy.lily.vulkan.sand.model"
+            class="org.sheepy.lily.vulkan.sand.model.provider.VSandItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider
@@ -22,14 +22,14 @@
    <extension point="org.eclipse.emf.edit.childCreationExtenders">
       <!-- @generated VSand -->
       <extender
-            uri="org.sheepy.vulkan.model.process"
-            class="org.sheepy.vulkan.sand.model.provider.VSandItemProviderAdapterFactory$ProcessChildCreationExtender"/>
+            uri="org.sheepy.lily.vulkan.model.process"
+            class="org.sheepy.lily.vulkan.sand.model.provider.VSandItemProviderAdapterFactory$ProcessChildCreationExtender"/>
       <extender
-            uri="org.sheepy.vulkan.model"
-            class="org.sheepy.vulkan.sand.model.provider.VSandItemProviderAdapterFactory$VulkanChildCreationExtender"/>
+            uri="org.sheepy.lily.vulkan.model"
+            class="org.sheepy.lily.vulkan.sand.model.provider.VSandItemProviderAdapterFactory$VulkanChildCreationExtender"/>
       <extender
-            uri="org.sheepy.common.model.presentation"
-            class="org.sheepy.vulkan.sand.model.provider.VSandItemProviderAdapterFactory$PresentationChildCreationExtender"/>
+            uri="org.sheepy.lily.core.model.presentation"
+            class="org.sheepy.lily.vulkan.sand.model.provider.VSandItemProviderAdapterFactory$PresentationChildCreationExtender"/>
    </extension>
 
 </plugin>

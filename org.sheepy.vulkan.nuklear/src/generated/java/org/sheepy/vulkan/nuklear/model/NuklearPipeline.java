@@ -2,9 +2,9 @@
  */
 package org.sheepy.vulkan.nuklear.model;
 
-import org.sheepy.vulkan.model.process.IPipeline;
-import org.sheepy.vulkan.model.process.graphic.IGUIPipeline;
-import org.sheepy.vulkan.model.resource.Font;
+import org.sheepy.lily.vulkan.model.process.IPipeline;
+import org.sheepy.lily.vulkan.model.process.graphic.IGUIPipeline;
+import org.sheepy.lily.vulkan.model.resource.Font;
 
 /**
  * <!-- begin-user-doc -->

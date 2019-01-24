@@ -17,7 +17,7 @@ switch (targetPlatform) {
 }
 
 dependencies {
-	api project(':org.sheepy.vulkan.process.graphic')
+	api project(':org.sheepy.lily.vulkan.process.graphic')
 
 	api "org.lwjgl:lwjgl-nuklear:$lwjglVersion"
 

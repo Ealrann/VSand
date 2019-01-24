@@ -1,29 +1,29 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.provider;
+package org.sheepy.lily.vulkan.sand.model.provider;
 
 import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.sheepy.common.model.action.provider.ActionEditPlugin;
-import org.sheepy.common.model.application.provider.ApplicationEditPlugin;
-import org.sheepy.common.model.inference.provider.InferenceEditPlugin;
-import org.sheepy.common.model.presentation.provider.PresentationEditPlugin;
-import org.sheepy.common.model.root.provider.RootEditPlugin;
-import org.sheepy.common.model.types.provider.TypesEditPlugin;
-import org.sheepy.common.model.ui.provider.UiEditPlugin;
-import org.sheepy.common.model.variable.provider.VariableEditPlugin;
-import org.sheepy.vulkan.model.enumeration.provider.EnumerationEditPlugin;
+import org.sheepy.lily.core.model.action.provider.ActionEditPlugin;
+import org.sheepy.lily.core.model.application.provider.ApplicationEditPlugin;
+import org.sheepy.lily.core.model.inference.provider.InferenceEditPlugin;
+import org.sheepy.lily.core.model.presentation.provider.PresentationEditPlugin;
+import org.sheepy.lily.core.model.root.provider.RootEditPlugin;
+import org.sheepy.lily.core.model.types.provider.TypesEditPlugin;
+import org.sheepy.lily.core.model.ui.provider.UiEditPlugin;
+import org.sheepy.lily.core.model.variable.provider.VariableEditPlugin;
+import org.sheepy.lily.vulkan.model.enumeration.provider.EnumerationEditPlugin;
 
-import org.sheepy.vulkan.model.process.compute.provider.ComputeEditPlugin;
+import org.sheepy.lily.vulkan.model.process.compute.provider.ComputeEditPlugin;
 
-import org.sheepy.vulkan.model.process.graphic.provider.GraphicEditPlugin;
-import org.sheepy.vulkan.model.process.provider.ProcessEditPlugin;
+import org.sheepy.lily.vulkan.model.process.graphic.provider.GraphicEditPlugin;
+import org.sheepy.lily.vulkan.model.process.provider.ProcessEditPlugin;
 
-import org.sheepy.vulkan.model.provider.VulkanEditPlugin;
+import org.sheepy.lily.vulkan.model.provider.VulkanEditPlugin;
 
-import org.sheepy.vulkan.model.resource.provider.ResourceEditPlugin;
-import org.sheepy.vulkan.nuklear.model.provider.NuklearEditPlugin;
+import org.sheepy.lily.vulkan.model.resource.provider.ResourceEditPlugin;
+import org.sheepy.lily.vulkan.nuklear.model.provider.NuklearEditPlugin;
 
 /**
  * This is the central singleton for the VSand edit plugin.

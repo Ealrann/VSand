@@ -8,14 +8,14 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.common.api.action.context.ExecutionContext;
-import org.sheepy.common.api.adapter.impl.AbstractStatefullAdapter;
-import org.sheepy.common.api.application.IApplicationAdapter;
-import org.sheepy.common.model.action.Action;
-import org.sheepy.common.model.application.Application;
-import org.sheepy.common.model.presentation.IUIElement;
-import org.sheepy.common.model.ui.Button;
-import org.sheepy.common.model.ui.UiPackage;
+import org.sheepy.lily.core.api.action.context.ExecutionContext;
+import org.sheepy.lily.core.api.adapter.impl.AbstractStatefullAdapter;
+import org.sheepy.lily.core.api.application.IApplicationAdapter;
+import org.sheepy.lily.core.model.action.Action;
+import org.sheepy.lily.core.model.application.Application;
+import org.sheepy.lily.core.model.presentation.IUIElement;
+import org.sheepy.lily.core.model.ui.Button;
+import org.sheepy.lily.core.model.ui.UiPackage;
 
 public class ButtonAdapter extends AbstractStatefullAdapter implements IUIElementAdapter
 {

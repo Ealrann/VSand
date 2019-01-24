@@ -1,3 +1,3 @@
-[submodule "Sheepy-Vulkan"]
-	path = Sheepy-Vulkan
-	url = https://github.com/Ealrann/Sheepy-Vulkan.git
+[submodule "Lily-Vulkan"]
+	path = Lily-Vulkan
+	url = https://github.com/Ealrann/Lily-Vulkan.git

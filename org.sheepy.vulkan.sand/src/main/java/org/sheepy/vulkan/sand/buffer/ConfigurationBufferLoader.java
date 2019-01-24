@@ -4,10 +4,10 @@ import java.nio.ByteBuffer;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.vulkan.model.enumeration.EBufferUsage;
-import org.sheepy.vulkan.model.enumeration.EDescriptorType;
-import org.sheepy.vulkan.model.enumeration.EShaderStage;
-import org.sheepy.vulkan.model.resource.Buffer;
+import org.sheepy.lily.vulkan.model.enumeration.EBufferUsage;
+import org.sheepy.lily.vulkan.model.enumeration.EDescriptorType;
+import org.sheepy.lily.vulkan.model.enumeration.EShaderStage;
+import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.vulkan.sand.logic.MaterialUtil;
 import org.sheepy.vulkan.sand.model.Material;
 import org.sheepy.vulkan.sand.model.VSandApplication;

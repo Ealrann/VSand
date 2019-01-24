@@ -1,10 +1,10 @@
 package org.sheepy.vulkan.nuklear.pipeline.factory;
 
-import org.sheepy.vulkan.model.enumeration.EBlendFactor;
-import org.sheepy.vulkan.model.enumeration.EBlendOp;
-import org.sheepy.vulkan.model.process.graphic.ColorBlend;
-import org.sheepy.vulkan.model.process.graphic.impl.ColorBlendAttachmentImpl;
-import org.sheepy.vulkan.model.process.graphic.impl.ColorBlendImpl;
+import org.sheepy.lily.vulkan.model.enumeration.EBlendFactor;
+import org.sheepy.lily.vulkan.model.enumeration.EBlendOp;
+import org.sheepy.lily.vulkan.model.process.graphic.ColorBlend;
+import org.sheepy.lily.vulkan.model.process.graphic.impl.ColorBlendAttachmentImpl;
+import org.sheepy.lily.vulkan.model.process.graphic.impl.ColorBlendImpl;
 
 public class ColorBlendFactory
 {

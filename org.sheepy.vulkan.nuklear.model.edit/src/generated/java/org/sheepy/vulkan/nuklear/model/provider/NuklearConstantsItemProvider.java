@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.nuklear.model.provider;
+package org.sheepy.lily.vulkan.nuklear.model.provider;
 
 
 import java.util.Collection;
@@ -12,12 +12,12 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
 
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.sheepy.vulkan.model.resource.provider.ConstantsItemProvider;
+import org.sheepy.lily.vulkan.model.resource.provider.ConstantsItemProvider;
 
-import org.sheepy.vulkan.nuklear.model.NuklearConstants;
+import org.sheepy.lily.vulkan.nuklear.model.NuklearConstants;
 
 /**
- * This is the item provider adapter for a {@link org.sheepy.vulkan.nuklear.model.NuklearConstants} object.
+ * This is the item provider adapter for a {@link org.sheepy.lily.vulkan.nuklear.model.NuklearConstants} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated

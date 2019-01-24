@@ -1,19 +1,19 @@
 /**
  */
-package org.sheepy.vulkan.gameoflife.model.util;
+package org.sheepy.lily.vulkan.gameoflife.model.util;
 
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
-import org.sheepy.vulkan.gameoflife.model.*;
+import org.sheepy.lily.vulkan.gameoflife.model.*;
 
-import org.sheepy.vulkan.model.resource.IDescriptor;
-import org.sheepy.vulkan.model.resource.Image;
-import org.sheepy.vulkan.model.resource.Resource;
-import org.sheepy.vulkan.model.resource.SizedBuffer;
-import org.sheepy.vulkan.model.resource.VulkanBuffer;
+import org.sheepy.lily.vulkan.model.resource.IDescriptor;
+import org.sheepy.lily.vulkan.model.resource.Image;
+import org.sheepy.lily.vulkan.model.resource.Resource;
+import org.sheepy.lily.vulkan.model.resource.SizedBuffer;
+import org.sheepy.lily.vulkan.model.resource.VulkanBuffer;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,7 +25,7 @@ import org.sheepy.vulkan.model.resource.VulkanBuffer;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see org.sheepy.vulkan.gameoflife.model.GameOfLifePackage
+ * @see org.sheepy.lily.vulkan.gameoflife.model.GameOfLifePackage
  * @generated
  */
 public class GameOfLifeSwitch

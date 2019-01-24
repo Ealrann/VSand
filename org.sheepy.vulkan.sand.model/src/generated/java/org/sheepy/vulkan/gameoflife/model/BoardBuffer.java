@@ -1,9 +1,9 @@
 /**
  */
-package org.sheepy.vulkan.gameoflife.model;
+package org.sheepy.lily.vulkan.gameoflife.model;
 
-import org.sheepy.vulkan.model.resource.IDescriptor;
-import org.sheepy.vulkan.model.resource.VulkanBuffer;
+import org.sheepy.lily.vulkan.model.resource.IDescriptor;
+import org.sheepy.lily.vulkan.model.resource.VulkanBuffer;
 
 /**
  * <!-- begin-user-doc -->
@@ -11,7 +11,7 @@ import org.sheepy.vulkan.model.resource.VulkanBuffer;
  * <!-- end-user-doc -->
  *
  *
- * @see org.sheepy.vulkan.gameoflife.model.GameOfLifePackage#getBoardBuffer()
+ * @see org.sheepy.lily.vulkan.gameoflife.model.GameOfLifePackage#getBoardBuffer()
  * @model
  * @generated
  */

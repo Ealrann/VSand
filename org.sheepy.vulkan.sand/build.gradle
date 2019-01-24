@@ -35,11 +35,11 @@ if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
 }
 
 dependencies {
-	implementation project(':org.sheepy.common.impl')
+	implementation project(':org.sheepy.lily.core.impl')
 
-	implementation project(':org.sheepy.vulkan.api')
-	implementation project(':org.sheepy.vulkan.process.compute')
-	implementation project(':org.sheepy.vulkan.process.graphic')
+	implementation project(':org.sheepy.lily.vulkan.api')
+	implementation project(':org.sheepy.lily.vulkan.process.compute')
+	implementation project(':org.sheepy.lily.vulkan.process.graphic')
 
 	implementation project(':org.sheepy.vulkan.nuklear')
 }

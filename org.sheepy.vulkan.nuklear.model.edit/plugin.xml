@@ -12,8 +12,8 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated Nuklear -->
       <factory
-            uri="org.sheepy.vulkan.nuklear.model"
-            class="org.sheepy.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory"
+            uri="org.sheepy.lily.vulkan.nuklear.model"
+            class="org.sheepy.lily.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider
@@ -25,10 +25,10 @@
    <extension point="org.eclipse.emf.edit.childCreationExtenders">
       <!-- @generated Nuklear -->
       <extender
-            uri="org.sheepy.vulkan.model.process"
-            class="org.sheepy.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory$ProcessChildCreationExtender"/>
+            uri="org.sheepy.lily.vulkan.model.process"
+            class="org.sheepy.lily.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory$ProcessChildCreationExtender"/>
       <extender
-            uri="org.sheepy.vulkan.model"
-            class="org.sheepy.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory$VulkanChildCreationExtender"/>
+            uri="org.sheepy.lily.vulkan.model"
+            class="org.sheepy.lily.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory$VulkanChildCreationExtender"/>
    </extension>
 </plugin>

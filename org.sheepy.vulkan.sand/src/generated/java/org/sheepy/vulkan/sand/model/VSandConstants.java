@@ -2,7 +2,7 @@
  */
 package org.sheepy.vulkan.sand.model;
 
-import org.sheepy.vulkan.model.resource.AbstractConstants;
+import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
 
 /**
  * <!-- begin-user-doc -->

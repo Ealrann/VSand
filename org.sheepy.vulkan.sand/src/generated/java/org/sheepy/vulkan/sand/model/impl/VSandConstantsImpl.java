@@ -7,7 +7,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.sheepy.vulkan.model.resource.impl.AbstractConstantsImpl;
+import org.sheepy.lily.vulkan.model.resource.impl.AbstractConstantsImpl;
 import org.sheepy.vulkan.sand.model.VSandConstants;
 import org.sheepy.vulkan.sand.model.VSandPackage;
 

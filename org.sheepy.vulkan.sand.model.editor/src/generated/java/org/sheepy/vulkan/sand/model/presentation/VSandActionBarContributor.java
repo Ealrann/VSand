@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.vulkan.sand.model.presentation;
+package org.sheepy.lily.vulkan.sand.model.presentation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -212,7 +212,7 @@ public class VSandActionBarContributor
 	{
 		super.contributeToMenu(menuManager);
 
-		IMenuManager submenuManager = new MenuManager(VSandEditorPlugin.INSTANCE.getString("_UI_VSandEditor_menu"), "org.sheepy.vulkan.sand.modelMenuID");
+		IMenuManager submenuManager = new MenuManager(VSandEditorPlugin.INSTANCE.getString("_UI_VSandEditor_menu"), "org.sheepy.lily.vulkan.sand.modelMenuID");
 		menuManager.insertAfter("additions", submenuManager);
 		submenuManager.add(new Separator("settings"));
 		submenuManager.add(new Separator("actions"));

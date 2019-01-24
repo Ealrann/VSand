@@ -3,10 +3,10 @@ package org.sheepy.vulkan.nuklear.adapter;
 import static org.lwjgl.nuklear.Nuklear.nk_layout_row_dynamic;
 
 import org.eclipse.emf.ecore.EClass;
-import org.sheepy.common.api.adapter.impl.AbstractSingletonAdapter;
-import org.sheepy.common.model.presentation.IUIElement;
-import org.sheepy.common.model.ui.DynamicRowLayout;
-import org.sheepy.common.model.ui.UiPackage;
+import org.sheepy.lily.core.api.adapter.impl.AbstractSingletonAdapter;
+import org.sheepy.lily.core.model.presentation.IUIElement;
+import org.sheepy.lily.core.model.ui.DynamicRowLayout;
+import org.sheepy.lily.core.model.ui.UiPackage;
 
 public class DynamicRowLayoutAdapter extends AbstractSingletonAdapter implements IUIElementAdapter
 {

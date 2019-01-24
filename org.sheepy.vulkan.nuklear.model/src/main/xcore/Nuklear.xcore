@@ -1,16 +1,16 @@
-@GenModel(modelDirectory="/org.sheepy.vulkan.nuklear.model/src/generated/java")
-@GenModel(editDirectory="/org.sheepy.vulkan.nuklear.model.edit/src/generated/java")
+@GenModel(modelDirectory="/org.sheepy.lily.vulkan.nuklear.model/src/generated/java")
+@GenModel(editDirectory="/org.sheepy.lily.vulkan.nuklear.model.edit/src/generated/java")
 @GenModel(modelName="Nuklear", prefix="Nuklear")
 @GenModel(publicConstructors="true", complianceLevel="11.0", resource="XMI")
 @GenModel(childCreationExtenders="true")
 
-package org.sheepy.vulkan.nuklear.model
+package org.sheepy.lily.vulkan.nuklear.model
 
-import org.sheepy.vulkan.model.process.IPipeline
-import org.sheepy.vulkan.model.process.graphic.IGUIPipeline
-import org.sheepy.vulkan.model.resource.Constants
-import org.sheepy.vulkan.model.resource.Font
-import org.sheepy.vulkan.model.resource.IndexedBuffer
+import org.sheepy.lily.vulkan.model.process.IPipeline
+import org.sheepy.lily.vulkan.model.process.graphic.IGUIPipeline
+import org.sheepy.lily.vulkan.model.resource.Constants
+import org.sheepy.lily.vulkan.model.resource.Font
+import org.sheepy.lily.vulkan.model.resource.IndexedBuffer
 
 class NuklearPipeline extends IPipeline, IGUIPipeline
 {

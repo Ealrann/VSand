@@ -6,13 +6,13 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.vulkan.common.execution.ExecutionManager;
-import org.sheepy.vulkan.common.execution.IResourceAllocable;
-import org.sheepy.vulkan.model.enumeration.EFilter;
-import org.sheepy.vulkan.model.resource.Sampler;
-import org.sheepy.vulkan.model.resource.impl.SamplerImpl;
-import org.sheepy.vulkan.resource.image.ImageInfo;
-import org.sheepy.vulkan.resource.nativehelper.VkTexture;
+import org.sheepy.lily.vulkan.common.execution.ExecutionManager;
+import org.sheepy.lily.vulkan.common.execution.IResourceAllocable;
+import org.sheepy.lily.vulkan.model.enumeration.EFilter;
+import org.sheepy.lily.vulkan.model.resource.Sampler;
+import org.sheepy.lily.vulkan.model.resource.impl.SamplerImpl;
+import org.sheepy.lily.vulkan.resource.image.ImageInfo;
+import org.sheepy.lily.vulkan.resource.nativehelper.VkTexture;
 
 public class NullTexture implements IResourceAllocable
 {

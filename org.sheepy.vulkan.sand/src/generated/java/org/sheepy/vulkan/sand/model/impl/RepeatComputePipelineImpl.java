@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.sheepy.vulkan.model.process.compute.impl.ComputePipelineImpl;
+import org.sheepy.lily.vulkan.model.process.compute.impl.ComputePipelineImpl;
 
 import org.sheepy.vulkan.sand.model.RepeatComputePipeline;
 import org.sheepy.vulkan.sand.model.VSandPackage;

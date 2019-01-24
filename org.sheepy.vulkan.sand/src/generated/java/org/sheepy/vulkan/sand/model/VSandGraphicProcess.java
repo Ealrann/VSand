@@ -2,7 +2,7 @@
  */
 package org.sheepy.vulkan.sand.model;
 
-import org.sheepy.vulkan.model.process.graphic.GraphicProcess;
+import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
 
 /**
  * <!-- begin-user-doc -->

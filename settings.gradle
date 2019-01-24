@@ -5,39 +5,39 @@ include ':org.sheepy.vulkan.sand'
 include ':org.sheepy.vulkan.nuklear'
 
 // Common
-include ':org.sheepy.common.api'
-project(':org.sheepy.common.api').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/org.sheepy.common.api')
+include ':org.sheepy.lily.core.api'
+project(':org.sheepy.lily.core.api').projectDir = new File(settingsDir, 'Lily-Vulkan/Lily-core/org.sheepy.lily.core.api')
 
-include ':org.sheepy.common.impl'
-project(':org.sheepy.common.impl').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/org.sheepy.common.impl')
+include ':org.sheepy.lily.core.impl'
+project(':org.sheepy.lily.core.impl').projectDir = new File(settingsDir, 'Lily-Vulkan/Lily-core/org.sheepy.lily.core.impl')
 
 // EMF
 include 'org.eclipse.emf.common'
 include 'org.eclipse.emf.ecore'
 include 'org.eclipse.emf.ecore.xmi'
-project(':org.eclipse.emf.common').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/EMF/org.eclipse.emf.common')
-project(':org.eclipse.emf.ecore').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/EMF/org.eclipse.emf.ecore')
-project(':org.eclipse.emf.ecore.xmi').projectDir = new File(settingsDir, 'Sheepy-Vulkan/Sheepy/EMF/org.eclipse.emf.ecore.xmi')
+project(':org.eclipse.emf.common').projectDir = new File(settingsDir, 'Lily-Vulkan/Lily-core/EMF/org.eclipse.emf.common')
+project(':org.eclipse.emf.ecore').projectDir = new File(settingsDir, 'Lily-Vulkan/Lily-core/EMF/org.eclipse.emf.ecore')
+project(':org.eclipse.emf.ecore.xmi').projectDir = new File(settingsDir, 'Lily-Vulkan/Lily-core/EMF/org.eclipse.emf.ecore.xmi')
 
 // Vulkan
-include ':org.sheepy.vulkan.api'
-include ':org.sheepy.vulkan.common'
-include ':org.sheepy.vulkan.resource'
-include ':org.sheepy.vulkan.process'
-include ':org.sheepy.vulkan.process.graphic'
-include ':org.sheepy.vulkan.process.compute'
+include ':org.sheepy.lily.vulkan.api'
+include ':org.sheepy.lily.vulkan.common'
+include ':org.sheepy.lily.vulkan.resource'
+include ':org.sheepy.lily.vulkan.process'
+include ':org.sheepy.lily.vulkan.process.graphic'
+include ':org.sheepy.lily.vulkan.process.compute'
 
-project(':org.sheepy.vulkan.api').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.api')
-project(':org.sheepy.vulkan.common').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.common')
-project(':org.sheepy.vulkan.resource').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.resource')
-project(':org.sheepy.vulkan.process').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.process')
-project(':org.sheepy.vulkan.process.graphic').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.process.graphic')
-project(':org.sheepy.vulkan.process.compute').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.process.compute')
+project(':org.sheepy.lily.vulkan.api').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.api')
+project(':org.sheepy.lily.vulkan.common').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.common')
+project(':org.sheepy.lily.vulkan.resource').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.resource')
+project(':org.sheepy.lily.vulkan.process').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.process')
+project(':org.sheepy.lily.vulkan.process.graphic').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.process.graphic')
+project(':org.sheepy.lily.vulkan.process.compute').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.process.compute')
 
 
 // DEMO
-include ':org.sheepy.vulkan.demo'
-include ':org.sheepy.vulkan.gameoflife'
+include ':org.sheepy.lily.vulkan.demo'
+include ':org.sheepy.lily.vulkan.gameoflife'
 
-project(':org.sheepy.vulkan.demo').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.demo')
-project(':org.sheepy.vulkan.gameoflife').projectDir = new File(settingsDir, 'Sheepy-Vulkan/org.sheepy.vulkan.gameoflife')
+project(':org.sheepy.lily.vulkan.demo').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.demo')
+project(':org.sheepy.lily.vulkan.gameoflife').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.gameoflife')

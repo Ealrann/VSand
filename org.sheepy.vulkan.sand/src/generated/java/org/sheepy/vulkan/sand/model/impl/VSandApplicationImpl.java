@@ -7,7 +7,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.sheepy.common.model.application.impl.ApplicationImpl;
+import org.sheepy.lily.core.model.application.impl.ApplicationImpl;
 import org.sheepy.vulkan.sand.model.Material;
 import org.sheepy.vulkan.sand.model.Materials;
 import org.sheepy.vulkan.sand.model.Transformations;
