@@ -1,6 +1,6 @@
 /**
  */
-package org.sheepy.lily.vulkan.nuklear.model.provider;
+package org.sheepy.vulkan.nuklear.model.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,9 +41,9 @@ import org.sheepy.lily.vulkan.model.process.util.ProcessSwitch;
 
 import org.sheepy.lily.vulkan.model.util.VulkanSwitch;
 
-import org.sheepy.lily.vulkan.nuklear.model.NuklearFactory;
+import org.sheepy.vulkan.nuklear.model.NuklearFactory;
 
-import org.sheepy.lily.vulkan.nuklear.model.util.NuklearAdapterFactory;
+import org.sheepy.vulkan.nuklear.model.util.NuklearAdapterFactory;
 
 /**
  * This is the factory that is used to provide the interfaces needed to support Viewers.
@@ -96,7 +96,7 @@ public class NuklearItemProviderAdapterFactory extends NuklearAdapterFactory imp
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.nuklear.model.NuklearPipeline} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.nuklear.model.NuklearPipeline} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -104,7 +104,7 @@ public class NuklearItemProviderAdapterFactory extends NuklearAdapterFactory imp
 	protected NuklearPipelineItemProvider nuklearPipelineItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.nuklear.model.NuklearPipeline}.
+	 * This creates an adapter for a {@link org.sheepy.vulkan.nuklear.model.NuklearPipeline}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -121,7 +121,7 @@ public class NuklearItemProviderAdapterFactory extends NuklearAdapterFactory imp
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.nuklear.model.NuklearConstants} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.nuklear.model.NuklearConstants} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -129,7 +129,7 @@ public class NuklearItemProviderAdapterFactory extends NuklearAdapterFactory imp
 	protected NuklearConstantsItemProvider nuklearConstantsItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.nuklear.model.NuklearConstants}.
+	 * This creates an adapter for a {@link org.sheepy.vulkan.nuklear.model.NuklearConstants}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -146,7 +146,7 @@ public class NuklearItemProviderAdapterFactory extends NuklearAdapterFactory imp
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.lily.vulkan.nuklear.model.NuklearIndexBuffer} instances.
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vulkan.nuklear.model.NuklearIndexBuffer} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -154,7 +154,7 @@ public class NuklearItemProviderAdapterFactory extends NuklearAdapterFactory imp
 	protected NuklearIndexBufferItemProvider nuklearIndexBufferItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.sheepy.lily.vulkan.nuklear.model.NuklearIndexBuffer}.
+	 * This creates an adapter for a {@link org.sheepy.vulkan.nuklear.model.NuklearIndexBuffer}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated

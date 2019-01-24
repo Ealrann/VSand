@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated GameOfLife -->
+      <package
+            uri="org.sheepy.vsand.model"
+            class="org.sheepy.vsand.model.VSandPackage"
+            genModel="src/main/xcore/VSand.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated VSand -->
+      <parser
+            type="vsand"
+            class="org.sheepy.vsand.model.util.VSandResourceFactoryImpl"/>
+   </extension>
+
+</plugin>
