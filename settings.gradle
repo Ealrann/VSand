@@ -2,7 +2,6 @@ rootProject.name = "VSand"
 
 
 include ':org.sheepy.vsand'
-include ':org.sheepy.vulkan.nuklear'
 
 // Common
 include ':org.sheepy.lily.core.api'
@@ -26,6 +25,7 @@ include ':org.sheepy.lily.vulkan.resource'
 include ':org.sheepy.lily.vulkan.process'
 include ':org.sheepy.lily.vulkan.process.graphic'
 include ':org.sheepy.lily.vulkan.process.compute'
+include ':org.sheepy.lily.vulkan.nuklear'
 
 project(':org.sheepy.lily.vulkan.api').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.api')
 project(':org.sheepy.lily.vulkan.common').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.common')
@@ -33,6 +33,7 @@ project(':org.sheepy.lily.vulkan.resource').projectDir = new File(settingsDir, '
 project(':org.sheepy.lily.vulkan.process').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.process')
 project(':org.sheepy.lily.vulkan.process.graphic').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.process.graphic')
 project(':org.sheepy.lily.vulkan.process.compute').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.process.compute')
+project(':org.sheepy.lily.vulkan.nuklear').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.nuklear')
 
 
 // DEMO

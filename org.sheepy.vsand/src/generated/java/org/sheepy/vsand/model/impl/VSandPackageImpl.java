@@ -41,7 +41,7 @@ import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandGraphicProcess;
 import org.sheepy.vsand.model.VSandNuklearPipeline;
 import org.sheepy.vsand.model.VSandPackage;
-import org.sheepy.vulkan.nuklear.model.NuklearPackage;
+import org.sheepy.lily.vulkan.nuklear.model.NuklearPackage;
 
 /**
  * <!-- begin-user-doc -->

@@ -35,7 +35,7 @@ import org.sheepy.lily.vulkan.model.process.graphic.IGraphicsPipeline;
 import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
 import org.sheepy.lily.vulkan.model.resource.BasicResource;
 import org.sheepy.vsand.model.*;
-import org.sheepy.vulkan.nuklear.model.NuklearPipeline;
+import org.sheepy.lily.vulkan.nuklear.model.NuklearPipeline;
 
 /**
  * <!-- begin-user-doc -->
@@ -813,13 +813,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vulkan.nuklear.model.NuklearPipeline <em>Pipeline</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.nuklear.model.NuklearPipeline <em>Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.vulkan.nuklear.model.NuklearPipeline
+	 * @see org.sheepy.lily.vulkan.nuklear.model.NuklearPipeline
 	 * @generated
 	 */
 	public Adapter createNuklearPipelineAdapter()

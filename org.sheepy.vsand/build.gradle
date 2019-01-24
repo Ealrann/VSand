@@ -41,7 +41,7 @@ dependencies {
 	implementation project(':org.sheepy.lily.vulkan.process.compute')
 	implementation project(':org.sheepy.lily.vulkan.process.graphic')
 
-	implementation project(':org.sheepy.vulkan.nuklear')
+	implementation project(':org.sheepy.lily.vulkan.nuklear')
 }
 
 switch ( OperatingSystem.current() ) {

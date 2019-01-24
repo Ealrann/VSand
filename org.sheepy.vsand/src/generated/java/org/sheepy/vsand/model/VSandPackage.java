@@ -12,7 +12,7 @@ import org.sheepy.lily.core.model.ui.UiPackage;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePackage;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicPackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
-import org.sheepy.vulkan.nuklear.model.NuklearPackage;
+import org.sheepy.lily.vulkan.nuklear.model.NuklearPackage;
 
 /**
  * <!-- begin-user-doc -->

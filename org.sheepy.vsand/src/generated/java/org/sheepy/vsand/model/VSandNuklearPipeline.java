@@ -2,7 +2,7 @@
  */
 package org.sheepy.vsand.model;
 
-import org.sheepy.vulkan.nuklear.model.NuklearPipeline;
+import org.sheepy.lily.vulkan.nuklear.model.NuklearPipeline;
 
 /**
  * <!-- begin-user-doc -->

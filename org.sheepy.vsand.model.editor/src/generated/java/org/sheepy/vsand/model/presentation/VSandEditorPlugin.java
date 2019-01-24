@@ -26,7 +26,7 @@ import org.sheepy.lily.vulkan.model.process.provider.ProcessEditPlugin;
 import org.sheepy.lily.vulkan.model.provider.VulkanEditPlugin;
 
 import org.sheepy.lily.vulkan.model.resource.provider.ResourceEditPlugin;
-import org.sheepy.vulkan.nuklear.model.provider.NuklearEditPlugin;
+import org.sheepy.lily.vulkan.nuklear.model.provider.NuklearEditPlugin;
 
 /**
  * This is the central singleton for the VSand editor plugin.

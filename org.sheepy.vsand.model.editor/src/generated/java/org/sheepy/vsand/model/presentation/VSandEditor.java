@@ -163,7 +163,7 @@ import org.sheepy.lily.vulkan.model.process.graphic.provider.GraphicItemProvider
 import org.sheepy.lily.vulkan.model.process.provider.ProcessItemProviderAdapterFactory;
 
 import org.sheepy.lily.vulkan.model.provider.VulkanItemProviderAdapterFactory;
-import org.sheepy.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.nuklear.model.provider.NuklearItemProviderAdapterFactory;
 
 
 /**

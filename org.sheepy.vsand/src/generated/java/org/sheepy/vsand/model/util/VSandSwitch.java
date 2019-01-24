@@ -33,7 +33,7 @@ import org.sheepy.lily.vulkan.model.process.graphic.IGraphicsPipeline;
 import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
 import org.sheepy.lily.vulkan.model.resource.BasicResource;
 import org.sheepy.vsand.model.*;
-import org.sheepy.vulkan.nuklear.model.NuklearPipeline;
+import org.sheepy.lily.vulkan.nuklear.model.NuklearPipeline;
 
 /**
  * <!-- begin-user-doc -->

@@ -21,7 +21,7 @@ import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.vulkan.api.window.IWindowListener;
 import org.sheepy.lily.vulkan.api.window.Surface;
 import org.sheepy.lily.vulkan.common.ui.UIUtil;
-import org.sheepy.vulkan.nuklear.adapter.IUIElementAdapter;
+import org.sheepy.lily.vulkan.nuklear.adapter.IUIElementAdapter;
 import org.sheepy.vsand.adapter.drawer.MaterialDrawer;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;

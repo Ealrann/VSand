@@ -10,7 +10,7 @@ import org.sheepy.vsand.model.VSandModelExtension;
 
 module org.sheepy.vsand
 {
-	requires org.sheepy.vulkan.nuklear;
+	requires org.sheepy.lily.vulkan.nuklear;
 
 	requires org.sheepy.lily.core.impl;
 
