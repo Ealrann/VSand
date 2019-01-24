@@ -37,5 +37,10 @@
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/org.sheepy.vsand/src/generated/java</locationURI>
 		</link>
+		<link>
+			<name>src/main/resources</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/org.sheepy.vsand/src/main/resources</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>
