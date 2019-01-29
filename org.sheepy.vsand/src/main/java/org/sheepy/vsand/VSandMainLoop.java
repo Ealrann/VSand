@@ -46,7 +46,7 @@ public class VSandMainLoop implements IMainLoop
 	private IProcessAdapter renderProcessAdapter;
 
 	private ModificationsManager modificationsManager;
-	private VSandConstants constant;
+	private VSandConstants constants;
 	private RepeatComputePipeline stepPipeline;
 	private ComputePipeline drawPipeline;
 	private IInputManager inputManager;
@@ -74,7 +74,7 @@ public class VSandMainLoop implements IMainLoop
 
 		gatherAndLoadProcesses(width, height, vulkanEngine);
 
-		vsandInputManager = new VSandInputManager(application, stepPipeline);
+		vsandInputManager = new VSandInputManager(application, constants, stepPipeline);
 		inputManager.addListener(vsandInputManager);
 
 		engineAdapter.allocate();
@@ -108,7 +108,7 @@ public class VSandMainLoop implements IMainLoop
 				drawPipeline = (ComputePipeline) boardProcess.getUnits().get(0);
 				stepPipeline = (RepeatComputePipeline) boardProcess.getUnits().get(1);
 
-				constant = (VSandConstants) stepPipeline.getConstants();
+				constants = (VSandConstants) stepPipeline.getConstants();
 
 				var boardBuffer = (Buffer) boardProcess.getResources().get(0);
 				var configurationBuffer = (Buffer) boardProcess.getResources().get(1);
@@ -136,7 +136,7 @@ public class VSandMainLoop implements IMainLoop
 
 		updateDrawManager();
 
-		constant.setFirstPass(true);
+		constants.setFirstPass(true);
 
 		boardProcessAdapter.prepare();
 		if (drawPipeline.isEnabled())

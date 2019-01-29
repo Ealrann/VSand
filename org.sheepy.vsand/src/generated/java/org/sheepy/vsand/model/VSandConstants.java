@@ -14,6 +14,7 @@ import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
  * </p>
  * <ul>
  *   <li>{@link org.sheepy.vsand.model.VSandConstants#isFirstPass <em>First Pass</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandConstants#isShowSleepZones <em>Show Sleep Zones</em>}</li>
  * </ul>
  *
  * @see org.sheepy.vsand.model.VSandPackage#getVSandConstants()
@@ -48,5 +49,32 @@ public interface VSandConstants extends AbstractConstants
 	 * @generated
 	 */
 	void setFirstPass(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Show Sleep Zones</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Show Sleep Zones</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Show Sleep Zones</em>' attribute.
+	 * @see #setShowSleepZones(boolean)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandConstants_ShowSleepZones()
+	 * @model default="false" unique="false"
+	 * @generated
+	 */
+	boolean isShowSleepZones();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandConstants#isShowSleepZones <em>Show Sleep Zones</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Show Sleep Zones</em>' attribute.
+	 * @see #isShowSleepZones()
+	 * @generated
+	 */
+	void setShowSleepZones(boolean value);
 
 } // VSandConstants

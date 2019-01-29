@@ -81,6 +81,7 @@ class RepeatComputePipeline extends ComputePipeline
 class VSandConstants extends AbstractConstants
 {
 	boolean firstPass = "true"
+	boolean showSleepZones = "false"
 }
 
 class MaterialSelectorPanel extends IPanel

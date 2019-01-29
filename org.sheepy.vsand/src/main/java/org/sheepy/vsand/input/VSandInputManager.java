@@ -10,6 +10,7 @@ import org.sheepy.lily.core.model.types.EKeyState;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.model.VSandConstants;
 
 public class VSandInputManager implements IInputListener
 {
@@ -20,11 +21,15 @@ public class VSandInputManager implements IInputListener
 
 	private boolean leftClicPressed = false;
 	private boolean rightClicPressed = false;
+	private VSandConstants constants;
 
-	public VSandInputManager(VSandApplication application, RepeatComputePipeline stepPipeline)
+	public VSandInputManager(	VSandApplication application,
+								VSandConstants constants,
+								RepeatComputePipeline stepPipeline)
 	{
 		this.application = application;
 		this.stepPipeline = stepPipeline;
+		this.constants = constants;
 	}
 
 	@Override
@@ -84,6 +89,10 @@ public class VSandInputManager implements IInputListener
 				application.setNextMode(true);
 				stepPipeline.setEnabled(true);
 				stepPipeline.setRepeatCount(1);
+				break;
+			// s
+			case 's' - 32:
+				constants.setShowSleepZones(!constants.isShowSleepZones());
 				break;
 			}
 		}

@@ -563,6 +563,17 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
+	public EAttribute getVSandConstants_ShowSleepZones()
+	{
+		return (EAttribute)vSandConstantsEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getVSandButton()
 	{
 		return vSandButtonEClass;
@@ -757,6 +768,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		vSandConstantsEClass = createEClass(VSAND_CONSTANTS);
 		createEAttribute(vSandConstantsEClass, VSAND_CONSTANTS__FIRST_PASS);
+		createEAttribute(vSandConstantsEClass, VSAND_CONSTANTS__SHOW_SLEEP_ZONES);
 
 		materialSelectorPanelEClass = createEClass(MATERIAL_SELECTOR_PANEL);
 		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__LINE_HEIGHT);
@@ -862,6 +874,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		initEClass(vSandConstantsEClass, VSandConstants.class, "VSandConstants", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVSandConstants_FirstPass(), theEcorePackage.getEBoolean(), "firstPass", "true", 0, 1, VSandConstants.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandConstants_ShowSleepZones(), theEcorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandConstants.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(materialSelectorPanelEClass, MaterialSelectorPanel.class, "MaterialSelectorPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMaterialSelectorPanel_LineHeight(), theEcorePackage.getEInt(), "lineHeight", "32", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

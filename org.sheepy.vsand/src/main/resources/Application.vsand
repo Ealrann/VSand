@@ -125,7 +125,7 @@
           <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
         </units>
       </units>
-      <units xsi:type="compute:ComputePipeline" stage="Compute" name="Board to Pixel" descriptorSet="//@engines.0/@processes.0/@descriptorSets.2" width="1248" height="704" depth="1">
+      <units xsi:type="compute:ComputePipeline" stage="Compute" name="Board to Pixel" descriptorSet="//@engines.0/@processes.0/@descriptorSets.2" constants="//@engines.0/@processes.0/@resources.11" width="1248" height="704" depth="1">
         <units xsi:type="process:PipelineBarrier" stage="Compute">
           <barrier xsi:type="resource:ImageBarrier" dstStage="COMPUTE_SHADER_BIT" image="//@engines.0/@sharedResources/@resources.0">
             <transitions dstLayout="GENERAL">

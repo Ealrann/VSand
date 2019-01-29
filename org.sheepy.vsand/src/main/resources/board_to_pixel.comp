@@ -24,6 +24,13 @@ struct Entry
 	uint rgb;
 };
 
+// Random number, change each frame.
+layout (push_constant) uniform PushConstants {
+	float random;
+	int firstPass;
+	int showSleepChunks;
+} pushConstants;
+
 layout(binding = 0) uniform SConfiguration
 {
 	Entry materials[MATERIAL_COUNT];
@@ -47,7 +54,10 @@ void main()
 
 	if((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 4) == 0)
 	{
-		// imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), vec4(1.0, 0.5, 0.5, 0.1));
+		if(pushConstants.showSleepChunks == 1)
+		{
+			imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), vec4(1.0, 0.5, 0.5, 0.1));
+		}
 		return;
 	}
 

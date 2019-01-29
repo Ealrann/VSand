@@ -785,13 +785,22 @@ public interface VSandPackage extends EPackage
 	int VSAND_CONSTANTS__FIRST_PASS = ResourcePackage.ABSTRACT_CONSTANTS_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Show Sleep Zones</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_CONSTANTS__SHOW_SLEEP_ZONES = ResourcePackage.ABSTRACT_CONSTANTS_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Constants</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_CONSTANTS_FEATURE_COUNT = ResourcePackage.ABSTRACT_CONSTANTS_FEATURE_COUNT + 1;
+	int VSAND_CONSTANTS_FEATURE_COUNT = ResourcePackage.ABSTRACT_CONSTANTS_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Constants</em>' class.
@@ -1997,6 +2006,17 @@ public interface VSandPackage extends EPackage
 	EAttribute getVSandConstants_FirstPass();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandConstants#isShowSleepZones <em>Show Sleep Zones</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Show Sleep Zones</em>'.
+	 * @see org.sheepy.vsand.model.VSandConstants#isShowSleepZones()
+	 * @see #getVSandConstants()
+	 * @generated
+	 */
+	EAttribute getVSandConstants_ShowSleepZones();
+
+	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandButton <em>Button</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2408,6 +2428,14 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EAttribute VSAND_CONSTANTS__FIRST_PASS = eINSTANCE.getVSandConstants_FirstPass();
+
+		/**
+		 * The meta object literal for the '<em><b>Show Sleep Zones</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VSAND_CONSTANTS__SHOW_SLEEP_ZONES = eINSTANCE.getVSandConstants_ShowSleepZones();
 
 		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.VSandButton <em>Button</em>}' class.

@@ -51,6 +51,7 @@ public class VSandConstantsItemProvider extends AbstractConstantsItemProvider
 			super.getPropertyDescriptors(object);
 
 			addFirstPassPropertyDescriptor(object);
+			addShowSleepZonesPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -70,6 +71,29 @@ public class VSandConstantsItemProvider extends AbstractConstantsItemProvider
 				 getString("_UI_VSandConstants_firstPass_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_VSandConstants_firstPass_feature", "_UI_VSandConstants_type"),
 				 VSandPackage.Literals.VSAND_CONSTANTS__FIRST_PASS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Show Sleep Zones feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addShowSleepZonesPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandConstants_showSleepZones_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandConstants_showSleepZones_feature", "_UI_VSandConstants_type"),
+				 VSandPackage.Literals.VSAND_CONSTANTS__SHOW_SLEEP_ZONES,
 				 true,
 				 false,
 				 false,
@@ -121,6 +145,7 @@ public class VSandConstantsItemProvider extends AbstractConstantsItemProvider
 		switch (notification.getFeatureID(VSandConstants.class))
 		{
 			case VSandPackage.VSAND_CONSTANTS__FIRST_PASS:
+			case VSandPackage.VSAND_CONSTANTS__SHOW_SLEEP_ZONES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

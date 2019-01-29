@@ -13,7 +13,7 @@ import org.sheepy.vsand.model.VSandPackage;
 
 public class VSandConstantAdapter extends AbstractConstantsAdapter implements IFlatAllocableAdapter
 {
-	private final int BYTE_SIZE = Integer.BYTES * 2;
+	private final int BYTE_SIZE = Integer.BYTES * 3;
 	private final Random random = new Random(System.nanoTime());
 
 	private ByteBuffer buffer = null;
@@ -51,6 +51,7 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IF
 
 		buffer.putFloat(rNumber);
 		buffer.putInt(firstPass);
+		buffer.putInt(pc.isShowSleepZones() ? 1 : 0);
 		buffer.flip();
 
 		return buffer;

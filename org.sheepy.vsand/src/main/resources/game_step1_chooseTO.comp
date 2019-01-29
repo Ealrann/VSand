@@ -43,6 +43,7 @@ struct Entry
 layout (push_constant) uniform PushConstants {
 	float random;
 	int firstPass;
+	int showSleepChunks;
 } pushConstants;
 
 // The definition of materials.
