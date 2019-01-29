@@ -43,12 +43,6 @@ public class VSandInputManager implements IInputListener
 				shiftPressed = false;
 			}
 			break;
-		// n
-		case 'n' - 32:
-			application.setNextMode(true);
-			stepPipeline.setEnabled(true);
-			stepPipeline.setRepeatCount(1);
-			break;
 		}
 
 		// Pressed specific
@@ -84,6 +78,12 @@ public class VSandInputManager implements IInputListener
 				int brushPlus = application.getBrushSize();
 				brushPlus = Math.min(8, brushPlus + 1);
 				application.setBrushSize(brushPlus);
+				break;
+			// n
+			case 'n' - 32:
+				application.setNextMode(true);
+				stepPipeline.setEnabled(true);
+				stepPipeline.setRepeatCount(1);
 				break;
 			}
 		}
