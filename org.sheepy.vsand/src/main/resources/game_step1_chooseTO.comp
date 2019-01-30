@@ -114,14 +114,22 @@ void main()
 		int valueDown = y < (HEIGHT - 1) ? board.data[x][y + 1] : 0;
 		// Make a list of available directions
 
-		if (configuration.materials[valueDown].isStatic == 0
-				&& density > configuration.materials[valueDown].density
-				&& gold_noise(ivec2(x, y), pushConstants.random) < 0.92)
+		bool wantToFallDown = configuration.materials[valueDown].isStatic == 0
+				&& density > configuration.materials[valueDown].density;
+		bool luck = gold_noise(ivec2(x, y), pushConstants.random) < 0.92;
+		if (wantToFallDown && luck)
 		{
 			decision.data[x][y] |= TO_DOWN | (valueDown << TARGET_VALUE_POSITION);
 			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 1;
 		}
-		else
+
+		if (wantToFallDown && !luck)
+		{
+			// tag this chunk active, to prevent a no luck sleep.
+			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 1;
+		}
+
+		if( !wantToFallDown || !luck)
 		{
 			// If not fallingdown, we check the right/left move
 			int valueLeft = x > 0 ? board.data[x - 1][y] : 0;

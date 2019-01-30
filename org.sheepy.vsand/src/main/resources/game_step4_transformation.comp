@@ -103,7 +103,7 @@ void main()
 
 	if(gl_LocalInvocationIndex == 0)
 	{
-		if((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 2) != 0)
+		if((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 3) != 0)
 		{
 			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 4;
 		}
