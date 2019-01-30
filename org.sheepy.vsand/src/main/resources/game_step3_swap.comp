@@ -104,7 +104,7 @@ void main()
 	bool validPosition;
 	bool end;
 
-	// We will take the value of our target neighbor if he do the same move.
+	// We will take the value of our target neighbor if he does the same move.
 	uint dir = decision.data[x][y] & 15;
 	int localY = int(gl_LocalInvocationID.y);
 	int workgroupOffset = 0;
