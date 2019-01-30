@@ -47,8 +47,6 @@
       <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Board Buffer">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>STORAGE_BUFFER_BIT</usages>
-        <usages>TRANSFER_SRC_BIT</usages>
-        <usages>TRANSFER_DST_BIT</usages>
       </resources>
       <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="Configuration">
         <shaderStages>COMPUTE_BIT</shaderStages>
