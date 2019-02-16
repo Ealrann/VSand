@@ -4,7 +4,7 @@ plugins {
 	id 'java'
 	id 'application'
 	id 'distribution'
-	id 'org.beryx.jlink' version '2.4.1'
+	id 'org.beryx.jlink' version '2.6.1'
 }
 
 jlink {
