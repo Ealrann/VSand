@@ -4,9 +4,6 @@ import java.nio.ByteBuffer;
 import java.util.Random;
 
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.vulkan.model.enumeration.EBufferUsage;
-import org.sheepy.lily.vulkan.model.enumeration.EDescriptorType;
-import org.sheepy.lily.vulkan.model.enumeration.EShaderStage;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 
 /**
@@ -35,10 +32,6 @@ public class BoardDecisionLoader
 		int byteSize = size * Integer.BYTES;
 
 		buffer.setSize(byteSize);
-		buffer.getUsages().add(EBufferUsage.TRANSFER_DST_BIT);
-		buffer.getUsages().add(EBufferUsage.STORAGE_BUFFER_BIT);
-		buffer.setDescriptorType(EDescriptorType.STORAGE_BUFFER);
-		buffer.getShaderStages().add(EShaderStage.COMPUTE_BIT);
 
 		ByteBuffer javaBuffer = MemoryUtil.memAlloc(byteSize);
 		updateRandomness(javaBuffer, size);

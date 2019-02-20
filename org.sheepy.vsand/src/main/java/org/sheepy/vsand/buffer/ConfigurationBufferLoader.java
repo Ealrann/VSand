@@ -4,9 +4,6 @@ import java.nio.ByteBuffer;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.vulkan.model.enumeration.EBufferUsage;
-import org.sheepy.lily.vulkan.model.enumeration.EDescriptorType;
-import org.sheepy.lily.vulkan.model.enumeration.EShaderStage;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.vsand.logic.MaterialUtil;
 import org.sheepy.vsand.model.Material;
@@ -21,10 +18,6 @@ public class ConfigurationBufferLoader
 		var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);
 
 		buffer.setSize(BYTE_SIZE);
-		buffer.getUsages().add(EBufferUsage.UNIFORM_BUFFER_BIT);
-		buffer.getUsages().add(EBufferUsage.TRANSFER_DST_BIT);
-		buffer.setDescriptorType(EDescriptorType.UNIFORM_BUFFER);
-		buffer.getShaderStages().add(EShaderStage.COMPUTE_BIT);
 
 		ByteBuffer bBuffer = MemoryUtil.memAlloc(BYTE_SIZE);
 		for (Material material : application.getMaterials().getMaterials())

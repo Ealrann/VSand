@@ -41,12 +41,20 @@
   </views>
   <engines xsi:type="model_1:VulkanEngine">
     <sharedResources>
-      <resources xsi:type="resource:Image" descriptorType="STORAGE_IMAGE" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM"/>
+      <resources xsi:type="resource:Image" descriptorType="STORAGE_IMAGE" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM">
+        <shaderStages>COMPUTE_BIT</shaderStages>
+        <usages>TransferSrc</usages>
+        <usages>Storage</usages>
+        <initialLayout stage="COMPUTE_SHADER_BIT" layout="GENERAL">
+          <accessMask>SHADER_WRITE_BIT</accessMask>
+        </initialLayout>
+      </resources>
     </sharedResources>
     <processes xsi:type="model:VSandComputeProcess" name="Board Compute" resetAllowed="true" dependentProcesses="//@engines.0/@processes.1/@semaphores.0">
       <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Board Buffer">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>STORAGE_BUFFER_BIT</usages>
+        <usages>TRANSFER_DST_BIT</usages>
       </resources>
       <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="Configuration">
         <shaderStages>COMPUTE_BIT</shaderStages>
