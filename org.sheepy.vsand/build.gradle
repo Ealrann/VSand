@@ -28,12 +28,6 @@ startScripts {
     applicationName = 'VSand'
 }
 
-if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
-	runClient {
-		jvmArgs "-Dorg.lwjgl.vulkan.libname=MoltenVK"
-	}
-}
-
 dependencies {
 	implementation project(':org.sheepy.lily.core.impl')
 
