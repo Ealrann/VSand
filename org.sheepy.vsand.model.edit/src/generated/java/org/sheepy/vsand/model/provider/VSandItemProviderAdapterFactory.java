@@ -33,7 +33,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.presentation.UIPage;
 import org.sheepy.lily.core.model.presentation.util.PresentationSwitch;
-import org.sheepy.lily.vulkan.model.SharedResources;
+import org.sheepy.lily.vulkan.model.ResourceContainer;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 
@@ -530,11 +530,6 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 			{
 				newChildDescriptors.add
 					(createChildParameter
-						(ProcessPackage.Literals.ABSTRACT_PROCESS__RESOURCES,
-						 VSandFactory.eINSTANCE.createVSandConstants()));
-
-				newChildDescriptors.add
-					(createChildParameter
 						(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
 						 VSandFactory.eINSTANCE.createRepeatComputePipeline()));
 
@@ -661,16 +656,15 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 			 * @generated
 			 */
 			@Override
-			public Object caseSharedResources(SharedResources object)
+			public Object caseResourceContainer(ResourceContainer object)
 			{
 				newChildDescriptors.add
 					(createChildParameter
-						(VulkanPackage.Literals.SHARED_RESOURCES__RESOURCES,
+						(VulkanPackage.Literals.RESOURCE_CONTAINER__RESOURCES,
 						 VSandFactory.eINSTANCE.createVSandConstants()));
 
 				return null;
 			}
- 
 			/**
 			 * <!-- begin-user-doc -->
 			 * <!-- end-user-doc -->

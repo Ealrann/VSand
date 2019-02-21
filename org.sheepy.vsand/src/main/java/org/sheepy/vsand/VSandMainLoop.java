@@ -109,12 +109,13 @@ public class VSandMainLoop implements IMainLoop
 				stepPipeline = (RepeatComputePipeline) boardProcess.getUnits().get(1);
 
 				constants = (VSandConstants) stepPipeline.getConstants();
-
-				var boardBuffer = (Buffer) boardProcess.getResources().get(0);
-				var configurationBuffer = (Buffer) boardProcess.getResources().get(1);
-				var transformationBuffer = (Buffer) boardProcess.getResources().get(2);
-				var decisionBuffer = (Buffer) boardProcess.getResources().get(3);
-				var modificationBuffer = (Buffer) boardProcess.getResources().get(4);
+				var resources = boardProcess.getResourceContainer().getResources();
+				
+				var boardBuffer = (Buffer) resources.get(0);
+				var configurationBuffer = (Buffer) resources.get(1);
+				var transformationBuffer = (Buffer) resources.get(2);
+				var decisionBuffer = (Buffer) resources.get(3);
+				var modificationBuffer = (Buffer) resources.get(4);
 
 				modificationsManager = new ModificationsManager(modificationBuffer);
 				BoardBufferLoader.load(boardBuffer, width, height);

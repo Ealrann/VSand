@@ -114,21 +114,6 @@ public class VSandComputeProcessItemProvider extends ComputeProcessItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__RESOURCES,
-				 VSandFactory.eINSTANCE.createVSandConstants()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__RESOURCES,
-				 NuklearFactory.eINSTANCE.createNuklearConstants()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__RESOURCES,
-				 NuklearFactory.eINSTANCE.createNuklearIndexBuffer()));
-
-		newChildDescriptors.add
-			(createChildParameter
 				(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
 				 VSandFactory.eINSTANCE.createRepeatComputePipeline()));
 

@@ -748,8 +748,8 @@ public class VSandEditor
 		adapterFactory.addAdapterFactory(new RootItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new InferenceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ComputeItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ProcessItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new TypesItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ProcessItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new org.sheepy.lily.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new VulkanItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new PresentationItemProviderAdapterFactory());

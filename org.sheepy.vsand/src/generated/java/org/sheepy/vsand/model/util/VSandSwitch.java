@@ -24,7 +24,6 @@ import org.sheepy.lily.vulkan.model.IResource;
 import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
 import org.sheepy.lily.vulkan.model.process.AbstractProcess;
 import org.sheepy.lily.vulkan.model.process.IPipeline;
-import org.sheepy.lily.vulkan.model.process.IProcessUnit;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
@@ -143,9 +142,8 @@ public class VSandSwitch<T> extends Switch<T>
 				if (result == null) result = caseComputePipeline(repeatComputePipeline);
 				if (result == null) result = caseAbstractPipeline(repeatComputePipeline);
 				if (result == null) result = caseIPipeline(repeatComputePipeline);
-				if (result == null) result = caseIProcessUnit(repeatComputePipeline);
-				if (result == null) result = caseLNamedElement(repeatComputePipeline);
 				if (result == null) result = caseLObject(repeatComputePipeline);
+				if (result == null) result = caseLNamedElement(repeatComputePipeline);
 				if (result == null) result = caseIInferenceObject(repeatComputePipeline);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -196,11 +194,10 @@ public class VSandSwitch<T> extends Switch<T>
 				T result = caseVSandNuklearPipeline(vSandNuklearPipeline);
 				if (result == null) result = caseNuklearPipeline(vSandNuklearPipeline);
 				if (result == null) result = caseIGUIPipeline(vSandNuklearPipeline);
-				if (result == null) result = caseIProcessUnit(vSandNuklearPipeline);
+				if (result == null) result = caseLObject(vSandNuklearPipeline);
 				if (result == null) result = caseLNamedElement(vSandNuklearPipeline);
 				if (result == null) result = caseIGraphicsPipeline(vSandNuklearPipeline);
 				if (result == null) result = caseIPipeline(vSandNuklearPipeline);
-				if (result == null) result = caseLObject(vSandNuklearPipeline);
 				if (result == null) result = caseIInferenceObject(vSandNuklearPipeline);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -473,22 +470,6 @@ public class VSandSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseMaterialSelectorPanel(MaterialSelectorPanel object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IProcess Unit</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IProcess Unit</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIProcessUnit(IProcessUnit object)
 	{
 		return null;
 	}

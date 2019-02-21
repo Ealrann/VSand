@@ -26,7 +26,6 @@ import org.sheepy.lily.vulkan.model.IResource;
 import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
 import org.sheepy.lily.vulkan.model.process.AbstractProcess;
 import org.sheepy.lily.vulkan.model.process.IPipeline;
-import org.sheepy.lily.vulkan.model.process.IProcessUnit;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
@@ -174,11 +173,6 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseApplication(Application object)
 			{
 				return createApplicationAdapter();
-			}
-			@Override
-			public Adapter caseIProcessUnit(IProcessUnit object)
-			{
-				return createIProcessUnitAdapter();
 			}
 			@Override
 			public Adapter caseLNamedElement(LNamedElement object)
@@ -538,21 +532,6 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createMaterialSelectorPanelAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.IProcessUnit <em>IProcess Unit</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.process.IProcessUnit
-	 * @generated
-	 */
-	public Adapter createIProcessUnitAdapter()
 	{
 		return null;
 	}

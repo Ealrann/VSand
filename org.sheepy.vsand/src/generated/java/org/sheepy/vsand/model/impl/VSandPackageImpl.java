@@ -190,8 +190,8 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		InferencePackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
 		ComputePackage.eINSTANCE.eClass();
-		ProcessPackage.eINSTANCE.eClass();
 		TypesPackage.eINSTANCE.eClass();
+		ProcessPackage.eINSTANCE.eClass();
 		ResourcePackage.eINSTANCE.eClass();
 		VulkanPackage.eINSTANCE.eClass();
 		PresentationPackage.eINSTANCE.eClass();

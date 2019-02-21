@@ -16,9 +16,6 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
 
 import org.sheepy.lily.vulkan.model.process.compute.ComputeFactory;
-
-import org.sheepy.lily.vulkan.model.process.graphic.GraphicPackage;
-
 import org.sheepy.lily.vulkan.model.process.graphic.provider.GraphicProcessItemProvider;
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandGraphicProcess;
@@ -116,21 +113,6 @@ public class VSandGraphicProcessItemProvider extends GraphicProcessItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__RESOURCES,
-				 VSandFactory.eINSTANCE.createVSandConstants()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__RESOURCES,
-				 NuklearFactory.eINSTANCE.createNuklearConstants()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__RESOURCES,
-				 NuklearFactory.eINSTANCE.createNuklearIndexBuffer()));
-
-		newChildDescriptors.add
-			(createChildParameter
 				(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
 				 VSandFactory.eINSTANCE.createRepeatComputePipeline()));
 
@@ -143,31 +125,6 @@ public class VSandGraphicProcessItemProvider extends GraphicProcessItemProvider
 			(createChildParameter
 				(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
 				 NuklearFactory.eINSTANCE.createNuklearPipeline()));
-	}
-
-	/**
-	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection)
-	{
-		Object childFeature = feature;
-		Object childObject = child;
-
-		boolean qualify =
-			childFeature == ProcessPackage.Literals.ABSTRACT_PROCESS__RESOURCES ||
-			childFeature == GraphicPackage.Literals.GRAPHIC_PROCESS__DEPTH_IMAGE;
-
-		if (qualify)
-		{
-			return getString
-				("_UI_CreateChild_text2",
-				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
-		}
-		return super.getCreateChildText(owner, feature, child, selection);
 	}
 
 	/**

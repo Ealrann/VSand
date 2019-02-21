@@ -567,6 +567,15 @@ public interface VSandPackage extends EPackage
 	int REPEAT_COMPUTE_PIPELINE__CONTENT_OBJECTS = ComputePackage.COMPUTE_PIPELINE__CONTENT_OBJECTS;
 
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPEAT_COMPUTE_PIPELINE__NAME = ComputePackage.COMPUTE_PIPELINE__NAME;
+
+	/**
 	 * The feature id for the '<em><b>Enabled</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -583,15 +592,6 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int REPEAT_COMPUTE_PIPELINE__STAGE = ComputePackage.COMPUTE_PIPELINE__STAGE;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__NAME = ComputePackage.COMPUTE_PIPELINE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Units</b></em>' containment reference list.
@@ -1193,6 +1193,15 @@ public interface VSandPackage extends EPackage
 	int VSAND_NUKLEAR_PIPELINE__CONTENT_OBJECTS = NuklearPackage.NUKLEAR_PIPELINE__CONTENT_OBJECTS;
 
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_NUKLEAR_PIPELINE__NAME = NuklearPackage.NUKLEAR_PIPELINE__NAME;
+
+	/**
 	 * The feature id for the '<em><b>Enabled</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1209,15 +1218,6 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int VSAND_NUKLEAR_PIPELINE__STAGE = NuklearPackage.NUKLEAR_PIPELINE__STAGE;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_NUKLEAR_PIPELINE__NAME = NuklearPackage.NUKLEAR_PIPELINE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Index Buffer</b></em>' containment reference.
@@ -1356,13 +1356,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS__ENABLED = GraphicPackage.GRAPHIC_PROCESS__ENABLED;
 
 	/**
-	 * The feature id for the '<em><b>Resources</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Resource Container</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_GRAPHIC_PROCESS__RESOURCES = GraphicPackage.GRAPHIC_PROCESS__RESOURCES;
+	int VSAND_GRAPHIC_PROCESS__RESOURCE_CONTAINER = GraphicPackage.GRAPHIC_PROCESS__RESOURCE_CONTAINER;
 
 	/**
 	 * The feature id for the '<em><b>Descriptor Sets</b></em>' containment reference list.
@@ -1546,13 +1546,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_COMPUTE_PROCESS__ENABLED = ComputePackage.COMPUTE_PROCESS__ENABLED;
 
 	/**
-	 * The feature id for the '<em><b>Resources</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Resource Container</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_COMPUTE_PROCESS__RESOURCES = ComputePackage.COMPUTE_PROCESS__RESOURCES;
+	int VSAND_COMPUTE_PROCESS__RESOURCE_CONTAINER = ComputePackage.COMPUTE_PROCESS__RESOURCE_CONTAINER;
 
 	/**
 	 * The feature id for the '<em><b>Descriptor Sets</b></em>' containment reference list.
