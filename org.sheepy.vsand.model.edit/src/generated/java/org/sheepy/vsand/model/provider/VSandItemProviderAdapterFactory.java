@@ -33,12 +33,12 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.presentation.UIPage;
 import org.sheepy.lily.core.model.presentation.util.PresentationSwitch;
-import org.sheepy.lily.vulkan.model.ResourceContainer;
+import org.sheepy.lily.vulkan.model.ResourcePkg;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 
 import org.sheepy.lily.vulkan.model.process.AbstractCompositePipeline;
-import org.sheepy.lily.vulkan.model.process.AbstractProcess;
+import org.sheepy.lily.vulkan.model.process.PipelinePkg;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
 
 import org.sheepy.lily.vulkan.model.process.util.ProcessSwitch;
@@ -526,16 +526,15 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 			 * @generated
 			 */
 			@Override
-			public Object caseAbstractProcess(AbstractProcess object)
+			public Object casePipelinePkg(PipelinePkg object)
 			{
 				newChildDescriptors.add
 					(createChildParameter
-						(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
+						(ProcessPackage.Literals.PIPELINE_PKG__PIPELINES,
 						 VSandFactory.eINSTANCE.createRepeatComputePipeline()));
 
 				return null;
 			}
- 
 			/**
 			 * <!-- begin-user-doc -->
 			 * <!-- end-user-doc -->
@@ -656,11 +655,11 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 			 * @generated
 			 */
 			@Override
-			public Object caseResourceContainer(ResourceContainer object)
+			public Object caseResourcePkg(ResourcePkg object)
 			{
 				newChildDescriptors.add
 					(createChildParameter
-						(VulkanPackage.Literals.RESOURCE_CONTAINER__RESOURCES,
+						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
 						 VSandFactory.eINSTANCE.createVSandConstants()));
 
 				return null;

@@ -15,7 +15,7 @@ import org.sheepy.vsand.model.Material;
 
 public class ModificationsManager
 {
-	private static final int BYTE_SIZE = BoardModification.MODIFICATION_BYTE_COUNT * Integer.BYTES;
+	public static final int BYTE_SIZE = BoardModification.MODIFICATION_BYTE_COUNT * Integer.BYTES;
 
 	private final BufferAdapter adapter;
 	private final Deque<BoardModification> modificationQueue = new ArrayDeque<>();
@@ -27,9 +27,6 @@ public class ModificationsManager
 	public ModificationsManager(Buffer buffer)
 	{
 		adapter = BufferAdapter.adapt(buffer);
-
-		buffer.setSize(BYTE_SIZE);
-
 		copyBuffer = MemoryUtil.memAlloc(BYTE_SIZE);
 	}
 

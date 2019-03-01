@@ -5,10 +5,10 @@
       <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
         <controls xsi:type="ui:DynamicRowLayout"/>
         <controls xsi:type="ui:VariableLabel" text="Speed">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@units.1"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1"/>
         </controls>
         <controls xsi:type="ui:Slider" minValue="1" maxValue="16">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@units.1"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#RepeatComputePipeline#repeatCount" target="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1"/>
         </controls>
         <controls xsi:type="ui:VariableLabel" text="Brush Size">
           <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
@@ -40,7 +40,7 @@
     </uiPages>
   </views>
   <engines xsi:type="model_1:VulkanEngine">
-    <sharedResources>
+    <resourcePkg>
       <resources xsi:type="resource:Image" descriptorType="STORAGE_IMAGE" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>TransferSrc</usages>
@@ -49,9 +49,11 @@
           <accessMask>SHADER_WRITE_BIT</accessMask>
         </initialLayout>
       </resources>
-    </sharedResources>
-    <processes xsi:type="model:VSandComputeProcess" name="Board Compute" resetAllowed="true" dependentProcesses="//@engines.0/@processes.1/@semaphores.0">
-      <resourceContainer>
+      <resources xsi:type="resource:Semaphore" name="GraphicSemaphore" signalizedAtInit="true"/>
+      <resources xsi:type="resource:Semaphore" name="ComputeSemaphore" waitStage="COMPUTE_SHADER_BIT"/>
+    </resourcePkg>
+    <processes xsi:type="model:VSandComputeProcess" name="Board Compute" resetAllowed="true" signals="//@engines.0/@resourcePkg/@resources.2" waitFor="//@engines.0/@resourcePkg/@resources.1">
+      <resourcePkg>
         <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Board Buffer">
           <shaderStages>COMPUTE_BIT</shaderStages>
           <usages>STORAGE_BUFFER_BIT</usages>
@@ -95,69 +97,71 @@
           <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
         </resources>
         <resources xsi:type="model:VSandConstants" stage="COMPUTE_BIT"/>
-      </resourceContainer>
-      <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resourceContainer/@resources.1 //@engines.0/@processes.0/@resourceContainer/@resources.0 //@engines.0/@processes.0/@resourceContainer/@resources.3 //@engines.0/@processes.0/@resourceContainer/@resources.2"/>
-      <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourceContainer/@resources.0 //@engines.0/@processes.0/@resourceContainer/@resources.4"/>
-      <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@resourceContainer/@resources.1 //@engines.0/@processes.0/@resourceContainer/@resources.0 //@engines.0/@sharedResources/@resources.0"/>
-      <units xsi:type="compute:ComputePipeline" enabled="false" stage="Compute" name="Draw" descriptorSet="//@engines.0/@processes.0/@descriptorSets.1" width="1248" height="704" depth="1">
-        <units xsi:type="process:PipelineBarrier" name="BoardReadToWrite">
-          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourceContainer/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
-        </units>
-        <units xsi:type="process:PipelineBarrier" name="ModificationWriteToRead">
-          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourceContainer/@resources.4" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
-        </units>
-        <units xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourceContainer/@resources.5"/>
-        <units xsi:type="process:PipelineBarrier" name="BoardWriteToRead">
-          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourceContainer/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
-        </units>
-        <units xsi:type="process:PipelineBarrier" name="ModificationReadToWrite">
-          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourceContainer/@resources.4" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
-        </units>
-      </units>
-      <units xsi:type="model:RepeatComputePipeline" stage="Compute" name="Step" descriptorSet="//@engines.0/@processes.0/@descriptorSets.0" constants="//@engines.0/@processes.0/@resourceContainer/@resources.11" width="1248" height="704" depth="1">
-        <units xsi:type="process:PushConstant"/>
-        <units xsi:type="process:PipelineBarrier" name="DecisionReadToWrite">
-          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourceContainer/@resources.3" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
-        </units>
-        <units xsi:type="process:PipelineBarrier" name="BoardReadToWrite">
-          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourceContainer/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
-        </units>
-        <units xsi:type="compute:Computer" name="Step1" shader="//@engines.0/@processes.0/@resourceContainer/@resources.6"/>
-        <units xsi:type="compute:Computer" name="Step2" shader="//@engines.0/@processes.0/@resourceContainer/@resources.7"/>
-        <units xsi:type="compute:Computer" name="Step3" shader="//@engines.0/@processes.0/@resourceContainer/@resources.8"/>
-        <units xsi:type="process:PipelineBarrier" name="DecisionWriteToRead">
-          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourceContainer/@resources.3" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
-        </units>
-        <units xsi:type="compute:Computer" name="Step4" shader="//@engines.0/@processes.0/@resourceContainer/@resources.9"/>
-        <units xsi:type="process:PipelineBarrier" name="BoardWriteToRead">
-          <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourceContainer/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
-        </units>
-      </units>
-      <units xsi:type="compute:ComputePipeline" stage="Compute" name="Board to Pixel" descriptorSet="//@engines.0/@processes.0/@descriptorSets.2" constants="//@engines.0/@processes.0/@resourceContainer/@resources.11" width="1248" height="704" depth="1">
-        <units xsi:type="process:PipelineBarrier">
-          <barrier xsi:type="resource:ImageBarrier" dstStage="COMPUTE_SHADER_BIT" image="//@engines.0/@sharedResources/@resources.0">
-            <transitions dstLayout="GENERAL">
-              <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-            </transitions>
-          </barrier>
-        </units>
-        <units xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resourceContainer/@resources.10"/>
-      </units>
-      <semaphores process="//@engines.0/@processes.1"/>
+      </resourcePkg>
+      <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2"/>
+      <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.4"/>
+      <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@resourcePkg/@resources.0"/>
+      <pipelinePkg>
+        <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" descriptorSet="//@engines.0/@processes.0/@descriptorSets.1" width="1248" height="704" depth="1">
+          <units xsi:type="process:PipelineBarrier" name="BoardReadToWrite">
+            <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+          </units>
+          <units xsi:type="process:PipelineBarrier" name="ModificationWriteToRead">
+            <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.4" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+          </units>
+          <units xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5"/>
+          <units xsi:type="process:PipelineBarrier" name="BoardWriteToRead">
+            <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+          </units>
+          <units xsi:type="process:PipelineBarrier" name="ModificationReadToWrite">
+            <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.4" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+          </units>
+        </pipelines>
+        <pipelines xsi:type="model:RepeatComputePipeline" name="Step" stage="Compute" descriptorSet="//@engines.0/@processes.0/@descriptorSets.0" constants="//@engines.0/@processes.0/@resourcePkg/@resources.11" width="1248" height="704" depth="1">
+          <units xsi:type="process:PushConstant"/>
+          <units xsi:type="process:PipelineBarrier" name="DecisionReadToWrite">
+            <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.3" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+          </units>
+          <units xsi:type="process:PipelineBarrier" name="BoardReadToWrite">
+            <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
+          </units>
+          <units xsi:type="compute:Computer" name="Step1" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6"/>
+          <units xsi:type="compute:Computer" name="Step2" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7"/>
+          <units xsi:type="compute:Computer" name="Step3" shader="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
+          <units xsi:type="process:PipelineBarrier" name="DecisionWriteToRead">
+            <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.3" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+          </units>
+          <units xsi:type="compute:Computer" name="Step4" shader="//@engines.0/@processes.0/@resourcePkg/@resources.9"/>
+          <units xsi:type="process:PipelineBarrier" name="BoardWriteToRead">
+            <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
+          </units>
+        </pipelines>
+        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" descriptorSet="//@engines.0/@processes.0/@descriptorSets.2" constants="//@engines.0/@processes.0/@resourcePkg/@resources.11" width="1248" height="704" depth="1">
+          <units xsi:type="process:PipelineBarrier">
+            <barrier xsi:type="resource:ImageBarrier" dstStage="COMPUTE_SHADER_BIT" image="//@engines.0/@resourcePkg/@resources.0">
+              <transitions dstLayout="GENERAL">
+                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+              </transitions>
+            </barrier>
+          </units>
+          <units xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resourcePkg/@resources.10"/>
+        </pipelines>
+      </pipelinePkg>
     </processes>
-    <processes xsi:type="model:VSandGraphicProcess" resetAllowed="true" initializedSignalizedSemaphore="true" dependentProcesses="//@engines.0/@processes.0/@semaphores.0">
-      <units xsi:type="graphic:ImagePipeline" stage="PreRender" image="//@engines.0/@sharedResources/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="BOTTOM_OF_PIPE_BIT" srcQueue="//@engines.0/@processes.0">
-        <imageSrcAccessMask>SHADER_WRITE_BIT</imageSrcAccessMask>
-      </units>
-      <units xsi:type="model_2:NuklearPipeline" subpass="1">
-        <indexBuffer/>
-        <font descriptorType="SAMPLED_IMAGE">
-          <shaderStages>FRAGMENT_BIT</shaderStages>
-          <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
-        </font>
-        <pushConstant/>
-      </units>
-      <semaphores process="//@engines.0/@processes.0" waitStage="COMPUTE_SHADER_BIT"/>
+    <processes xsi:type="model:VSandGraphicProcess" resetAllowed="true" signals="//@engines.0/@resourcePkg/@resources.1" waitFor="//@engines.0/@resourcePkg/@resources.2">
+      <pipelinePkg>
+        <pipelines xsi:type="graphic:ImagePipeline" stage="PreRender" image="//@engines.0/@resourcePkg/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="BOTTOM_OF_PIPE_BIT" srcQueue="//@engines.0/@processes.0">
+          <imageSrcAccessMask>SHADER_WRITE_BIT</imageSrcAccessMask>
+        </pipelines>
+        <pipelines xsi:type="model_2:NuklearPipeline" subpass="1">
+          <indexBuffer/>
+          <font descriptorType="SAMPLED_IMAGE">
+            <shaderStages>FRAGMENT_BIT</shaderStages>
+            <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
+          </font>
+          <pushConstant/>
+        </pipelines>
+      </pipelinePkg>
       <configuration clearBeforeRender="false" presentationMode="Immediate" requiredSwapImageCount="2" acquireWaitStage="COMPUTE_SHADER_BIT">
         <swapImageUsages>TransferDst</swapImageUsages>
         <swapImageUsages>ColorAttachment</swapImageUsages>

@@ -594,6 +594,15 @@ public interface VSandPackage extends EPackage
 	int REPEAT_COMPUTE_PIPELINE__STAGE = ComputePackage.COMPUTE_PIPELINE__STAGE;
 
 	/**
+	 * The feature id for the '<em><b>Resource Pkg</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPEAT_COMPUTE_PIPELINE__RESOURCE_PKG = ComputePackage.COMPUTE_PIPELINE__RESOURCE_PKG;
+
+	/**
 	 * The feature id for the '<em><b>Units</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1329,13 +1338,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS = 10;
 
 	/**
-	 * The feature id for the '<em><b>Content Objects</b></em>' attribute.
+	 * The feature id for the '<em><b>Resource Pkg</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_GRAPHIC_PROCESS__CONTENT_OBJECTS = GraphicPackage.GRAPHIC_PROCESS__CONTENT_OBJECTS;
+	int VSAND_GRAPHIC_PROCESS__RESOURCE_PKG = GraphicPackage.GRAPHIC_PROCESS__RESOURCE_PKG;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1356,15 +1365,6 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS__ENABLED = GraphicPackage.GRAPHIC_PROCESS__ENABLED;
 
 	/**
-	 * The feature id for the '<em><b>Resource Container</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_GRAPHIC_PROCESS__RESOURCE_CONTAINER = GraphicPackage.GRAPHIC_PROCESS__RESOURCE_CONTAINER;
-
-	/**
 	 * The feature id for the '<em><b>Descriptor Sets</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1374,22 +1374,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS__DESCRIPTOR_SETS = GraphicPackage.GRAPHIC_PROCESS__DESCRIPTOR_SETS;
 
 	/**
-	 * The feature id for the '<em><b>Units</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Pipeline Pkg</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_GRAPHIC_PROCESS__UNITS = GraphicPackage.GRAPHIC_PROCESS__UNITS;
-
-	/**
-	 * The feature id for the '<em><b>Semaphores</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_GRAPHIC_PROCESS__SEMAPHORES = GraphicPackage.GRAPHIC_PROCESS__SEMAPHORES;
+	int VSAND_GRAPHIC_PROCESS__PIPELINE_PKG = GraphicPackage.GRAPHIC_PROCESS__PIPELINE_PKG;
 
 	/**
 	 * The feature id for the '<em><b>Reset Allowed</b></em>' attribute.
@@ -1401,22 +1392,22 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS__RESET_ALLOWED = GraphicPackage.GRAPHIC_PROCESS__RESET_ALLOWED;
 
 	/**
-	 * The feature id for the '<em><b>Initialized Signalized Semaphore</b></em>' attribute.
+	 * The feature id for the '<em><b>Signals</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_GRAPHIC_PROCESS__INITIALIZED_SIGNALIZED_SEMAPHORE = GraphicPackage.GRAPHIC_PROCESS__INITIALIZED_SIGNALIZED_SEMAPHORE;
+	int VSAND_GRAPHIC_PROCESS__SIGNALS = GraphicPackage.GRAPHIC_PROCESS__SIGNALS;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Processes</b></em>' reference list.
+	 * The feature id for the '<em><b>Wait For</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_GRAPHIC_PROCESS__DEPENDENT_PROCESSES = GraphicPackage.GRAPHIC_PROCESS__DEPENDENT_PROCESSES;
+	int VSAND_GRAPHIC_PROCESS__WAIT_FOR = GraphicPackage.GRAPHIC_PROCESS__WAIT_FOR;
 
 	/**
 	 * The feature id for the '<em><b>Configuration</b></em>' containment reference.
@@ -1455,51 +1446,6 @@ public interface VSandPackage extends EPackage
 	int VSAND_GRAPHIC_PROCESS_FEATURE_COUNT = GraphicPackage.GRAPHIC_PROCESS_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>LInference Object</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_GRAPHIC_PROCESS___LINFERENCE_OBJECT = GraphicPackage.GRAPHIC_PROCESS___LINFERENCE_OBJECT;
-
-	/**
-	 * The operation id for the '<em>Create Containment EList</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_GRAPHIC_PROCESS___CREATE_CONTAINMENT_ELIST__ECLASS = GraphicPackage.GRAPHIC_PROCESS___CREATE_CONTAINMENT_ELIST__ECLASS;
-
-	/**
-	 * The operation id for the '<em>LContents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_GRAPHIC_PROCESS___LCONTENTS = GraphicPackage.GRAPHIC_PROCESS___LCONTENTS;
-
-	/**
-	 * The operation id for the '<em>LParent</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_GRAPHIC_PROCESS___LPARENT = GraphicPackage.GRAPHIC_PROCESS___LPARENT;
-
-	/**
-	 * The operation id for the '<em>LAll Contents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_GRAPHIC_PROCESS___LALL_CONTENTS = GraphicPackage.GRAPHIC_PROCESS___LALL_CONTENTS;
-
-	/**
 	 * The number of operations of the '<em>Graphic Process</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1519,13 +1465,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_COMPUTE_PROCESS = 11;
 
 	/**
-	 * The feature id for the '<em><b>Content Objects</b></em>' attribute.
+	 * The feature id for the '<em><b>Resource Pkg</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_COMPUTE_PROCESS__CONTENT_OBJECTS = ComputePackage.COMPUTE_PROCESS__CONTENT_OBJECTS;
+	int VSAND_COMPUTE_PROCESS__RESOURCE_PKG = ComputePackage.COMPUTE_PROCESS__RESOURCE_PKG;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1546,15 +1492,6 @@ public interface VSandPackage extends EPackage
 	int VSAND_COMPUTE_PROCESS__ENABLED = ComputePackage.COMPUTE_PROCESS__ENABLED;
 
 	/**
-	 * The feature id for the '<em><b>Resource Container</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_COMPUTE_PROCESS__RESOURCE_CONTAINER = ComputePackage.COMPUTE_PROCESS__RESOURCE_CONTAINER;
-
-	/**
 	 * The feature id for the '<em><b>Descriptor Sets</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1564,22 +1501,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_COMPUTE_PROCESS__DESCRIPTOR_SETS = ComputePackage.COMPUTE_PROCESS__DESCRIPTOR_SETS;
 
 	/**
-	 * The feature id for the '<em><b>Units</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Pipeline Pkg</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_COMPUTE_PROCESS__UNITS = ComputePackage.COMPUTE_PROCESS__UNITS;
-
-	/**
-	 * The feature id for the '<em><b>Semaphores</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_COMPUTE_PROCESS__SEMAPHORES = ComputePackage.COMPUTE_PROCESS__SEMAPHORES;
+	int VSAND_COMPUTE_PROCESS__PIPELINE_PKG = ComputePackage.COMPUTE_PROCESS__PIPELINE_PKG;
 
 	/**
 	 * The feature id for the '<em><b>Reset Allowed</b></em>' attribute.
@@ -1591,22 +1519,22 @@ public interface VSandPackage extends EPackage
 	int VSAND_COMPUTE_PROCESS__RESET_ALLOWED = ComputePackage.COMPUTE_PROCESS__RESET_ALLOWED;
 
 	/**
-	 * The feature id for the '<em><b>Initialized Signalized Semaphore</b></em>' attribute.
+	 * The feature id for the '<em><b>Signals</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_COMPUTE_PROCESS__INITIALIZED_SIGNALIZED_SEMAPHORE = ComputePackage.COMPUTE_PROCESS__INITIALIZED_SIGNALIZED_SEMAPHORE;
+	int VSAND_COMPUTE_PROCESS__SIGNALS = ComputePackage.COMPUTE_PROCESS__SIGNALS;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Processes</b></em>' reference list.
+	 * The feature id for the '<em><b>Wait For</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_COMPUTE_PROCESS__DEPENDENT_PROCESSES = ComputePackage.COMPUTE_PROCESS__DEPENDENT_PROCESSES;
+	int VSAND_COMPUTE_PROCESS__WAIT_FOR = ComputePackage.COMPUTE_PROCESS__WAIT_FOR;
 
 	/**
 	 * The number of structural features of the '<em>Compute Process</em>' class.
@@ -1616,51 +1544,6 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int VSAND_COMPUTE_PROCESS_FEATURE_COUNT = ComputePackage.COMPUTE_PROCESS_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>LInference Object</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_COMPUTE_PROCESS___LINFERENCE_OBJECT = ComputePackage.COMPUTE_PROCESS___LINFERENCE_OBJECT;
-
-	/**
-	 * The operation id for the '<em>Create Containment EList</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_COMPUTE_PROCESS___CREATE_CONTAINMENT_ELIST__ECLASS = ComputePackage.COMPUTE_PROCESS___CREATE_CONTAINMENT_ELIST__ECLASS;
-
-	/**
-	 * The operation id for the '<em>LContents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_COMPUTE_PROCESS___LCONTENTS = ComputePackage.COMPUTE_PROCESS___LCONTENTS;
-
-	/**
-	 * The operation id for the '<em>LParent</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_COMPUTE_PROCESS___LPARENT = ComputePackage.COMPUTE_PROCESS___LPARENT;
-
-	/**
-	 * The operation id for the '<em>LAll Contents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_COMPUTE_PROCESS___LALL_CONTENTS = ComputePackage.COMPUTE_PROCESS___LALL_CONTENTS;
 
 	/**
 	 * The number of operations of the '<em>Compute Process</em>' class.

@@ -18,12 +18,8 @@ import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.lily.vulkan.model.resource.Image;
-import org.sheepy.vsand.buffer.BoardBufferLoader;
-import org.sheepy.vsand.buffer.BoardDecisionLoader;
 import org.sheepy.vsand.buffer.BoardImageLoader;
-import org.sheepy.vsand.buffer.ConfigurationBufferLoader;
 import org.sheepy.vsand.buffer.ModificationsManager;
-import org.sheepy.vsand.buffer.TransformationBufferLoader;
 import org.sheepy.vsand.input.VSandInputManager;
 import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.VSandApplication;
@@ -69,15 +65,13 @@ public class VSandMainLoop implements IMainLoop
 		engineAdapter = IVulkanEngineAdapter.adapt(vulkanEngine);
 		inputManager = engineAdapter.getInputManager();
 
-		var boardImage = (Image) vulkanEngine.getSharedResources().getResources().get(0);
+		var boardImage = (Image) vulkanEngine.getResourcePkg().getResources().get(0);
 		BoardImageLoader.load(boardImage, width, height);
 
-		gatherAndLoadProcesses(width, height, vulkanEngine);
+		gatherProcesses(vulkanEngine);
 
 		vsandInputManager = new VSandInputManager(application, constants, stepPipeline);
 		inputManager.addListener(vsandInputManager);
-
-		engineAdapter.allocate();
 
 		SVector2i boardSize = new SVector2i(stepPipeline.getWidth(), stepPipeline.getHeight());
 		mainDrawManager = new DrawManager(application, inputManager, modificationsManager,
@@ -95,7 +89,7 @@ public class VSandMainLoop implements IMainLoop
 		vsyncGuard.start();
 	}
 
-	private void gatherAndLoadProcesses(int width, int height, VulkanEngine vulkanEngine)
+	private void gatherProcesses(VulkanEngine vulkanEngine)
 	{
 		EList<IProcess> processes = vulkanEngine.getProcesses();
 		for (IProcess process : processes)
@@ -105,23 +99,16 @@ public class VSandMainLoop implements IMainLoop
 				var boardProcess = (ComputeProcess) process;
 				boardProcessAdapter = IProcessAdapter.adapt(process);
 
-				drawPipeline = (ComputePipeline) boardProcess.getUnits().get(0);
-				stepPipeline = (RepeatComputePipeline) boardProcess.getUnits().get(1);
+				drawPipeline = (ComputePipeline) boardProcess.getPipelinePkg().getPipelines()
+						.get(0);
+				stepPipeline = (RepeatComputePipeline) boardProcess.getPipelinePkg().getPipelines()
+						.get(1);
 
 				constants = (VSandConstants) stepPipeline.getConstants();
-				var resources = boardProcess.getResourceContainer().getResources();
-				
-				var boardBuffer = (Buffer) resources.get(0);
-				var configurationBuffer = (Buffer) resources.get(1);
-				var transformationBuffer = (Buffer) resources.get(2);
-				var decisionBuffer = (Buffer) resources.get(3);
-				var modificationBuffer = (Buffer) resources.get(4);
+				var resources = boardProcess.getResourcePkg().getResources();
 
+				var modificationBuffer = (Buffer) resources.get(4);
 				modificationsManager = new ModificationsManager(modificationBuffer);
-				BoardBufferLoader.load(boardBuffer, width, height);
-				BoardDecisionLoader.load(decisionBuffer, width, height);
-				ConfigurationBufferLoader.load(configurationBuffer);
-				TransformationBufferLoader.load(transformationBuffer);
 			}
 			else if (process instanceof GraphicProcess)
 			{

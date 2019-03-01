@@ -12,15 +12,8 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
 
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-
-import org.sheepy.lily.vulkan.model.process.ProcessPackage;
-
 import org.sheepy.lily.vulkan.model.process.compute.provider.ComputeProcessItemProvider;
-
-import org.sheepy.lily.vulkan.model.process.graphic.GraphicFactory;
 import org.sheepy.vsand.model.VSandComputeProcess;
-import org.sheepy.vsand.model.VSandFactory;
-import org.sheepy.lily.vulkan.nuklear.model.NuklearFactory;
 
 /**
  * This is the item provider adapter for a {@link org.sheepy.vsand.model.VSandComputeProcess} object.
@@ -111,21 +104,6 @@ public class VSandComputeProcessItemProvider extends ComputeProcessItemProvider
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object)
 	{
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
-				 VSandFactory.eINSTANCE.createRepeatComputePipeline()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
-				 NuklearFactory.eINSTANCE.createNuklearPipeline()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ProcessPackage.Literals.ABSTRACT_PROCESS__UNITS,
-				 GraphicFactory.eINSTANCE.createImagePipeline()));
 	}
 
 	/**

@@ -3,10 +3,20 @@ package org.sheepy.vsand;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.sheepy.lily.core.api.application.ApplicationLauncher;
 import org.sheepy.lily.core.api.resource.IResourceLoader;
 import org.sheepy.lily.core.model.application.Application;
+import org.sheepy.lily.vulkan.model.IProcess;
+import org.sheepy.lily.vulkan.model.VulkanEngine;
+import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
+import org.sheepy.lily.vulkan.model.resource.Buffer;
+import org.sheepy.vsand.buffer.BoardBufferLoader;
+import org.sheepy.vsand.buffer.BoardDecisionLoader;
+import org.sheepy.vsand.buffer.ConfigurationBufferLoader;
+import org.sheepy.vsand.buffer.ModificationsManager;
+import org.sheepy.vsand.buffer.TransformationBufferLoader;
 
 public class VSandApplicationLauncher
 {
@@ -28,13 +38,44 @@ public class VSandApplicationLauncher
 		}
 
 		Application application = (Application) resource.getContents().get(0);
-		
+
 		String debugProperty = System.getProperty("debug");
-		if(debugProperty != null && debugProperty.equals("false") == false)
+		if (debugProperty != null && debugProperty.equals("false") == false)
 		{
 			application.setDebug(true);
 		}
-		
+
+		configureProcesses(application);
+
 		ApplicationLauncher.launch(application);
+	}
+
+	private static void configureProcesses(Application application)
+	{
+		var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
+		int width = application.getSize().x;
+		int height = application.getSize().y;
+
+		EList<IProcess> processes = vulkanEngine.getProcesses();
+		for (IProcess process : processes)
+		{
+			if (process instanceof ComputeProcess)
+			{
+				var boardProcess = (ComputeProcess) process;
+				var resources = boardProcess.getResourcePkg().getResources();
+
+				var boardBuffer = (Buffer) resources.get(0);
+				var configurationBuffer = (Buffer) resources.get(1);
+				var transformationBuffer = (Buffer) resources.get(2);
+				var decisionBuffer = (Buffer) resources.get(3);
+
+				var modificationBuffer = (Buffer) resources.get(4);
+				modificationBuffer.setSize(ModificationsManager.BYTE_SIZE);
+				BoardBufferLoader.load(boardBuffer, width, height);
+				BoardDecisionLoader.load(decisionBuffer, width, height);
+				ConfigurationBufferLoader.load(configurationBuffer);
+				TransformationBufferLoader.load(transformationBuffer);
+			}
+		}
 	}
 }

@@ -20,9 +20,10 @@ import org.sheepy.lily.core.model.ui.AbstractButton;
 import org.sheepy.lily.core.model.ui.Button;
 import org.sheepy.lily.core.model.ui.IControl;
 import org.sheepy.lily.core.model.ui.Widget;
-import org.sheepy.lily.vulkan.model.IEnginePart;
+import org.sheepy.lily.vulkan.model.IExecutionManager;
 import org.sheepy.lily.vulkan.model.IProcess;
 import org.sheepy.lily.vulkan.model.IResource;
+import org.sheepy.lily.vulkan.model.IResourceContainer;
 import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
 import org.sheepy.lily.vulkan.model.process.AbstractProcess;
 import org.sheepy.lily.vulkan.model.process.IPipeline;
@@ -185,6 +186,11 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createIPipelineAdapter();
 			}
 			@Override
+			public Adapter caseIResourceContainer(IResourceContainer object)
+			{
+				return createIResourceContainerAdapter();
+			}
+			@Override
 			public Adapter caseAbstractPipeline(AbstractPipeline object)
 			{
 				return createAbstractPipelineAdapter();
@@ -265,9 +271,9 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createNuklearPipelineAdapter();
 			}
 			@Override
-			public Adapter caseIEnginePart(IEnginePart object)
+			public Adapter caseIExecutionManager(IExecutionManager object)
 			{
-				return createIEnginePartAdapter();
+				return createIExecutionManagerAdapter();
 			}
 			@Override
 			public Adapter caseIProcess(IProcess object)
@@ -567,6 +573,21 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IResourceContainer <em>IResource Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.lily.vulkan.model.IResourceContainer
+	 * @generated
+	 */
+	public Adapter createIResourceContainerAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.AbstractPipeline <em>Abstract Pipeline</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -807,16 +828,16 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IEnginePart <em>IEngine Part</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IExecutionManager <em>IExecution Manager</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.IEnginePart
+	 * @see org.sheepy.lily.vulkan.model.IExecutionManager
 	 * @generated
 	 */
-	public Adapter createIEnginePartAdapter()
+	public Adapter createIExecutionManagerAdapter()
 	{
 		return null;
 	}

@@ -18,9 +18,10 @@ import org.sheepy.lily.core.model.ui.AbstractButton;
 import org.sheepy.lily.core.model.ui.Button;
 import org.sheepy.lily.core.model.ui.IControl;
 import org.sheepy.lily.core.model.ui.Widget;
-import org.sheepy.lily.vulkan.model.IEnginePart;
+import org.sheepy.lily.vulkan.model.IExecutionManager;
 import org.sheepy.lily.vulkan.model.IProcess;
 import org.sheepy.lily.vulkan.model.IResource;
+import org.sheepy.lily.vulkan.model.IResourceContainer;
 import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
 import org.sheepy.lily.vulkan.model.process.AbstractProcess;
 import org.sheepy.lily.vulkan.model.process.IPipeline;
@@ -142,6 +143,7 @@ public class VSandSwitch<T> extends Switch<T>
 				if (result == null) result = caseComputePipeline(repeatComputePipeline);
 				if (result == null) result = caseAbstractPipeline(repeatComputePipeline);
 				if (result == null) result = caseIPipeline(repeatComputePipeline);
+				if (result == null) result = caseIResourceContainer(repeatComputePipeline);
 				if (result == null) result = caseLObject(repeatComputePipeline);
 				if (result == null) result = caseLNamedElement(repeatComputePipeline);
 				if (result == null) result = caseIInferenceObject(repeatComputePipeline);
@@ -209,10 +211,9 @@ public class VSandSwitch<T> extends Switch<T>
 				if (result == null) result = caseGraphicProcess(vSandGraphicProcess);
 				if (result == null) result = caseAbstractProcess(vSandGraphicProcess);
 				if (result == null) result = caseIProcess(vSandGraphicProcess);
-				if (result == null) result = caseIEnginePart(vSandGraphicProcess);
+				if (result == null) result = caseIResourceContainer(vSandGraphicProcess);
 				if (result == null) result = caseLNamedElement(vSandGraphicProcess);
-				if (result == null) result = caseLObject(vSandGraphicProcess);
-				if (result == null) result = caseIInferenceObject(vSandGraphicProcess);
+				if (result == null) result = caseIExecutionManager(vSandGraphicProcess);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -223,10 +224,9 @@ public class VSandSwitch<T> extends Switch<T>
 				if (result == null) result = caseComputeProcess(vSandComputeProcess);
 				if (result == null) result = caseAbstractProcess(vSandComputeProcess);
 				if (result == null) result = caseIProcess(vSandComputeProcess);
-				if (result == null) result = caseIEnginePart(vSandComputeProcess);
+				if (result == null) result = caseIResourceContainer(vSandComputeProcess);
 				if (result == null) result = caseLNamedElement(vSandComputeProcess);
-				if (result == null) result = caseLObject(vSandComputeProcess);
-				if (result == null) result = caseIInferenceObject(vSandComputeProcess);
+				if (result == null) result = caseIExecutionManager(vSandComputeProcess);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -507,6 +507,22 @@ public class VSandSwitch<T> extends Switch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IResource Container</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IResource Container</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIResourceContainer(IResourceContainer object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Abstract Pipeline</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -763,17 +779,17 @@ public class VSandSwitch<T> extends Switch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IEngine Part</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IExecution Manager</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IEngine Part</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IExecution Manager</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseIEnginePart(IEnginePart object)
+	public T caseIExecutionManager(IExecutionManager object)
 	{
 		return null;
 	}

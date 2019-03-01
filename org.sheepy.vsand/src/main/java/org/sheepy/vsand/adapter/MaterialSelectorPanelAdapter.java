@@ -18,8 +18,8 @@ import org.lwjgl.nuklear.NkRect;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.impl.AbstractStatefullAdapter;
 import org.sheepy.lily.core.model.presentation.IUIElement;
-import org.sheepy.lily.vulkan.api.window.IWindowListener;
-import org.sheepy.lily.vulkan.api.window.Surface;
+import org.sheepy.lily.vulkan.api.nativehelper.surface.VkSurface;
+import org.sheepy.lily.vulkan.api.nativehelper.window.IWindowListener;
 import org.sheepy.lily.vulkan.common.ui.UIUtil;
 import org.sheepy.lily.vulkan.nuklear.adapter.IUIElementAdapter;
 import org.sheepy.vsand.adapter.drawer.MaterialDrawer;
@@ -48,7 +48,7 @@ public class MaterialSelectorPanelAdapter extends AbstractStatefullAdapter
 	private final IWindowListener listener = new IWindowListener()
 	{
 		@Override
-		public void onWindowResize(Surface surface)
+		public void onWindowResize(VkSurface surface)
 		{
 			updateDataLocations(surface);
 		}
@@ -114,7 +114,7 @@ public class MaterialSelectorPanelAdapter extends AbstractStatefullAdapter
 		context.window.addListener(listener);
 	}
 
-	public void updateDataLocations(Surface surface)
+	public void updateDataLocations(VkSurface surface)
 	{
 		int lineHeight = panel.getLineHeight();
 		int x = UIUtil.computeXRelative(surface, panel, width);
