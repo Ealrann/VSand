@@ -1,11 +1,11 @@
 package org.sheepy.vsand.input;
 
 import org.eclipse.emf.common.util.EList;
+import org.joml.Vector2f;
 import org.sheepy.lily.core.api.input.IInputManager.IInputListener;
 import org.sheepy.lily.core.api.input.event.KeyEvent;
 import org.sheepy.lily.core.api.input.event.MouseButtonEvent;
 import org.sheepy.lily.core.api.input.event.ScrollEvent;
-import org.sheepy.lily.core.api.types.SVector2f;
 import org.sheepy.lily.core.model.types.EKeyState;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.RepeatComputePipeline;
@@ -21,7 +21,7 @@ public class VSandInputManager implements IInputListener
 
 	private boolean leftClicPressed = false;
 	private boolean rightClicPressed = false;
-	private VSandConstants constants;
+	private final VSandConstants constants;
 
 	public VSandInputManager(	VSandApplication application,
 								VSandConstants constants,
@@ -153,7 +153,7 @@ public class VSandInputManager implements IInputListener
 	}
 
 	@Override
-	public void onMouseClickEvent(SVector2f location, MouseButtonEvent event)
+	public void onMouseClickEvent(Vector2f location, MouseButtonEvent event)
 	{
 		switch (event.button)
 		{

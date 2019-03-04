@@ -1,8 +1,8 @@
 package org.sheepy.vsand;
 
+import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.sheepy.lily.core.api.input.IInputManager;
-import org.sheepy.lily.core.api.types.SVector2f;
-import org.sheepy.lily.core.api.types.SVector2i;
 import org.sheepy.vsand.buffer.ModificationsManager;
 import org.sheepy.vsand.buffer.ModificationsManager.DrawData;
 import org.sheepy.vsand.logic.EShape;
@@ -17,12 +17,12 @@ public class DrawManager
 	private final ModificationsManager modificationsManager;
 
 	private boolean wasUsed = false;
-	private final SVector2i boardSize;
+	private final Vector2i boardSize;
 
 	public DrawManager(	VSandApplication application,
 						IInputManager inputManager,
 						ModificationsManager modificationsManager,
-						SVector2i boardSize)
+						Vector2i boardSize)
 	{
 		this.application = application;
 		this.inputManager = inputManager;
@@ -62,9 +62,9 @@ public class DrawManager
 		return new DrawData(size, shape, cursorBoard, material);
 	}
 
-	private SVector2i convertToBoardPosition(SVector2f mousePos)
+	private Vector2i convertToBoardPosition(Vector2f mousePos)
 	{
-		SVector2i res = new SVector2i((int) mousePos.x, (int) mousePos.y);
+		Vector2i res = new Vector2i((int) mousePos.x, (int) mousePos.y);
 
 		int boardWidth = boardSize.x;
 		int boardHeight = boardSize.y;

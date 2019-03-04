@@ -3,10 +3,10 @@ package org.sheepy.vsand;
 import static org.lwjgl.glfw.GLFW.*;
 
 import org.eclipse.emf.common.util.EList;
+import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.sheepy.lily.core.api.cadence.IMainLoop;
 import org.sheepy.lily.core.api.input.IInputManager;
-import org.sheepy.lily.core.api.types.SVector2i;
 import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.vulkan.api.adapter.IProcessAdapter;
 import org.sheepy.lily.vulkan.api.adapter.IVulkanEngineAdapter;
@@ -73,7 +73,7 @@ public class VSandMainLoop implements IMainLoop
 		vsandInputManager = new VSandInputManager(application, constants, stepPipeline);
 		inputManager.addListener(vsandInputManager);
 
-		SVector2i boardSize = new SVector2i(stepPipeline.getWidth(), stepPipeline.getHeight());
+		Vector2i boardSize = new Vector2i(stepPipeline.getWidth(), stepPipeline.getHeight());
 		mainDrawManager = new DrawManager(application, inputManager, modificationsManager,
 				boardSize);
 		secondaryDrawManager = new DrawManager(application, inputManager, modificationsManager,

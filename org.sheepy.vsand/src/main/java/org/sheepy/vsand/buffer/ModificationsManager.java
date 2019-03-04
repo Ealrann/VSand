@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import org.joml.Vector2i;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.core.api.types.SVector2i;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.lily.vulkan.resource.buffer.BufferAdapter;
 import org.sheepy.vsand.logic.BoardModification;
@@ -68,10 +68,10 @@ public class ModificationsManager
 	{
 		public final EShapeSize size;
 		public final EShape shape;
-		public final SVector2i position;
+		public final Vector2i position;
 		public final Material material;
 
-		public DrawData(EShapeSize size, EShape shape, SVector2i position, Material material)
+		public DrawData(EShapeSize size, EShape shape, Vector2i position, Material material)
 		{
 			this.size = size;
 			this.shape = shape;

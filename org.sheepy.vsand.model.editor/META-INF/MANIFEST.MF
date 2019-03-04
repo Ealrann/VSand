@@ -19,3 +19,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.sheepy.lily.vulkan.model.edit;visibility:=reexport,
  org.sheepy.lily.vulkan.nuklear.model.edit;visibility:=reexport
 Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-11
