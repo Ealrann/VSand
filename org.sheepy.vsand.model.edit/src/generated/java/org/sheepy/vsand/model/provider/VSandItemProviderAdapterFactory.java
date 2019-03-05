@@ -34,7 +34,6 @@ import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.presentation.UIPage;
 import org.sheepy.lily.core.model.presentation.util.PresentationSwitch;
 import org.sheepy.lily.vulkan.model.ResourcePkg;
-import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 
 import org.sheepy.lily.vulkan.model.process.AbstractCompositePipeline;
@@ -299,56 +298,6 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.VSandGraphicProcess} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected VSandGraphicProcessItemProvider vSandGraphicProcessItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link org.sheepy.vsand.model.VSandGraphicProcess}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createVSandGraphicProcessAdapter()
-	{
-		if (vSandGraphicProcessItemProvider == null)
-		{
-			vSandGraphicProcessItemProvider = new VSandGraphicProcessItemProvider(this);
-		}
-
-		return vSandGraphicProcessItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.VSandComputeProcess} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected VSandComputeProcessItemProvider vSandComputeProcessItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link org.sheepy.vsand.model.VSandComputeProcess}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createVSandComputeProcessAdapter()
-	{
-		if (vSandComputeProcessItemProvider == null)
-		{
-			vSandComputeProcessItemProvider = new VSandComputeProcessItemProvider(this);
-		}
-
-		return vSandComputeProcessItemProvider;
-	}
-
-	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -473,8 +422,6 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 		if (repeatComputePipelineItemProvider != null) repeatComputePipelineItemProvider.dispose();
 		if (vSandConstantsItemProvider != null) vSandConstantsItemProvider.dispose();
 		if (materialSelectorPanelItemProvider != null) materialSelectorPanelItemProvider.dispose();
-		if (vSandGraphicProcessItemProvider != null) vSandGraphicProcessItemProvider.dispose();
-		if (vSandComputeProcessItemProvider != null) vSandComputeProcessItemProvider.dispose();
 	}
 
 	/**
@@ -628,26 +575,6 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 			{
 				this.newChildDescriptors = newChildDescriptors;
 				this.editingDomain = editingDomain;
-			}
-			/**
-			 * <!-- begin-user-doc -->
-			 * <!-- end-user-doc -->
-			 * @generated
-			 */
-			@Override
-			public Object caseVulkanEngine(VulkanEngine object)
-			{
-				newChildDescriptors.add
-					(createChildParameter
-						(VulkanPackage.Literals.VULKAN_ENGINE__PROCESSES,
-						 VSandFactory.eINSTANCE.createVSandGraphicProcess()));
-
-				newChildDescriptors.add
-					(createChildParameter
-						(VulkanPackage.Literals.VULKAN_ENGINE__PROCESSES,
-						 VSandFactory.eINSTANCE.createVSandComputeProcess()));
-
-				return null;
 			}
 			/**
 			 * <!-- begin-user-doc -->

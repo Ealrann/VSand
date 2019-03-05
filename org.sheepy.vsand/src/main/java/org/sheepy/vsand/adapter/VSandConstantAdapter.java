@@ -3,21 +3,30 @@ package org.sheepy.vsand.adapter;
 import java.nio.ByteBuffer;
 import java.util.Random;
 
-import org.eclipse.emf.ecore.EClass;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.vulkan.common.allocation.adapter.IAllocableAdapter;
 import org.sheepy.lily.vulkan.common.allocation.common.IAllocationContext;
 import org.sheepy.lily.vulkan.resource.buffer.AbstractConstantsAdapter;
 import org.sheepy.vsand.model.VSandConstants;
-import org.sheepy.vsand.model.VSandPackage;
 
+@Statefull
+@Adapter(scope = VSandConstants.class)
 public class VSandConstantAdapter extends AbstractConstantsAdapter implements IAllocableAdapter
 {
 	private final int BYTE_SIZE = Integer.BYTES * 3;
+
 	private final Random random = new Random(System.nanoTime());
+	private final VSandConstants constants;
 
 	private ByteBuffer buffer = null;
+
+	public VSandConstantAdapter(VSandConstants constants)
+	{
+		this.constants = constants;
+	}
 
 	@Override
 	public void allocate(MemoryStack stack, IAllocationContext context)
@@ -40,19 +49,18 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IA
 	@Override
 	public ByteBuffer getData()
 	{
-		var pc = (VSandConstants) target;
 		int firstPass = 0;
-		if (pc.isFirstPass())
+		if (constants.isFirstPass())
 		{
 			firstPass = 1;
-			pc.setFirstPass(false);
+			constants.setFirstPass(false);
 		}
 
 		float rNumber = random.nextFloat();
 
 		buffer.putFloat(rNumber);
 		buffer.putInt(firstPass);
-		buffer.putInt(pc.isShowSleepZones() ? 1 : 0);
+		buffer.putInt(constants.isShowSleepZones() ? 1 : 0);
 		buffer.flip();
 
 		return buffer;
@@ -68,11 +76,5 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IA
 	public boolean isAllocationDirty(IAllocationContext context)
 	{
 		return false;
-	}
-
-	@Override
-	public boolean isApplicable(EClass eClass)
-	{
-		return VSandPackage.Literals.VSAND_CONSTANTS == eClass;
 	}
 }

@@ -2,16 +2,25 @@ package org.sheepy.vsand.adapter;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
 import org.sheepy.lily.core.api.adapter.IServiceAdapterFactory;
+import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.adapter.annotation.Statefull;
+import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.process.compute.execution.ComputeCommandBuffer;
 import org.sheepy.lily.vulkan.process.compute.pipeline.ComputePipelineAdapter;
 import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.VSandPackage;
 
+@Statefull
+@Adapter(scope = RepeatComputePipeline.class)
 public class RepeatComputePipelineAdapter extends ComputePipelineAdapter
 {
-	private final EAttribute REPEAT_FEATURE = VSandPackage.Literals.REPEAT_COMPUTE_PIPELINE__REPEAT_COUNT;
+	private static final EAttribute REPEAT_FEATURE = VSandPackage.Literals.REPEAT_COMPUTE_PIPELINE__REPEAT_COUNT;
+
+	public RepeatComputePipelineAdapter(ComputePipeline pipeline)
+	{
+		super(pipeline);
+	}
 
 	@Override
 	public void notifyChanged(Notification notification)
@@ -35,12 +44,6 @@ public class RepeatComputePipelineAdapter extends ComputePipelineAdapter
 		{
 			recordComputers(commandBuffer, bindPoint);
 		}
-	}
-
-	@Override
-	public boolean isApplicable(EClass eClass)
-	{
-		return VSandPackage.Literals.REPEAT_COMPUTE_PIPELINE == eClass;
 	}
 
 	public static RepeatComputePipelineAdapter adapt(RepeatComputePipeline object)

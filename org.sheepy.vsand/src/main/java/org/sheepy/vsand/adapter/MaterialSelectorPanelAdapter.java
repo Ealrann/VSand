@@ -8,15 +8,14 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.nuklear.NkColor;
 import org.lwjgl.nuklear.NkRect;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.core.api.adapter.impl.AbstractStatefullAdapter;
+import org.sheepy.lily.core.api.adapter.annotation.Dispose;
+import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.vulkan.api.nativehelper.surface.VkSurface;
 import org.sheepy.lily.vulkan.api.nativehelper.window.IWindowListener;
@@ -28,8 +27,9 @@ import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandPackage;
 
-public class MaterialSelectorPanelAdapter extends AbstractStatefullAdapter
-		implements IUIElementAdapter
+@Statefull
+@org.sheepy.lily.core.api.adapter.annotation.Adapter(scope = MaterialSelectorPanel.class)
+public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 {
 	private final Adapter materialAdapter = new AdapterImpl()
 	{
@@ -60,29 +60,25 @@ public class MaterialSelectorPanelAdapter extends AbstractStatefullAdapter
 	private int width;
 	private int height;
 
-	private VSandApplication application;
+	private final VSandApplication application;
 	private boolean dirty = false;
 
 	private MaterialDrawer primaryMaterialDrawer;
 	private MaterialDrawer secondaryMaterialDrawer;
 
-	private MaterialSelectorPanel panel;
+	private final MaterialSelectorPanel panel;
 
-	@Override
-	public void setTarget(Notifier newTarget)
+	public MaterialSelectorPanelAdapter(MaterialSelectorPanel panel)
 	{
-		super.setTarget(newTarget);
-
-		panel = (MaterialSelectorPanel) newTarget;
+		this.panel = panel;
 		application = (VSandApplication) EcoreUtil.getRootContainer(panel);
 		application.eAdapters().add(materialAdapter);
 	}
 
-	@Override
-	public void unsetTarget(Notifier oldTarget)
+	@Dispose
+	public void unsetTarget()
 	{
 		application.eAdapters().remove(materialAdapter);
-		super.unsetTarget(oldTarget);
 	}
 
 	private void load(UIContext context, MaterialSelectorPanel panel)
@@ -222,11 +218,5 @@ public class MaterialSelectorPanelAdapter extends AbstractStatefullAdapter
 			rectButton1.set(x + TEXT_WIDTH, y, lineHeight, lineHeight);
 			rectButton2.set(x + TEXT_WIDTH + lineHeight, y, lineHeight, lineHeight);
 		}
-	}
-
-	@Override
-	public boolean isApplicable(EClass eClass)
-	{
-		return VSandPackage.Literals.MATERIAL_SELECTOR_PANEL == eClass;
 	}
 }

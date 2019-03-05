@@ -95,24 +95,6 @@ public interface VSandFactory extends EFactory
 	MaterialSelectorPanel createMaterialSelectorPanel();
 
 	/**
-	 * Returns a new object of class '<em>Graphic Process</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Graphic Process</em>'.
-	 * @generated
-	 */
-	VSandGraphicProcess createVSandGraphicProcess();
-
-	/**
-	 * Returns a new object of class '<em>Compute Process</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Compute Process</em>'.
-	 * @generated
-	 */
-	VSandComputeProcess createVSandComputeProcess();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

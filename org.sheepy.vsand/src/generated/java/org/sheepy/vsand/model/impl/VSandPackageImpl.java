@@ -15,8 +15,6 @@ import org.sheepy.lily.core.model.inference.InferencePackage;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.root.RootPackage;
 import org.sheepy.lily.core.model.types.TypesPackage;
-import org.sheepy.lily.core.model.ui.UiPackage;
-import org.sheepy.lily.core.model.variable.VariablePackage;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 
 import org.sheepy.lily.vulkan.model.enumeration.EnumerationPackage;
@@ -24,8 +22,6 @@ import org.sheepy.lily.vulkan.model.enumeration.EnumerationPackage;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
 
 import org.sheepy.lily.vulkan.model.process.compute.ComputePackage;
-
-import org.sheepy.lily.vulkan.model.process.graphic.GraphicPackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
@@ -34,14 +30,9 @@ import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.Transformation;
 import org.sheepy.vsand.model.Transformations;
 import org.sheepy.vsand.model.VSandApplication;
-import org.sheepy.vsand.model.VSandButton;
-import org.sheepy.vsand.model.VSandComputeProcess;
 import org.sheepy.vsand.model.VSandConstants;
 import org.sheepy.vsand.model.VSandFactory;
-import org.sheepy.vsand.model.VSandGraphicProcess;
-import org.sheepy.vsand.model.VSandNuklearPipeline;
 import org.sheepy.vsand.model.VSandPackage;
-import org.sheepy.lily.vulkan.nuklear.model.NuklearPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -99,34 +90,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	private EClass vSandConstantsEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass vSandButtonEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass vSandNuklearPipelineEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass vSandGraphicProcessEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass vSandComputeProcessEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -195,12 +158,8 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		VulkanPackage.eINSTANCE.eClass();
 		ResourcePackage.eINSTANCE.eClass();
 		PresentationPackage.eINSTANCE.eClass();
-		UiPackage.eINSTANCE.eClass();
-		NuklearPackage.eINSTANCE.eClass();
-		GraphicPackage.eINSTANCE.eClass();
 		ActionPackage.eINSTANCE.eClass();
 		EnumerationPackage.eINSTANCE.eClass();
-		VariablePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theVSandPackage.createPackageContents();
@@ -574,50 +533,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EClass getVSandButton()
-	{
-		return vSandButtonEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getVSandNuklearPipeline()
-	{
-		return vSandNuklearPipelineEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getVSandGraphicProcess()
-	{
-		return vSandGraphicProcessEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getVSandComputeProcess()
-	{
-		return vSandComputeProcessEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getMaterialSelectorPanel()
 	{
 		return materialSelectorPanelEClass;
@@ -778,14 +693,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__SECONDARY_R);
 		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__SECONDARY_G);
 		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__SECONDARY_B);
-
-		vSandButtonEClass = createEClass(VSAND_BUTTON);
-
-		vSandNuklearPipelineEClass = createEClass(VSAND_NUKLEAR_PIPELINE);
-
-		vSandGraphicProcessEClass = createEClass(VSAND_GRAPHIC_PROCESS);
-
-		vSandComputeProcessEClass = createEClass(VSAND_COMPUTE_PROCESS);
 	}
 
 	/**
@@ -818,9 +725,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		ComputePackage theComputePackage = (ComputePackage)EPackage.Registry.INSTANCE.getEPackage(ComputePackage.eNS_URI);
 		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
 		PresentationPackage thePresentationPackage = (PresentationPackage)EPackage.Registry.INSTANCE.getEPackage(PresentationPackage.eNS_URI);
-		UiPackage theUiPackage = (UiPackage)EPackage.Registry.INSTANCE.getEPackage(UiPackage.eNS_URI);
-		NuklearPackage theNuklearPackage = (NuklearPackage)EPackage.Registry.INSTANCE.getEPackage(NuklearPackage.eNS_URI);
-		GraphicPackage theGraphicPackage = (GraphicPackage)EPackage.Registry.INSTANCE.getEPackage(GraphicPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -831,10 +735,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		repeatComputePipelineEClass.getESuperTypes().add(theComputePackage.getComputePipeline());
 		vSandConstantsEClass.getESuperTypes().add(theResourcePackage.getAbstractConstants());
 		materialSelectorPanelEClass.getESuperTypes().add(thePresentationPackage.getIPanel());
-		vSandButtonEClass.getESuperTypes().add(theUiPackage.getButton());
-		vSandNuklearPipelineEClass.getESuperTypes().add(theNuklearPackage.getNuklearPipeline());
-		vSandGraphicProcessEClass.getESuperTypes().add(theGraphicPackage.getGraphicProcess());
-		vSandComputeProcessEClass.getESuperTypes().add(theComputePackage.getComputeProcess());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(vSandApplicationEClass, VSandApplication.class, "VSandApplication", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -884,14 +784,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getMaterialSelectorPanel_SecondaryR(), theEcorePackage.getEInt(), "secondaryR", "50", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterialSelectorPanel_SecondaryG(), theEcorePackage.getEInt(), "secondaryG", "50", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterialSelectorPanel_SecondaryB(), theEcorePackage.getEInt(), "secondaryB", "255", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(vSandButtonEClass, VSandButton.class, "VSandButton", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(vSandNuklearPipelineEClass, VSandNuklearPipeline.class, "VSandNuklearPipeline", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(vSandGraphicProcessEClass, VSandGraphicProcess.class, "VSandGraphicProcess", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(vSandComputeProcessEClass, VSandComputeProcess.class, "VSandComputeProcess", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

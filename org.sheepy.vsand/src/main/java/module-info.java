@@ -1,4 +1,4 @@
-import org.sheepy.lily.core.api.adapter.IAdapter;
+import org.sheepy.lily.core.api.adapter.annotation.Adapters;
 import org.sheepy.lily.core.api.cadence.IMainLoop;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.resource.IModelExtension;
@@ -7,6 +7,12 @@ import org.sheepy.vsand.adapter.MaterialSelectorPanelAdapter;
 import org.sheepy.vsand.adapter.RepeatComputePipelineAdapter;
 import org.sheepy.vsand.adapter.VSandConstantAdapter;
 import org.sheepy.vsand.model.VSandModelExtension;
+
+@Adapters(classifiers = {
+		RepeatComputePipelineAdapter.class,
+		VSandConstantAdapter.class,
+		MaterialSelectorPanelAdapter.class
+})
 
 module org.sheepy.vsand
 {
@@ -26,8 +32,6 @@ module org.sheepy.vsand
 
 	uses IInputManager;
 
-	provides IAdapter
-			with RepeatComputePipelineAdapter, VSandConstantAdapter, MaterialSelectorPanelAdapter;
 	provides IModelExtension with VSandModelExtension;
 	provides IMainLoop with VSandMainLoop;
 }

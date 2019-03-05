@@ -10,30 +10,17 @@ import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.core.model.inference.IInferenceObject;
 import org.sheepy.lily.core.model.presentation.IPanel;
 import org.sheepy.lily.core.model.presentation.IPositionElement;
-import org.sheepy.lily.core.model.presentation.ISizedElement;
 import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.core.model.types.LNamedElement;
-import org.sheepy.lily.core.model.ui.AbstractButton;
-import org.sheepy.lily.core.model.ui.Button;
-import org.sheepy.lily.core.model.ui.IControl;
-import org.sheepy.lily.core.model.ui.Widget;
-import org.sheepy.lily.vulkan.model.IExecutionManager;
-import org.sheepy.lily.vulkan.model.IProcess;
 import org.sheepy.lily.vulkan.model.IResource;
 import org.sheepy.lily.vulkan.model.IResourceContainer;
 import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
-import org.sheepy.lily.vulkan.model.process.AbstractProcess;
 import org.sheepy.lily.vulkan.model.process.IPipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
-import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
-import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
-import org.sheepy.lily.vulkan.model.process.graphic.IGUIPipeline;
-import org.sheepy.lily.vulkan.model.process.graphic.IGraphicsPipeline;
 import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
 import org.sheepy.lily.vulkan.model.resource.BasicResource;
 import org.sheepy.vsand.model.*;
-import org.sheepy.lily.vulkan.nuklear.model.NuklearPipeline;
 
 /**
  * <!-- begin-user-doc -->
@@ -174,62 +161,6 @@ public class VSandSwitch<T> extends Switch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case VSandPackage.VSAND_BUTTON:
-			{
-				VSandButton vSandButton = (VSandButton)theEObject;
-				T result = caseVSandButton(vSandButton);
-				if (result == null) result = caseButton(vSandButton);
-				if (result == null) result = caseAbstractButton(vSandButton);
-				if (result == null) result = caseWidget(vSandButton);
-				if (result == null) result = caseIControl(vSandButton);
-				if (result == null) result = caseISizedElement(vSandButton);
-				if (result == null) result = caseIUIElement(vSandButton);
-				if (result == null) result = caseIPositionElement(vSandButton);
-				if (result == null) result = caseLObject(vSandButton);
-				if (result == null) result = caseIInferenceObject(vSandButton);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case VSandPackage.VSAND_NUKLEAR_PIPELINE:
-			{
-				VSandNuklearPipeline vSandNuklearPipeline = (VSandNuklearPipeline)theEObject;
-				T result = caseVSandNuklearPipeline(vSandNuklearPipeline);
-				if (result == null) result = caseNuklearPipeline(vSandNuklearPipeline);
-				if (result == null) result = caseIGUIPipeline(vSandNuklearPipeline);
-				if (result == null) result = caseLObject(vSandNuklearPipeline);
-				if (result == null) result = caseLNamedElement(vSandNuklearPipeline);
-				if (result == null) result = caseIGraphicsPipeline(vSandNuklearPipeline);
-				if (result == null) result = caseIPipeline(vSandNuklearPipeline);
-				if (result == null) result = caseIInferenceObject(vSandNuklearPipeline);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case VSandPackage.VSAND_GRAPHIC_PROCESS:
-			{
-				VSandGraphicProcess vSandGraphicProcess = (VSandGraphicProcess)theEObject;
-				T result = caseVSandGraphicProcess(vSandGraphicProcess);
-				if (result == null) result = caseGraphicProcess(vSandGraphicProcess);
-				if (result == null) result = caseAbstractProcess(vSandGraphicProcess);
-				if (result == null) result = caseIProcess(vSandGraphicProcess);
-				if (result == null) result = caseIResourceContainer(vSandGraphicProcess);
-				if (result == null) result = caseLNamedElement(vSandGraphicProcess);
-				if (result == null) result = caseIExecutionManager(vSandGraphicProcess);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case VSandPackage.VSAND_COMPUTE_PROCESS:
-			{
-				VSandComputeProcess vSandComputeProcess = (VSandComputeProcess)theEObject;
-				T result = caseVSandComputeProcess(vSandComputeProcess);
-				if (result == null) result = caseComputeProcess(vSandComputeProcess);
-				if (result == null) result = caseAbstractProcess(vSandComputeProcess);
-				if (result == null) result = caseIProcess(vSandComputeProcess);
-				if (result == null) result = caseIResourceContainer(vSandComputeProcess);
-				if (result == null) result = caseLNamedElement(vSandComputeProcess);
-				if (result == null) result = caseIExecutionManager(vSandComputeProcess);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -342,70 +273,6 @@ public class VSandSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseVSandConstants(VSandConstants object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Button</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Button</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseVSandButton(VSandButton object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Nuklear Pipeline</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Nuklear Pipeline</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseVSandNuklearPipeline(VSandNuklearPipeline object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Graphic Process</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Graphic Process</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseVSandGraphicProcess(VSandGraphicProcess object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Compute Process</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Compute Process</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseVSandComputeProcess(VSandComputeProcess object)
 	{
 		return null;
 	}
@@ -635,22 +502,6 @@ public class VSandSwitch<T> extends Switch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IControl</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IControl</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIControl(IControl object)
-	{
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>IPosition Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -662,198 +513,6 @@ public class VSandSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseIPositionElement(IPositionElement object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>ISized Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>ISized Element</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseISizedElement(ISizedElement object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Widget</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Widget</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseWidget(Widget object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Abstract Button</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Abstract Button</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseAbstractButton(AbstractButton object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Button</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Button</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseButton(Button object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IGraphics Pipeline</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IGraphics Pipeline</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIGraphicsPipeline(IGraphicsPipeline object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IGUI Pipeline</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IGUI Pipeline</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIGUIPipeline(IGUIPipeline object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Pipeline</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Pipeline</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseNuklearPipeline(NuklearPipeline object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IExecution Manager</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IExecution Manager</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIExecutionManager(IExecutionManager object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IProcess</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IProcess</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIProcess(IProcess object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Abstract Process</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Abstract Process</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseAbstractProcess(AbstractProcess object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Process</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Process</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseGraphicProcess(GraphicProcess object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Process</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Process</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseComputeProcess(ComputeProcess object)
 	{
 		return null;
 	}

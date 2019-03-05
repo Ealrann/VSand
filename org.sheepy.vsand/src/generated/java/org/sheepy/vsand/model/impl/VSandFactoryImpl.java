@@ -72,8 +72,6 @@ public class VSandFactoryImpl extends EFactoryImpl implements VSandFactory
 			case VSandPackage.REPEAT_COMPUTE_PIPELINE: return createRepeatComputePipeline();
 			case VSandPackage.VSAND_CONSTANTS: return createVSandConstants();
 			case VSandPackage.MATERIAL_SELECTOR_PANEL: return createMaterialSelectorPanel();
-			case VSandPackage.VSAND_GRAPHIC_PROCESS: return createVSandGraphicProcess();
-			case VSandPackage.VSAND_COMPUTE_PROCESS: return createVSandComputeProcess();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -173,30 +171,6 @@ public class VSandFactoryImpl extends EFactoryImpl implements VSandFactory
 	{
 		MaterialSelectorPanelImpl materialSelectorPanel = new MaterialSelectorPanelImpl();
 		return materialSelectorPanel;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public VSandGraphicProcess createVSandGraphicProcess()
-	{
-		VSandGraphicProcessImpl vSandGraphicProcess = new VSandGraphicProcessImpl();
-		return vSandGraphicProcess;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public VSandComputeProcess createVSandComputeProcess()
-	{
-		VSandComputeProcessImpl vSandComputeProcess = new VSandComputeProcessImpl();
-		return vSandComputeProcess;
 	}
 
 	/**
