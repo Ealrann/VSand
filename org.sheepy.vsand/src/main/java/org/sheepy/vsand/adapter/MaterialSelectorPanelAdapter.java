@@ -79,6 +79,10 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 	public void unsetTarget()
 	{
 		application.eAdapters().remove(materialAdapter);
+		for (LineData data : datas)
+		{
+			data.free();
+		}
 	}
 
 	private void load(UIContext context, MaterialSelectorPanel panel)
@@ -186,9 +190,9 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 		public final Material material;
 		public final ByteBuffer textBuffer;
 		public final NkColor color;
-		public final NkRect rectLabel = NkRect.malloc();
-		public final NkRect rectButton1 = NkRect.malloc();
-		public final NkRect rectButton2 = NkRect.malloc();
+		public final NkRect rectLabel = NkRect.create();
+		public final NkRect rectButton1 = NkRect.create();
+		public final NkRect rectButton2 = NkRect.create();
 		public final ByteBuffer panelLabelId;
 		public final ByteBuffer panelButton1Id;
 		public final ByteBuffer panelButton2Id;
@@ -208,8 +212,16 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 			panelLabelId = MemoryUtil.memUTF8("Label" + name);
 			panelButton1Id = MemoryUtil.memUTF8("Button1" + name);
 			panelButton2Id = MemoryUtil.memUTF8("Button2" + name);
-
 			textBuffer = MemoryUtil.memUTF8(name);
+		}
+
+		public void free()
+		{
+			color.free();
+			MemoryUtil.memFree(panelLabelId);
+			MemoryUtil.memFree(panelButton1Id);
+			MemoryUtil.memFree(panelButton2Id);
+			MemoryUtil.memFree(textBuffer);
 		}
 
 		public void updateRect(int x, int y, int lineHeight)
