@@ -11,17 +11,17 @@ public class VSyncGuard
 	private final long refreshTimeAvailableNs;
 
 	private long nextFrameEndDateNs = 0;
-	
+
 	public VSyncGuard(long refreshTimeAvailableNs)
 	{
 		this.refreshTimeAvailableNs = refreshTimeAvailableNs;
 	}
-	
+
 	public void start()
 	{
 		nextFrameEndDateNs = System.nanoTime() + refreshTimeAvailableNs;
 	}
-	
+
 	public void step()
 	{
 		long remainingUntilDeadlineNs = nextFrameEndDateNs - System.nanoTime();

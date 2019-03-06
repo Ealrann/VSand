@@ -12,8 +12,10 @@ import org.sheepy.lily.vulkan.model.IProcess;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
+import org.sheepy.lily.vulkan.model.resource.Image;
 import org.sheepy.vsand.buffer.BoardBufferLoader;
 import org.sheepy.vsand.buffer.BoardDecisionLoader;
+import org.sheepy.vsand.buffer.BoardImageLoader;
 import org.sheepy.vsand.buffer.ConfigurationBufferLoader;
 import org.sheepy.vsand.buffer.ModificationsManager;
 import org.sheepy.vsand.buffer.TransformationBufferLoader;
@@ -56,6 +58,9 @@ public class VSandApplicationLauncher
 		int width = application.getSize().x;
 		int height = application.getSize().y;
 
+		var boardImage = (Image) vulkanEngine.getResourcePkg().getResources().get(0);
+		BoardImageLoader.load(boardImage, width, height);
+		
 		EList<IProcess> processes = vulkanEngine.getProcesses();
 		for (IProcess process : processes)
 		{

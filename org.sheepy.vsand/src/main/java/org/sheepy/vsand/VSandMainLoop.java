@@ -17,8 +17,6 @@ import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
-import org.sheepy.lily.vulkan.model.resource.Image;
-import org.sheepy.vsand.buffer.BoardImageLoader;
 import org.sheepy.vsand.buffer.ModificationsManager;
 import org.sheepy.vsand.input.VSandInputManager;
 import org.sheepy.vsand.model.RepeatComputePipeline;
@@ -58,15 +56,9 @@ public class VSandMainLoop implements IMainLoop
 	{
 		application = (VSandApplication) _application;
 
-		int width = application.getSize().x;
-		int height = application.getSize().y;
-
 		var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		engineAdapter = IVulkanEngineAdapter.adapt(vulkanEngine);
 		inputManager = engineAdapter.getInputManager();
-
-		var boardImage = (Image) vulkanEngine.getResourcePkg().getResources().get(0);
-		BoardImageLoader.load(boardImage, width, height);
 
 		gatherProcesses(vulkanEngine);
 
@@ -83,7 +75,7 @@ public class VSandMainLoop implements IMainLoop
 
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode glfwGetVideoMode = glfwGetVideoMode(monitor);
-		long refreshTimeAvailableNs = (long) (1. / glfwGetVideoMode.refreshRate() * 1e9);
+		long refreshTimeAvailableNs = (long) ((1. / glfwGetVideoMode.refreshRate()) * 1e9);
 
 		vsyncGuard = new VSyncGuard(refreshTimeAvailableNs);
 		vsyncGuard.start();
