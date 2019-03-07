@@ -1,10 +1,7 @@
 package org.sheepy.vsand;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 import org.eclipse.emf.common.util.EList;
 import org.joml.Vector2i;
-import org.lwjgl.glfw.GLFWVidMode;
 import org.sheepy.lily.core.api.cadence.IMainLoop;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.model.application.Application;
@@ -23,7 +20,6 @@ import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandConstants;
 import org.sheepy.vsand.util.FPSCounter;
-import org.sheepy.vsand.util.VSyncGuard;
 
 public class VSandMainLoop implements IMainLoop
 {
@@ -45,8 +41,6 @@ public class VSandMainLoop implements IMainLoop
 	private ComputePipeline drawPipeline;
 	private IInputManager inputManager;
 	private VSandApplication application;
-
-	private VSyncGuard vsyncGuard;
 
 	private IFence drawFence;
 	private VSandInputManager vsandInputManager;
@@ -72,13 +66,6 @@ public class VSandMainLoop implements IMainLoop
 				boardSize);
 
 		drawFence = engineAdapter.newFence(true);
-
-		long monitor = glfwGetPrimaryMonitor();
-		GLFWVidMode glfwGetVideoMode = glfwGetVideoMode(monitor);
-		long refreshTimeAvailableNs = (long) ((1. / glfwGetVideoMode.refreshRate()) * 1e9);
-
-		vsyncGuard = new VSyncGuard(refreshTimeAvailableNs);
-		vsyncGuard.start();
 	}
 
 	private void gatherProcesses(VulkanEngine vulkanEngine)
@@ -137,8 +124,6 @@ public class VSandMainLoop implements IMainLoop
 
 		renderProcessAdapter.prepare();
 		renderProcessAdapter.execute();
-
-		vsyncGuard.step();
 	}
 
 	private void updateDrawManager()
