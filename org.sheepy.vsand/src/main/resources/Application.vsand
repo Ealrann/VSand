@@ -166,7 +166,7 @@
           <pushConstant/>
         </pipelines>
       </pipelinePkg>
-      <configuration clearBeforeRender="false" presentationMode="Immediate" requiredSwapImageCount="2" acquireWaitStage="COMPUTE_SHADER_BIT">
+      <configuration clearBeforeRender="false" presentationMode="Fifo" requiredSwapImageCount="2" acquireWaitStage="COMPUTE_SHADER_BIT">
         <swapImageUsages>TransferDst</swapImageUsages>
         <swapImageUsages>ColorAttachment</swapImageUsages>
         <colorDomain/>
