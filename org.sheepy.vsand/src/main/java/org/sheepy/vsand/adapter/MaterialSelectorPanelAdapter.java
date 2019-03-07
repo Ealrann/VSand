@@ -11,13 +11,13 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.joml.Vector2i;
 import org.lwjgl.nuklear.NkColor;
 import org.lwjgl.nuklear.NkRect;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.model.presentation.IUIElement;
-import org.sheepy.lily.vulkan.api.nativehelper.surface.VkSurface;
 import org.sheepy.lily.vulkan.api.nativehelper.window.IWindowListener;
 import org.sheepy.lily.vulkan.common.ui.UIUtil;
 import org.sheepy.lily.vulkan.nuklear.adapter.IUIElementAdapter;
@@ -48,9 +48,9 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 	private final IWindowListener listener = new IWindowListener()
 	{
 		@Override
-		public void onWindowResize(VkSurface surface)
+		public void onResize(Vector2i size)
 		{
-			updateDataLocations(surface);
+			updateDataLocations(size);
 		}
 	};
 
@@ -89,7 +89,7 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 	{
 		var materials = application.getMaterials().getMaterials();
 		int materialCount = countUserFriendlyMaterials(materials);
-		var surface = context.window.getSurface();
+		var surface = context.window.getSize();
 		int lineHeight = panel.getLineHeight();
 
 		primaryMaterialDrawer = new MaterialDrawer(lineHeight, panel.getPrimaryR(),
@@ -114,11 +114,11 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 		context.window.addListener(listener);
 	}
 
-	public void updateDataLocations(VkSurface surface)
+	public void updateDataLocations(Vector2i size)
 	{
 		int lineHeight = panel.getLineHeight();
-		int x = UIUtil.computeXRelative(surface, panel, width);
-		int y = UIUtil.computeYRelative(surface, panel, height);
+		int x = UIUtil.computeXRelative(size, panel, width);
+		int y = UIUtil.computeYRelative(size, panel, height);
 		for (LineData data : datas)
 		{
 			data.updateRect(x, y, lineHeight);

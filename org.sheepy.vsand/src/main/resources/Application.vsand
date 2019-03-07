@@ -18,7 +18,7 @@
         </controls>
       </panels>
       <panels xsi:type="model:MaterialSelectorPanel" name="Materials" verticalRelative="MIDDLE" horizontalRelative="RIGHT" secondaryR="100" secondaryG="255"/>
-      <panels xsi:type="ui:Panel" name="Controls" width="300" height="210" showTitle="true" minimizable="true" minimized="true">
+      <panels xsi:type="ui:Panel" name="Controls" width="300" height="250" showTitle="true" minimizable="true" minimized="true">
         <controls xsi:type="ui:DynamicRowLayout" columnCount="2"/>
         <controls xsi:type="ui:Label" text="Primary material"/>
         <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Scroll"/>
@@ -32,6 +32,10 @@
         <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Space bar"/>
         <controls xsi:type="ui:Label" text="Next Frame"/>
         <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="n"/>
+        <controls xsi:type="ui:Label" text="Fullscreen"/>
+        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="f"/>
+        <controls xsi:type="ui:Label" text="Quit"/>
+        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Echap"/>
         <controls xsi:type="ui:Label"/>
         <controls xsi:type="ui:Label"/>
         <controls xsi:type="ui:DynamicRowLayout"/>

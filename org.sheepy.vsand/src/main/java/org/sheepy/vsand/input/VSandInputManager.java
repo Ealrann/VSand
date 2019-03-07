@@ -90,6 +90,14 @@ public class VSandInputManager implements IInputListener
 				stepPipeline.setEnabled(true);
 				stepPipeline.setRepeatCount(1);
 				break;
+			// f
+			case 'f' - 32:
+				application.setFullscreen(!application.isFullscreen());
+				break;
+			// Echap
+			case 256:
+				application.setRun(false);
+				break;
 			// s
 			case 's' - 32:
 				constants.setShowSleepZones(!constants.isShowSleepZones());
