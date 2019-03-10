@@ -2,6 +2,7 @@ package org.sheepy.vsand;
 
 import org.eclipse.emf.common.util.EList;
 import org.joml.Vector2i;
+import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.cadence.IMainLoop;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.model.application.Application;
@@ -9,6 +10,7 @@ import org.sheepy.lily.vulkan.api.adapter.IProcessAdapter;
 import org.sheepy.lily.vulkan.api.adapter.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.concurrent.IFence;
 import org.sheepy.lily.vulkan.model.IProcess;
+import org.sheepy.lily.vulkan.model.IResource;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
@@ -45,6 +47,8 @@ public class VSandMainLoop implements IMainLoop
 	private IFence drawFence;
 	private VSandInputManager vsandInputManager;
 
+	private ComputeProcess boardProcess;
+
 	@Override
 	public void load(Application _application)
 	{
@@ -75,7 +79,7 @@ public class VSandMainLoop implements IMainLoop
 		{
 			if (process instanceof ComputeProcess)
 			{
-				var boardProcess = (ComputeProcess) process;
+				boardProcess = (ComputeProcess) process;
 				boardProcessAdapter = IProcessAdapter.adapt(process);
 
 				drawPipeline = (ComputePipeline) boardProcess.getPipelinePkg().getPipelines()
@@ -124,6 +128,18 @@ public class VSandMainLoop implements IMainLoop
 
 		renderProcessAdapter.prepare();
 		renderProcessAdapter.execute();
+	}
+
+	@Override
+	public void free(Application application)
+	{
+		for (IResource resource : boardProcess.getResourcePkg().getResources())
+		{
+			if (resource instanceof Buffer && ((Buffer) resource).getData() != null)
+			{
+				MemoryUtil.memFree(((Buffer) resource).getData());
+			}
+		}
 	}
 
 	private void updateDrawManager()

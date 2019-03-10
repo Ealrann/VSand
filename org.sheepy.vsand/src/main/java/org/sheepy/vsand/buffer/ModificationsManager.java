@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.joml.Vector2i;
-import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.BufferUtils;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.lily.vulkan.resource.buffer.BufferAdapter;
 import org.sheepy.vsand.logic.BoardModification;
@@ -27,7 +27,7 @@ public class ModificationsManager
 	public ModificationsManager(Buffer buffer)
 	{
 		adapter = BufferAdapter.adapt(buffer);
-		copyBuffer = MemoryUtil.memAlloc(BYTE_SIZE);
+		copyBuffer = BufferUtils.createByteBuffer(BYTE_SIZE);
 	}
 
 	public void pushModification(DrawData data)

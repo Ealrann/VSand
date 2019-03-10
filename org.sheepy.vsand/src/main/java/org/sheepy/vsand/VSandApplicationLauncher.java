@@ -49,7 +49,8 @@ public class VSandApplicationLauncher
 
 		configureProcesses(application);
 
-		ApplicationLauncher.launch(application);
+		VSandMainLoop mainLoop = new VSandMainLoop();
+		ApplicationLauncher.launch(application, mainLoop);
 	}
 
 	private static void configureProcesses(Application application)

@@ -1,8 +1,6 @@
 import org.sheepy.lily.core.api.adapter.annotation.Adapters;
-import org.sheepy.lily.core.api.cadence.IMainLoop;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.resource.IModelExtension;
-import org.sheepy.vsand.VSandMainLoop;
 import org.sheepy.vsand.adapter.MaterialSelectorPanelAdapter;
 import org.sheepy.vsand.adapter.RepeatComputePipelineAdapter;
 import org.sheepy.vsand.adapter.VSandConstantAdapter;
@@ -33,5 +31,4 @@ module org.sheepy.vsand
 	uses IInputManager;
 
 	provides IModelExtension with VSandModelExtension;
-	provides IMainLoop with VSandMainLoop;
 }
