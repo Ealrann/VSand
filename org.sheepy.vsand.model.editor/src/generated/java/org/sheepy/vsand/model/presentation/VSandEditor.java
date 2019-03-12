@@ -156,7 +156,6 @@ import org.sheepy.lily.core.model.root.provider.RootItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.types.provider.TypesItemProviderAdapterFactory;
 import org.sheepy.lily.vulkan.model.process.compute.provider.ComputeItemProviderAdapterFactory;
 import org.sheepy.lily.vulkan.model.process.provider.ProcessItemProviderAdapterFactory;
-
 import org.sheepy.lily.vulkan.model.provider.VulkanItemProviderAdapterFactory;
 
 

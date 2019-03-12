@@ -5,19 +5,13 @@ package org.sheepy.vsand.model.provider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.ecore.EObject;
-
 import org.eclipse.emf.edit.command.CommandParameter;
-
 import org.eclipse.emf.edit.domain.EditingDomain;
-
 import org.eclipse.emf.edit.provider.ChangeNotifier;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -35,15 +29,11 @@ import org.sheepy.lily.core.model.presentation.UIPage;
 import org.sheepy.lily.core.model.presentation.util.PresentationSwitch;
 import org.sheepy.lily.vulkan.model.ResourcePkg;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
-
 import org.sheepy.lily.vulkan.model.process.AbstractCompositePipeline;
 import org.sheepy.lily.vulkan.model.process.PipelinePkg;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
-
 import org.sheepy.lily.vulkan.model.process.util.ProcessSwitch;
-
 import org.sheepy.lily.vulkan.model.util.VulkanSwitch;
-
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.util.VSandAdapterFactory;
 
@@ -482,6 +472,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 
 				return null;
 			}
+ 
 			/**
 			 * <!-- begin-user-doc -->
 			 * <!-- end-user-doc -->
@@ -591,6 +582,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 
 				return null;
 			}
+ 
 			/**
 			 * <!-- begin-user-doc -->
 			 * <!-- end-user-doc -->

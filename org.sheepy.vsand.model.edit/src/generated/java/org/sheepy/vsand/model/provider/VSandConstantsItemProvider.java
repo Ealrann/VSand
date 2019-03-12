@@ -14,7 +14,6 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.sheepy.lily.vulkan.model.resource.provider.AbstractConstantsItemProvider;
-
 import org.sheepy.vsand.model.VSandConstants;
 import org.sheepy.vsand.model.VSandPackage;
 

@@ -14,12 +14,9 @@ import org.sheepy.lily.core.model.presentation.provider.PresentationEditPlugin;
 import org.sheepy.lily.core.model.root.provider.RootEditPlugin;
 import org.sheepy.lily.core.model.types.provider.TypesEditPlugin;
 import org.sheepy.lily.vulkan.model.enumeration.provider.EnumerationEditPlugin;
-
 import org.sheepy.lily.vulkan.model.process.compute.provider.ComputeEditPlugin;
 import org.sheepy.lily.vulkan.model.process.provider.ProcessEditPlugin;
-
 import org.sheepy.lily.vulkan.model.provider.VulkanEditPlugin;
-
 import org.sheepy.lily.vulkan.model.resource.provider.ResourceEditPlugin;
 
 /**
