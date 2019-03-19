@@ -773,13 +773,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_CONSTANTS__NAME = ResourcePackage.ABSTRACT_CONSTANTS__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Stage</b></em>' attribute.
+	 * The feature id for the '<em><b>Stages</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_CONSTANTS__STAGE = ResourcePackage.ABSTRACT_CONSTANTS__STAGE;
+	int VSAND_CONSTANTS__STAGES = ResourcePackage.ABSTRACT_CONSTANTS__STAGES;
 
 	/**
 	 * The feature id for the '<em><b>First Pass</b></em>' attribute.

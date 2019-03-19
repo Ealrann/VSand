@@ -100,7 +100,9 @@
         <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
           <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
         </resources>
-        <resources xsi:type="model:VSandConstants" stage="COMPUTE_BIT"/>
+        <resources xsi:type="model:VSandConstants">
+          <stages>COMPUTE_BIT</stages>
+        </resources>
       </resourcePkg>
       <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2"/>
       <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.4"/>
@@ -157,13 +159,15 @@
         <pipelines xsi:type="graphic:ImagePipeline" stage="PreRender" image="//@engines.0/@resourcePkg/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="BOTTOM_OF_PIPE_BIT" srcQueue="//@engines.0/@processes.0">
           <imageSrcAccessMask>SHADER_WRITE_BIT</imageSrcAccessMask>
         </pipelines>
-        <pipelines xsi:type="model_2:NuklearPipeline" subpass="1">
+        <pipelines xsi:type="model_2:NuklearPipeline">
           <indexBuffer/>
           <font descriptorType="SAMPLED_IMAGE">
             <shaderStages>FRAGMENT_BIT</shaderStages>
             <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
           </font>
-          <pushConstant/>
+          <pushConstant>
+            <stages>VERTEX_BIT</stages>
+          </pushConstant>
         </pipelines>
       </pipelinePkg>
       <configuration clearBeforeRender="false" presentationMode="Fifo" requiredSwapImageCount="2" acquireWaitStage="COMPUTE_SHADER_BIT">
