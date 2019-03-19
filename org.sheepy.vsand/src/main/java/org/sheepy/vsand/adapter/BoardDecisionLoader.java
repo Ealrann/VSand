@@ -1,10 +1,16 @@
-package org.sheepy.vsand.buffer;
+package org.sheepy.vsand.adapter;
 
 import java.nio.ByteBuffer;
 import java.util.Random;
 
 import org.lwjgl.system.MemoryUtil;
+import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.adapter.annotation.Dispose;
+import org.sheepy.lily.core.api.adapter.annotation.Statefull;
+import org.sheepy.lily.vulkan.common.util.ModelUtil;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
+import org.sheepy.lily.vulkan.resource.buffer.BufferAdapter;
+import org.sheepy.vsand.model.VSandApplication;
 
 /**
  * This Buffer will store the movement decisions during the board computation.
@@ -15,7 +21,9 @@ import org.sheepy.lily.vulkan.model.resource.Buffer;
  * want to come: Up, Down, Right, Left 8 bit for the decision priority. The highest score will be
  * favored: Up, Down, Right, Left
  */
-public class BoardDecisionLoader
+@Statefull
+@Adapter(scope = Buffer.class, name = "Decision")
+public class BoardDecisionLoader extends BufferAdapter
 {
 	private static final Byte[] vScoreArray = {
 			0, 1
@@ -26,8 +34,13 @@ public class BoardDecisionLoader
 
 	private static final Random random = new Random();
 
-	public static void load(Buffer buffer, int width, int height)
+	public BoardDecisionLoader(Buffer buffer)
 	{
+		super(buffer);
+
+		var application = (VSandApplication) ModelUtil.getApplication(buffer);
+		int width = application.getSize().x;
+		int height = application.getSize().y;
 		int size = width * height + 1;
 		int byteSize = size * Integer.BYTES;
 
@@ -36,6 +49,13 @@ public class BoardDecisionLoader
 		ByteBuffer javaBuffer = MemoryUtil.memAlloc(byteSize);
 		updateRandomness(javaBuffer, size);
 		buffer.setData(javaBuffer);
+	}
+
+	@Dispose
+	public void dispose()
+	{
+		MemoryUtil.memFree(buffer.getData());
+		buffer.setData(null);
 	}
 
 	private static void updateRandomness(ByteBuffer javaBuffer, int size)
