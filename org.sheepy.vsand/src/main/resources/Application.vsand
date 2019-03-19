@@ -170,9 +170,12 @@
           </pushConstant>
         </pipelines>
       </pipelinePkg>
-      <configuration clearBeforeRender="false" presentationMode="Fifo" requiredSwapImageCount="2" acquireWaitStage="COMPUTE_SHADER_BIT">
-        <swapImageUsages>TransferDst</swapImageUsages>
-        <swapImageUsages>ColorAttachment</swapImageUsages>
+      <configuration clearBeforeRender="false" acquireWaitStage="COMPUTE_SHADER_BIT">
+        <swapchainConfiguration presentationMode="Fifo" requiredSwapImageCount="2">
+          <swapImageUsages>ColorAttachment</swapImageUsages>
+          <swapImageUsages>TransferDst</swapImageUsages>
+        </swapchainConfiguration>
+        <framebufferConfiguration/>
         <colorDomain/>
       </configuration>
       <renderPassInfo>
