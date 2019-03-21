@@ -2,7 +2,7 @@ package org.sheepy.vsand.adapter;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
-import org.sheepy.lily.core.api.adapter.IServiceAdapterFactory;
+import org.sheepy.lily.core.api.adapter.IAdapterFactoryService;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
@@ -48,6 +48,6 @@ public class RepeatComputePipelineAdapter extends ComputePipelineAdapter
 
 	public static RepeatComputePipelineAdapter adapt(RepeatComputePipeline object)
 	{
-		return IServiceAdapterFactory.INSTANCE.adapt(object, RepeatComputePipelineAdapter.class);
+		return IAdapterFactoryService.INSTANCE.adapt(object, RepeatComputePipelineAdapter.class);
 	}
 }

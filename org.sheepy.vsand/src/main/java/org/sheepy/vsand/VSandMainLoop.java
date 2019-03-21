@@ -104,9 +104,6 @@ public class VSandMainLoop implements IMainLoop
 
 		updateDrawManager();
 
-		constants.setFirstPass(true);
-
-		boardProcessAdapter.prepare();
 		if (drawPipeline.isEnabled())
 		{
 			drawFence.reset();
@@ -123,7 +120,6 @@ public class VSandMainLoop implements IMainLoop
 			stepPipeline.setEnabled(false);
 		}
 
-		renderProcessAdapter.prepare();
 		renderProcessAdapter.execute();
 	}
 

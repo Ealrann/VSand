@@ -56,7 +56,7 @@ public class DrawManager
 		var size = EShapeSize.values()[application.getBrushSize() - 1];
 		var shape = firstDraw ? EShape.Circle : EShape.Line;
 
-		var cursor = inputManager.getMouseLocation();
+		var cursor = inputManager.getCursorPosition();
 		var cursorBoard = convertToBoardPosition(cursor);
 
 		return new DrawData(size, shape, cursorBoard, material);

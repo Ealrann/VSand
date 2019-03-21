@@ -28,6 +28,11 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IA
 		this.constants = constants;
 	}
 
+	public void tick()
+	{
+		constants.setFirstPass(true);
+	}
+	
 	@Override
 	public void allocate(MemoryStack stack, IAllocationContext context)
 	{
