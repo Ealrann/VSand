@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import org.lwjgl.nuklear.NkColor;
 import org.lwjgl.nuklear.NkContext;
 import org.lwjgl.nuklear.NkRect;
+import org.lwjgl.nuklear.NkVec2;
 import org.sheepy.vsand.adapter.MaterialSelectorPanelAdapter.LineData;
 import org.sheepy.vsand.model.Material;
 
@@ -23,9 +24,11 @@ public class MaterialDrawer
 	private float defaultPaddingX;
 	private float defaultPaddingY;
 
+	private NkVec2 padding;
 	private final byte r;
 	private final byte g;
 	private final byte b;
+
 
 	public MaterialDrawer(int lineHeight, int r, int g, int b)
 	{
@@ -43,8 +46,10 @@ public class MaterialDrawer
 		defaultBorderColorB = borderColor.b();
 		defaultBorderColorA = borderColor.a();
 
-		defaultPaddingX = nkContext.style().window().padding().x();
-		defaultPaddingY = nkContext.style().window().padding().y();
+		padding = nkContext.style().window().padding();
+
+		defaultPaddingX = padding.x();
+		defaultPaddingY = padding.y();
 	}
 
 	public boolean draw(NkContext nkContext,
@@ -54,8 +59,8 @@ public class MaterialDrawer
 						NkRect rect)
 	{
 		boolean res = false;
-		nkContext.style().window().padding().x(0);
-		nkContext.style().window().padding().y(0);
+		padding.x(0);
+		padding.y(0);
 
 		int style = NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_BORDER;
 
@@ -89,8 +94,8 @@ public class MaterialDrawer
 			borderColor.a((byte) 0);
 		}
 
-		nkContext.style().window().padding().x(defaultPaddingX);
-		nkContext.style().window().padding().y(defaultPaddingY);
+		padding.x(defaultPaddingX);
+		padding.y(defaultPaddingY);
 
 		return res;
 	}
