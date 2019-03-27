@@ -53,10 +53,9 @@
           <accessMask>SHADER_WRITE_BIT</accessMask>
         </initialLayout>
       </resources>
-      <resources xsi:type="resource:Semaphore" name="GraphicSemaphore" signalizedAtInit="true"/>
       <resources xsi:type="resource:Semaphore" name="ComputeSemaphore" waitStage="COMPUTE_SHADER_BIT"/>
     </resourcePkg>
-    <processes xsi:type="compute:ComputeProcess" name="Board Compute" resetAllowed="true" signals="//@engines.0/@resourcePkg/@resources.2" waitFor="//@engines.0/@resourcePkg/@resources.1">
+    <processes xsi:type="compute:ComputeProcess" name="Board Compute" waitingFenceDuringAcquire="true" resetAllowed="true" signals="//@engines.0/@resourcePkg/@resources.1">
       <resourcePkg>
         <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Board Buffer">
           <shaderStages>COMPUTE_BIT</shaderStages>
@@ -154,7 +153,7 @@
         </pipelines>
       </pipelinePkg>
     </processes>
-    <processes xsi:type="graphic:GraphicProcess" resetAllowed="true" signals="//@engines.0/@resourcePkg/@resources.1" waitFor="//@engines.0/@resourcePkg/@resources.2">
+    <processes xsi:type="graphic:GraphicProcess" resetAllowed="true" waitFor="//@engines.0/@resourcePkg/@resources.1">
       <pipelinePkg>
         <pipelines xsi:type="graphic:ImagePipeline" stage="PreRender" image="//@engines.0/@resourcePkg/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="BOTTOM_OF_PIPE_BIT" srcQueue="//@engines.0/@processes.0">
           <imageSrcAccessMask>SHADER_WRITE_BIT</imageSrcAccessMask>
