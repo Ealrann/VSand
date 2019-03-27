@@ -127,15 +127,6 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__RESIZEABLE = ApplicationPackage.APPLICATION__RESIZEABLE;
 
 	/**
-	 * The feature id for the '<em><b>Debug</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__DEBUG = ApplicationPackage.APPLICATION__DEBUG;
-
-	/**
 	 * The feature id for the '<em><b>Title</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

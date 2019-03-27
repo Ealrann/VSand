@@ -4,10 +4,10 @@ import org.eclipse.emf.common.util.EList;
 import org.joml.Vector2i;
 import org.sheepy.lily.core.api.cadence.IMainLoop;
 import org.sheepy.lily.core.api.input.IInputManager;
+import org.sheepy.lily.core.api.util.DebugUtil;
 import org.sheepy.lily.core.model.application.Application;
-import org.sheepy.lily.vulkan.api.adapter.IProcessAdapter;
-import org.sheepy.lily.vulkan.api.adapter.IVulkanEngineAdapter;
-import org.sheepy.lily.vulkan.api.concurrent.IFence;
+import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
+import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
 import org.sheepy.lily.vulkan.model.IProcess;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
@@ -23,8 +23,6 @@ import org.sheepy.vsand.util.FPSCounter;
 
 public class VSandMainLoop implements IMainLoop
 {
-	private static final long FENCE_TIMEOUT_NS = (long) (500 * 1e6);
-
 	private IVulkanEngineAdapter engineAdapter;
 
 	private DrawManager mainDrawManager;
@@ -42,7 +40,6 @@ public class VSandMainLoop implements IMainLoop
 	private IInputManager inputManager;
 	private VSandApplication application;
 
-	private IFence drawFence;
 	private VSandInputManager vsandInputManager;
 
 	private ComputeProcess boardProcess;
@@ -66,8 +63,6 @@ public class VSandMainLoop implements IMainLoop
 				boardSize);
 		secondaryDrawManager = new DrawManager(application, inputManager, modificationsManager,
 				boardSize);
-
-		drawFence = engineAdapter.newFence(true);
 	}
 
 	private void gatherProcesses(VulkanEngine vulkanEngine)
@@ -100,19 +95,11 @@ public class VSandMainLoop implements IMainLoop
 	@Override
 	public void step(Application _application)
 	{
-		if (application.isDebug()) fpsCounter.step();
+		if (DebugUtil.DEBUG_ENABLED) fpsCounter.step();
 
+		var next = boardProcessAdapter.prepareNext();
 		updateDrawManager();
-
-		if (drawPipeline.isEnabled())
-		{
-			drawFence.reset();
-			boardProcessAdapter.execute(drawFence);
-		}
-		else
-		{
-			boardProcessAdapter.execute();
-		}
+		boardProcessAdapter.execute(next);
 
 		if (application.isNextMode() == true)
 		{
@@ -120,7 +107,7 @@ public class VSandMainLoop implements IMainLoop
 			stepPipeline.setEnabled(false);
 		}
 
-		renderProcessAdapter.execute();
+		renderProcessAdapter.prepareNextAndExecute();
 	}
 
 	@Override
@@ -144,10 +131,7 @@ public class VSandMainLoop implements IMainLoop
 			{
 				drawPipeline.setEnabled(true);
 			}
-			if (drawFence.waitForSignal(FENCE_TIMEOUT_NS) == false)
-			{
-				System.err.println("Frame too long");
-			}
+
 			modificationsManager.update();
 		}
 		// disable drawManager

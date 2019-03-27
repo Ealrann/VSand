@@ -19,7 +19,7 @@ import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.vulkan.api.nativehelper.window.IWindowListener;
-import org.sheepy.lily.vulkan.common.ui.UIUtil;
+import org.sheepy.lily.vulkan.common.util.UIUtil;
 import org.sheepy.lily.vulkan.nuklear.adapter.IUIElementAdapter;
 import org.sheepy.vsand.adapter.drawer.MaterialDrawer;
 import org.sheepy.vsand.model.Material;

@@ -29,12 +29,6 @@ public class VSandApplicationLauncher
 
 		Application application = (Application) resource.getContents().get(0);
 
-		String debugProperty = System.getProperty("debug");
-		if (debugProperty != null && debugProperty.equals("false") == false)
-		{
-			application.setDebug(true);
-		}
-
 		VSandMainLoop mainLoop = new VSandMainLoop();
 		ApplicationLauncher.launch(application, mainLoop);
 	}

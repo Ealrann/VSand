@@ -2,11 +2,11 @@ package org.sheepy.vsand.adapter;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
+import org.lwjgl.vulkan.VkCommandBuffer;
 import org.sheepy.lily.core.api.adapter.IAdapterFactoryService;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
-import org.sheepy.lily.vulkan.process.compute.execution.ComputeCommandBuffer;
 import org.sheepy.lily.vulkan.process.compute.pipeline.ComputePipelineAdapter;
 import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.VSandPackage;
@@ -35,7 +35,7 @@ public class RepeatComputePipelineAdapter extends ComputePipelineAdapter
 	}
 
 	@Override
-	public void record(ComputeCommandBuffer commandBuffer, int bindPoint)
+	public void record(VkCommandBuffer commandBuffer, int bindPoint, int index)
 	{
 		bindDescriptor(commandBuffer, bindPoint, 0);
 
