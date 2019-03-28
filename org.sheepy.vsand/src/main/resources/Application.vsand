@@ -103,11 +103,13 @@
           <stages>COMPUTE_BIT</stages>
         </resources>
       </resourcePkg>
+      <descriptorSetPkg>
       <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2"/>
       <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.4"/>
       <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@resourcePkg/@resources.0"/>
+      </descriptorSetPkg>
       <pipelinePkg>
-        <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" descriptorSet="//@engines.0/@processes.0/@descriptorSets.1" width="1248" height="704" depth="1">
+        <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" descriptorSet="//@engines.0/@processes.0/@descriptorSetPkg/@descriptorSets.1" width="1248" height="704" depth="1">
           <units xsi:type="process:PipelineBarrier" name="BoardReadToWrite">
             <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
           </units>
@@ -122,7 +124,7 @@
             <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.4" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
           </units>
         </pipelines>
-        <pipelines xsi:type="model:RepeatComputePipeline" name="Step" stage="Compute" descriptorSet="//@engines.0/@processes.0/@descriptorSets.0" constants="//@engines.0/@processes.0/@resourcePkg/@resources.11" width="1248" height="704" depth="1">
+        <pipelines xsi:type="model:RepeatComputePipeline" name="Step" stage="Compute" descriptorSet="//@engines.0/@processes.0/@descriptorSetPkg/@descriptorSets.0" constants="//@engines.0/@processes.0/@resourcePkg/@resources.11" width="1248" height="704" depth="1">
           <units xsi:type="process:PushConstant"/>
           <units xsi:type="process:PipelineBarrier" name="DecisionReadToWrite">
             <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.3" srcAccess="SHADER_READ_BIT" dstAccess="SHADER_WRITE_BIT"/>
@@ -141,7 +143,7 @@
             <barrier xsi:type="resource:BufferBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0" srcAccess="SHADER_WRITE_BIT" dstAccess="SHADER_READ_BIT"/>
           </units>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" descriptorSet="//@engines.0/@processes.0/@descriptorSets.2" constants="//@engines.0/@processes.0/@resourcePkg/@resources.11" width="1248" height="704" depth="1">
+        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" descriptorSet="//@engines.0/@processes.0/@descriptorSetPkg/@descriptorSets.2" constants="//@engines.0/@processes.0/@resourcePkg/@resources.11" width="1248" height="704" depth="1">
           <units xsi:type="process:PipelineBarrier">
             <barrier xsi:type="resource:ImageBarrier" dstStage="COMPUTE_SHADER_BIT" image="//@engines.0/@resourcePkg/@resources.0">
               <transitions dstLayout="GENERAL">
