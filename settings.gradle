@@ -25,7 +25,10 @@ include ':org.sheepy.lily.vulkan.resource'
 include ':org.sheepy.lily.vulkan.process'
 include ':org.sheepy.lily.vulkan.process.graphic'
 include ':org.sheepy.lily.vulkan.process.compute'
-include ':org.sheepy.lily.vulkan.nuklear'
+
+include ':org.sheepy.lily.vulkan.extra.api'
+include ':org.sheepy.lily.vulkan.extra.graphic'
+include ':org.sheepy.lily.vulkan.extra.nuklear'
 
 project(':org.sheepy.lily.vulkan.api').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.api')
 project(':org.sheepy.lily.vulkan.common').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.common')
@@ -33,12 +36,14 @@ project(':org.sheepy.lily.vulkan.resource').projectDir = new File(settingsDir, '
 project(':org.sheepy.lily.vulkan.process').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.process')
 project(':org.sheepy.lily.vulkan.process.graphic').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.process.graphic')
 project(':org.sheepy.lily.vulkan.process.compute').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.process.compute')
-project(':org.sheepy.lily.vulkan.nuklear').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.nuklear')
 
+project(':org.sheepy.lily.vulkan.extra.api').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.extra.api')
+project(':org.sheepy.lily.vulkan.extra.graphic').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.extra.graphic')
+project(':org.sheepy.lily.vulkan.extra.nuklear').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.extra.nuklear')
 
 // DEMO
-include ':org.sheepy.lily.vulkan.demo'
-include ':org.sheepy.lily.vulkan.gameoflife'
+include ':org.sheepy.lily.vulkan.demo.texture'
+include ':org.sheepy.lily.vulkan.demo.gameoflife'
 
-project(':org.sheepy.lily.vulkan.demo').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.demo')
-project(':org.sheepy.lily.vulkan.gameoflife').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.gameoflife')
+project(':org.sheepy.lily.vulkan.demo.texture').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.demo.texture')
+project(':org.sheepy.lily.vulkan.demo.gameoflife').projectDir = new File(settingsDir, 'Lily-Vulkan/org.sheepy.lily.vulkan.demo.gameoflife')

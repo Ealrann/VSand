@@ -56,7 +56,7 @@ void main()
 	{
 		if(pushConstants.showSleepChunks == 1)
 		{
-			imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), vec4(1.0, 0.5, 0.5, 0.1));
+			imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), vec4(1.0, 0.5, 0.5, 0.0));
 		}
 		return;
 	}
@@ -68,5 +68,5 @@ void main()
 	float g = ((material.rgb & G_MASK) >> 8) / 255.;
 	float b = (material.rgb & B_MASK) / 255.;
 
-	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), vec4(r, g, b, 1.0));
+	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), vec4(r, g, b, 0.0));
 }

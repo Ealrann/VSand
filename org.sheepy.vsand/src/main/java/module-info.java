@@ -26,7 +26,7 @@ import org.sheepy.vsand.model.VSandModelExtension;
 
 module org.sheepy.vsand
 {
-	requires org.sheepy.lily.vulkan.nuklear;
+	requires org.sheepy.lily.vulkan.extra.nuklear;
 
 	requires org.sheepy.lily.core.impl;
 
@@ -36,6 +36,9 @@ module org.sheepy.vsand
 	requires org.sheepy.lily.vulkan.process.compute;
 	requires org.sheepy.lily.vulkan.process.graphic;
 	requires org.sheepy.lily.vulkan.resource;
+
+	requires org.sheepy.lily.vulkan.extra.api;
+	requires org.sheepy.lily.vulkan.extra.graphic;
 
 	opens org.sheepy.vsand.adapter;
 	opens org.sheepy.vsand;

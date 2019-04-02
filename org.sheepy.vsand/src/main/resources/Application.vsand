@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:model_2="org.sheepy.lily.vulkan.nuklear.model" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3">
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:model_2="org.sheepy.lily.vulkan.extra.graphic.model" xmlns:model_3="org.sheepy.lily.vulkan.extra.nuklear.model" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3">
   <views xsi:type="presentation:TranparentUIView" currentUIPage="//@views.0/@uiPages.0">
     <uiPages>
       <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
@@ -104,9 +104,9 @@
         </resources>
       </resourcePkg>
       <descriptorSetPkg>
-      <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2"/>
-      <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.4"/>
-      <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@resourcePkg/@resources.0"/>
+        <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2"/>
+        <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.4"/>
+        <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@resourcePkg/@resources.0"/>
       </descriptorSetPkg>
       <pipelinePkg>
         <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" descriptorSetRef="//@engines.0/@processes.0/@descriptorSetPkg/@descriptorSets.1" width="1248" height="704" depth="1">
@@ -157,11 +157,10 @@
     </processes>
     <processes xsi:type="graphic:GraphicProcess" resetAllowed="true" waitFor="//@engines.0/@resourcePkg/@resources.1">
       <pipelinePkg>
-        <pipelines xsi:type="graphic:ImagePipeline" stage="PreRender" image="//@engines.0/@resourcePkg/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="BOTTOM_OF_PIPE_BIT" srcQueue="//@engines.0/@processes.0">
+        <pipelines xsi:type="model_2:ImagePipeline" stage="PreRender" image="//@engines.0/@resourcePkg/@resources.0" imageSrcStage="COMPUTE_SHADER_BIT" imageDstStage="BOTTOM_OF_PIPE_BIT" srcQueue="//@engines.0/@processes.0">
           <imageSrcAccessMask>SHADER_WRITE_BIT</imageSrcAccessMask>
         </pipelines>
-        <pipelines xsi:type="model_2:NuklearPipeline">
-          <indexBuffer/>
+        <pipelines xsi:type="model_3:NuklearPipeline">
           <font descriptorType="SAMPLED_IMAGE">
             <shaderStages>FRAGMENT_BIT</shaderStages>
             <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
@@ -185,10 +184,9 @@
           <refs attachement="//@engines.0/@processes.1/@renderPassInfo/@attachments.0" layout="COLOR_ATTACHMENT_OPTIMAL"/>
         </subpasses>
         <dependencies dstSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.0">
-          <srcStageMask>TRANSFER_BIT</srcStageMask>
+          <srcStageMask>ALL_COMMANDS_BIT</srcStageMask>
           <dstStageMask>COLOR_ATTACHMENT_OUTPUT_BIT</dstStageMask>
           <srcAccesses>TRANSFER_WRITE_BIT</srcAccesses>
-          <dstAccesses>COLOR_ATTACHMENT_READ_BIT</dstAccesses>
           <dstAccesses>COLOR_ATTACHMENT_WRITE_BIT</dstAccesses>
         </dependencies>
       </renderPassInfo>
