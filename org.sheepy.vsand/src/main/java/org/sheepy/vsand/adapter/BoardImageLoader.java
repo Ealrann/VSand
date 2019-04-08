@@ -4,7 +4,7 @@ import static org.lwjgl.vulkan.VK10.*;
 
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
-import org.sheepy.lily.vulkan.common.util.ModelUtil;
+import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.model.resource.Image;
 import org.sheepy.lily.vulkan.resource.image.ImageAdapter;
 import org.sheepy.vsand.model.VSandApplication;

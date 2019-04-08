@@ -37,7 +37,9 @@ public class RepeatComputePipelineAdapter extends ComputePipelineAdapter
 	@Override
 	public void record(VkCommandBuffer commandBuffer, int bindPoint, int index)
 	{
-		bindDescriptor(commandBuffer, bindPoint, 0);
+		bindDescriptor(commandBuffer, bindPoint, new Integer[] {
+				0
+		});
 
 		int count = ((RepeatComputePipeline) pipeline).getRepeatCount();
 		for (int i = 0; i < count; i++)

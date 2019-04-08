@@ -6,7 +6,7 @@ import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
-import org.sheepy.lily.vulkan.common.util.ModelUtil;
+import org.sheepy.lily.vulkan.common.util.VulkanModelUtil;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.lily.vulkan.resource.buffer.BufferAdapter;
 import org.sheepy.vsand.model.VSandApplication;
@@ -19,7 +19,7 @@ public class BoardBufferLoader extends BufferAdapter
 	{
 		super(buffer);
 
-		var application = (VSandApplication) ModelUtil.getApplication(buffer);
+		var application = (VSandApplication) VulkanModelUtil.getApplication(buffer);
 		int width = application.getSize().x;
 		int height = application.getSize().y;
 		int sizeBoard = width * height;
