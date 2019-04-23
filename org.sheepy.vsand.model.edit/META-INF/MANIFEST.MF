@@ -15,6 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit;visibility:=reexport,
  org.sheepy.lily.vulkan.model;visibility:=reexport,
  org.sheepy.lily.vulkan.model.edit;visibility:=reexport,
+ org.sheepy.vulkan.model;visibility:=reexport,
+ org.sheepy.vulkan.model.edit;visibility:=reexport,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.sheepy.lily.core.model;visibility:=reexport,
  org.sheepy.lily.core.model.edit;visibility:=reexport

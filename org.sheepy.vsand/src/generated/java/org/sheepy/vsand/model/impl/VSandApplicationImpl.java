@@ -426,7 +426,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{

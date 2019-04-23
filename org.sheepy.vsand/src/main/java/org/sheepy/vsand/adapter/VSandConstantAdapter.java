@@ -7,10 +7,10 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
-import org.sheepy.lily.vulkan.api.allocation.IAllocationContext;
-import org.sheepy.lily.vulkan.api.allocation.adapter.IAllocableAdapter;
+import org.sheepy.lily.vulkan.api.allocation.IAllocableAdapter;
 import org.sheepy.lily.vulkan.resource.buffer.AbstractConstantsAdapter;
 import org.sheepy.vsand.model.VSandConstants;
+import org.sheepy.vulkan.allocation.IAllocationContext;
 
 @Statefull
 @Adapter(scope = VSandConstants.class)
@@ -25,6 +25,7 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IA
 
 	public VSandConstantAdapter(VSandConstants constants)
 	{
+		super(constants);
 		this.constants = constants;
 	}
 
@@ -61,7 +62,7 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IA
 			constants.setFirstPass(false);
 		}
 
-		float rNumber = random.nextFloat();
+		final float rNumber = random.nextFloat();
 
 		buffer.putFloat(rNumber);
 		buffer.putInt(firstPass);

@@ -18,7 +18,6 @@ import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.model.presentation.IUIElement;
-import org.sheepy.lily.vulkan.api.nativehelper.window.IWindowListener;
 import org.sheepy.lily.vulkan.common.util.UIUtil;
 import org.sheepy.lily.vulkan.nuklear.adapter.IUIElementAdapter;
 import org.sheepy.vsand.adapter.drawer.MaterialDrawer;
@@ -26,6 +25,7 @@ import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandPackage;
+import org.sheepy.vulkan.window.IWindowListener;
 
 @Statefull
 @org.sheepy.lily.core.api.adapter.annotation.Adapter(scope = MaterialSelectorPanel.class)
@@ -36,7 +36,7 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 		@Override
 		public void notifyChanged(Notification notification)
 		{
-			var feature = notification.getFeature();
+			final var feature = notification.getFeature();
 			if (feature == VSandPackage.Literals.VSAND_APPLICATION__MAIN_MATERIAL
 					|| feature == VSandPackage.Literals.VSAND_APPLICATION__SECONDARY_MATERIAL)
 			{
@@ -79,7 +79,7 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 	public void unsetTarget()
 	{
 		application.eAdapters().remove(materialAdapter);
-		for (LineData data : datas)
+		for (final LineData data : datas)
 		{
 			data.free();
 		}
@@ -87,10 +87,10 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 
 	private void load(UIContext context, MaterialSelectorPanel panel)
 	{
-		var materials = application.getMaterials().getMaterials();
-		int materialCount = countUserFriendlyMaterials(materials);
-		var surface = context.window.getSize();
-		int lineHeight = panel.getLineHeight();
+		final var materials = application.getMaterials().getMaterials();
+		final int materialCount = countUserFriendlyMaterials(materials);
+		final var surface = context.window.getSize();
+		final int lineHeight = panel.getLineHeight();
 
 		primaryMaterialDrawer = new MaterialDrawer(lineHeight, panel.getPrimaryR(),
 				panel.getPrimaryG(), panel.getPrimaryB());
@@ -101,7 +101,7 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 		height = lineHeight * materialCount;
 
 		datas = new ArrayList<>();
-		for (Material material : materials)
+		for (final Material material : materials)
 		{
 			if (material.isUserFriendly())
 			{
@@ -116,10 +116,10 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 
 	public void updateDataLocations(Vector2i size)
 	{
-		int lineHeight = panel.getLineHeight();
-		int x = UIUtil.computeXRelative(size, panel, width);
+		final int lineHeight = panel.getLineHeight();
+		final int x = UIUtil.computeXRelative(size, panel, width);
 		int y = UIUtil.computeYRelative(size, panel, height);
-		for (LineData data : datas)
+		for (final LineData data : datas)
 		{
 			data.updateRect(x, y, lineHeight);
 			y += lineHeight;
@@ -134,8 +134,8 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 	@Override
 	public boolean layout(UIContext context, IUIElement control)
 	{
-		boolean res = dirty;
-		var nkContext = context.nkContext;
+		final boolean res = dirty;
+		final var nkContext = context.nkContext;
 
 		if (loaded == false)
 		{
@@ -143,15 +143,15 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 			loaded = true;
 		}
 
-		var backgroundColor = nkContext.style().window().fixed_background().data().color();
-		byte defaultAlpha = backgroundColor.a();
+		final var backgroundColor = nkContext.style().window().fixed_background().data().color();
+		final byte defaultAlpha = backgroundColor.a();
 
 		primaryMaterialDrawer.prepare(nkContext);
 		secondaryMaterialDrawer.prepare(nkContext);
 
 		backgroundColor.a((byte) 0);
 
-		for (LineData data : datas)
+		for (final LineData data : datas)
 		{
 			if (nk_begin(nkContext, data.panelLabelId, data.rectLabel,
 					NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_BACKGROUND | NK_WINDOW_NO_INPUT))
@@ -207,7 +207,7 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 			color.b((byte) material.getB());
 			color.a((byte) 255);
 
-			String name = material.getName();
+			final String name = material.getName();
 
 			panelLabelId = MemoryUtil.memUTF8("Label" + name);
 			panelButton1Id = MemoryUtil.memUTF8("Button1" + name);

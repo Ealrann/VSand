@@ -10,7 +10,7 @@ buildscript {
 		jcenter()
 	}
 	dependencies {
-		classpath "org.javamodularity:moduleplugin:1.4.0"
+		classpath "org.javamodularity:moduleplugin:1.5.0"
 	}
 }
 
@@ -27,7 +27,7 @@ repositories {
 project.ext.targetPlatform = OperatingSystem.current()
 
 
-project.ext.jomlVersion = "1.9.12"
+project.ext.jomlVersion = "1.9.14"
 project.ext.lwjglVersion = "3.2.1"
 
 subprojects {

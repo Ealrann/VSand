@@ -16,7 +16,6 @@ import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.root.RootPackage;
 import org.sheepy.lily.core.model.types.TypesPackage;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
-import org.sheepy.lily.vulkan.model.enumeration.EnumerationPackage;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
@@ -30,6 +29,7 @@ import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandConstants;
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandPackage;
+import org.sheepy.vulkan.model.enumeration.EnumerationPackage;
 
 /**
  * <!-- begin-user-doc -->
