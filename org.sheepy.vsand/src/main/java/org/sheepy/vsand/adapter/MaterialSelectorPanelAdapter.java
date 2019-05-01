@@ -149,6 +149,9 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 		primaryMaterialDrawer.prepare(nkContext);
 		secondaryMaterialDrawer.prepare(nkContext);
 
+		final var mainMaterial = application.getMainMaterial();
+		final var secondaryMaterial = application.getSecondaryMaterial();
+
 		backgroundColor.a((byte) 0);
 
 		for (final LineData data : datas)
@@ -161,13 +164,13 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 			}
 			nk_end(nkContext);
 
-			if (primaryMaterialDrawer.draw(nkContext, data, application.getMainMaterial(),
-					data.panelButton1Id, data.rectButton1))
+			if (primaryMaterialDrawer.draw(nkContext, data, mainMaterial, data.panelButton1Id,
+					data.rectButton1))
 			{
 				application.setMainMaterial(data.material);
 			}
 
-			if (secondaryMaterialDrawer.draw(nkContext, data, application.getSecondaryMaterial(),
+			if (secondaryMaterialDrawer.draw(nkContext, data, secondaryMaterial,
 					data.panelButton2Id, data.rectButton2))
 			{
 				application.setSecondaryMaterial(data.material);

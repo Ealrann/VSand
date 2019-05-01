@@ -41,7 +41,6 @@ public interface MaterialSelectorPanel extends IPanel
 	 * @see #setLineHeight(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterialSelectorPanel_LineHeight()
 	 * @model default="32" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='UI'"
 	 * @generated
 	 */
 	int getLineHeight();
@@ -69,7 +68,6 @@ public interface MaterialSelectorPanel extends IPanel
 	 * @see #setPrimaryR(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterialSelectorPanel_PrimaryR()
 	 * @model default="255" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Primary Color'"
 	 * @generated
 	 */
 	int getPrimaryR();
@@ -97,7 +95,6 @@ public interface MaterialSelectorPanel extends IPanel
 	 * @see #setPrimaryG(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterialSelectorPanel_PrimaryG()
 	 * @model default="50" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Primary Color'"
 	 * @generated
 	 */
 	int getPrimaryG();
@@ -125,7 +122,6 @@ public interface MaterialSelectorPanel extends IPanel
 	 * @see #setPrimaryB(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterialSelectorPanel_PrimaryB()
 	 * @model default="50" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Primary Color'"
 	 * @generated
 	 */
 	int getPrimaryB();
@@ -153,7 +149,6 @@ public interface MaterialSelectorPanel extends IPanel
 	 * @see #setSecondaryR(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterialSelectorPanel_SecondaryR()
 	 * @model default="50" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Secondary Color'"
 	 * @generated
 	 */
 	int getSecondaryR();
@@ -181,7 +176,6 @@ public interface MaterialSelectorPanel extends IPanel
 	 * @see #setSecondaryG(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterialSelectorPanel_SecondaryG()
 	 * @model default="50" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Secondary Color'"
 	 * @generated
 	 */
 	int getSecondaryG();
@@ -209,7 +203,6 @@ public interface MaterialSelectorPanel extends IPanel
 	 * @see #setSecondaryB(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterialSelectorPanel_SecondaryB()
 	 * @model default="255" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Secondary Color'"
 	 * @generated
 	 */
 	int getSecondaryB();

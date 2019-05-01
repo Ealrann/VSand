@@ -41,7 +41,7 @@ public class RepeatComputePipelineAdapter extends ComputePipelineAdapter
 				0
 		});
 
-		int count = ((RepeatComputePipeline) pipeline).getRepeatCount();
+		final int count = ((RepeatComputePipeline) pipeline).getRepeatCount();
 		for (int i = 0; i < count; i++)
 		{
 			recordComputers(commandBuffer, bindPoint);

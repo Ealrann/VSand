@@ -49,7 +49,7 @@ public class VSandMainLoop implements IMainLoop
 	{
 		application = (VSandApplication) _application;
 
-		var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
+		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		engineAdapter = IVulkanEngineAdapter.adapt(vulkanEngine);
 		inputManager = engineAdapter.getInputManager();
 
@@ -58,7 +58,7 @@ public class VSandMainLoop implements IMainLoop
 		vsandInputManager = new VSandInputManager(application, constants, stepPipeline);
 		inputManager.addListener(vsandInputManager);
 
-		Vector2i boardSize = new Vector2i(stepPipeline.getWidth(), stepPipeline.getHeight());
+		final Vector2i boardSize = new Vector2i(stepPipeline.getWidth(), stepPipeline.getHeight());
 		mainDrawManager = new DrawManager(application, inputManager, modificationsManager,
 				boardSize);
 		secondaryDrawManager = new DrawManager(application, inputManager, modificationsManager,
@@ -67,22 +67,22 @@ public class VSandMainLoop implements IMainLoop
 
 	private void gatherProcesses(VulkanEngine vulkanEngine)
 	{
-		EList<IProcess> processes = vulkanEngine.getProcesses();
-		for (IProcess process : processes)
+		final EList<IProcess> processes = vulkanEngine.getProcesses();
+		for (final IProcess process : processes)
 		{
 			if (process instanceof ComputeProcess)
 			{
 				boardProcess = (ComputeProcess) process;
 				boardProcessAdapter = IProcessAdapter.adapt(process);
 
-				var pipelines = boardProcess.getPipelinePkg().getPipelines();
+				final var pipelines = boardProcess.getPipelinePkg().getPipelines();
 				drawPipeline = (ComputePipeline) pipelines.get(0);
 				stepPipeline = (RepeatComputePipeline) pipelines.get(1);
 
 				constants = (VSandConstants) stepPipeline.getConstants();
-				var resources = boardProcess.getResourcePkg().getResources();
+				final var resources = boardProcess.getResourcePkg().getResources();
 
-				var modificationBuffer = (Buffer) resources.get(4);
+				final var modificationBuffer = (Buffer) resources.get(4);
 				modificationsManager = new ModificationsManager(modificationBuffer);
 			}
 			else if (process instanceof GraphicProcess)
@@ -97,7 +97,7 @@ public class VSandMainLoop implements IMainLoop
 	{
 		if (DebugUtil.DEBUG_ENABLED) fpsCounter.step();
 
-		var next = boardProcessAdapter.prepareNext();
+		final var next = boardProcessAdapter.prepareNext();
 		updateDrawManager();
 		boardProcessAdapter.execute(next);
 

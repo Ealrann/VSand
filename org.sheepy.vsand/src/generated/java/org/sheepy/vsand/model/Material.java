@@ -41,7 +41,6 @@ public interface Material extends EObject
 	 * @see #setName(String)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_Name()
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Basic'"
 	 * @generated
 	 */
 	String getName();
@@ -68,7 +67,6 @@ public interface Material extends EObject
 	 * @see #setIsStatic(boolean)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_IsStatic()
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Basic'"
 	 * @generated
 	 */
 	boolean isIsStatic();
@@ -95,7 +93,6 @@ public interface Material extends EObject
 	 * @see #setDensity(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_Density()
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Basic'"
 	 * @generated
 	 */
 	int getDensity();
@@ -122,7 +119,6 @@ public interface Material extends EObject
 	 * @see #setRunoff(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_Runoff()
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Basic'"
 	 * @generated
 	 */
 	int getRunoff();
@@ -150,7 +146,6 @@ public interface Material extends EObject
 	 * @see #setR(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_R()
 	 * @model default="0" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Color'"
 	 * @generated
 	 */
 	int getR();
@@ -178,7 +173,6 @@ public interface Material extends EObject
 	 * @see #setG(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_G()
 	 * @model default="0" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Color'"
 	 * @generated
 	 */
 	int getG();
@@ -206,7 +200,6 @@ public interface Material extends EObject
 	 * @see #setB(int)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_B()
 	 * @model default="0" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='Color'"
 	 * @generated
 	 */
 	int getB();
@@ -234,7 +227,6 @@ public interface Material extends EObject
 	 * @see #setUserFriendly(boolean)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_UserFriendly()
 	 * @model default="true" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel propertyCategory='UI'"
 	 * @generated
 	 */
 	boolean isUserFriendly();

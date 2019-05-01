@@ -157,6 +157,7 @@ import org.sheepy.lily.core.model.types.provider.TypesItemProviderAdapterFactory
 import org.sheepy.lily.vulkan.model.process.compute.provider.ComputeItemProviderAdapterFactory;
 import org.sheepy.lily.vulkan.model.process.provider.ProcessItemProviderAdapterFactory;
 import org.sheepy.lily.vulkan.model.provider.VulkanItemProviderAdapterFactory;
+import org.sheepy.vulkan.model.barrier.provider.BarrierItemProviderAdapterFactory;
 
 
 /**
@@ -747,6 +748,7 @@ public class VSandEditor
 		adapterFactory.addAdapterFactory(new org.sheepy.lily.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new PresentationItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ActionItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new BarrierItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
 		// Create the command stack that will notify this editor as commands are executed.
@@ -779,7 +781,7 @@ public class VSandEditor
 								  for (Iterator<PropertySheetPage> i = propertySheetPages.iterator(); i.hasNext(); )
 								  {
 									  PropertySheetPage propertySheetPage = i.next();
-									  if (propertySheetPage.getControl().isDisposed())
+									  if (propertySheetPage.getControl() == null || propertySheetPage.getControl().isDisposed())
 									  {
 										  i.remove();
 									  }

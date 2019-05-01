@@ -25,7 +25,6 @@ import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
  * <!-- end-user-doc -->
  * @see org.sheepy.vsand.model.VSandFactory
  * @model kind="package"
- *        annotation="http://www.eclipse.org/emf/2002/GenModel modelDirectory='/org.sheepy.vsand.model/src/generated/java' editDirectory='/org.sheepy.vsand.model.edit/src/generated/java' editorDirectory='/org.sheepy.vsand.model.editor/src/generated/java' creationSubmenus='true' multipleEditorPages='false' modelName='VSand' prefix='VSand' publicConstructors='true' complianceLevel='11.0' resource='XMI' childCreationExtenders='true' basePackage='org.sheepy.vsand'"
  * @generated
  */
 public interface VSandPackage extends EPackage
@@ -580,6 +579,15 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int REPEAT_COMPUTE_PIPELINE__STAGE = ComputePackage.COMPUTE_PIPELINE__STAGE;
+
+	/**
+	 * The feature id for the '<em><b>Push Buffer</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPEAT_COMPUTE_PIPELINE__PUSH_BUFFER = ComputePackage.COMPUTE_PIPELINE__PUSH_BUFFER;
 
 	/**
 	 * The feature id for the '<em><b>Resource Pkg</b></em>' containment reference.

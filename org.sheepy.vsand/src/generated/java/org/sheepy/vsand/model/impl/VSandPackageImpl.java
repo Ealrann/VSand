@@ -29,6 +29,7 @@ import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandConstants;
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandPackage;
+import org.sheepy.vulkan.model.barrier.BarrierPackage;
 import org.sheepy.vulkan.model.enumeration.EnumerationPackage;
 
 /**
@@ -156,6 +157,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		ResourcePackage.eINSTANCE.eClass();
 		PresentationPackage.eINSTANCE.eClass();
 		ActionPackage.eINSTANCE.eClass();
+		BarrierPackage.eINSTANCE.eClass();
 		EnumerationPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects

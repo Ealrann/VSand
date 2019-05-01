@@ -15,36 +15,29 @@ public class MaterialDrawer
 {
 	private final int lineHeight;
 
-	private byte defaultBorderColorR;
-	private byte defaultBorderColorG;
-	private byte defaultBorderColorB;
-	private byte defaultBorderColorA;
+	private final NkColor defaultBorderColor;
 	private NkColor borderColor;
+	private final NkColor selectedBorderColor;
 
 	private float defaultPaddingX;
 	private float defaultPaddingY;
 
 	private NkVec2 padding;
-	private final byte r;
-	private final byte g;
-	private final byte b;
 
 
 	public MaterialDrawer(int lineHeight, int r, int g, int b)
 	{
 		this.lineHeight = lineHeight;
-		this.r = (byte) r;
-		this.g = (byte) g;
-		this.b = (byte) b;
+		
+		defaultBorderColor = NkColor.create();
+		selectedBorderColor = NkColor.create();
+		selectedBorderColor.set((byte) r, (byte) g, (byte) b, (byte) 255);
 	}
 
 	public void prepare(NkContext nkContext)
 	{
 		borderColor = nkContext.style().window().border_color();
-		defaultBorderColorR = borderColor.r();
-		defaultBorderColorG = borderColor.g();
-		defaultBorderColorB = borderColor.b();
-		defaultBorderColorA = borderColor.a();
+		defaultBorderColor.set(borderColor);
 
 		padding = nkContext.style().window().padding();
 
@@ -62,14 +55,11 @@ public class MaterialDrawer
 		padding.x(0);
 		padding.y(0);
 
-		int style = NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_BORDER;
+		final int style = NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_BORDER;
 
 		if (main == data.material)
 		{
-			borderColor.r(r);
-			borderColor.g(g);
-			borderColor.b(b);
-			borderColor.a((byte) 255);
+			borderColor.set(selectedBorderColor);
 		}
 		else
 		{
@@ -78,8 +68,9 @@ public class MaterialDrawer
 
 		if (nk_begin(nkContext, id, rect, style))
 		{
+			final var color = data.color;
 			nk_layout_row_dynamic(nkContext, lineHeight - 5, 1);
-			if (nk_button_color(nkContext, data.color))
+			if (nk_button_color(nkContext, color))
 			{
 				res = true;
 			}
@@ -88,9 +79,7 @@ public class MaterialDrawer
 
 		if (main == data.material)
 		{
-			borderColor.r(defaultBorderColorR);
-			borderColor.g(defaultBorderColorG);
-			borderColor.b(defaultBorderColorB);
+			borderColor.set(defaultBorderColor);
 			borderColor.a((byte) 0);
 		}
 
@@ -102,6 +91,6 @@ public class MaterialDrawer
 
 	public void finish()
 	{
-		borderColor.a(defaultBorderColorA);
+		borderColor.a(defaultBorderColor.a());
 	}
 }
