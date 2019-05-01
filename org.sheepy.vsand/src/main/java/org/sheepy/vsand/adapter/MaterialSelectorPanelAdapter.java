@@ -135,6 +135,11 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 	public boolean layout(UIContext context, IUIElement control)
 	{
 		final boolean res = dirty;
+
+		// !! must remain here- vvv
+		dirty = false;
+		// -------------------- ^^^
+
 		final var nkContext = context.nkContext;
 
 		if (loaded == false)
@@ -168,12 +173,14 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 					data.rectButton1))
 			{
 				application.setMainMaterial(data.material);
+				dirty = true;
 			}
 
 			if (secondaryMaterialDrawer.draw(nkContext, data, secondaryMaterial,
 					data.panelButton2Id, data.rectButton2))
 			{
 				application.setSecondaryMaterial(data.material);
+				dirty = true;
 			}
 		}
 
@@ -182,7 +189,6 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 
 		backgroundColor.a(defaultAlpha);
 
-		dirty = false;
 		return res;
 	}
 
