@@ -161,7 +161,7 @@
           <imageSrcAccessMask>SHADER_WRITE_BIT</imageSrcAccessMask>
         </pipelines>
         <pipelines xsi:type="model_3:NuklearPipeline">
-          <pushBuffer size="655360"/>
+          <pushBuffer size="655360" instanceCount="2"/>
           <font descriptorType="SAMPLED_IMAGE">
             <shaderStages>FRAGMENT_BIT</shaderStages>
             <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>

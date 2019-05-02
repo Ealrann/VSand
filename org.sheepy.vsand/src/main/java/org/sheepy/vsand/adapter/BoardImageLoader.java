@@ -10,16 +10,16 @@ import org.sheepy.lily.vulkan.resource.image.ImageAdapter;
 import org.sheepy.vsand.model.VSandApplication;
 
 @Statefull
-@Adapter(scope = Image.class, name = "Configuration")
+@Adapter(scope = Image.class, name = "Board Image")
 public class BoardImageLoader extends ImageAdapter
 {
 	public BoardImageLoader(Image image)
 	{
 		super(image);
 
-		var application = (VSandApplication) ModelUtil.getApplication(image);
-		int width = application.getSize().x;
-		int height = application.getSize().y;
+		final var application = (VSandApplication) ModelUtil.getApplication(image);
+		final int width = application.getSize().x;
+		final int height = application.getSize().y;
 
 		image.setWidth(width);
 		image.setHeight(height);
