@@ -24,16 +24,16 @@ public class ConfigurationBufferLoader extends BufferAdapter
 		super(buffer);
 		buffer.setSize(BYTE_SIZE);
 
-		var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);
+		final var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);
 
-		ByteBuffer bBuffer = MemoryUtil.memAlloc(BYTE_SIZE);
-		for (Material material : application.getMaterials().getMaterials())
+		final ByteBuffer bBuffer = MemoryUtil.memAlloc(BYTE_SIZE);
+		for (final Material material : application.getMaterials().getMaterials())
 		{
 			bBuffer.putInt(material.isIsStatic() ? 1 : 0);
 			bBuffer.putInt(material.getDensity());
 			bBuffer.putInt(material.getRunoff());
 
-			int rgb = material.getR() << 16 | material.getG() << 8 | material.getB();
+			final int rgb = material.getR() | material.getG() << 8 | material.getB() << 16;
 
 			bBuffer.putInt(rgb);
 		}

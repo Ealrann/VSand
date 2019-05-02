@@ -46,6 +46,7 @@ layout(rgba8, binding = 2) uniform image2D outImage;
 
 const uint G_MASK = 255 << 8;
 const uint B_MASK = 255;
+const vec4 DEBUG_COLOR = vec4(1.0, 0.5, 0.5, 0.0);
 
 void main()
 {
@@ -56,17 +57,17 @@ void main()
 	{
 		if(pushConstants.showSleepChunks == 1)
 		{
-			imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), vec4(1.0, 0.5, 0.5, 0.0));
+			uint index = board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y];
+			Entry material = configuration.materials[index];
+			vec4 color = unpackUnorm4x8(material.rgb) / 4;
+			color.r = 0.0;
+			imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), DEBUG_COLOR + color);
 		}
 		return;
 	}
 
-	Entry material =
-			configuration.materials[board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y]];
-
-	float r = (material.rgb >> 16) / 255.;
-	float g = ((material.rgb & G_MASK) >> 8) / 255.;
-	float b = (material.rgb & B_MASK) / 255.;
-
-	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), vec4(r, g, b, 0.0));
+	uint index = board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y];
+	Entry material = configuration.materials[index];
+	vec4 color = unpackUnorm4x8(material.rgb);
+	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), color);
 }
