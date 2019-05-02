@@ -790,13 +790,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_CONSTANTS__STAGES = ResourcePackage.ABSTRACT_CONSTANTS__STAGES;
 
 	/**
-	 * The feature id for the '<em><b>First Pass</b></em>' attribute.
+	 * The feature id for the '<em><b>Force Clear</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_CONSTANTS__FIRST_PASS = ResourcePackage.ABSTRACT_CONSTANTS_FEATURE_COUNT + 0;
+	int VSAND_CONSTANTS__FORCE_CLEAR = ResourcePackage.ABSTRACT_CONSTANTS_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Show Sleep Zones</b></em>' attribute.
@@ -1330,15 +1330,15 @@ public interface VSandPackage extends EPackage
 	EClass getVSandConstants();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandConstants#isFirstPass <em>First Pass</em>}'.
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandConstants#isForceClear <em>Force Clear</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>First Pass</em>'.
-	 * @see org.sheepy.vsand.model.VSandConstants#isFirstPass()
+	 * @return the meta object for the attribute '<em>Force Clear</em>'.
+	 * @see org.sheepy.vsand.model.VSandConstants#isForceClear()
 	 * @see #getVSandConstants()
 	 * @generated
 	 */
-	EAttribute getVSandConstants_FirstPass();
+	EAttribute getVSandConstants_ForceClear();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandConstants#isShowSleepZones <em>Show Sleep Zones</em>}'.
@@ -1717,12 +1717,12 @@ public interface VSandPackage extends EPackage
 		EClass VSAND_CONSTANTS = eINSTANCE.getVSandConstants();
 
 		/**
-		 * The meta object literal for the '<em><b>First Pass</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Force Clear</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute VSAND_CONSTANTS__FIRST_PASS = eINSTANCE.getVSandConstants_FirstPass();
+		EAttribute VSAND_CONSTANTS__FORCE_CLEAR = eINSTANCE.getVSandConstants_ForceClear();
 
 		/**
 		 * The meta object literal for the '<em><b>Show Sleep Zones</b></em>' attribute feature.

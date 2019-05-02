@@ -100,7 +100,18 @@ public class VSandInputManager implements IInputListener
 				break;
 			// s
 			case 's' - 32:
+				constants.setForceClear(true);
 				constants.setShowSleepZones(!constants.isShowSleepZones());
+				break;
+			}
+		}
+		else
+		{
+			switch (event.key)
+			{
+			// s
+			case 's' - 32:
+				constants.setForceClear(false);
 				break;
 			}
 		}
@@ -112,8 +123,8 @@ public class VSandInputManager implements IInputListener
 		Material mainMaterial = null;
 		if (shiftPressed) mainMaterial = application.getSecondaryMaterial();
 		else mainMaterial = application.getMainMaterial();
-		var materials = application.getMaterials().getMaterials();
-		int index = materials.indexOf(mainMaterial);
+		final var materials = application.getMaterials().getMaterials();
+		final int index = materials.indexOf(mainMaterial);
 		Material next = null;
 
 		if (event.yOffset > 0f)

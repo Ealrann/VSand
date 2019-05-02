@@ -76,7 +76,7 @@ class RepeatComputePipeline extends ComputePipeline
 
 class VSandConstants extends AbstractConstants
 {
-	boolean firstPass = "true"
+	boolean forceClear = "false"
 	boolean showSleepZones = "false"
 }
 

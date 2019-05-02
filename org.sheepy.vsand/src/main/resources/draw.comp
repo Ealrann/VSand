@@ -84,7 +84,7 @@ void main()
 			if (isInShape)
 			{
 				board.data[x][y] = attributes.value;
-				board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 7;
+				board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 3;
 			}
 		}
 	}

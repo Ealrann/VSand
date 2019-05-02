@@ -29,11 +29,6 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IA
 		this.constants = constants;
 	}
 
-	public void tick()
-	{
-		constants.setFirstPass(true);
-	}
-	
 	@Override
 	public void allocate(MemoryStack stack, IAllocationContext context)
 	{
@@ -55,17 +50,16 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IA
 	@Override
 	public ByteBuffer getData()
 	{
-		int firstPass = 0;
-		if (constants.isFirstPass())
+		int forceClear = 0;
+		if (constants.isForceClear())
 		{
-			firstPass = 1;
-			constants.setFirstPass(false);
+			forceClear = 1;
 		}
 
 		final float rNumber = random.nextFloat();
 
 		buffer.putFloat(rNumber);
-		buffer.putInt(firstPass);
+		buffer.putInt(forceClear);
 		buffer.putInt(constants.isShowSleepZones() ? 1 : 0);
 		buffer.flip();
 

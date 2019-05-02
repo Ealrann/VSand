@@ -21,13 +21,14 @@ struct Entry
 	int isStatic;
 	int density;
 	int runoff;
-	uint rgb;
+	int padding;
+	vec4 color;
 };
 
 // Random number, change each frame.
 layout (push_constant) uniform PushConstants {
 	float random;
-	int firstPass;
+	int forceClear;
 	int showSleepChunks;
 } pushConstants;
 
@@ -36,7 +37,7 @@ layout(binding = 0) uniform SConfiguration
 	Entry materials[MATERIAL_COUNT];
 }configuration;
 
-layout(binding = 1) readonly buffer SBoard
+layout(binding = 1) buffer SBoard
 {
 	int data[WIDTH][HEIGHT];
 	int chunks[CHUNK_WIDTH][CHUNK_HEIGHT];
@@ -53,13 +54,26 @@ void main()
 	if (gl_GlobalInvocationID.y >= HEIGHT)
 		return;
 
-	if((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 4) == 0)
+	if(gl_LocalInvocationIndex == 0)
+	{
+		if((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 4) != 0)
+		{
+			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 8;
+			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] ^= 4;
+		}
+		else if ((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 8) != 0)
+		{
+			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] ^= 8;
+		}
+	}
+
+	if(pushConstants.forceClear == 0 && (board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 12) == 0)
 	{
 		if(pushConstants.showSleepChunks == 1)
 		{
 			uint index = board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y];
 			Entry material = configuration.materials[index];
-			vec4 color = unpackUnorm4x8(material.rgb) / 4;
+			vec4 color = material.color / 4;
 			color.r = 0.0;
 			imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), DEBUG_COLOR + color);
 		}
@@ -68,6 +82,5 @@ void main()
 
 	uint index = board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y];
 	Entry material = configuration.materials[index];
-	vec4 color = unpackUnorm4x8(material.rgb);
-	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), color);
+	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), material.color);
 }

@@ -13,7 +13,7 @@ import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.sheepy.vsand.model.VSandConstants#isFirstPass <em>First Pass</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandConstants#isForceClear <em>Force Clear</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandConstants#isShowSleepZones <em>Show Sleep Zones</em>}</li>
  * </ul>
  *
@@ -24,31 +24,27 @@ import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
 public interface VSandConstants extends AbstractConstants
 {
 	/**
-	 * Returns the value of the '<em><b>First Pass</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
+	 * Returns the value of the '<em><b>Force Clear</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>First Pass</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>First Pass</em>' attribute.
-	 * @see #setFirstPass(boolean)
-	 * @see org.sheepy.vsand.model.VSandPackage#getVSandConstants_FirstPass()
-	 * @model default="true" unique="false"
+	 * @return the value of the '<em>Force Clear</em>' attribute.
+	 * @see #setForceClear(boolean)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandConstants_ForceClear()
+	 * @model default="false" unique="false"
 	 * @generated
 	 */
-	boolean isFirstPass();
+	boolean isForceClear();
 
 	/**
-	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandConstants#isFirstPass <em>First Pass</em>}' attribute.
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandConstants#isForceClear <em>Force Clear</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>First Pass</em>' attribute.
-	 * @see #isFirstPass()
+	 * @param value the new value of the '<em>Force Clear</em>' attribute.
+	 * @see #isForceClear()
 	 * @generated
 	 */
-	void setFirstPass(boolean value);
+	void setForceClear(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Show Sleep Zones</b></em>' attribute.

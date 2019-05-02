@@ -510,7 +510,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandConstants_FirstPass()
+	public EAttribute getVSandConstants_ForceClear()
 	{
 		return (EAttribute)vSandConstantsEClass.getEStructuralFeatures().get(0);
 	}
@@ -681,7 +681,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(repeatComputePipelineEClass, REPEAT_COMPUTE_PIPELINE__REPEAT_COUNT);
 
 		vSandConstantsEClass = createEClass(VSAND_CONSTANTS);
-		createEAttribute(vSandConstantsEClass, VSAND_CONSTANTS__FIRST_PASS);
+		createEAttribute(vSandConstantsEClass, VSAND_CONSTANTS__FORCE_CLEAR);
 		createEAttribute(vSandConstantsEClass, VSAND_CONSTANTS__SHOW_SLEEP_ZONES);
 
 		materialSelectorPanelEClass = createEClass(MATERIAL_SELECTOR_PANEL);
@@ -772,7 +772,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getRepeatComputePipeline_RepeatCount(), theEcorePackage.getEInt(), "repeatCount", "1", 0, 1, RepeatComputePipeline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(vSandConstantsEClass, VSandConstants.class, "VSandConstants", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getVSandConstants_FirstPass(), theEcorePackage.getEBoolean(), "firstPass", "true", 0, 1, VSandConstants.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandConstants_ForceClear(), theEcorePackage.getEBoolean(), "forceClear", "false", 0, 1, VSandConstants.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandConstants_ShowSleepZones(), theEcorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandConstants.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(materialSelectorPanelEClass, MaterialSelectorPanel.class, "MaterialSelectorPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

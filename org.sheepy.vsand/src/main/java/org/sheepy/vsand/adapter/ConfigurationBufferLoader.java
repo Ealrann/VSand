@@ -17,7 +17,7 @@ import org.sheepy.vsand.model.VSandApplication;
 @Adapter(scope = Buffer.class, name = "Configuration")
 public class ConfigurationBufferLoader extends BufferAdapter
 {
-	private static final int BYTE_SIZE = MaterialUtil.MAX_MATERIAL_NUMBER * 4 * Integer.BYTES;
+	private static final int BYTE_SIZE = MaterialUtil.MAX_MATERIAL_NUMBER * 8 * Integer.BYTES;
 
 	public ConfigurationBufferLoader(Buffer buffer)
 	{
@@ -33,9 +33,14 @@ public class ConfigurationBufferLoader extends BufferAdapter
 			bBuffer.putInt(material.getDensity());
 			bBuffer.putInt(material.getRunoff());
 
-			final int rgb = material.getR() | material.getG() << 8 | material.getB() << 16;
+			// Alignment
+			bBuffer.putInt(0);
 
-			bBuffer.putInt(rgb);
+			// Color
+			bBuffer.putFloat(material.getR() / 255f);
+			bBuffer.putFloat(material.getG() / 255f);
+			bBuffer.putFloat(material.getB() / 255f);
+			bBuffer.putFloat(0f);
 		}
 		bBuffer.flip();
 

@@ -37,13 +37,14 @@ struct Entry
 	int isStatic;
 	int density;
 	int runoff;
-	uint rgb;
+	int padding;
+	vec4 color;
 };
 
 // Random number, change each frame.
 layout (push_constant) uniform PushConstants {
 	float random;
-	int firstPass;
+	int forceClear;
 	int showSleepChunks;
 } pushConstants;
 
@@ -83,6 +84,12 @@ void main()
 {
 	if (gl_GlobalInvocationID.y >= HEIGHT)
 		return;
+
+	if(gl_LocalInvocationIndex == 0)
+	{
+		// Clean all except 1
+		board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] &= 5;
+	}
 
 	// If disabled chunk and not edge cell, we return
 	if((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 1) == 0
@@ -172,7 +179,7 @@ void main()
 								| maskDir
 								| (targetValue << TARGET_VALUE_POSITION);
 
-						board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 1;
+						board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 1;
 
 						i = 4; //break;
 					}
