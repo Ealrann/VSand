@@ -201,8 +201,8 @@
     <materials name="Lava" density="3" runoff="5" r="244" g="111" b="67"/>
     <materials name="LavaBoiling" density="2" runoff="6" r="244" g="244" b="67" userFriendly="false"/>
     <materials name="Fuel" density="3" runoff="30" r="212" g="158" b="59"/>
-    <materials name="Petrol" density="3" runoff="30" g="15" b="79"/>
-    <materials name="PetrolFire" density="2" runoff="30" r="60" b="106" userFriendly="false"/>
+    <materials name="Petrol" density="3" runoff="30" r="30" g="30" b="95"/>
+    <materials name="PetrolFire" density="2" runoff="30" r="50" g="15" b="106" userFriendly="false"/>
   </materials>
   <transformations>
     <transformations name="WATER__PLANT" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.12" target="//@materials/@materials.12" probability="800"/>
@@ -233,9 +233,6 @@
     <transformations name="WAX__LIQUIDWAX" reactant="//@materials/@materials.11" catalyst="//@materials/@materials.13" target="//@materials/@materials.14" probability="650"/>
     <transformations name="WAX__FINALFIRE" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000"/>
     <transformations name="LIQUIDWAX__ALL" reactant="//@materials/@materials.14" target="//@materials/@materials.13" probability="100" isStaticTransformation="true"/>
-    <transformations name="LIQUIDWAX__FIRE" reactant="//@materials/@materials.14" catalyst="//@materials/@materials.9" target="//@materials/@materials.10" probability="1000" isStaticTransformation="true"/>
-    <transformations name="LIQUIDWAX__WAXFIRE" reactant="//@materials/@materials.14" catalyst="//@materials/@materials.10" target="//@materials/@materials.10" probability="1000" isStaticTransformation="true"/>
-    <transformations name="LIQUIDWAX__FINALFIRE" reactant="//@materials/@materials.14" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000" isStaticTransformation="true"/>
     <transformations name="LAVA__LAVA" reactant="//@materials/@materials.15" target="//@materials/@materials.16" probability="8"/>
     <transformations name="LAVABOILING__ALL" reactant="//@materials/@materials.16" target="//@materials/@materials.15" probability="50"/>
     <transformations name="VOID__LAVABOILING" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="40"/>

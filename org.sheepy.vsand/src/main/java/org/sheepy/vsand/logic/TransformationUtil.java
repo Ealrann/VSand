@@ -16,7 +16,8 @@ public class TransformationUtil
 		final var materials = application.getMaterials();
 		final var transformations = application.getTransformations();
 
-		final int[] res = new int[MaterialUtil.MAX_MATERIAL_NUMBER * MaterialUtil.MAX_MATERIAL_NUMBER];
+		final int[] res = new int[MaterialUtil.MAX_MATERIAL_NUMBER
+				* MaterialUtil.MAX_MATERIAL_NUMBER];
 		for (int i = 0; i < res.length; i++)
 		{
 			res[i] = -1;
@@ -45,7 +46,18 @@ public class TransformationUtil
 		value |= transfo.isIsStaticTransformation() ? STATIC_FLAG : 0;
 		value |= transfo.getPropagation() << PROPAGATION_LOCATION;
 
-		if (catalyst != null)
+		if (transfo.isIsStaticTransformation())
+		{
+			// Ignore catalyst
+			for (int i = 0; i < materialList.size(); i++)
+			{
+				if (materialList.get(i).isIsStatic() == true)
+				{
+					res[i * MaterialUtil.MAX_MATERIAL_NUMBER + reactantIndex] = value;
+				}
+			}
+		}
+		else if (catalyst != null)
 		{
 			final int catalystIndex = materialList.indexOf(catalyst);
 			res[catalystIndex * MaterialUtil.MAX_MATERIAL_NUMBER + reactantIndex] = value;
