@@ -80,7 +80,7 @@ void main()
 		atomicCompSwap(board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y], 6, 10);
 	}
 
-	if(pushConstants.forceClear == 0 && (chunkState & 12) == 0)
+	if(pushConstants.forceClear == 0 && colorTweak == false && (chunkState & 12) == 0)
 	{
 		if(pushConstants.showSleepChunks == 1)
 		{

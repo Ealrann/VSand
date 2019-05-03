@@ -263,7 +263,7 @@
     <transformations name="PETROL_FIRESTATIC" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.10" target="//@materials/@materials.19" probability="400" propagation="2"/>
     <transformations name="PETROL_LAVA" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.15" target="//@materials/@materials.19" probability="1000" propagation="2"/>
     <transformations name="PETROL_PETROLFIRE" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.19" target="//@materials/@materials.19" probability="50"/>
-    <transformations name="PETROLFIRE_ALL" reactant="//@materials/@materials.19" target="//@materials/@materials.18" probability="30"/>
+    <transformations name="PETROLFIRE_ALL" reactant="//@materials/@materials.19" target="//@materials/@materials.18" probability="60"/>
     <transformations name="PETROLFIRE_VOID" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="30"/>
     <transformations name="VOID_PETROLFIRE" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.19" target="//@materials/@materials.9" probability="175"/>
   </transformations>

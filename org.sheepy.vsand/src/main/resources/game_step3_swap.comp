@@ -149,9 +149,9 @@ void main()
 					| MOVED_TAG;
 
 			// If we swap on Air, we will try to swap a full column.
-			if (targetValue == 0 && dir == TO_DOWN)
+			if (targetValue == 0)
 			{
-				direction = y < targetY ? -1 : 1;
+				direction = configuration.materials[value].density > 0 ? -1 : 1;
 				end = false;
 
 				while (!end)
@@ -162,7 +162,6 @@ void main()
 					{
 						y = iterateY;
 						decision.data[x][y] |= MOVED_TAG;
-
 
 						localY += direction;
 						if(localY < 0)

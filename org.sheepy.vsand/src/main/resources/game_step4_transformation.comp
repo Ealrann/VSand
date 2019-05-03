@@ -71,7 +71,7 @@ layout(binding = 1) buffer SBoard
 // 8 bits with a random value.
 //		This value is divided in 4 value of 2 bit, and represent
 // 		a random array containing all the unique values : 0, 1, 2 and 3.
-//		Used to have a favourite neighboors per cells.
+//		Used to have a favorite neighbors per cells.
 // 3 unused bits.
 // 1 bit, true if the cell is swapped.
 // 4 bits for the direction we intend to swap.
@@ -216,8 +216,8 @@ bool transform(int x, int y, uint value, uint otherValue)
 	{
 		bool staticTransfo = (targetValue & (1 << 30)) != 0;
 
-		// If not static, or if we didn't move (no change Value)
-		if (!staticTransfo || (decision.data[x][y] & (15 | MOVED_TAG)) == 0)
+		// If not static, or if we didn't move (no direction and no MOVE flag)
+		if (!staticTransfo || (decision.data[x][y] & (31)) == 0)
 		{
 			uint probability = (targetValue << 2) >> 18;
 
