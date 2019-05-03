@@ -30,6 +30,9 @@ layout (push_constant) uniform PushConstants {
 	float random;
 	int forceClear;
 	int showSleepChunks;
+	int drawRadius;
+	ivec2 mousePos;
+	int drawMaterialId;
 } pushConstants;
 
 layout(binding = 0) uniform SConfiguration
@@ -49,38 +52,66 @@ const uint G_MASK = 255 << 8;
 const uint B_MASK = 255;
 const vec4 DEBUG_COLOR = vec4(1.0, 0.5, 0.5, 0.0);
 
+
+bool testCircle(int x, int y, int circleX, int circleY, int radius);
+
 void main()
 {
 	if (gl_GlobalInvocationID.y >= HEIGHT)
 		return;
+	
+	int x = int(gl_GlobalInvocationID.x);
+	int y = int(gl_GlobalInvocationID.y);
 
-	if(gl_LocalInvocationIndex == 0)
+	bool colorTweak = false;
+	vec4 addColor = vec4(0, 0, 0, 0);
+	if(testCircle(x, y, pushConstants.mousePos.x, pushConstants.mousePos.y, pushConstants.drawRadius))
 	{
-		if((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 4) != 0)
-		{
-			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 8;
-			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] ^= 4;
-		}
-		else if ((board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 8) != 0)
-		{
-			board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] ^= 8;
-		}
+		Entry material = configuration.materials[pushConstants.drawMaterialId];
+		addColor+= material.color;
+		atomicOr(board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y], 12);
+		colorTweak = true;
 	}
 
-	if(pushConstants.forceClear == 0 && (board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] & 12) == 0)
+	int chunkState = board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y];
+	if(gl_LocalInvocationIndex == 0)
+	{
+		atomicCompSwap(board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y], 4, 8);
+		atomicCompSwap(board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y], 6, 10);
+	}
+
+	if(pushConstants.forceClear == 0 && (chunkState & 12) == 0)
 	{
 		if(pushConstants.showSleepChunks == 1)
 		{
-			uint index = board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y];
-			Entry material = configuration.materials[index];
-			vec4 color = material.color / 4;
-			color.r = 0.0;
-			imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), DEBUG_COLOR + color);
+			addColor += vec4(1, 0.5, 0.5, 0);
+			colorTweak = true;
 		}
-		return;
+		else
+		{
+			return;
+		}
 	}
 
-	uint index = board.data[gl_GlobalInvocationID.x][gl_GlobalInvocationID.y];
+	uint index = board.data[x][y];
 	Entry material = configuration.materials[index];
-	imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), material.color);
+	
+	if(colorTweak)
+		imageStore(outImage, ivec2(x, y), ((material.color * 3) + addColor) / 4);
+	else
+		imageStore(outImage, ivec2(x, y), material.color);
+}
+
+bool testCircle(int x, int y, int circleX, int circleY, int radius)
+{
+	if(x >= pushConstants.mousePos.x - pushConstants.drawRadius
+		&& y >= pushConstants.mousePos.y - pushConstants.drawRadius
+		&& x <= pushConstants.mousePos.x + pushConstants.drawRadius
+		&& y <= pushConstants.mousePos.y + pushConstants.drawRadius)
+	{
+		int distX = (circleX - x) * (circleX - x);
+		int distY = (circleY - y) * (circleY - y);
+		return (distX + distY) <= (radius * radius);
+	}
+	return false;
 }

@@ -95,7 +95,7 @@ bool testCircle(int x, int y)
 	int distX = (attributes.x - x) * (attributes.x - x);
 	int distY = (attributes.y - y) * (attributes.y - y);
 
-	int halfSize = attributes.size >> 1; // divde by 2;
+	int halfSize = attributes.size >> 1; // divide by 2;
 
 	return (distX + distY) <= (halfSize * halfSize);
 }

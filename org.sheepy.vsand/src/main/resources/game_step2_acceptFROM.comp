@@ -87,7 +87,7 @@ void main()
 
 	if(gl_LocalInvocationIndex == 0)
 	{
-		// Clean all except 1
+		// Clean all except 1 and 4
 		board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] &= 5;
 	}
 
