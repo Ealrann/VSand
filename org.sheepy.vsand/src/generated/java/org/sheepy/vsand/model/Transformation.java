@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.sheepy.vsand.model.Transformation#getCatalyst <em>Catalyst</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.Transformation#getTarget <em>Target</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.Transformation#getProbability <em>Probability</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.Transformation#getPropagation <em>Propagation</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.Transformation#isIsStaticTransformation <em>Is Static Transformation</em>}</li>
  * </ul>
  *
@@ -156,6 +157,29 @@ public interface Transformation extends EObject
 	 * @generated
 	 */
 	void setProbability(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Propagation</b></em>' attribute.
+	 * The default value is <code>"1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Propagation</em>' attribute.
+	 * @see #setPropagation(int)
+	 * @see org.sheepy.vsand.model.VSandPackage#getTransformation_Propagation()
+	 * @model default="1" unique="false"
+	 * @generated
+	 */
+	int getPropagation();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.Transformation#getPropagation <em>Propagation</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Propagation</em>' attribute.
+	 * @see #getPropagation()
+	 * @generated
+	 */
+	void setPropagation(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Is Static Transformation</b></em>' attribute.

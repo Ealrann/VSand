@@ -46,6 +46,9 @@ layout (push_constant) uniform PushConstants {
 	float random;
 	int forceClear;
 	int showSleepChunks;
+	int drawRadius;
+	ivec2 mousePos;
+	int drawMaterialId;
 } pushConstants;
 
 // The definition of materials.
@@ -82,8 +85,8 @@ layout(binding = 2) buffer SDecision
 // 1 bit for the sign
 // 1 bit for isStatic (if the transformation should occur only if the material doesn't move.
 // 14 bits for the probability (not all used, probability is only an integer from 0 to 1000).
-// 16 bits for the target value.
-
+// 8 bits for the propagated distance.
+// 8 bits for the target value.
 layout(binding = 3) readonly buffer STransformation
 {
 	uint data[MATERIAL_COUNT * MATERIAL_COUNT];
@@ -121,10 +124,87 @@ void main()
 	uint valueLeft = x > 0 ? decision.data[x - 1][y] >> 24 : 0;
 
 	// Purpose here is to call transform one by one, and stop at the first that is true.
-	!(currentValue == valueUp || !transform(x, y, currentValue, valueUp))
-			|| !(currentValue == valueDown || !transform(x, y, currentValue, valueDown))
-			|| !(currentValue == valueRight || !transform(x, y, currentValue, valueRight))
-			|| !(currentValue == valueLeft || !transform(x, y, currentValue, valueLeft));
+	int catalyst = -1;
+	
+	if (!(currentValue == valueUp || !transform(x, y, currentValue, valueUp)))
+		catalyst = int(valueUp);
+	else if (!(currentValue == valueDown || !transform(x, y, currentValue, valueDown)))
+		catalyst = int(valueDown);
+	else if (!(currentValue == valueRight || !transform(x, y, currentValue, valueRight)))
+		catalyst = int(valueRight);
+	else if (!(currentValue == valueLeft || !transform(x, y, currentValue, valueLeft)))
+		catalyst = int(valueLeft);
+
+	uint propagation = (transformations.data[catalyst * MATERIAL_COUNT + currentValue] & 65280) >> 8;
+	if(catalyst != -1 && propagation > 1)
+	{
+		int targetValue = int(transformations.data[catalyst * MATERIAL_COUNT + currentValue] & 255);
+		int offset = 1;
+
+		bool up = true;
+		bool down = true;
+		bool right = true;
+		bool left = true;
+
+		while(propagation > 1)
+		{
+			if (up)
+			{
+				uint valueUp = y - offset > 0 ? decision.data[x][y - 1 - offset] >> 24 : 0;
+				if (valueUp == currentValue)
+				{
+					board.data[x][y - offset] = int(targetValue & 255);
+					board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 6;
+				}
+				else
+				{
+					up = false;
+				}
+			}
+			if (down)
+			{
+				uint valueDown = y + offset < (HEIGHT - 1) ? decision.data[x][y + 1 + offset] >> 24 : 0;
+				if (valueDown == currentValue)
+				{
+					board.data[x][y + offset] = int(targetValue & 255);
+					board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 6;
+				}
+				else
+				{
+					down = false;
+				}
+			}
+			if (right)
+			{
+				uint valueRight = x + offset < (WIDTH - 1) ? decision.data[x + 1 + offset][y] >> 24 : 0;
+				if (valueRight == currentValue)
+				{
+					board.data[x + offset][y] = int(targetValue & 255);
+					board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 6;
+				}
+				else
+				{
+					right = false;
+				}
+			}
+			if (left)
+			{
+				uint valueLeft = x - offset > 0 ? decision.data[x - 1 - offset][y] >> 24 : 0;
+				if (valueLeft == currentValue)
+				{
+					board.data[x - offset][y] = int(targetValue & 255);
+					board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 6;
+				}
+				else
+				{
+					left = false;
+				}
+			}
+
+			propagation --;
+			offset ++;
+		}
+	}
 }
 
 bool transform(int x, int y, uint value, uint otherValue)
@@ -134,17 +214,18 @@ bool transform(int x, int y, uint value, uint otherValue)
 
 	if (targetValue != -1)
 	{
-		uint probability = (targetValue << 2) >> 18;
 		bool staticTransfo = (targetValue & (1 << 30)) != 0;
 
 		// If not static, or if we didn't move (no change Value)
 		if (!staticTransfo || (decision.data[x][y] & (15 | MOVED_TAG)) == 0)
 		{
+			uint probability = (targetValue << 2) >> 18;
+
 			// highp float rand = rand(vec2(pushConstants.random, x * y));
 			float rand = gold_noise(ivec2(x, y), pushConstants.random);
 			if (rand * 1000. <= float(probability))
 			{
-				board.data[x][y] = int((targetValue << 16) >> 16);
+				board.data[x][y] = int(targetValue & 255);
 				board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] = 6;
 				res = true;
 			}

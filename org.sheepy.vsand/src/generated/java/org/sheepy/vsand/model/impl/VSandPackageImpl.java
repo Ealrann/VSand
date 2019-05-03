@@ -466,9 +466,20 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getTransformation_IsStaticTransformation()
+	public EAttribute getTransformation_Propagation()
 	{
 		return (EAttribute)transformationEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getTransformation_IsStaticTransformation()
+	{
+		return (EAttribute)transformationEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -675,6 +686,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEReference(transformationEClass, TRANSFORMATION__CATALYST);
 		createEReference(transformationEClass, TRANSFORMATION__TARGET);
 		createEAttribute(transformationEClass, TRANSFORMATION__PROBABILITY);
+		createEAttribute(transformationEClass, TRANSFORMATION__PROPAGATION);
 		createEAttribute(transformationEClass, TRANSFORMATION__IS_STATIC_TRANSFORMATION);
 
 		repeatComputePipelineEClass = createEClass(REPEAT_COMPUTE_PIPELINE);
@@ -766,6 +778,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEReference(getTransformation_Catalyst(), this.getMaterial(), null, "catalyst", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTransformation_Target(), this.getMaterial(), null, "target", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTransformation_Probability(), theEcorePackage.getEInt(), "probability", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTransformation_Propagation(), theEcorePackage.getEInt(), "propagation", "1", 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTransformation_IsStaticTransformation(), theEcorePackage.getEBoolean(), "isStaticTransformation", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(repeatComputePipelineEClass, RepeatComputePipeline.class, "RepeatComputePipeline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

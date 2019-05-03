@@ -66,6 +66,7 @@ class Transformation
 	refers Material catalyst
 	refers Material target
 	int probability
+	int propagation = "1"
 	boolean isStaticTransformation
 }
 

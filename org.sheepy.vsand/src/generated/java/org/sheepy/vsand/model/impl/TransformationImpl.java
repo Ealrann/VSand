@@ -27,6 +27,7 @@ import org.sheepy.vsand.model.VSandPackage;
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getCatalyst <em>Catalyst</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getTarget <em>Target</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getProbability <em>Probability</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getPropagation <em>Propagation</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#isIsStaticTransformation <em>Is Static Transformation</em>}</li>
  * </ul>
  *
@@ -103,6 +104,26 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	 * @ordered
 	 */
 	protected int probability = PROBABILITY_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getPropagation() <em>Propagation</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPropagation()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int PROPAGATION_EDEFAULT = 1;
+
+	/**
+	 * The cached value of the '{@link #getPropagation() <em>Propagation</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPropagation()
+	 * @generated
+	 * @ordered
+	 */
+	protected int propagation = PROPAGATION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #isIsStaticTransformation() <em>Is Static Transformation</em>}' attribute.
@@ -336,6 +357,31 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 */
 	@Override
+	public int getPropagation()
+	{
+		return propagation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setPropagation(int newPropagation)
+	{
+		int oldPropagation = propagation;
+		propagation = newPropagation;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.TRANSFORMATION__PROPAGATION, oldPropagation, propagation));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public boolean isIsStaticTransformation()
 	{
 		return isStaticTransformation;
@@ -378,6 +424,8 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 				return basicGetTarget();
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 				return getProbability();
+			case VSandPackage.TRANSFORMATION__PROPAGATION:
+				return getPropagation();
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
 				return isIsStaticTransformation();
 		}
@@ -408,6 +456,9 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 				return;
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 				setProbability((Integer)newValue);
+				return;
+			case VSandPackage.TRANSFORMATION__PROPAGATION:
+				setPropagation((Integer)newValue);
 				return;
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
 				setIsStaticTransformation((Boolean)newValue);
@@ -441,6 +492,9 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 				setProbability(PROBABILITY_EDEFAULT);
 				return;
+			case VSandPackage.TRANSFORMATION__PROPAGATION:
+				setPropagation(PROPAGATION_EDEFAULT);
+				return;
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
 				setIsStaticTransformation(IS_STATIC_TRANSFORMATION_EDEFAULT);
 				return;
@@ -468,6 +522,8 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 				return target != null;
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 				return probability != PROBABILITY_EDEFAULT;
+			case VSandPackage.TRANSFORMATION__PROPAGATION:
+				return propagation != PROPAGATION_EDEFAULT;
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
 				return isStaticTransformation != IS_STATIC_TRANSFORMATION_EDEFAULT;
 		}
@@ -489,6 +545,8 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 		result.append(name);
 		result.append(", probability: ");
 		result.append(probability);
+		result.append(", propagation: ");
+		result.append(propagation);
 		result.append(", isStaticTransformation: ");
 		result.append(isStaticTransformation);
 		result.append(')');

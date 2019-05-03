@@ -46,6 +46,9 @@ layout (push_constant) uniform PushConstants {
 	float random;
 	int forceClear;
 	int showSleepChunks;
+	int drawRadius;
+	ivec2 mousePos;
+	int drawMaterialId;
 } pushConstants;
 
 // The definition of materials.

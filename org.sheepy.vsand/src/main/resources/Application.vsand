@@ -199,6 +199,9 @@
     <materials name="LiquidWax" density="1" runoff="1" r="231" g="254" b="254" userFriendly="false"/>
     <materials name="Lava" density="3" runoff="5" r="244" g="111" b="67"/>
     <materials name="LavaBoiling" density="2" runoff="6" r="244" g="244" b="67" userFriendly="false"/>
+    <materials name="Fuel" density="3" runoff="30" r="212" g="158" b="59"/>
+    <materials name="Petrol" density="3" runoff="30" g="15" b="79"/>
+    <materials name="PetrolFire" density="2" runoff="30" r="60" b="106" userFriendly="false"/>
   </materials>
   <transformations>
     <transformations name="WATER__PLANT" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.12" target="//@materials/@materials.12" probability="800"/>
@@ -252,5 +255,16 @@
     <transformations name="WATER__LAVABOILING" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.16" target="//@materials/@materials.6" probability="800"/>
     <transformations name="LAVA_BOILING__WATER" reactant="//@materials/@materials.16" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="5"/>
     <transformations name="LAVA__WATER" reactant="//@materials/@materials.15" catalyst="//@materials/@materials.5" target="//@materials/@materials.6" probability="25"/>
+    <transformations name="FUEL_FIRE" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.9" target="//@materials/@materials.9" probability="1000" propagation="4"/>
+    <transformations name="FUEL_FIREFINAL" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.11" target="//@materials/@materials.9" probability="1000" propagation="4"/>
+    <transformations name="FUEL_FIRESTATIC" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.10" target="//@materials/@materials.9" probability="1000" propagation="4"/>
+    <transformations name="PETROL_FIRE" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.9" target="//@materials/@materials.19" probability="400" propagation="2"/>
+    <transformations name="PETROL_FIREFINAL" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.11" target="//@materials/@materials.19" probability="400" propagation="2"/>
+    <transformations name="PETROL_FIRESTATIC" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.10" target="//@materials/@materials.19" probability="400" propagation="2"/>
+    <transformations name="PETROL_LAVA" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.15" target="//@materials/@materials.19" probability="1000" propagation="2"/>
+    <transformations name="PETROL_PETROLFIRE" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.19" target="//@materials/@materials.19" probability="50"/>
+    <transformations name="PETROLFIRE_ALL" reactant="//@materials/@materials.19" target="//@materials/@materials.18" probability="30"/>
+    <transformations name="PETROLFIRE_VOID" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="30"/>
+    <transformations name="VOID_PETROLFIRE" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.19" target="//@materials/@materials.9" probability="175"/>
   </transformations>
 </model:VSandApplication>

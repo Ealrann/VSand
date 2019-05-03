@@ -69,6 +69,7 @@ public class TransformationItemProvider
 			addCatalystPropertyDescriptor(object);
 			addTargetPropertyDescriptor(object);
 			addProbabilityPropertyDescriptor(object);
+			addPropagationPropertyDescriptor(object);
 			addIsStaticTransformationPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -190,6 +191,29 @@ public class TransformationItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Propagation feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addPropagationPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Transformation_propagation_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_propagation_feature", "_UI_Transformation_type"),
+				 VSandPackage.Literals.TRANSFORMATION__PROPAGATION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This adds a property descriptor for the Is Static Transformation feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -256,6 +280,7 @@ public class TransformationItemProvider
 		{
 			case VSandPackage.TRANSFORMATION__NAME:
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
+			case VSandPackage.TRANSFORMATION__PROPAGATION:
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

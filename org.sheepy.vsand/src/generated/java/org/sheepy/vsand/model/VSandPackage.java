@@ -508,13 +508,22 @@ public interface VSandPackage extends EPackage
 	int TRANSFORMATION__PROBABILITY = 4;
 
 	/**
+	 * The feature id for the '<em><b>Propagation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TRANSFORMATION__PROPAGATION = 5;
+
+	/**
 	 * The feature id for the '<em><b>Is Static Transformation</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__IS_STATIC_TRANSFORMATION = 5;
+	int TRANSFORMATION__IS_STATIC_TRANSFORMATION = 6;
 
 	/**
 	 * The number of structural features of the '<em>Transformation</em>' class.
@@ -523,7 +532,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION_FEATURE_COUNT = 6;
+	int TRANSFORMATION_FEATURE_COUNT = 7;
 
 	/**
 	 * The number of operations of the '<em>Transformation</em>' class.
@@ -1288,6 +1297,17 @@ public interface VSandPackage extends EPackage
 	EAttribute getTransformation_Probability();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Transformation#getPropagation <em>Propagation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Propagation</em>'.
+	 * @see org.sheepy.vsand.model.Transformation#getPropagation()
+	 * @see #getTransformation()
+	 * @generated
+	 */
+	EAttribute getTransformation_Propagation();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Transformation#isIsStaticTransformation <em>Is Static Transformation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1679,6 +1699,14 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EAttribute TRANSFORMATION__PROBABILITY = eINSTANCE.getTransformation_Probability();
+
+		/**
+		 * The meta object literal for the '<em><b>Propagation</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TRANSFORMATION__PROPAGATION = eINSTANCE.getTransformation_Propagation();
 
 		/**
 		 * The meta object literal for the '<em><b>Is Static Transformation</b></em>' attribute feature.
