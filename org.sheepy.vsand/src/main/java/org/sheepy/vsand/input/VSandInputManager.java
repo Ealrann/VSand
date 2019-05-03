@@ -11,6 +11,7 @@ import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandConstants;
+import org.sheepy.vulkan.window.Window;
 
 public class VSandInputManager implements IInputListener
 {
@@ -22,14 +23,23 @@ public class VSandInputManager implements IInputListener
 	private boolean leftClicPressed = false;
 	private boolean rightClicPressed = false;
 	private final VSandConstants constants;
+	private final Window window;
 
-	public VSandInputManager(	VSandApplication application,
+	public VSandInputManager(	Window window,
+								VSandApplication application,
 								VSandConstants constants,
 								RepeatComputePipeline stepPipeline)
 	{
+		this.window = window;
 		this.application = application;
 		this.stepPipeline = stepPipeline;
 		this.constants = constants;
+	}
+
+	@Override
+	public void onMouseOverUI(boolean overUI)
+	{
+		window.hideCursor(!overUI);
 	}
 
 	@Override

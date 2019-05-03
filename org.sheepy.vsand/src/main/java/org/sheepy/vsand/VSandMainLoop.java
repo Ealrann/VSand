@@ -20,6 +20,7 @@ import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandConstants;
 import org.sheepy.vsand.util.FPSCounter;
+import org.sheepy.vulkan.window.Window;
 
 public class VSandMainLoop implements IMainLoop
 {
@@ -51,11 +52,13 @@ public class VSandMainLoop implements IMainLoop
 
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		engineAdapter = IVulkanEngineAdapter.adapt(vulkanEngine);
+		final Window window = engineAdapter.getWindow();
 		inputManager = engineAdapter.getInputManager();
 
 		gatherProcesses(vulkanEngine);
 
-		vsandInputManager = new VSandInputManager(application, constants, stepPipeline);
+		vsandInputManager = new VSandInputManager(window, application, constants,
+				stepPipeline);
 		inputManager.addListener(vsandInputManager);
 
 		final Vector2i boardSize = new Vector2i(stepPipeline.getWidth(), stepPipeline.getHeight());
