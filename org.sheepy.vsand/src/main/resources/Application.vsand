@@ -132,6 +132,7 @@
           <units xsi:type="compute:Computer" name="Step4" shader="//@engines.0/@processes.0/@resourcePkg/@resources.9"/>
         </pipelines>
         <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" descriptorSetRef="//@engines.0/@processes.0/@descriptorSetPkg/@descriptorSets.2" constants="//@engines.0/@processes.0/@resourcePkg/@resources.11" width="1248" height="704" depth="1">
+          <units xsi:type="process:PushConstant"/>
           <units xsi:type="process:PipelineBarrier">
             <barrier xsi:type="resource:ImageBarrier" dstStage="COMPUTE_SHADER_BIT" image="//@engines.0/@resourcePkg/@resources.0">
               <transitions dstLayout="GENERAL">
