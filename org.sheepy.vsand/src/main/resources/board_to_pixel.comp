@@ -68,7 +68,7 @@ void main()
 	if(testCircle(x, y, pushConstants.mousePos.x, pushConstants.mousePos.y, pushConstants.drawRadius))
 	{
 		Entry material = configuration.materials[pushConstants.drawMaterialId];
-		addColor+= material.color;
+		addColor+= vec4(material.color.xyz + 0.2, 0);
 		atomicOr(board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y], 12);
 		colorTweak = true;
 	}
