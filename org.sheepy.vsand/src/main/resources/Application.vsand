@@ -188,7 +188,7 @@
     <materials name="Dirt" isStatic="true" density="5" runoff="1" r="72" g="38" b="4"/>
     <materials name="Wall" isStatic="true" density="20" r="153" g="153" b="143"/>
     <materials name="Concrete" density="20" runoff="4" r="94" g="94" b="85"/>
-    <materials name="Water" density="4" runoff="30" r="67" g="67" b="244"/>
+    <materials name="Water" density="4" runoff="64" r="67" g="67" b="244"/>
     <materials name="Vapor" density="-2" runoff="1" r="159" g="159" b="249"/>
     <materials name="WetDirt" density="5" runoff="1" r="48" g="26" b="3" userFriendly="false"/>
     <materials name="Grass" isStatic="true" density="1" r="11" g="193" b="11" userFriendly="false"/>
@@ -264,5 +264,6 @@
     <transformations name="PETROLFIRE_ALL" reactant="//@materials/@materials.19" target="//@materials/@materials.18" probability="60"/>
     <transformations name="PETROLFIRE_VOID" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="30"/>
     <transformations name="VOID_PETROLFIRE" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.19" target="//@materials/@materials.9" probability="175"/>
+    <transformations name="WATER_PERTOLFIRE" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.19" target="//@materials/@materials.6" probability="250"/>
   </transformations>
 </model:VSandApplication>

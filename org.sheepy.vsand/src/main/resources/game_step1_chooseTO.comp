@@ -142,11 +142,11 @@ void main()
 
 			if (configuration.materials[valueLeft].density < density)
 			{
-				distLeft = checkFree(x - 1, y + 1, runoff, -1, density);
+				distLeft = checkFree(x - 1, y, runoff, -1, density);
 			}
 			if (configuration.materials[valueRight].density < density)
 			{
-				distRight = checkFree(x + 1, y + 1, runoff, 1, density);
+				distRight = checkFree(x + 1, y, runoff, 1, density);
 			}
 
 			bool right = distRight < runoff;
@@ -170,9 +170,9 @@ void main()
 					}
 					else // if (distLeft == distRight)
 					{
-						// We prefer left side. Right is naturally favourized due to
+						// We prefer right side. Left is naturally favourized due to
 						// the course of the shader: left to right.
-						if (gold_noise(ivec2(x, y), pushConstants.random) < 0.95)
+						if (gold_noise(ivec2(x, y), pushConstants.random) < 0.20)
 						{
 							tag = TO_RIGHT;
 							targetValue = valueRight;
@@ -206,16 +206,25 @@ void main()
 
 int checkFree(int x, int y, int runoff, int dir, int srcDensity)
 {
+	int yDown = y + 1;
 	int course = 0;
-	if (y >= 0 || y < HEIGHT)
+	if (yDown >= 0 || yDown < HEIGHT)
 	{
-		while (runoff != 0)
+		while (course < runoff)
 		{
 			if (x >= 0 && x < WIDTH)
 			{
-				int value = board.data[x][y];
-				if (configuration.materials[value].isStatic == 0
-						&& configuration.materials[value].density < srcDensity)
+				int neighborValue = board.data[x][y];
+				if (configuration.materials[neighborValue].isStatic == 1
+						|| configuration.materials[neighborValue].density >= srcDensity)
+				{
+					course = runoff + 1;
+					break;
+				}
+
+				int valueDown = board.data[x][yDown];
+				if (configuration.materials[valueDown].isStatic == 0
+						&& configuration.materials[valueDown].density < srcDensity)
 				{
 					break;
 				}
@@ -225,7 +234,6 @@ int checkFree(int x, int y, int runoff, int dir, int srcDensity)
 				break;
 			}
 			x += dir;
-			runoff--;
 			course++;
 		}
 	}
