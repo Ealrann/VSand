@@ -66,7 +66,7 @@ public class VSandConstantAdapter extends AbstractConstantsAdapter implements IA
 	{
 		return BYTE_SIZE;
 	}
- 
+
 	@Override
 	public ByteBuffer getData()
 	{

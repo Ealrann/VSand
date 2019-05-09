@@ -57,8 +57,7 @@ public class VSandMainLoop implements IMainLoop
 
 		gatherProcesses(vulkanEngine);
 
-		vsandInputManager = new VSandInputManager(window, application, constants,
-				stepPipeline);
+		vsandInputManager = new VSandInputManager(window, application, constants, stepPipeline);
 		inputManager.addListener(vsandInputManager);
 
 		final Vector2i boardSize = new Vector2i(stepPipeline.getWidth(), stepPipeline.getHeight());

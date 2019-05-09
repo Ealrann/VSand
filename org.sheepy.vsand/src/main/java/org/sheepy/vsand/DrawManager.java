@@ -15,9 +15,9 @@ public class DrawManager
 	private final VSandApplication application;
 	private final IInputManager inputManager;
 	private final ModificationsManager modificationsManager;
+	private final Vector2i boardSize;
 
 	private boolean wasUsed = false;
-	private final Vector2i boardSize;
 
 	public DrawManager(	VSandApplication application,
 						IInputManager inputManager,
@@ -36,7 +36,7 @@ public class DrawManager
 
 		if (needDraw)
 		{
-			var firstDraw = wasUsed == false;
+			final var firstDraw = wasUsed == false;
 			data = newDrawData(material, firstDraw);
 			wasUsed = true;
 		}
@@ -53,24 +53,24 @@ public class DrawManager
 
 	private DrawData newDrawData(Material material, boolean firstDraw)
 	{
-		var size = EShapeSize.values()[application.getBrushSize() - 1];
-		var shape = firstDraw ? EShape.Circle : EShape.Line;
+		final var size = EShapeSize.values()[application.getBrushSize() - 1];
+		final var shape = firstDraw ? EShape.Circle : EShape.Line;
 
-		var cursor = inputManager.getCursorPosition();
-		var cursorBoard = convertToBoardPosition(cursor);
+		final var cursor = inputManager.getCursorPosition();
+		final var cursorBoard = convertToBoardPosition(cursor);
 
 		return new DrawData(size, shape, cursorBoard, material);
 	}
 
 	private Vector2i convertToBoardPosition(Vector2f mousePos)
 	{
-		Vector2i res = new Vector2i((int) mousePos.x, (int) mousePos.y);
+		final Vector2i res = new Vector2i((int) mousePos.x, (int) mousePos.y);
 
-		int boardWidth = boardSize.x;
-		int boardHeight = boardSize.y;
+		final int boardWidth = boardSize.x;
+		final int boardHeight = boardSize.y;
 
-		int width = application.getSize().x;
-		int height = application.getSize().y;
+		final int width = application.getSize().x;
+		final int height = application.getSize().y;
 		if (width != boardWidth || height != boardHeight)
 		{
 			res.x *= (float) boardWidth / width;
