@@ -45,7 +45,7 @@
   </views>
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
-      <resources xsi:type="resource:Image" descriptorType="STORAGE_IMAGE" name="Board Image" width="1248" height="704" format="B8G8R8A8_UNORM" fillWithZero="true">
+      <resources xsi:type="resource:Image" descriptorType="STORAGE_IMAGE" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM" fillWithZero="true">
         <shaderStages>COMPUTE_BIT</shaderStages>
         <usages>TransferSrc</usages>
         <usages>Storage</usages>
