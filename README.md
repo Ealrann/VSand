@@ -4,6 +4,7 @@ Rewrite of the [**Falling Sand**](https://en.wikipedia.org/wiki/Falling-sand_gam
 Since that kind of game requires a lot of computing power, I wanted to exploit the graphic card capabilities to process AND to display the particles (*parallel computing*).
 
 License GPL-3.0. Feel free to redistribute (please let me know).
+Since version 1.2, the VSand releases contain an [OpenJDK with OpenJ9](https://www.eclipse.org/openj9/).
 
 ### Requirements
 
@@ -41,8 +42,14 @@ Here some materials you can find in the game:
 #### Wax
 ![Wax](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/wax.gif)
 
+#### Fuel
+![Fuel](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/Fuel.gif)
+
 #### Lava
 ![Lava](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/lava.gif)
+
+#### Petrol
+![Petrol](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/Petrol.gif)
 
 #### Concrete
 ![Concrete](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/concrete.gif)
@@ -56,8 +63,7 @@ Feel free to add a new issues if you want to see new things in the game, or if y
 
 If you want to contribute to the code, you first need to install:
 - Git.
-- Git-lfs (linux only)
-- Gradle
+- Gradle.
 
 Clone the repo and download the submodule:
 
