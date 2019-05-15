@@ -22,7 +22,7 @@ public class BoardBufferLoader extends BufferAdapter
 		final int width = application.getSize().x;
 		final int height = application.getSize().y;
 		final int sizeBoard = width * height;
-		final int sizeChunks = (int) (Math.ceil(width / 32.) * Math.ceil(height / 32.));
+		final int sizeChunks = (int) (Math.ceil(width / 16.) * Math.ceil(height / 16.));
 		final int sizeByte = (sizeBoard + sizeChunks) * Integer.BYTES;
 
 		buffer.setSize(sizeByte);
