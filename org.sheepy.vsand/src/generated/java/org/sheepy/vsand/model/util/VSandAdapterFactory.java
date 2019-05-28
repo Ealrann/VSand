@@ -15,13 +15,6 @@ import org.sheepy.lily.core.model.presentation.IPositionElement;
 import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.core.model.types.LNamedElement;
-import org.sheepy.lily.vulkan.model.IResource;
-import org.sheepy.lily.vulkan.model.IResourceContainer;
-import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
-import org.sheepy.lily.vulkan.model.process.IPipeline;
-import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
-import org.sheepy.lily.vulkan.model.resource.AbstractConstants;
-import org.sheepy.lily.vulkan.model.resource.BasicResource;
 import org.sheepy.vsand.model.*;
 
 /**
@@ -113,16 +106,6 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createTransformationAdapter();
 			}
 			@Override
-			public Adapter caseRepeatComputePipeline(RepeatComputePipeline object)
-			{
-				return createRepeatComputePipelineAdapter();
-			}
-			@Override
-			public Adapter caseVSandConstants(VSandConstants object)
-			{
-				return createVSandConstantsAdapter();
-			}
-			@Override
 			public Adapter caseMaterialSelectorPanel(MaterialSelectorPanel object)
 			{
 				return createMaterialSelectorPanelAdapter();
@@ -146,41 +129,6 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseLNamedElement(LNamedElement object)
 			{
 				return createLNamedElementAdapter();
-			}
-			@Override
-			public Adapter caseIPipeline(IPipeline object)
-			{
-				return createIPipelineAdapter();
-			}
-			@Override
-			public Adapter caseIResourceContainer(IResourceContainer object)
-			{
-				return createIResourceContainerAdapter();
-			}
-			@Override
-			public Adapter caseAbstractPipeline(AbstractPipeline object)
-			{
-				return createAbstractPipelineAdapter();
-			}
-			@Override
-			public Adapter caseComputePipeline(ComputePipeline object)
-			{
-				return createComputePipelineAdapter();
-			}
-			@Override
-			public Adapter caseIResource(IResource object)
-			{
-				return createIResourceAdapter();
-			}
-			@Override
-			public Adapter caseBasicResource(BasicResource object)
-			{
-				return createBasicResourceAdapter();
-			}
-			@Override
-			public Adapter caseAbstractConstants(AbstractConstants object)
-			{
-				return createAbstractConstantsAdapter();
 			}
 			@Override
 			public Adapter caseIUIElement(IUIElement object)
@@ -295,36 +243,6 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.RepeatComputePipeline <em>Repeat Compute Pipeline</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.vsand.model.RepeatComputePipeline
-	 * @generated
-	 */
-	public Adapter createRepeatComputePipelineAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.VSandConstants <em>Constants</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.vsand.model.VSandConstants
-	 * @generated
-	 */
-	public Adapter createVSandConstantsAdapter()
-	{
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.MaterialSelectorPanel <em>Material Selector Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -395,111 +313,6 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createLNamedElementAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.IPipeline <em>IPipeline</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.process.IPipeline
-	 * @generated
-	 */
-	public Adapter createIPipelineAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IResourceContainer <em>IResource Container</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.IResourceContainer
-	 * @generated
-	 */
-	public Adapter createIResourceContainerAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.AbstractPipeline <em>Abstract Pipeline</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.process.AbstractPipeline
-	 * @generated
-	 */
-	public Adapter createAbstractPipelineAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.process.compute.ComputePipeline <em>Pipeline</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.process.compute.ComputePipeline
-	 * @generated
-	 */
-	public Adapter createComputePipelineAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IResource <em>IResource</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.IResource
-	 * @generated
-	 */
-	public Adapter createIResourceAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.BasicResource <em>Basic Resource</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.resource.BasicResource
-	 * @generated
-	 */
-	public Adapter createBasicResourceAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.AbstractConstants <em>Abstract Constants</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.resource.AbstractConstants
-	 * @generated
-	 */
-	public Adapter createAbstractConstantsAdapter()
 	{
 		return null;
 	}

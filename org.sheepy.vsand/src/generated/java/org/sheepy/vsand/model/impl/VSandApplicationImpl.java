@@ -27,6 +27,8 @@ import org.sheepy.vsand.model.VSandPackage;
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getMainMaterial <em>Main Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getSecondaryMaterial <em>Secondary Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isNextMode <em>Next Mode</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isForceClear <em>Force Clear</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isShowSleepZones <em>Show Sleep Zones</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBrushSize <em>Brush Size</em>}</li>
  * </ul>
  *
@@ -93,6 +95,46 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @ordered
 	 */
 	protected boolean nextMode = NEXT_MODE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isForceClear() <em>Force Clear</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isForceClear()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean FORCE_CLEAR_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isForceClear() <em>Force Clear</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isForceClear()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean forceClear = FORCE_CLEAR_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isShowSleepZones() <em>Show Sleep Zones</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isShowSleepZones()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean SHOW_SLEEP_ZONES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isShowSleepZones() <em>Show Sleep Zones</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isShowSleepZones()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean showSleepZones = SHOW_SLEEP_ZONES_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getBrushSize() <em>Brush Size</em>}' attribute.
@@ -356,6 +398,56 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @generated
 	 */
 	@Override
+	public boolean isForceClear()
+	{
+		return forceClear;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setForceClear(boolean newForceClear)
+	{
+		boolean oldForceClear = forceClear;
+		forceClear = newForceClear;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__FORCE_CLEAR, oldForceClear, forceClear));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isShowSleepZones()
+	{
+		return showSleepZones;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setShowSleepZones(boolean newShowSleepZones)
+	{
+		boolean oldShowSleepZones = showSleepZones;
+		showSleepZones = newShowSleepZones;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES, oldShowSleepZones, showSleepZones));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public int getBrushSize()
 	{
 		return brushSize;
@@ -415,6 +507,10 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return basicGetSecondaryMaterial();
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
 				return isNextMode();
+			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
+				return isForceClear();
+			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
+				return isShowSleepZones();
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				return getBrushSize();
 		}
@@ -445,6 +541,12 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return;
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
 				setNextMode((Boolean)newValue);
+				return;
+			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
+				setForceClear((Boolean)newValue);
+				return;
+			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
+				setShowSleepZones((Boolean)newValue);
 				return;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				setBrushSize((Integer)newValue);
@@ -478,6 +580,12 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
 				setNextMode(NEXT_MODE_EDEFAULT);
 				return;
+			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
+				setForceClear(FORCE_CLEAR_EDEFAULT);
+				return;
+			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
+				setShowSleepZones(SHOW_SLEEP_ZONES_EDEFAULT);
+				return;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				setBrushSize(BRUSH_SIZE_EDEFAULT);
 				return;
@@ -505,6 +613,10 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return secondaryMaterial != null;
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
 				return nextMode != NEXT_MODE_EDEFAULT;
+			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
+				return forceClear != FORCE_CLEAR_EDEFAULT;
+			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
+				return showSleepZones != SHOW_SLEEP_ZONES_EDEFAULT;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				return brushSize != BRUSH_SIZE_EDEFAULT;
 		}
@@ -524,6 +636,10 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (nextMode: ");
 		result.append(nextMode);
+		result.append(", forceClear: ");
+		result.append(forceClear);
+		result.append(", showSleepZones: ");
+		result.append(showSleepZones);
 		result.append(", brushSize: ");
 		result.append(brushSize);
 		result.append(')');

@@ -7,33 +7,29 @@ import org.sheepy.lily.core.api.input.event.KeyEvent;
 import org.sheepy.lily.core.api.input.event.MouseButtonEvent;
 import org.sheepy.lily.core.api.input.event.ScrollEvent;
 import org.sheepy.lily.core.model.types.EKeyState;
+import org.sheepy.lily.vulkan.model.process.CompositeTask;
 import org.sheepy.vsand.model.Material;
-import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.VSandApplication;
-import org.sheepy.vsand.model.VSandConstants;
 import org.sheepy.vulkan.window.Window;
 
 public class VSandInputManager implements IInputListener
 {
 	private final VSandApplication application;
-	private final RepeatComputePipeline stepPipeline;
+	private final CompositeTask stepTasks;
 
 	private boolean shiftPressed = false;
 
 	private boolean leftClicPressed = false;
 	private boolean rightClicPressed = false;
-	private final VSandConstants constants;
 	private final Window window;
 
 	public VSandInputManager(	Window window,
 								VSandApplication application,
-								VSandConstants constants,
-								RepeatComputePipeline stepPipeline)
+								CompositeTask stepTasks)
 	{
 		this.window = window;
 		this.application = application;
-		this.stepPipeline = stepPipeline;
-		this.constants = constants;
+		this.stepTasks = stepTasks;
 	}
 
 	@Override
@@ -67,19 +63,19 @@ public class VSandInputManager implements IInputListener
 			{
 			// Space bar
 			case 32:
-				stepPipeline.setEnabled(!stepPipeline.isEnabled());
+				stepTasks.setEnabled(!stepTasks.isEnabled());
 				break;
 			// *
 			case 331:
-				int speedMinus = stepPipeline.getRepeatCount();
+				int speedMinus = stepTasks.getRepeatCount();
 				speedMinus = Math.max(1, speedMinus / 2);
-				stepPipeline.setRepeatCount(speedMinus);
+				stepTasks.setRepeatCount(speedMinus);
 				break;
 			// /
 			case 332:
-				int speedPlus = stepPipeline.getRepeatCount();
+				int speedPlus = stepTasks.getRepeatCount();
 				speedPlus = Math.min(16, speedPlus * 2);
-				stepPipeline.setRepeatCount(speedPlus);
+				stepTasks.setRepeatCount(speedPlus);
 				break;
 			// -
 			case 333:
@@ -97,8 +93,8 @@ public class VSandInputManager implements IInputListener
 			// n
 			case 'n' - 32:
 				application.setNextMode(true);
-				stepPipeline.setEnabled(true);
-				stepPipeline.setRepeatCount(1);
+				stepTasks.setEnabled(true);
+				stepTasks.setRepeatCount(1);
 				break;
 			// f
 			case 'f' - 32:
@@ -110,8 +106,8 @@ public class VSandInputManager implements IInputListener
 				break;
 			// s
 			case 's' - 32:
-				constants.setForceClear(true);
-				constants.setShowSleepZones(!constants.isShowSleepZones());
+				application.setForceClear(true);
+				application.setShowSleepZones(!application.isShowSleepZones());
 				break;
 			}
 		}
@@ -121,7 +117,7 @@ public class VSandInputManager implements IInputListener
 			{
 			// s
 			case 's' - 32:
-				constants.setForceClear(false);
+				application.setForceClear(false);
 				break;
 			}
 		}

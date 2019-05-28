@@ -154,10 +154,6 @@ import org.sheepy.lily.core.model.inference.provider.InferenceItemProviderAdapte
 import org.sheepy.lily.core.model.presentation.provider.PresentationItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.root.provider.RootItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.types.provider.TypesItemProviderAdapterFactory;
-import org.sheepy.lily.vulkan.model.process.compute.provider.ComputeItemProviderAdapterFactory;
-import org.sheepy.lily.vulkan.model.process.provider.ProcessItemProviderAdapterFactory;
-import org.sheepy.lily.vulkan.model.provider.VulkanItemProviderAdapterFactory;
-import org.sheepy.vulkan.model.barrier.provider.BarrierItemProviderAdapterFactory;
 
 
 /**
@@ -741,14 +737,9 @@ public class VSandEditor
 		adapterFactory.addAdapterFactory(new ApplicationItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new RootItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new InferenceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ComputeItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new TypesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ProcessItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new VulkanItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new org.sheepy.lily.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new PresentationItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new TypesItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ActionItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new BarrierItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
 		// Create the command stack that will notify this editor as commands are executed.

@@ -8,8 +8,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
-import org.sheepy.lily.vulkan.model.process.compute.ComputePackage;
-import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -207,13 +205,31 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__NEXT_MODE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Force Clear</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__FORCE_CLEAR = ApplicationPackage.APPLICATION_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Show Sleep Zones</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__SHOW_SLEEP_ZONES = ApplicationPackage.APPLICATION_FEATURE_COUNT + 6;
+
+	/**
 	 * The feature id for the '<em><b>Brush Size</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 5;
+	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Application</em>' class.
@@ -222,7 +238,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 6;
+	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 8;
 
 	/**
 	 * The operation id for the '<em>LInference Object</em>' operation.
@@ -544,297 +560,6 @@ public interface VSandPackage extends EPackage
 	int TRANSFORMATION_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.RepeatComputePipelineImpl <em>Repeat Compute Pipeline</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vsand.model.impl.RepeatComputePipelineImpl
-	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getRepeatComputePipeline()
-	 * @generated
-	 */
-	int REPEAT_COMPUTE_PIPELINE = 5;
-
-	/**
-	 * The feature id for the '<em><b>Content Objects</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__CONTENT_OBJECTS = ComputePackage.COMPUTE_PIPELINE__CONTENT_OBJECTS;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__NAME = ComputePackage.COMPUTE_PIPELINE__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Enabled</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__ENABLED = ComputePackage.COMPUTE_PIPELINE__ENABLED;
-
-	/**
-	 * The feature id for the '<em><b>Stage</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__STAGE = ComputePackage.COMPUTE_PIPELINE__STAGE;
-
-	/**
-	 * The feature id for the '<em><b>Push Buffer</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__PUSH_BUFFER = ComputePackage.COMPUTE_PIPELINE__PUSH_BUFFER;
-
-	/**
-	 * The feature id for the '<em><b>Resource Pkg</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__RESOURCE_PKG = ComputePackage.COMPUTE_PIPELINE__RESOURCE_PKG;
-
-	/**
-	 * The feature id for the '<em><b>Units</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__UNITS = ComputePackage.COMPUTE_PIPELINE__UNITS;
-
-	/**
-	 * The feature id for the '<em><b>Descriptor Set Ref</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__DESCRIPTOR_SET_REF = ComputePackage.COMPUTE_PIPELINE__DESCRIPTOR_SET_REF;
-
-	/**
-	 * The feature id for the '<em><b>Descriptor Set</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__DESCRIPTOR_SET = ComputePackage.COMPUTE_PIPELINE__DESCRIPTOR_SET;
-
-	/**
-	 * The feature id for the '<em><b>Constants</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__CONSTANTS = ComputePackage.COMPUTE_PIPELINE__CONSTANTS;
-
-	/**
-	 * The feature id for the '<em><b>Workgroup Size X</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__WORKGROUP_SIZE_X = ComputePackage.COMPUTE_PIPELINE__WORKGROUP_SIZE_X;
-
-	/**
-	 * The feature id for the '<em><b>Workgroup Size Y</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__WORKGROUP_SIZE_Y = ComputePackage.COMPUTE_PIPELINE__WORKGROUP_SIZE_Y;
-
-	/**
-	 * The feature id for the '<em><b>Workgroup Size Z</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__WORKGROUP_SIZE_Z = ComputePackage.COMPUTE_PIPELINE__WORKGROUP_SIZE_Z;
-
-	/**
-	 * The feature id for the '<em><b>Width</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__WIDTH = ComputePackage.COMPUTE_PIPELINE__WIDTH;
-
-	/**
-	 * The feature id for the '<em><b>Height</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__HEIGHT = ComputePackage.COMPUTE_PIPELINE__HEIGHT;
-
-	/**
-	 * The feature id for the '<em><b>Depth</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__DEPTH = ComputePackage.COMPUTE_PIPELINE__DEPTH;
-
-	/**
-	 * The feature id for the '<em><b>Repeat Count</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE__REPEAT_COUNT = ComputePackage.COMPUTE_PIPELINE_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Repeat Compute Pipeline</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE_FEATURE_COUNT = ComputePackage.COMPUTE_PIPELINE_FEATURE_COUNT + 1;
-
-	/**
-	 * The operation id for the '<em>LInference Object</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE___LINFERENCE_OBJECT = ComputePackage.COMPUTE_PIPELINE___LINFERENCE_OBJECT;
-
-	/**
-	 * The operation id for the '<em>Create Containment EList</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE___CREATE_CONTAINMENT_ELIST__ECLASS = ComputePackage.COMPUTE_PIPELINE___CREATE_CONTAINMENT_ELIST__ECLASS;
-
-	/**
-	 * The operation id for the '<em>LContents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE___LCONTENTS = ComputePackage.COMPUTE_PIPELINE___LCONTENTS;
-
-	/**
-	 * The operation id for the '<em>LParent</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE___LPARENT = ComputePackage.COMPUTE_PIPELINE___LPARENT;
-
-	/**
-	 * The operation id for the '<em>LAll Contents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE___LALL_CONTENTS = ComputePackage.COMPUTE_PIPELINE___LALL_CONTENTS;
-
-	/**
-	 * The number of operations of the '<em>Repeat Compute Pipeline</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPEAT_COMPUTE_PIPELINE_OPERATION_COUNT = ComputePackage.COMPUTE_PIPELINE_OPERATION_COUNT + 0;
-
-
-	/**
-	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.VSandConstantsImpl <em>Constants</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vsand.model.impl.VSandConstantsImpl
-	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandConstants()
-	 * @generated
-	 */
-	int VSAND_CONSTANTS = 6;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_CONSTANTS__NAME = ResourcePackage.ABSTRACT_CONSTANTS__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Stages</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_CONSTANTS__STAGES = ResourcePackage.ABSTRACT_CONSTANTS__STAGES;
-
-	/**
-	 * The feature id for the '<em><b>Force Clear</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_CONSTANTS__FORCE_CLEAR = ResourcePackage.ABSTRACT_CONSTANTS_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Show Sleep Zones</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_CONSTANTS__SHOW_SLEEP_ZONES = ResourcePackage.ABSTRACT_CONSTANTS_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Constants</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_CONSTANTS_FEATURE_COUNT = ResourcePackage.ABSTRACT_CONSTANTS_FEATURE_COUNT + 2;
-
-	/**
-	 * The number of operations of the '<em>Constants</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_CONSTANTS_OPERATION_COUNT = ResourcePackage.ABSTRACT_CONSTANTS_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -842,7 +567,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialSelectorPanel()
 	 * @generated
 	 */
-	int MATERIAL_SELECTOR_PANEL = 7;
+	int MATERIAL_SELECTOR_PANEL = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1079,6 +804,28 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 */
 	EAttribute getVSandApplication_NextMode();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#isForceClear <em>Force Clear</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Force Clear</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#isForceClear()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EAttribute getVSandApplication_ForceClear();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#isShowSleepZones <em>Show Sleep Zones</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Show Sleep Zones</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#isShowSleepZones()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EAttribute getVSandApplication_ShowSleepZones();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}'.
@@ -1319,59 +1066,6 @@ public interface VSandPackage extends EPackage
 	EAttribute getTransformation_IsStaticTransformation();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vsand.model.RepeatComputePipeline <em>Repeat Compute Pipeline</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Repeat Compute Pipeline</em>'.
-	 * @see org.sheepy.vsand.model.RepeatComputePipeline
-	 * @generated
-	 */
-	EClass getRepeatComputePipeline();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.RepeatComputePipeline#getRepeatCount <em>Repeat Count</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Repeat Count</em>'.
-	 * @see org.sheepy.vsand.model.RepeatComputePipeline#getRepeatCount()
-	 * @see #getRepeatComputePipeline()
-	 * @generated
-	 */
-	EAttribute getRepeatComputePipeline_RepeatCount();
-
-	/**
-	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandConstants <em>Constants</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Constants</em>'.
-	 * @see org.sheepy.vsand.model.VSandConstants
-	 * @generated
-	 */
-	EClass getVSandConstants();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandConstants#isForceClear <em>Force Clear</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Force Clear</em>'.
-	 * @see org.sheepy.vsand.model.VSandConstants#isForceClear()
-	 * @see #getVSandConstants()
-	 * @generated
-	 */
-	EAttribute getVSandConstants_ForceClear();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandConstants#isShowSleepZones <em>Show Sleep Zones</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Show Sleep Zones</em>'.
-	 * @see org.sheepy.vsand.model.VSandConstants#isShowSleepZones()
-	 * @see #getVSandConstants()
-	 * @generated
-	 */
-	EAttribute getVSandConstants_ShowSleepZones();
-
-	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.MaterialSelectorPanel <em>Material Selector Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1531,6 +1225,22 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EAttribute VSAND_APPLICATION__NEXT_MODE = eINSTANCE.getVSandApplication_NextMode();
+
+		/**
+		 * The meta object literal for the '<em><b>Force Clear</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VSAND_APPLICATION__FORCE_CLEAR = eINSTANCE.getVSandApplication_ForceClear();
+
+		/**
+		 * The meta object literal for the '<em><b>Show Sleep Zones</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VSAND_APPLICATION__SHOW_SLEEP_ZONES = eINSTANCE.getVSandApplication_ShowSleepZones();
 
 		/**
 		 * The meta object literal for the '<em><b>Brush Size</b></em>' attribute feature.
@@ -1715,50 +1425,6 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EAttribute TRANSFORMATION__IS_STATIC_TRANSFORMATION = eINSTANCE.getTransformation_IsStaticTransformation();
-
-		/**
-		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.RepeatComputePipelineImpl <em>Repeat Compute Pipeline</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vsand.model.impl.RepeatComputePipelineImpl
-		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getRepeatComputePipeline()
-		 * @generated
-		 */
-		EClass REPEAT_COMPUTE_PIPELINE = eINSTANCE.getRepeatComputePipeline();
-
-		/**
-		 * The meta object literal for the '<em><b>Repeat Count</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute REPEAT_COMPUTE_PIPELINE__REPEAT_COUNT = eINSTANCE.getRepeatComputePipeline_RepeatCount();
-
-		/**
-		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.VSandConstantsImpl <em>Constants</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vsand.model.impl.VSandConstantsImpl
-		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getVSandConstants()
-		 * @generated
-		 */
-		EClass VSAND_CONSTANTS = eINSTANCE.getVSandConstants();
-
-		/**
-		 * The meta object literal for the '<em><b>Force Clear</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute VSAND_CONSTANTS__FORCE_CLEAR = eINSTANCE.getVSandConstants_ForceClear();
-
-		/**
-		 * The meta object literal for the '<em><b>Show Sleep Zones</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute VSAND_CONSTANTS__SHOW_SLEEP_ZONES = eINSTANCE.getVSandConstants_ShowSleepZones();
 
 		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.

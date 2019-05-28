@@ -7,21 +7,19 @@ import org.sheepy.vsand.adapter.BoardImageLoader;
 import org.sheepy.vsand.adapter.ConfigurationBufferLoader;
 import org.sheepy.vsand.adapter.MaterialSelectorPanelAdapter;
 import org.sheepy.vsand.adapter.ModificationBufferLoader;
-import org.sheepy.vsand.adapter.RepeatComputePipelineAdapter;
 import org.sheepy.vsand.adapter.TransformationBufferLoader;
-import org.sheepy.vsand.adapter.VSandConstantAdapter;
+import org.sheepy.vsand.adapter.VSandPushConstantAdapter;
 import org.sheepy.vsand.model.VSandModelExtension;
 
 @Adapters(classifiers = {
-		RepeatComputePipelineAdapter.class,
-		VSandConstantAdapter.class,
 		MaterialSelectorPanelAdapter.class,
 		ConfigurationBufferLoader.class,
 		BoardBufferLoader.class,
 		BoardImageLoader.class,
 		BoardDecisionLoader.class,
 		TransformationBufferLoader.class,
-		ModificationBufferLoader.class
+		ModificationBufferLoader.class,
+		VSandPushConstantAdapter.class
 })
 
 module org.sheepy.vsand

@@ -13,12 +13,6 @@ import org.sheepy.lily.core.model.inference.provider.InferenceEditPlugin;
 import org.sheepy.lily.core.model.presentation.provider.PresentationEditPlugin;
 import org.sheepy.lily.core.model.root.provider.RootEditPlugin;
 import org.sheepy.lily.core.model.types.provider.TypesEditPlugin;
-import org.sheepy.lily.vulkan.model.process.compute.provider.ComputeEditPlugin;
-import org.sheepy.lily.vulkan.model.process.provider.ProcessEditPlugin;
-import org.sheepy.lily.vulkan.model.provider.VulkanEditPlugin;
-import org.sheepy.lily.vulkan.model.resource.provider.ResourceEditPlugin;
-import org.sheepy.vulkan.model.barrier.provider.BarrierEditPlugin;
-import org.sheepy.vulkan.model.enumeration.provider.EnumerationEditPlugin;
 
 /**
  * This is the central singleton for the VSand editor plugin.
@@ -58,15 +52,9 @@ public final class VSandEditorPlugin extends EMFPlugin
 				ApplicationEditPlugin.INSTANCE,
 				RootEditPlugin.INSTANCE,
 				InferenceEditPlugin.INSTANCE,
-				ComputeEditPlugin.INSTANCE,
-				TypesEditPlugin.INSTANCE,
-				ProcessEditPlugin.INSTANCE,
-				VulkanEditPlugin.INSTANCE,
-				ResourceEditPlugin.INSTANCE,
 				PresentationEditPlugin.INSTANCE,
+				TypesEditPlugin.INSTANCE,
 				ActionEditPlugin.INSTANCE,
-				BarrierEditPlugin.INSTANCE,
-				EnumerationEditPlugin.INSTANCE,
 			});
 	}
 

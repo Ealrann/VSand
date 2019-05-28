@@ -18,6 +18,8 @@ import org.sheepy.lily.core.model.application.Application;
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getMainMaterial <em>Main Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#isNextMode <em>Next Mode</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#isForceClear <em>Force Clear</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#isShowSleepZones <em>Show Sleep Zones</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}</li>
  * </ul>
  *
@@ -158,6 +160,52 @@ public interface VSandApplication extends Application
 	 * @generated
 	 */
 	void setNextMode(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Force Clear</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Force Clear</em>' attribute.
+	 * @see #setForceClear(boolean)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_ForceClear()
+	 * @model default="false" unique="false"
+	 * @generated
+	 */
+	boolean isForceClear();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#isForceClear <em>Force Clear</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Force Clear</em>' attribute.
+	 * @see #isForceClear()
+	 * @generated
+	 */
+	void setForceClear(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Show Sleep Zones</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Show Sleep Zones</em>' attribute.
+	 * @see #setShowSleepZones(boolean)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_ShowSleepZones()
+	 * @model default="false" unique="false"
+	 * @generated
+	 */
+	boolean isShowSleepZones();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#isShowSleepZones <em>Show Sleep Zones</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Show Sleep Zones</em>' attribute.
+	 * @see #isShowSleepZones()
+	 * @generated
+	 */
+	void setShowSleepZones(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Brush Size</b></em>' attribute.

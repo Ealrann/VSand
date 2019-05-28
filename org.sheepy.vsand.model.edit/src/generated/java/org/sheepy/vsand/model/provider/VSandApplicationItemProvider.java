@@ -19,7 +19,6 @@ import org.sheepy.lily.core.model.application.ApplicationPackage;
 import org.sheepy.lily.core.model.application.provider.ApplicationItemProvider;
 import org.sheepy.lily.core.model.presentation.PresentationFactory;
 import org.sheepy.lily.core.model.root.LObject;
-import org.sheepy.lily.vulkan.model.VulkanFactory;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandPackage;
@@ -59,6 +58,8 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			addMainMaterialPropertyDescriptor(object);
 			addSecondaryMaterialPropertyDescriptor(object);
 			addNextModePropertyDescriptor(object);
+			addForceClearPropertyDescriptor(object);
+			addShowSleepZonesPropertyDescriptor(object);
 			addBrushSizePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -125,6 +126,52 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 				 getString("_UI_VSandApplication_nextMode_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_nextMode_feature", "_UI_VSandApplication_type"),
 				 VSandPackage.Literals.VSAND_APPLICATION__NEXT_MODE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Force Clear feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addForceClearPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandApplication_forceClear_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_forceClear_feature", "_UI_VSandApplication_type"),
+				 VSandPackage.Literals.VSAND_APPLICATION__FORCE_CLEAR,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Show Sleep Zones feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addShowSleepZonesPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandApplication_showSleepZones_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_showSleepZones_feature", "_UI_VSandApplication_type"),
+				 VSandPackage.Literals.VSAND_APPLICATION__SHOW_SLEEP_ZONES,
 				 true,
 				 false,
 				 false,
@@ -234,6 +281,8 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 		switch (notification.getFeatureID(VSandApplication.class))
 		{
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
+			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
+			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
@@ -261,11 +310,6 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			(createChildParameter
 				(ApplicationPackage.Literals.APPLICATION__VIEWS,
 				 PresentationFactory.eINSTANCE.createTranparentUIView()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ApplicationPackage.Literals.APPLICATION__ENGINES,
-				 VulkanFactory.eINSTANCE.createVulkanEngine()));
 
 		newChildDescriptors.add
 			(createChildParameter

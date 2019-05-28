@@ -68,24 +68,6 @@ public interface VSandFactory extends EFactory
 	Transformation createTransformation();
 
 	/**
-	 * Returns a new object of class '<em>Repeat Compute Pipeline</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Repeat Compute Pipeline</em>'.
-	 * @generated
-	 */
-	RepeatComputePipeline createRepeatComputePipeline();
-
-	/**
-	 * Returns a new object of class '<em>Constants</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Constants</em>'.
-	 * @generated
-	 */
-	VSandConstants createVSandConstants();
-
-	/**
 	 * Returns a new object of class '<em>Material Selector Panel</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

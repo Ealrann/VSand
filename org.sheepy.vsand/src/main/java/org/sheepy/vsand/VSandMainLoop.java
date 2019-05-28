@@ -10,15 +10,14 @@ import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
 import org.sheepy.lily.vulkan.model.IProcess;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
+import org.sheepy.lily.vulkan.model.process.CompositeTask;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.vsand.buffer.ModificationsManager;
 import org.sheepy.vsand.input.VSandInputManager;
-import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.VSandApplication;
-import org.sheepy.vsand.model.VSandConstants;
 import org.sheepy.vsand.util.FPSCounter;
 import org.sheepy.vulkan.window.Window;
 
@@ -35,9 +34,9 @@ public class VSandMainLoop implements IMainLoop
 	private IProcessAdapter renderProcessAdapter;
 
 	private ModificationsManager modificationsManager;
-	private VSandConstants constants;
-	private RepeatComputePipeline stepPipeline;
+	private ComputePipeline stepPipeline;
 	private ComputePipeline drawPipeline;
+	private CompositeTask stepTasks;
 	private IInputManager inputManager;
 	private VSandApplication application;
 
@@ -57,7 +56,7 @@ public class VSandMainLoop implements IMainLoop
 
 		gatherProcesses(vulkanEngine);
 
-		vsandInputManager = new VSandInputManager(window, application, constants, stepPipeline);
+		vsandInputManager = new VSandInputManager(window, application, stepTasks);
 		inputManager.addListener(vsandInputManager);
 
 		final Vector2i boardSize = new Vector2i(stepPipeline.getWidth(), stepPipeline.getHeight());
@@ -77,11 +76,11 @@ public class VSandMainLoop implements IMainLoop
 				boardProcess = (ComputeProcess) process;
 				boardProcessAdapter = IProcessAdapter.adapt(process);
 
-				final var pipelines = boardProcess.getPipelinePkg().getPipelines();
-				drawPipeline = (ComputePipeline) pipelines.get(0);
-				stepPipeline = (RepeatComputePipeline) pipelines.get(1);
+				final var parts = boardProcess.getPartPkg().getParts();
+				drawPipeline = (ComputePipeline) parts.get(0);
+				stepPipeline = (ComputePipeline) parts.get(1);
+				stepTasks = (CompositeTask) stepPipeline.getTaskPkg().getTasks().get(2);
 
-				constants = (VSandConstants) stepPipeline.getConstants();
 				final var resources = boardProcess.getResourcePkg().getResources();
 
 				final var modificationBuffer = (Buffer) resources.get(4);

@@ -15,22 +15,14 @@ import org.sheepy.lily.core.model.inference.InferencePackage;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.root.RootPackage;
 import org.sheepy.lily.core.model.types.TypesPackage;
-import org.sheepy.lily.vulkan.model.VulkanPackage;
-import org.sheepy.lily.vulkan.model.process.ProcessPackage;
-import org.sheepy.lily.vulkan.model.process.compute.ComputePackage;
-import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.Materials;
-import org.sheepy.vsand.model.RepeatComputePipeline;
 import org.sheepy.vsand.model.Transformation;
 import org.sheepy.vsand.model.Transformations;
 import org.sheepy.vsand.model.VSandApplication;
-import org.sheepy.vsand.model.VSandConstants;
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandPackage;
-import org.sheepy.vulkan.model.barrier.BarrierPackage;
-import org.sheepy.vulkan.model.enumeration.EnumerationPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -74,20 +66,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	private EClass transformationEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass repeatComputePipelineEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass vSandConstantsEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -150,15 +128,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		RootPackage.eINSTANCE.eClass();
 		InferencePackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
-		ComputePackage.eINSTANCE.eClass();
-		TypesPackage.eINSTANCE.eClass();
-		ProcessPackage.eINSTANCE.eClass();
-		VulkanPackage.eINSTANCE.eClass();
-		ResourcePackage.eINSTANCE.eClass();
 		PresentationPackage.eINSTANCE.eClass();
+		TypesPackage.eINSTANCE.eClass();
 		ActionPackage.eINSTANCE.eClass();
-		BarrierPackage.eINSTANCE.eClass();
-		EnumerationPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theVSandPackage.createPackageContents();
@@ -246,9 +218,31 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_BrushSize()
+	public EAttribute getVSandApplication_ForceClear()
 	{
 		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getVSandApplication_ShowSleepZones()
+	{
+		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getVSandApplication_BrushSize()
+	{
+		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -488,61 +482,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EClass getRepeatComputePipeline()
-	{
-		return repeatComputePipelineEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getRepeatComputePipeline_RepeatCount()
-	{
-		return (EAttribute)repeatComputePipelineEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getVSandConstants()
-	{
-		return vSandConstantsEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getVSandConstants_ForceClear()
-	{
-		return (EAttribute)vSandConstantsEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getVSandConstants_ShowSleepZones()
-	{
-		return (EAttribute)vSandConstantsEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getMaterialSelectorPanel()
 	{
 		return materialSelectorPanelEClass;
@@ -662,6 +601,8 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__MAIN_MATERIAL);
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__SECONDARY_MATERIAL);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__NEXT_MODE);
+		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__FORCE_CLEAR);
+		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SHOW_SLEEP_ZONES);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__BRUSH_SIZE);
 
 		materialsEClass = createEClass(MATERIALS);
@@ -688,13 +629,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(transformationEClass, TRANSFORMATION__PROBABILITY);
 		createEAttribute(transformationEClass, TRANSFORMATION__PROPAGATION);
 		createEAttribute(transformationEClass, TRANSFORMATION__IS_STATIC_TRANSFORMATION);
-
-		repeatComputePipelineEClass = createEClass(REPEAT_COMPUTE_PIPELINE);
-		createEAttribute(repeatComputePipelineEClass, REPEAT_COMPUTE_PIPELINE__REPEAT_COUNT);
-
-		vSandConstantsEClass = createEClass(VSAND_CONSTANTS);
-		createEAttribute(vSandConstantsEClass, VSAND_CONSTANTS__FORCE_CLEAR);
-		createEAttribute(vSandConstantsEClass, VSAND_CONSTANTS__SHOW_SLEEP_ZONES);
 
 		materialSelectorPanelEClass = createEClass(MATERIAL_SELECTOR_PANEL);
 		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__LINE_HEIGHT);
@@ -733,8 +667,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		// Obtain other dependent packages
 		ApplicationPackage theApplicationPackage = (ApplicationPackage)EPackage.Registry.INSTANCE.getEPackage(ApplicationPackage.eNS_URI);
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
-		ComputePackage theComputePackage = (ComputePackage)EPackage.Registry.INSTANCE.getEPackage(ComputePackage.eNS_URI);
-		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
 		PresentationPackage thePresentationPackage = (PresentationPackage)EPackage.Registry.INSTANCE.getEPackage(PresentationPackage.eNS_URI);
 
 		// Create type parameters
@@ -743,8 +675,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		// Add supertypes to classes
 		vSandApplicationEClass.getESuperTypes().add(theApplicationPackage.getApplication());
-		repeatComputePipelineEClass.getESuperTypes().add(theComputePackage.getComputePipeline());
-		vSandConstantsEClass.getESuperTypes().add(theResourcePackage.getAbstractConstants());
 		materialSelectorPanelEClass.getESuperTypes().add(thePresentationPackage.getIPanel());
 
 		// Initialize classes, features, and operations; add parameters
@@ -754,6 +684,8 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEReference(getVSandApplication_MainMaterial(), this.getMaterial(), null, "mainMaterial", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_SecondaryMaterial(), this.getMaterial(), null, "secondaryMaterial", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_NextMode(), theEcorePackage.getEBoolean(), "nextMode", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_ForceClear(), theEcorePackage.getEBoolean(), "forceClear", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_ShowSleepZones(), theEcorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_BrushSize(), theEcorePackage.getEInt(), "brushSize", "4", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(materialsEClass, Materials.class, "Materials", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -780,13 +712,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getTransformation_Probability(), theEcorePackage.getEInt(), "probability", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTransformation_Propagation(), theEcorePackage.getEInt(), "propagation", "1", 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTransformation_IsStaticTransformation(), theEcorePackage.getEBoolean(), "isStaticTransformation", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(repeatComputePipelineEClass, RepeatComputePipeline.class, "RepeatComputePipeline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getRepeatComputePipeline_RepeatCount(), theEcorePackage.getEInt(), "repeatCount", "1", 0, 1, RepeatComputePipeline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(vSandConstantsEClass, VSandConstants.class, "VSandConstants", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getVSandConstants_ForceClear(), theEcorePackage.getEBoolean(), "forceClear", "false", 0, 1, VSandConstants.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVSandConstants_ShowSleepZones(), theEcorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandConstants.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(materialSelectorPanelEClass, MaterialSelectorPanel.class, "MaterialSelectorPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMaterialSelectorPanel_LineHeight(), theEcorePackage.getEInt(), "lineHeight", "32", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
