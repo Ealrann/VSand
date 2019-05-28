@@ -113,9 +113,7 @@ void main()
 	if (configuration.materials[currentValue].isStatic == 0)
 	{
 		int density = configuration.materials[currentValue].density;
-
 		int valueDown = y < (HEIGHT - 1) ? board.data[x][y + 1] : 0;
-		// Make a list of available directions
 
 		bool wantToFallDown = configuration.materials[valueDown].isStatic == 0
 				&& density > configuration.materials[valueDown].density;
@@ -170,9 +168,7 @@ void main()
 					}
 					else // if (distLeft == distRight)
 					{
-						// We prefer right side. Left is naturally favourized due to
-						// the course of the shader: left to right.
-						if (gold_noise(ivec2(x, y), pushConstants.random) < 0.20)
+						if (gold_noise(ivec2(y, x), pushConstants.random) < 0.50)
 						{
 							tag = TO_RIGHT;
 							targetValue = valueRight;
