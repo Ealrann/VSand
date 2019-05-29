@@ -32,7 +32,6 @@ project.ext.lwjglVersion = "3.2.2"
 
 subprojects {
 
-	apply plugin: 'java'
 	apply plugin: 'eclipse'
 	apply plugin: "org.javamodularity.moduleplugin"
 

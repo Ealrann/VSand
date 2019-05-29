@@ -1,7 +1,6 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-	id 'java'
 	id 'application'
 	id 'distribution'
 	id 'org.beryx.jlink' version '2.10.4'
