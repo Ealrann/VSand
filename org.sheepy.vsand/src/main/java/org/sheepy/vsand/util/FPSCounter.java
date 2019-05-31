@@ -2,8 +2,10 @@ package org.sheepy.vsand.util;
 
 public class FPSCounter
 {
+	private static final double NS = 1000000000;
+
 	public static final int COUNT_DURATION_NS = 2 * 1000000000;
-	
+
 	private int count = 0;
 	private long lastTime = -1;
 
@@ -15,11 +17,9 @@ public class FPSCounter
 
 		if (System.nanoTime() - lastTime > COUNT_DURATION_NS)
 		{
-			long totalDelta = System.nanoTime() - lastTime;
-
-			long averageDelta = totalDelta / count;
-
-			float fps = 1000000000f / averageDelta;
+			final long totalDelta = System.nanoTime() - lastTime;
+			final long averageDelta = totalDelta / count;
+			final float fps = (float) (NS / averageDelta);
 
 			System.out.println("FPS: " + fps);
 

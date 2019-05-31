@@ -13,7 +13,7 @@ import org.sheepy.vsand.logic.EShape;
 import org.sheepy.vsand.logic.EShapeSize;
 import org.sheepy.vsand.model.Material;
 
-public class ModificationsManager
+public final class ModificationsManager
 {
 	public static final int BYTE_SIZE = BoardModification.MODIFICATION_BYTE_COUNT * Integer.BYTES;
 
@@ -33,8 +33,8 @@ public class ModificationsManager
 	public void pushModification(DrawData data)
 	{
 		var shape = data.shape;
-		int x = data.position.x;
-		int y = data.position.y;
+		final int x = data.position.x;
+		final int y = data.position.y;
 
 		// We cannot draw a line if nothing moved
 		if (shape == EShape.Line && x == oldX && y == oldY)
@@ -42,7 +42,7 @@ public class ModificationsManager
 			shape = EShape.Circle;
 		}
 
-		var modification = new BoardModification(shape, data.size, x, y, oldX, oldY, data.material);
+		final var modification = new BoardModification(shape, data.size, x, y, oldX, oldY, data.material);
 		modificationQueue.add(modification);
 
 		oldX = x;
@@ -52,7 +52,7 @@ public class ModificationsManager
 	public void update()
 	{
 		copyBuffer.clear();
-		BoardModification modif = modificationQueue.pop();
+		final BoardModification modif = modificationQueue.pop();
 		modif.fillBuffer(copyBuffer);
 		copyBuffer.flip();
 

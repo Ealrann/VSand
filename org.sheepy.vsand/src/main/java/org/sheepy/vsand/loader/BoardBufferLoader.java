@@ -1,23 +1,21 @@
-package org.sheepy.vsand.adapter;
+package org.sheepy.vsand.loader;
 
 import java.nio.ByteBuffer;
 
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.adapter.annotation.Autorun;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
-import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.api.util.ModelUtil;
+import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
-import org.sheepy.lily.vulkan.resource.buffer.BufferAdapter;
 
-@Statefull
 @Adapter(scope = Buffer.class, name = "Board Buffer")
-public class BoardBufferLoader extends BufferAdapter
+public final class BoardBufferLoader implements IVulkanAdapter
 {
-	public BoardBufferLoader(Buffer buffer)
+	@Autorun
+	public static void load(Buffer buffer)
 	{
-		super(buffer);
-
 		final var application = ModelUtil.getApplication(buffer);
 		final int width = application.getSize().x;
 		final int height = application.getSize().y;
@@ -33,7 +31,7 @@ public class BoardBufferLoader extends BufferAdapter
 	}
 
 	@Dispose
-	public void dispose()
+	public static void dispose(Buffer buffer)
 	{
 		MemoryUtil.memFree(buffer.getData());
 		buffer.setData(null);

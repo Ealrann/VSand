@@ -1,15 +1,15 @@
 import org.sheepy.lily.core.api.adapter.annotation.Adapters;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.resource.IModelExtension;
-import org.sheepy.vsand.adapter.BoardBufferLoader;
-import org.sheepy.vsand.adapter.BoardDecisionLoader;
-import org.sheepy.vsand.adapter.BoardImageLoader;
-import org.sheepy.vsand.adapter.ConfigurationBufferLoader;
-import org.sheepy.vsand.adapter.MaterialSelectorPanelAdapter;
-import org.sheepy.vsand.adapter.ModificationBufferLoader;
-import org.sheepy.vsand.adapter.TransformationBufferLoader;
-import org.sheepy.vsand.adapter.VSandPushConstantAdapter;
+import org.sheepy.vsand.loader.BoardBufferLoader;
+import org.sheepy.vsand.loader.BoardDecisionLoader;
+import org.sheepy.vsand.loader.BoardImageLoader;
+import org.sheepy.vsand.loader.ConfigurationBufferLoader;
+import org.sheepy.vsand.loader.ModificationBufferLoader;
+import org.sheepy.vsand.loader.TransformationBufferLoader;
+import org.sheepy.vsand.loader.VSandPushConstantAdapter;
 import org.sheepy.vsand.model.VSandModelExtension;
+import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
 
 @Adapters(classifiers = {
 		MaterialSelectorPanelAdapter.class,
@@ -38,8 +38,9 @@ module org.sheepy.vsand
 	requires org.sheepy.lily.vulkan.extra.api;
 	requires org.sheepy.lily.vulkan.extra.graphic;
 
-	opens org.sheepy.vsand.adapter;
 	opens org.sheepy.vsand;
+	opens org.sheepy.vsand.loader;
+	opens org.sheepy.vsand.ui;
 
 	uses IInputManager;
 

@@ -5,7 +5,7 @@ import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.Transformation;
 import org.sheepy.vsand.model.VSandApplication;
 
-public class TransformationUtil
+public final class TransformationUtil
 {
 	private static final int PROPAGATION_LOCATION = 8;
 	private static final int PROBABILITY_LOCATION = 16;
@@ -18,9 +18,12 @@ public class TransformationUtil
 
 		final int[] res = new int[MaterialUtil.MAX_MATERIAL_NUMBER
 				* MaterialUtil.MAX_MATERIAL_NUMBER];
-		for (int i = 0; i < res.length; i++)
+		for (int i = 0; i < res.length; i += 4)
 		{
 			res[i] = -1;
+			res[i + 1] = -1;
+			res[i + 2] = -1;
+			res[i + 3] = -1;
 		}
 
 		final var materialList = materials.getMaterials();

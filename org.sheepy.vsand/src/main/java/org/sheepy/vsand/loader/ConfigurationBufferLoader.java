@@ -1,29 +1,26 @@
-package org.sheepy.vsand.adapter;
+package org.sheepy.vsand.loader;
 
 import java.nio.ByteBuffer;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.adapter.annotation.Autorun;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
-import org.sheepy.lily.core.api.adapter.annotation.Statefull;
+import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
-import org.sheepy.lily.vulkan.resource.buffer.BufferAdapter;
 import org.sheepy.vsand.logic.MaterialUtil;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 
-@Statefull
 @Adapter(scope = Buffer.class, name = "Configuration")
-public class ConfigurationBufferLoader extends BufferAdapter
+public final class ConfigurationBufferLoader implements IVulkanAdapter
 {
 	private static final int BYTE_SIZE = MaterialUtil.MAX_MATERIAL_NUMBER * 8 * Integer.BYTES;
 
-	public ConfigurationBufferLoader(Buffer buffer)
+	@Autorun
+	public static void load(Buffer buffer)
 	{
-		super(buffer);
-		buffer.setSize(BYTE_SIZE);
-
 		final var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);
 
 		final ByteBuffer bBuffer = MemoryUtil.memAlloc(BYTE_SIZE);
@@ -44,11 +41,12 @@ public class ConfigurationBufferLoader extends BufferAdapter
 		}
 		bBuffer.flip();
 
+		buffer.setSize(BYTE_SIZE);
 		buffer.setData(bBuffer);
 	}
 
 	@Dispose
-	public void dispose()
+	public static void dispose(Buffer buffer)
 	{
 		MemoryUtil.memFree(buffer.getData());
 		buffer.setData(null);

@@ -7,12 +7,12 @@ import org.eclipse.emf.ecore.EPackage;
 import org.sheepy.lily.core.api.resource.IModelExtension;
 import org.sheepy.vsand.model.VSandPackage;
 
-public class VSandModelExtension implements IModelExtension
+public final class VSandModelExtension implements IModelExtension
 {
 	@Override
 	public Collection<EPackage> getEPackages()
 	{
-		Collection<EPackage> res = new ArrayList<>();
+		final Collection<EPackage> res = new ArrayList<>();
 
 		res.add(VSandPackage.eINSTANCE);
 

@@ -1,4 +1,4 @@
-package org.sheepy.vsand.adapter.drawer;
+package org.sheepy.vsand.ui;
 
 import static org.lwjgl.nuklear.Nuklear.*;
 
@@ -8,27 +8,27 @@ import org.lwjgl.nuklear.NkColor;
 import org.lwjgl.nuklear.NkContext;
 import org.lwjgl.nuklear.NkRect;
 import org.lwjgl.nuklear.NkVec2;
-import org.sheepy.vsand.adapter.MaterialSelectorPanelAdapter.LineData;
 import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter.LineData;
 
-public class MaterialDrawer
+public final class MaterialDrawer
 {
-	private final int lineHeight;
+	private static final int STYLE = NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_BORDER;
 
+	private final int lineHeight;
 	private final NkColor defaultBorderColor;
-	private NkColor borderColor;
 	private final NkColor selectedBorderColor;
 
 	private float defaultPaddingX;
 	private float defaultPaddingY;
 
+	private NkColor borderColor;
 	private NkVec2 padding;
-
 
 	public MaterialDrawer(int lineHeight, int r, int g, int b)
 	{
 		this.lineHeight = lineHeight;
-		
+
 		defaultBorderColor = NkColor.create();
 		selectedBorderColor = NkColor.create();
 		selectedBorderColor.set((byte) r, (byte) g, (byte) b, (byte) 255);
@@ -55,8 +55,6 @@ public class MaterialDrawer
 		padding.x(0);
 		padding.y(0);
 
-		final int style = NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_BORDER;
-
 		if (main == data.material)
 		{
 			borderColor.set(selectedBorderColor);
@@ -66,7 +64,7 @@ public class MaterialDrawer
 			borderColor.a((byte) 0);
 		}
 
-		if (nk_begin(nkContext, id, rect, style))
+		if (nk_begin(nkContext, id, rect, STYLE))
 		{
 			final var color = data.color;
 			nk_layout_row_dynamic(nkContext, lineHeight - 5, 1);

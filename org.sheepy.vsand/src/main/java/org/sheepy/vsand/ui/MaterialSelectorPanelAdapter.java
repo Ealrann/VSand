@@ -1,4 +1,4 @@
-package org.sheepy.vsand.adapter;
+package org.sheepy.vsand.ui;
 
 import static org.lwjgl.nuklear.Nuklear.*;
 
@@ -9,7 +9,6 @@ import java.util.List;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.joml.Vector2i;
 import org.lwjgl.nuklear.NkColor;
@@ -19,8 +18,7 @@ import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.vulkan.common.util.UIUtil;
-import org.sheepy.lily.vulkan.nuklear.adapter.IUIElementAdapter;
-import org.sheepy.vsand.adapter.drawer.MaterialDrawer;
+import org.sheepy.lily.vulkan.nuklear.ui.IUIElementAdapter;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.VSandApplication;
@@ -29,7 +27,7 @@ import org.sheepy.vulkan.window.IWindowListener;
 
 @Statefull
 @org.sheepy.lily.core.api.adapter.annotation.Adapter(scope = MaterialSelectorPanel.class)
-public class MaterialSelectorPanelAdapter implements IUIElementAdapter
+public final class MaterialSelectorPanelAdapter implements IUIElementAdapter
 {
 	private final Adapter materialAdapter = new AdapterImpl()
 	{
@@ -54,13 +52,14 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 		}
 	};
 
+	private final VSandApplication application;
+	private final List<LineData> datas;
+
 	private boolean loaded = false;
 
-	private List<LineData> datas;
 	private int width;
 	private int height;
 
-	private final VSandApplication application;
 	private boolean dirty = false;
 
 	private MaterialDrawer primaryMaterialDrawer;
@@ -73,6 +72,22 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 		this.panel = panel;
 		application = (VSandApplication) EcoreUtil.getRootContainer(panel);
 		application.eAdapters().add(materialAdapter);
+
+		datas = List.copyOf(buildLineDatas());
+	}
+
+	private List<LineData> buildLineDatas()
+	{
+		final List<LineData> tmpDatas = new ArrayList<>();
+		final var materials = application.getMaterials().getMaterials();
+		for (final Material material : materials)
+		{
+			if (material.isUserFriendly())
+			{
+				tmpDatas.add(new LineData(material));
+			}
+		}
+		return tmpDatas;
 	}
 
 	@Dispose
@@ -87,8 +102,6 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 
 	private void load(UIContext context, MaterialSelectorPanel panel)
 	{
-		final var materials = application.getMaterials().getMaterials();
-		final int materialCount = countUserFriendlyMaterials(materials);
 		final var surface = context.window.getSize();
 		final int lineHeight = panel.getLineHeight();
 
@@ -98,17 +111,7 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 				panel.getSecondaryG(), panel.getSecondaryB());
 
 		width = lineHeight * 2 + LineData.TEXT_WIDTH;
-		height = lineHeight * materialCount;
-
-		datas = new ArrayList<>();
-		for (final Material material : materials)
-		{
-			if (material.isUserFriendly())
-			{
-				datas.add(new LineData(material));
-			}
-		}
-		datas = List.copyOf(datas);
+		height = lineHeight * datas.size();
 
 		updateDataLocations(surface);
 		context.window.addListener(listener);
@@ -124,11 +127,6 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 			data.updateRect(x, y, lineHeight);
 			y += lineHeight;
 		}
-	}
-
-	private static int countUserFriendlyMaterials(EList<Material> materials)
-	{
-		return (int) materials.stream().filter(m -> m.isUserFriendly()).count();
 	}
 
 	@Override
@@ -192,7 +190,7 @@ public class MaterialSelectorPanelAdapter implements IUIElementAdapter
 		return res;
 	}
 
-	public static class LineData
+	public static final class LineData
 	{
 		public static final int TEXT_WIDTH = 80;
 

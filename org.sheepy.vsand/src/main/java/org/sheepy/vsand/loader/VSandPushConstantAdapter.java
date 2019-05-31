@@ -1,4 +1,4 @@
-package org.sheepy.vsand.adapter;
+package org.sheepy.vsand.loader;
 
 import java.nio.ByteBuffer;
 import java.util.Random;
@@ -23,7 +23,7 @@ import org.sheepy.vsand.model.VSandApplication;
 
 @Statefull
 @Adapter(scope = PushConstant.class, name = "VSandPushConstants")
-public class VSandPushConstantAdapter implements IVulkanAdapter
+public final class VSandPushConstantAdapter implements IVulkanAdapter
 {
 	private final int BYTE_SIZE = Integer.BYTES * 7;
 
@@ -103,8 +103,8 @@ public class VSandPushConstantAdapter implements IVulkanAdapter
 		final int height = application.getSize().y;
 		if (width != boardWidth || height != boardHeight)
 		{
-			res.x *= (float) boardWidth / width;
-			res.y *= (float) boardHeight / height;
+			res.x *= boardWidth / width;
+			res.y *= boardHeight / height;
 		}
 
 		return res;
