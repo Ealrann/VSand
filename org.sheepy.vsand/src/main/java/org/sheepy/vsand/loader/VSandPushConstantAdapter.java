@@ -103,8 +103,8 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 		final int height = application.getSize().y;
 		if (width != boardWidth || height != boardHeight)
 		{
-			res.x *= boardWidth / width;
-			res.y *= boardHeight / height;
+			res.x *= (float) boardWidth / width;
+			res.y *= (float) boardHeight / height;
 		}
 
 		return res;

@@ -54,7 +54,10 @@ public final class TransformationUtil
 			// Ignore catalyst
 			for (int i = 0; i < materialList.size(); i++)
 			{
-				if (materialList.get(i).isIsStatic() == true)
+				final var potentialCatalyst = materialList.get(i);
+				if (potentialCatalyst != reactant
+						&& (potentialCatalyst.isIsStatic() == true
+								|| potentialCatalyst.getDensity() >= reactant.getDensity()))
 				{
 					res[i * MaterialUtil.MAX_MATERIAL_NUMBER + reactantIndex] = value;
 				}
