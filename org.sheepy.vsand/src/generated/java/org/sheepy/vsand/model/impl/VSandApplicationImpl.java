@@ -2,12 +2,17 @@
  */
 package org.sheepy.vsand.model.impl;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.sheepy.lily.core.model.application.impl.ApplicationImpl;
+import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.Materials;
 import org.sheepy.vsand.model.Transformations;
@@ -24,6 +29,7 @@ import org.sheepy.vsand.model.VSandPackage;
  * <ul>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getMaterials <em>Materials</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getTransformations <em>Transformations</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getDrawQueue <em>Draw Queue</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getMainMaterial <em>Main Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getSecondaryMaterial <em>Secondary Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isNextMode <em>Next Mode</em>}</li>
@@ -55,6 +61,16 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @ordered
 	 */
 	protected Transformations transformations;
+
+	/**
+	 * The cached value of the '{@link #getDrawQueue() <em>Draw Queue</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDrawQueue()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<DrawCommand> drawQueue;
 
 	/**
 	 * The cached value of the '{@link #getMainMaterial() <em>Main Material</em>}' reference.
@@ -283,6 +299,21 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @generated
 	 */
 	@Override
+	public EList<DrawCommand> getDrawQueue()
+	{
+		if (drawQueue == null)
+		{
+			drawQueue = new EObjectContainmentEList<DrawCommand>(DrawCommand.class, this, VSandPackage.VSAND_APPLICATION__DRAW_QUEUE);
+		}
+		return drawQueue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Material getMainMaterial()
 	{
 		if (mainMaterial != null && mainMaterial.eIsProxy())
@@ -481,6 +512,8 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return basicSetMaterials(null, msgs);
 			case VSandPackage.VSAND_APPLICATION__TRANSFORMATIONS:
 				return basicSetTransformations(null, msgs);
+			case VSandPackage.VSAND_APPLICATION__DRAW_QUEUE:
+				return ((InternalEList<?>)getDrawQueue()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -499,6 +532,8 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return getMaterials();
 			case VSandPackage.VSAND_APPLICATION__TRANSFORMATIONS:
 				return getTransformations();
+			case VSandPackage.VSAND_APPLICATION__DRAW_QUEUE:
+				return getDrawQueue();
 			case VSandPackage.VSAND_APPLICATION__MAIN_MATERIAL:
 				if (resolve) return getMainMaterial();
 				return basicGetMainMaterial();
@@ -522,6 +557,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
@@ -532,6 +568,10 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return;
 			case VSandPackage.VSAND_APPLICATION__TRANSFORMATIONS:
 				setTransformations((Transformations)newValue);
+				return;
+			case VSandPackage.VSAND_APPLICATION__DRAW_QUEUE:
+				getDrawQueue().clear();
+				getDrawQueue().addAll((Collection<? extends DrawCommand>)newValue);
 				return;
 			case VSandPackage.VSAND_APPLICATION__MAIN_MATERIAL:
 				setMainMaterial((Material)newValue);
@@ -571,6 +611,9 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__TRANSFORMATIONS:
 				setTransformations((Transformations)null);
 				return;
+			case VSandPackage.VSAND_APPLICATION__DRAW_QUEUE:
+				getDrawQueue().clear();
+				return;
 			case VSandPackage.VSAND_APPLICATION__MAIN_MATERIAL:
 				setMainMaterial((Material)null);
 				return;
@@ -607,6 +650,8 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return materials != null;
 			case VSandPackage.VSAND_APPLICATION__TRANSFORMATIONS:
 				return transformations != null;
+			case VSandPackage.VSAND_APPLICATION__DRAW_QUEUE:
+				return drawQueue != null && !drawQueue.isEmpty();
 			case VSandPackage.VSAND_APPLICATION__MAIN_MATERIAL:
 				return mainMaterial != null;
 			case VSandPackage.VSAND_APPLICATION__SECONDARY_MATERIAL:

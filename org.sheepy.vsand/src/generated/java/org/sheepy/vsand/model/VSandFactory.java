@@ -32,6 +32,33 @@ public interface VSandFactory extends EFactory
 	VSandApplication createVSandApplication();
 
 	/**
+	 * Returns a new object of class '<em>Draw Circle</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Draw Circle</em>'.
+	 * @generated
+	 */
+	DrawCircle createDrawCircle();
+
+	/**
+	 * Returns a new object of class '<em>Draw Square</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Draw Square</em>'.
+	 * @generated
+	 */
+	DrawSquare createDrawSquare();
+
+	/**
+	 * Returns a new object of class '<em>Draw Line</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Draw Line</em>'.
+	 * @generated
+	 */
+	DrawLine createDrawLine();
+
+	/**
 	 * Returns a new object of class '<em>Materials</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

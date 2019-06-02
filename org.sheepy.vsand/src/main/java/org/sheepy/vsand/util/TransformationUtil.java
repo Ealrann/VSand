@@ -1,4 +1,4 @@
-package org.sheepy.vsand.logic;
+package org.sheepy.vsand.util;
 
 import org.eclipse.emf.common.util.EList;
 import org.sheepy.vsand.model.Material;

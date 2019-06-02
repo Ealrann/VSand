@@ -14,8 +14,7 @@ import org.sheepy.lily.vulkan.model.process.CompositeTask;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
-import org.sheepy.lily.vulkan.model.resource.Buffer;
-import org.sheepy.vsand.buffer.ModificationsManager;
+import org.sheepy.vsand.draw.DrawManager;
 import org.sheepy.vsand.input.VSandInputManager;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.FPSCounter;
@@ -25,22 +24,15 @@ public class VSandMainLoop implements IMainLoop
 {
 	private IVulkanEngineAdapter engineAdapter;
 
-	private DrawManager mainDrawManager;
-	private DrawManager secondaryDrawManager;
-
 	private final FPSCounter fpsCounter = new FPSCounter();
 
 	private IProcessAdapter boardProcessAdapter;
 	private IProcessAdapter renderProcessAdapter;
 
-	private ModificationsManager modificationsManager;
 	private ComputePipeline stepPipeline;
-	private ComputePipeline drawPipeline;
 	private CompositeTask stepTasks;
 	private IInputManager inputManager;
 	private VSandApplication application;
-
-	private VSandInputManager vsandInputManager;
 
 	private ComputeProcess boardProcess;
 
@@ -56,14 +48,13 @@ public class VSandMainLoop implements IMainLoop
 
 		gatherProcesses(vulkanEngine);
 
-		vsandInputManager = new VSandInputManager(window, application, stepTasks);
-		inputManager.addListener(vsandInputManager);
-
 		final Vector2i boardSize = new Vector2i(stepPipeline.getWidth(), stepPipeline.getHeight());
-		mainDrawManager = new DrawManager(application, inputManager, modificationsManager,
-				boardSize);
-		secondaryDrawManager = new DrawManager(application, inputManager, modificationsManager,
-				boardSize);
+		final var mainDrawManager = new DrawManager(application, inputManager, boardSize);
+		final var secondaryDrawManager = new DrawManager(application, inputManager, boardSize);
+
+		final var vsandInputManager = new VSandInputManager(window, application, stepTasks,
+				mainDrawManager, secondaryDrawManager);
+		inputManager.addListener(vsandInputManager);
 	}
 
 	private void gatherProcesses(VulkanEngine vulkanEngine)
@@ -77,14 +68,8 @@ public class VSandMainLoop implements IMainLoop
 				boardProcessAdapter = IProcessAdapter.adapt(process);
 
 				final var parts = boardProcess.getPartPkg().getParts();
-				drawPipeline = (ComputePipeline) parts.get(0);
 				stepPipeline = (ComputePipeline) parts.get(1);
 				stepTasks = (CompositeTask) stepPipeline.getTaskPkg().getTasks().get(2);
-
-				final var resources = boardProcess.getResourcePkg().getResources();
-
-				final var modificationBuffer = (Buffer) resources.get(4);
-				modificationsManager = new ModificationsManager(modificationBuffer);
 			}
 			else if (process instanceof GraphicProcess)
 			{
@@ -98,9 +83,7 @@ public class VSandMainLoop implements IMainLoop
 	{
 		if (DebugUtil.DEBUG_ENABLED) fpsCounter.step();
 
-		final var next = boardProcessAdapter.prepareNext();
-		updateDrawManager();
-		boardProcessAdapter.execute(next);
+		boardProcessAdapter.prepareNextAndExecute();
 
 		if (application.isNextMode() == true)
 		{
@@ -114,31 +97,4 @@ public class VSandMainLoop implements IMainLoop
 	@Override
 	public void free(Application application)
 	{}
-
-	private void updateDrawManager()
-	{
-		// Main draw
-		mainDrawManager.manage(application.getMainMaterial(),
-				vsandInputManager.isLeftClicPressed());
-
-		// Secondary draw
-		secondaryDrawManager.manage(application.getSecondaryMaterial(),
-				vsandInputManager.isRightClicPressed());
-
-		// Enable drawManager
-		if (modificationsManager.isEmpty() == false)
-		{
-			if (drawPipeline.isEnabled() == false)
-			{
-				drawPipeline.setEnabled(true);
-			}
-
-			modificationsManager.update();
-		}
-		// disable drawManager
-		else if (drawPipeline.isEnabled())
-		{
-			drawPipeline.setEnabled(false);
-		}
-	}
 }

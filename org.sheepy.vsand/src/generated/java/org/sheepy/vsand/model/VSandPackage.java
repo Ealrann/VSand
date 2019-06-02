@@ -178,13 +178,22 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__TRANSFORMATIONS = ApplicationPackage.APPLICATION_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Draw Queue</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__DRAW_QUEUE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Main Material</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__MAIN_MATERIAL = ApplicationPackage.APPLICATION_FEATURE_COUNT + 2;
+	int VSAND_APPLICATION__MAIN_MATERIAL = ApplicationPackage.APPLICATION_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Secondary Material</b></em>' reference.
@@ -193,7 +202,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__SECONDARY_MATERIAL = ApplicationPackage.APPLICATION_FEATURE_COUNT + 3;
+	int VSAND_APPLICATION__SECONDARY_MATERIAL = ApplicationPackage.APPLICATION_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Next Mode</b></em>' attribute.
@@ -202,7 +211,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__NEXT_MODE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 4;
+	int VSAND_APPLICATION__NEXT_MODE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Force Clear</b></em>' attribute.
@@ -211,7 +220,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__FORCE_CLEAR = ApplicationPackage.APPLICATION_FEATURE_COUNT + 5;
+	int VSAND_APPLICATION__FORCE_CLEAR = ApplicationPackage.APPLICATION_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Show Sleep Zones</b></em>' attribute.
@@ -220,7 +229,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__SHOW_SLEEP_ZONES = ApplicationPackage.APPLICATION_FEATURE_COUNT + 6;
+	int VSAND_APPLICATION__SHOW_SLEEP_ZONES = ApplicationPackage.APPLICATION_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Brush Size</b></em>' attribute.
@@ -229,7 +238,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 7;
+	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Application</em>' class.
@@ -238,7 +247,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 8;
+	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 9;
 
 	/**
 	 * The operation id for the '<em>LInference Object</em>' operation.
@@ -295,6 +304,253 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION_OPERATION_COUNT = ApplicationPackage.APPLICATION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.DrawCommand
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawCommand()
+	 * @generated
+	 */
+	int DRAW_COMMAND = 1;
+
+	/**
+	 * The feature id for the '<em><b>Material</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_COMMAND__MATERIAL = 0;
+
+	/**
+	 * The number of structural features of the '<em>Draw Command</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_COMMAND_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>Draw Command</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_COMMAND_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.DrawCircleImpl <em>Draw Circle</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.impl.DrawCircleImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawCircle()
+	 * @generated
+	 */
+	int DRAW_CIRCLE = 2;
+
+	/**
+	 * The feature id for the '<em><b>Material</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CIRCLE__MATERIAL = DRAW_COMMAND__MATERIAL;
+
+	/**
+	 * The feature id for the '<em><b>X</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CIRCLE__X = DRAW_COMMAND_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Y</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CIRCLE__Y = DRAW_COMMAND_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CIRCLE__SIZE = DRAW_COMMAND_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Draw Circle</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CIRCLE_FEATURE_COUNT = DRAW_COMMAND_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Draw Circle</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CIRCLE_OPERATION_COUNT = DRAW_COMMAND_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.DrawSquareImpl <em>Draw Square</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.impl.DrawSquareImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawSquare()
+	 * @generated
+	 */
+	int DRAW_SQUARE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Material</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_SQUARE__MATERIAL = DRAW_COMMAND__MATERIAL;
+
+	/**
+	 * The feature id for the '<em><b>X</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_SQUARE__X = DRAW_COMMAND_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Y</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_SQUARE__Y = DRAW_COMMAND_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_SQUARE__SIZE = DRAW_COMMAND_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Draw Square</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_SQUARE_FEATURE_COUNT = DRAW_COMMAND_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Draw Square</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_SQUARE_OPERATION_COUNT = DRAW_COMMAND_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.DrawLineImpl <em>Draw Line</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.impl.DrawLineImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawLine()
+	 * @generated
+	 */
+	int DRAW_LINE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Material</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_LINE__MATERIAL = DRAW_COMMAND__MATERIAL;
+
+	/**
+	 * The feature id for the '<em><b>X1</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_LINE__X1 = DRAW_COMMAND_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Y1</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_LINE__Y1 = DRAW_COMMAND_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>X2</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_LINE__X2 = DRAW_COMMAND_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Y2</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_LINE__Y2 = DRAW_COMMAND_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_LINE__SIZE = DRAW_COMMAND_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of structural features of the '<em>Draw Line</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_LINE_FEATURE_COUNT = DRAW_COMMAND_FEATURE_COUNT + 5;
+
+	/**
+	 * The number of operations of the '<em>Draw Line</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_LINE_OPERATION_COUNT = DRAW_COMMAND_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MaterialsImpl <em>Materials</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -302,7 +558,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterials()
 	 * @generated
 	 */
-	int MATERIALS = 1;
+	int MATERIALS = 5;
 
 	/**
 	 * The feature id for the '<em><b>Materials</b></em>' containment reference list.
@@ -339,7 +595,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterial()
 	 * @generated
 	 */
-	int MATERIAL = 2;
+	int MATERIAL = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -439,7 +695,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getTransformations()
 	 * @generated
 	 */
-	int TRANSFORMATIONS = 3;
+	int TRANSFORMATIONS = 7;
 
 	/**
 	 * The feature id for the '<em><b>Transformations</b></em>' containment reference list.
@@ -476,7 +732,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getTransformation()
 	 * @generated
 	 */
-	int TRANSFORMATION = 4;
+	int TRANSFORMATION = 8;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -567,7 +823,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialSelectorPanel()
 	 * @generated
 	 */
-	int MATERIAL_SELECTOR_PANEL = 5;
+	int MATERIAL_SELECTOR_PANEL = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -773,6 +1029,17 @@ public interface VSandPackage extends EPackage
 	EReference getVSandApplication_Transformations();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.sheepy.vsand.model.VSandApplication#getDrawQueue <em>Draw Queue</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Draw Queue</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#getDrawQueue()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EReference getVSandApplication_DrawQueue();
+
+	/**
 	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.VSandApplication#getMainMaterial <em>Main Material</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -837,6 +1104,178 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 */
 	EAttribute getVSandApplication_BrushSize();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Draw Command</em>'.
+	 * @see org.sheepy.vsand.model.DrawCommand
+	 * @generated
+	 */
+	EClass getDrawCommand();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.DrawCommand#getMaterial <em>Material</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Material</em>'.
+	 * @see org.sheepy.vsand.model.DrawCommand#getMaterial()
+	 * @see #getDrawCommand()
+	 * @generated
+	 */
+	EReference getDrawCommand_Material();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.DrawCircle <em>Draw Circle</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Draw Circle</em>'.
+	 * @see org.sheepy.vsand.model.DrawCircle
+	 * @generated
+	 */
+	EClass getDrawCircle();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawCircle#getX <em>X</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>X</em>'.
+	 * @see org.sheepy.vsand.model.DrawCircle#getX()
+	 * @see #getDrawCircle()
+	 * @generated
+	 */
+	EAttribute getDrawCircle_X();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawCircle#getY <em>Y</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Y</em>'.
+	 * @see org.sheepy.vsand.model.DrawCircle#getY()
+	 * @see #getDrawCircle()
+	 * @generated
+	 */
+	EAttribute getDrawCircle_Y();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawCircle#getSize <em>Size</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Size</em>'.
+	 * @see org.sheepy.vsand.model.DrawCircle#getSize()
+	 * @see #getDrawCircle()
+	 * @generated
+	 */
+	EAttribute getDrawCircle_Size();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.DrawSquare <em>Draw Square</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Draw Square</em>'.
+	 * @see org.sheepy.vsand.model.DrawSquare
+	 * @generated
+	 */
+	EClass getDrawSquare();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawSquare#getX <em>X</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>X</em>'.
+	 * @see org.sheepy.vsand.model.DrawSquare#getX()
+	 * @see #getDrawSquare()
+	 * @generated
+	 */
+	EAttribute getDrawSquare_X();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawSquare#getY <em>Y</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Y</em>'.
+	 * @see org.sheepy.vsand.model.DrawSquare#getY()
+	 * @see #getDrawSquare()
+	 * @generated
+	 */
+	EAttribute getDrawSquare_Y();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawSquare#getSize <em>Size</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Size</em>'.
+	 * @see org.sheepy.vsand.model.DrawSquare#getSize()
+	 * @see #getDrawSquare()
+	 * @generated
+	 */
+	EAttribute getDrawSquare_Size();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.DrawLine <em>Draw Line</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Draw Line</em>'.
+	 * @see org.sheepy.vsand.model.DrawLine
+	 * @generated
+	 */
+	EClass getDrawLine();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawLine#getX1 <em>X1</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>X1</em>'.
+	 * @see org.sheepy.vsand.model.DrawLine#getX1()
+	 * @see #getDrawLine()
+	 * @generated
+	 */
+	EAttribute getDrawLine_X1();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawLine#getY1 <em>Y1</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Y1</em>'.
+	 * @see org.sheepy.vsand.model.DrawLine#getY1()
+	 * @see #getDrawLine()
+	 * @generated
+	 */
+	EAttribute getDrawLine_Y1();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawLine#getX2 <em>X2</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>X2</em>'.
+	 * @see org.sheepy.vsand.model.DrawLine#getX2()
+	 * @see #getDrawLine()
+	 * @generated
+	 */
+	EAttribute getDrawLine_X2();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawLine#getY2 <em>Y2</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Y2</em>'.
+	 * @see org.sheepy.vsand.model.DrawLine#getY2()
+	 * @see #getDrawLine()
+	 * @generated
+	 */
+	EAttribute getDrawLine_Y2();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.DrawLine#getSize <em>Size</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Size</em>'.
+	 * @see org.sheepy.vsand.model.DrawLine#getSize()
+	 * @see #getDrawLine()
+	 * @generated
+	 */
+	EAttribute getDrawLine_Size();
 
 	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.Materials <em>Materials</em>}'.
@@ -1203,6 +1642,14 @@ public interface VSandPackage extends EPackage
 		EReference VSAND_APPLICATION__TRANSFORMATIONS = eINSTANCE.getVSandApplication_Transformations();
 
 		/**
+		 * The meta object literal for the '<em><b>Draw Queue</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference VSAND_APPLICATION__DRAW_QUEUE = eINSTANCE.getVSandApplication_DrawQueue();
+
+		/**
 		 * The meta object literal for the '<em><b>Main Material</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1249,6 +1696,142 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EAttribute VSAND_APPLICATION__BRUSH_SIZE = eINSTANCE.getVSandApplication_BrushSize();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.DrawCommand
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawCommand()
+		 * @generated
+		 */
+		EClass DRAW_COMMAND = eINSTANCE.getDrawCommand();
+
+		/**
+		 * The meta object literal for the '<em><b>Material</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DRAW_COMMAND__MATERIAL = eINSTANCE.getDrawCommand_Material();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.DrawCircleImpl <em>Draw Circle</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.impl.DrawCircleImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawCircle()
+		 * @generated
+		 */
+		EClass DRAW_CIRCLE = eINSTANCE.getDrawCircle();
+
+		/**
+		 * The meta object literal for the '<em><b>X</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_CIRCLE__X = eINSTANCE.getDrawCircle_X();
+
+		/**
+		 * The meta object literal for the '<em><b>Y</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_CIRCLE__Y = eINSTANCE.getDrawCircle_Y();
+
+		/**
+		 * The meta object literal for the '<em><b>Size</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_CIRCLE__SIZE = eINSTANCE.getDrawCircle_Size();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.DrawSquareImpl <em>Draw Square</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.impl.DrawSquareImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawSquare()
+		 * @generated
+		 */
+		EClass DRAW_SQUARE = eINSTANCE.getDrawSquare();
+
+		/**
+		 * The meta object literal for the '<em><b>X</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_SQUARE__X = eINSTANCE.getDrawSquare_X();
+
+		/**
+		 * The meta object literal for the '<em><b>Y</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_SQUARE__Y = eINSTANCE.getDrawSquare_Y();
+
+		/**
+		 * The meta object literal for the '<em><b>Size</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_SQUARE__SIZE = eINSTANCE.getDrawSquare_Size();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.DrawLineImpl <em>Draw Line</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.impl.DrawLineImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawLine()
+		 * @generated
+		 */
+		EClass DRAW_LINE = eINSTANCE.getDrawLine();
+
+		/**
+		 * The meta object literal for the '<em><b>X1</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_LINE__X1 = eINSTANCE.getDrawLine_X1();
+
+		/**
+		 * The meta object literal for the '<em><b>Y1</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_LINE__Y1 = eINSTANCE.getDrawLine_Y1();
+
+		/**
+		 * The meta object literal for the '<em><b>X2</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_LINE__X2 = eINSTANCE.getDrawLine_X2();
+
+		/**
+		 * The meta object literal for the '<em><b>Y2</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_LINE__Y2 = eINSTANCE.getDrawLine_Y2();
+
+		/**
+		 * The meta object literal for the '<em><b>Size</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DRAW_LINE__SIZE = eINSTANCE.getDrawLine_Size();
 
 		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MaterialsImpl <em>Materials</em>}' class.

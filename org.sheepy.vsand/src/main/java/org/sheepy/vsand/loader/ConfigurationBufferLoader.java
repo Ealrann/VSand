@@ -9,9 +9,9 @@ import org.sheepy.lily.core.api.adapter.annotation.Autorun;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
-import org.sheepy.vsand.logic.MaterialUtil;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.util.MaterialUtil;
 
 @Adapter(scope = Buffer.class, name = "Configuration")
 public final class ConfigurationBufferLoader implements IVulkanAdapter

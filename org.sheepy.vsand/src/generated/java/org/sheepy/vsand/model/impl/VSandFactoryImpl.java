@@ -65,6 +65,9 @@ public class VSandFactoryImpl extends EFactoryImpl implements VSandFactory
 		switch (eClass.getClassifierID())
 		{
 			case VSandPackage.VSAND_APPLICATION: return createVSandApplication();
+			case VSandPackage.DRAW_CIRCLE: return createDrawCircle();
+			case VSandPackage.DRAW_SQUARE: return createDrawSquare();
+			case VSandPackage.DRAW_LINE: return createDrawLine();
 			case VSandPackage.MATERIALS: return createMaterials();
 			case VSandPackage.MATERIAL: return createMaterial();
 			case VSandPackage.TRANSFORMATIONS: return createTransformations();
@@ -85,6 +88,42 @@ public class VSandFactoryImpl extends EFactoryImpl implements VSandFactory
 	{
 		VSandApplicationImpl vSandApplication = new VSandApplicationImpl();
 		return vSandApplication;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public DrawCircle createDrawCircle()
+	{
+		DrawCircleImpl drawCircle = new DrawCircleImpl();
+		return drawCircle;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public DrawSquare createDrawSquare()
+	{
+		DrawSquareImpl drawSquare = new DrawSquareImpl();
+		return drawSquare;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public DrawLine createDrawLine()
+	{
+		DrawLineImpl drawLine = new DrawLineImpl();
+		return drawLine;
 	}
 
 	/**

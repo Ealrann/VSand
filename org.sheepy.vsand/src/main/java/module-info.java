@@ -1,13 +1,16 @@
 import org.sheepy.lily.core.api.adapter.annotation.Adapters;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.resource.IModelExtension;
+import org.sheepy.vsand.constants.DrawPushConstantAdapter;
+import org.sheepy.vsand.constants.VSandPushConstantAdapter;
+import org.sheepy.vsand.draw.DrawCircleAdapter;
+import org.sheepy.vsand.draw.DrawLineAdapter;
+import org.sheepy.vsand.draw.DrawSquareAdapter;
 import org.sheepy.vsand.loader.BoardBufferLoader;
 import org.sheepy.vsand.loader.BoardDecisionLoader;
 import org.sheepy.vsand.loader.BoardImageLoader;
 import org.sheepy.vsand.loader.ConfigurationBufferLoader;
-import org.sheepy.vsand.loader.ModificationBufferLoader;
 import org.sheepy.vsand.loader.TransformationBufferLoader;
-import org.sheepy.vsand.loader.VSandPushConstantAdapter;
 import org.sheepy.vsand.model.VSandModelExtension;
 import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
 
@@ -18,8 +21,11 @@ import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
 		BoardImageLoader.class,
 		BoardDecisionLoader.class,
 		TransformationBufferLoader.class,
-		ModificationBufferLoader.class,
-		VSandPushConstantAdapter.class
+		VSandPushConstantAdapter.class,
+		DrawPushConstantAdapter.class,
+		DrawCircleAdapter.class,
+		DrawSquareAdapter.class,
+		DrawLineAdapter.class
 })
 
 module org.sheepy.vsand
@@ -39,6 +45,8 @@ module org.sheepy.vsand
 	requires org.sheepy.lily.vulkan.extra.graphic;
 
 	opens org.sheepy.vsand;
+	opens org.sheepy.vsand.constants;
+	opens org.sheepy.vsand.draw;
 	opens org.sheepy.vsand.loader;
 	opens org.sheepy.vsand.ui;
 

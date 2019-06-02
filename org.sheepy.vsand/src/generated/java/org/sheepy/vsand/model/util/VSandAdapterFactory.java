@@ -86,6 +86,26 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createVSandApplicationAdapter();
 			}
 			@Override
+			public Adapter caseDrawCommand(DrawCommand object)
+			{
+				return createDrawCommandAdapter();
+			}
+			@Override
+			public Adapter caseDrawCircle(DrawCircle object)
+			{
+				return createDrawCircleAdapter();
+			}
+			@Override
+			public Adapter caseDrawSquare(DrawSquare object)
+			{
+				return createDrawSquareAdapter();
+			}
+			@Override
+			public Adapter caseDrawLine(DrawLine object)
+			{
+				return createDrawLineAdapter();
+			}
+			@Override
 			public Adapter caseMaterials(Materials object)
 			{
 				return createMaterialsAdapter();
@@ -178,6 +198,66 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createVSandApplicationAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.DrawCommand
+	 * @generated
+	 */
+	public Adapter createDrawCommandAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.DrawCircle <em>Draw Circle</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.DrawCircle
+	 * @generated
+	 */
+	public Adapter createDrawCircleAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.DrawSquare <em>Draw Square</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.DrawSquare
+	 * @generated
+	 */
+	public Adapter createDrawSquareAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.DrawLine <em>Draw Line</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.DrawLine
+	 * @generated
+	 */
+	public Adapter createDrawLineAdapter()
 	{
 		return null;
 	}

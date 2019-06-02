@@ -2,6 +2,7 @@
  */
 package org.sheepy.vsand.model;
 
+import org.eclipse.emf.common.util.EList;
 import org.sheepy.lily.core.model.application.Application;
 
 /**
@@ -15,6 +16,7 @@ import org.sheepy.lily.core.model.application.Application;
  * <ul>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getMaterials <em>Materials</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getTransformations <em>Transformations</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getDrawQueue <em>Draw Queue</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getMainMaterial <em>Main Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#isNextMode <em>Next Mode</em>}</li>
@@ -81,6 +83,18 @@ public interface VSandApplication extends Application
 	 * @generated
 	 */
 	void setTransformations(Transformations value);
+
+	/**
+	 * Returns the value of the '<em><b>Draw Queue</b></em>' containment reference list.
+	 * The list contents are of type {@link org.sheepy.vsand.model.DrawCommand}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Draw Queue</em>' containment reference list.
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_DrawQueue()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<DrawCommand> getDrawQueue();
 
 	/**
 	 * Returns the value of the '<em><b>Main Material</b></em>' reference.

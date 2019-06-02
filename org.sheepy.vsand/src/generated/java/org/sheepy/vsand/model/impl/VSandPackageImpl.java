@@ -15,6 +15,10 @@ import org.sheepy.lily.core.model.inference.InferencePackage;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.root.RootPackage;
 import org.sheepy.lily.core.model.types.TypesPackage;
+import org.sheepy.vsand.model.DrawCircle;
+import org.sheepy.vsand.model.DrawCommand;
+import org.sheepy.vsand.model.DrawLine;
+import org.sheepy.vsand.model.DrawSquare;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.Materials;
@@ -38,6 +42,34 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	private EClass vSandApplicationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass drawCommandEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass drawCircleEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass drawSquareEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass drawLineEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -185,7 +217,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EReference getVSandApplication_MainMaterial()
+	public EReference getVSandApplication_DrawQueue()
 	{
 		return (EReference)vSandApplicationEClass.getEStructuralFeatures().get(2);
 	}
@@ -196,7 +228,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EReference getVSandApplication_SecondaryMaterial()
+	public EReference getVSandApplication_MainMaterial()
 	{
 		return (EReference)vSandApplicationEClass.getEStructuralFeatures().get(3);
 	}
@@ -207,9 +239,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_NextMode()
+	public EReference getVSandApplication_SecondaryMaterial()
 	{
-		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(4);
+		return (EReference)vSandApplicationEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -218,7 +250,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_ForceClear()
+	public EAttribute getVSandApplication_NextMode()
 	{
 		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(5);
 	}
@@ -229,7 +261,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_ShowSleepZones()
+	public EAttribute getVSandApplication_ForceClear()
 	{
 		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(6);
 	}
@@ -240,9 +272,196 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_BrushSize()
+	public EAttribute getVSandApplication_ShowSleepZones()
 	{
 		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getVSandApplication_BrushSize()
+	{
+		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getDrawCommand()
+	{
+		return drawCommandEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getDrawCommand_Material()
+	{
+		return (EReference)drawCommandEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getDrawCircle()
+	{
+		return drawCircleEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawCircle_X()
+	{
+		return (EAttribute)drawCircleEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawCircle_Y()
+	{
+		return (EAttribute)drawCircleEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawCircle_Size()
+	{
+		return (EAttribute)drawCircleEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getDrawSquare()
+	{
+		return drawSquareEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawSquare_X()
+	{
+		return (EAttribute)drawSquareEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawSquare_Y()
+	{
+		return (EAttribute)drawSquareEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawSquare_Size()
+	{
+		return (EAttribute)drawSquareEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getDrawLine()
+	{
+		return drawLineEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawLine_X1()
+	{
+		return (EAttribute)drawLineEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawLine_Y1()
+	{
+		return (EAttribute)drawLineEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawLine_X2()
+	{
+		return (EAttribute)drawLineEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawLine_Y2()
+	{
+		return (EAttribute)drawLineEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDrawLine_Size()
+	{
+		return (EAttribute)drawLineEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -598,12 +817,33 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		vSandApplicationEClass = createEClass(VSAND_APPLICATION);
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__MATERIALS);
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__TRANSFORMATIONS);
+		createEReference(vSandApplicationEClass, VSAND_APPLICATION__DRAW_QUEUE);
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__MAIN_MATERIAL);
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__SECONDARY_MATERIAL);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__NEXT_MODE);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__FORCE_CLEAR);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SHOW_SLEEP_ZONES);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__BRUSH_SIZE);
+
+		drawCommandEClass = createEClass(DRAW_COMMAND);
+		createEReference(drawCommandEClass, DRAW_COMMAND__MATERIAL);
+
+		drawCircleEClass = createEClass(DRAW_CIRCLE);
+		createEAttribute(drawCircleEClass, DRAW_CIRCLE__X);
+		createEAttribute(drawCircleEClass, DRAW_CIRCLE__Y);
+		createEAttribute(drawCircleEClass, DRAW_CIRCLE__SIZE);
+
+		drawSquareEClass = createEClass(DRAW_SQUARE);
+		createEAttribute(drawSquareEClass, DRAW_SQUARE__X);
+		createEAttribute(drawSquareEClass, DRAW_SQUARE__Y);
+		createEAttribute(drawSquareEClass, DRAW_SQUARE__SIZE);
+
+		drawLineEClass = createEClass(DRAW_LINE);
+		createEAttribute(drawLineEClass, DRAW_LINE__X1);
+		createEAttribute(drawLineEClass, DRAW_LINE__Y1);
+		createEAttribute(drawLineEClass, DRAW_LINE__X2);
+		createEAttribute(drawLineEClass, DRAW_LINE__Y2);
+		createEAttribute(drawLineEClass, DRAW_LINE__SIZE);
 
 		materialsEClass = createEClass(MATERIALS);
 		createEReference(materialsEClass, MATERIALS__MATERIALS);
@@ -675,18 +915,42 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		// Add supertypes to classes
 		vSandApplicationEClass.getESuperTypes().add(theApplicationPackage.getApplication());
+		drawCircleEClass.getESuperTypes().add(this.getDrawCommand());
+		drawSquareEClass.getESuperTypes().add(this.getDrawCommand());
+		drawLineEClass.getESuperTypes().add(this.getDrawCommand());
 		materialSelectorPanelEClass.getESuperTypes().add(thePresentationPackage.getIPanel());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(vSandApplicationEClass, VSandApplication.class, "VSandApplication", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getVSandApplication_Materials(), this.getMaterials(), null, "materials", null, 1, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_Transformations(), this.getTransformations(), null, "transformations", null, 1, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVSandApplication_DrawQueue(), this.getDrawCommand(), null, "drawQueue", null, 0, -1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_MainMaterial(), this.getMaterial(), null, "mainMaterial", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_SecondaryMaterial(), this.getMaterial(), null, "secondaryMaterial", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_NextMode(), theEcorePackage.getEBoolean(), "nextMode", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_ForceClear(), theEcorePackage.getEBoolean(), "forceClear", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_ShowSleepZones(), theEcorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_BrushSize(), theEcorePackage.getEInt(), "brushSize", "4", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(drawCommandEClass, DrawCommand.class, "DrawCommand", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDrawCommand_Material(), this.getMaterial(), null, "material", null, 0, 1, DrawCommand.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(drawCircleEClass, DrawCircle.class, "DrawCircle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDrawCircle_X(), theEcorePackage.getEInt(), "x", null, 0, 1, DrawCircle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawCircle_Y(), theEcorePackage.getEInt(), "y", null, 0, 1, DrawCircle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawCircle_Size(), theEcorePackage.getEInt(), "size", null, 0, 1, DrawCircle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(drawSquareEClass, DrawSquare.class, "DrawSquare", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDrawSquare_X(), theEcorePackage.getEInt(), "x", null, 0, 1, DrawSquare.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawSquare_Y(), theEcorePackage.getEInt(), "y", null, 0, 1, DrawSquare.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawSquare_Size(), theEcorePackage.getEInt(), "size", null, 0, 1, DrawSquare.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(drawLineEClass, DrawLine.class, "DrawLine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDrawLine_X1(), theEcorePackage.getEInt(), "x1", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawLine_Y1(), theEcorePackage.getEInt(), "y1", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawLine_X2(), theEcorePackage.getEInt(), "x2", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawLine_Y2(), theEcorePackage.getEInt(), "y2", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawLine_Size(), theEcorePackage.getEInt(), "size", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(materialsEClass, Materials.class, "Materials", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getMaterials_Materials(), this.getMaterial(), null, "materials", null, 0, -1, Materials.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

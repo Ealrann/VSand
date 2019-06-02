@@ -1,13 +1,13 @@
 package org.sheepy.vsand.input;
 
 import org.eclipse.emf.common.util.EList;
-import org.joml.Vector2f;
 import org.sheepy.lily.core.api.input.IInputManager.IInputListener;
 import org.sheepy.lily.core.api.input.event.KeyEvent;
 import org.sheepy.lily.core.api.input.event.MouseButtonEvent;
 import org.sheepy.lily.core.api.input.event.ScrollEvent;
 import org.sheepy.lily.core.model.types.EKeyState;
 import org.sheepy.lily.vulkan.model.process.CompositeTask;
+import org.sheepy.vsand.draw.DrawManager;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vulkan.window.Window;
@@ -16,26 +16,39 @@ public class VSandInputManager implements IInputListener
 {
 	private final VSandApplication application;
 	private final CompositeTask stepTasks;
+	private final Window window;
+	private final DrawManager leftDrawManager;
+	private final DrawManager rightDrawManager;
 
 	private boolean shiftPressed = false;
 
 	private boolean leftClicPressed = false;
 	private boolean rightClicPressed = false;
-	private final Window window;
 
 	public VSandInputManager(	Window window,
 								VSandApplication application,
-								CompositeTask stepTasks)
+								CompositeTask stepTasks,
+								DrawManager leftDrawManager,
+								DrawManager rightDrawManager)
 	{
 		this.window = window;
 		this.application = application;
 		this.stepTasks = stepTasks;
+		this.leftDrawManager = leftDrawManager;
+		this.rightDrawManager = rightDrawManager;
 	}
 
 	@Override
 	public void onMouseOverUI(boolean overUI)
 	{
 		window.hideCursor(!overUI);
+	}
+
+	@Override
+	public void afterPollInputs()
+	{
+		leftDrawManager.manage(application.getMainMaterial(), leftClicPressed);
+		rightDrawManager.manage(application.getSecondaryMaterial(), rightClicPressed);
 	}
 
 	@Override
@@ -178,7 +191,7 @@ public class VSandInputManager implements IInputListener
 	}
 
 	@Override
-	public void onMouseClickEvent(Vector2f location, MouseButtonEvent event)
+	public void onMouseClickEvent(MouseButtonEvent event)
 	{
 		switch (event.button)
 		{
@@ -192,15 +205,5 @@ public class VSandInputManager implements IInputListener
 			break;
 		default:
 		}
-	}
-
-	public boolean isLeftClicPressed()
-	{
-		return leftClicPressed;
-	}
-
-	public boolean isRightClicPressed()
-	{
-		return rightClicPressed;
 	}
 }

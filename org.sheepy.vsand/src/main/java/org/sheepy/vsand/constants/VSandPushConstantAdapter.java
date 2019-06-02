@@ -1,4 +1,4 @@
-package org.sheepy.vsand.loader;
+package org.sheepy.vsand.constants;
 
 import java.nio.ByteBuffer;
 import java.util.Random;
@@ -17,9 +17,9 @@ import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.input.IVulkanInputManager;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.process.PushConstant;
-import org.sheepy.vsand.logic.EShapeSize;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.util.EShapeSize;
 
 @Statefull
 @Adapter(scope = PushConstant.class, name = "VSandPushConstants")

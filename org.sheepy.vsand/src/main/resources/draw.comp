@@ -25,7 +25,7 @@ layout(binding = 0) buffer SBoard
 	int chunks[CHUNK_WIDTH][CHUNK_HEIGHT];
 }board;
 
-layout(binding = 1) uniform attributeBuffer
+layout (push_constant) uniform PushConstants
 {
 	// Shape to draw
 	int shape;

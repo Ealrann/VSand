@@ -88,6 +88,37 @@ public class VSandSwitch<T> extends Switch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case VSandPackage.DRAW_COMMAND:
+			{
+				DrawCommand drawCommand = (DrawCommand)theEObject;
+				T result = caseDrawCommand(drawCommand);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case VSandPackage.DRAW_CIRCLE:
+			{
+				DrawCircle drawCircle = (DrawCircle)theEObject;
+				T result = caseDrawCircle(drawCircle);
+				if (result == null) result = caseDrawCommand(drawCircle);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case VSandPackage.DRAW_SQUARE:
+			{
+				DrawSquare drawSquare = (DrawSquare)theEObject;
+				T result = caseDrawSquare(drawSquare);
+				if (result == null) result = caseDrawCommand(drawSquare);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case VSandPackage.DRAW_LINE:
+			{
+				DrawLine drawLine = (DrawLine)theEObject;
+				T result = caseDrawLine(drawLine);
+				if (result == null) result = caseDrawCommand(drawLine);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case VSandPackage.MATERIALS:
 			{
 				Materials materials = (Materials)theEObject;
@@ -145,6 +176,70 @@ public class VSandSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseVSandApplication(VSandApplication object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Draw Command</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Draw Command</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDrawCommand(DrawCommand object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Draw Circle</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Draw Circle</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDrawCircle(DrawCircle object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Draw Square</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Draw Square</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDrawSquare(DrawSquare object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Draw Line</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Draw Line</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDrawLine(DrawLine object)
 	{
 		return null;
 	}

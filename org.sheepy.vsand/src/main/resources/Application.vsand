@@ -45,8 +45,10 @@
   </views>
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
-      <resources xsi:type="resource:Image" descriptorType="STORAGE_IMAGE" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM" fillWithZero="true">
-        <shaderStages>COMPUTE_BIT</shaderStages>
+      <resources xsi:type="resource:Image" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM" fillWithZero="true">
+        <descriptor descriptorType="STORAGE_IMAGE">
+          <shaderStages>COMPUTE_BIT</shaderStages>
+        </descriptor>
         <usages>TransferSrc</usages>
         <usages>Storage</usages>
         <usages>TransferDst</usages>
@@ -58,29 +60,33 @@
     </resourcePkg>
     <processes xsi:type="compute:ComputeProcess" name="Board Compute" waitingFenceDuringAcquire="true" resetAllowed="true" signals="//@engines.0/@resourcePkg/@resources.1">
       <resourcePkg>
-        <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Board Buffer">
-          <shaderStages>COMPUTE_BIT</shaderStages>
+        <resources xsi:type="resource:Buffer" name="Board Buffer">
+          <descriptor descriptorType="STORAGE_BUFFER">
+            <shaderStages>COMPUTE_BIT</shaderStages>
+          </descriptor>
           <usages>STORAGE_BUFFER_BIT</usages>
           <usages>TRANSFER_DST_BIT</usages>
         </resources>
-        <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="Configuration">
-          <shaderStages>COMPUTE_BIT</shaderStages>
+        <resources xsi:type="resource:Buffer" name="Configuration">
+          <descriptor descriptorType="UNIFORM_BUFFER">
+            <shaderStages>COMPUTE_BIT</shaderStages>
+          </descriptor>
           <usages>UNIFORM_BUFFER_BIT</usages>
           <usages>TRANSFER_DST_BIT</usages>
         </resources>
-        <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Transformation">
-          <shaderStages>COMPUTE_BIT</shaderStages>
+        <resources xsi:type="resource:Buffer" name="Transformation">
+          <descriptor descriptorType="STORAGE_BUFFER">
+            <shaderStages>COMPUTE_BIT</shaderStages>
+          </descriptor>
           <usages>TRANSFER_DST_BIT</usages>
           <usages>STORAGE_BUFFER_BIT</usages>
         </resources>
-        <resources xsi:type="resource:Buffer" descriptorType="STORAGE_BUFFER" name="Decision">
-          <shaderStages>COMPUTE_BIT</shaderStages>
+        <resources xsi:type="resource:Buffer" name="Decision">
+          <descriptor descriptorType="STORAGE_BUFFER">
+            <shaderStages>COMPUTE_BIT</shaderStages>
+          </descriptor>
           <usages>TRANSFER_DST_BIT</usages>
           <usages>STORAGE_BUFFER_BIT</usages>
-        </resources>
-        <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="Modification" gpuBuffer="false">
-          <shaderStages>COMPUTE_BIT</shaderStages>
-          <usages>UNIFORM_BUFFER_BIT</usages>
         </resources>
         <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
           <file xsi:type="resource:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
@@ -103,24 +109,18 @@
       </resourcePkg>
       <partPkg>
         <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" workgroupSizeX="16" workgroupSizeY="16" workgroupSizeZ="16" width="1248" height="704" depth="1">
+          <pushConstantRanges size="68">
+            <stages>COMPUTE_BIT</stages>
+          </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.4"/>
+            <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.0/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="process:PipelineBarrier" name="ModificationWriteToRead" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
-              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.4">
-                <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
-                <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
-              </barriers>
+            <tasks xsi:type="process:PushConstant" name="DrawConstants">
+              <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5"/>
-            <tasks xsi:type="process:PipelineBarrier" name="ModificationReadToWrite" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
-              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.4">
-                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
-                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-              </barriers>
-            </tasks>
+            <tasks xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourcePkg/@resources.4"/>
           </taskPkg>
         </parts>
         <parts xsi:type="compute:ComputePipeline" name="Step" stage="Compute" workgroupSizeX="16" workgroupSizeY="16" workgroupSizeZ="16" width="1248" height="704" depth="1">
@@ -142,16 +142,16 @@
                   <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
                 </barriers>
               </tasks>
-              <tasks xsi:type="compute:Computer" name="Step1" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6"/>
-              <tasks xsi:type="compute:Computer" name="Step2" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7"/>
-              <tasks xsi:type="compute:Computer" name="Step3" shader="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
+              <tasks xsi:type="compute:Computer" name="Step1" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5"/>
+              <tasks xsi:type="compute:Computer" name="Step2" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6"/>
+              <tasks xsi:type="compute:Computer" name="Step3" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7"/>
               <tasks xsi:type="process:PipelineBarrier" name="DecisionWriteToRead" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
                 <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.3">
                   <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
                   <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
                 </barriers>
               </tasks>
-              <tasks xsi:type="compute:Computer" name="Step4" shader="//@engines.0/@processes.0/@resourcePkg/@resources.9"/>
+              <tasks xsi:type="compute:Computer" name="Step4" shader="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
             </tasks>
           </taskPkg>
         </parts>
@@ -172,7 +172,7 @@
                 <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
               </barriers>
             </tasks>
-            <tasks xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resourcePkg/@resources.10"/>
+            <tasks xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resourcePkg/@resources.9"/>
           </taskPkg>
         </parts>
       </partPkg>
@@ -201,17 +201,23 @@
         </parts>
         <parts xsi:type="graphic:GraphicsPipeline" name="GUI" shaders="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.4 //@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.5">
           <resourcePkg>
-            <resources xsi:type="resource:SampledImage" descriptorType="SAMPLED_IMAGE" name="NullTexture">
-              <shaderStages>FRAGMENT_BIT</shaderStages>
+            <resources xsi:type="resource:SampledImage" name="NullTexture">
+              <descriptor descriptorType="SAMPLED_IMAGE">
+                <shaderStages>FRAGMENT_BIT</shaderStages>
+              </descriptor>
               <sampler/>
             </resources>
-            <resources xsi:type="resource:Font" descriptorType="SAMPLED_IMAGE" name="NuklearFont">
-              <shaderStages>FRAGMENT_BIT</shaderStages>
+            <resources xsi:type="resource:Font" name="NuklearFont">
+              <descriptor descriptorType="SAMPLED_IMAGE">
+                <shaderStages>FRAGMENT_BIT</shaderStages>
+              </descriptor>
               <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
             </resources>
-            <resources xsi:type="resource:Buffer" descriptorType="UNIFORM_BUFFER" name="IndexedVertexBuffer" size="524288">
-              <shaderStages>VERTEX_BIT</shaderStages>
-              <shaderStages>FRAGMENT_BIT</shaderStages>
+            <resources xsi:type="resource:Buffer" name="IndexedVertexBuffer" size="524288">
+              <descriptor descriptorType="UNIFORM_BUFFER">
+                <shaderStages>VERTEX_BIT</shaderStages>
+                <shaderStages>FRAGMENT_BIT</shaderStages>
+              </descriptor>
               <usages>VERTEX_BUFFER_BIT</usages>
               <usages>INDEX_BUFFER_BIT</usages>
               <usages>TRANSFER_DST_BIT</usages>

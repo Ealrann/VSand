@@ -106,6 +106,81 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.DrawCircle} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DrawCircleItemProvider drawCircleItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.sheepy.vsand.model.DrawCircle}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDrawCircleAdapter()
+	{
+		if (drawCircleItemProvider == null)
+		{
+			drawCircleItemProvider = new DrawCircleItemProvider(this);
+		}
+
+		return drawCircleItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.DrawSquare} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DrawSquareItemProvider drawSquareItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.sheepy.vsand.model.DrawSquare}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDrawSquareAdapter()
+	{
+		if (drawSquareItemProvider == null)
+		{
+			drawSquareItemProvider = new DrawSquareItemProvider(this);
+		}
+
+		return drawSquareItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.DrawLine} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DrawLineItemProvider drawLineItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.sheepy.vsand.model.DrawLine}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDrawLineAdapter()
+	{
+		if (drawLineItemProvider == null)
+		{
+			drawLineItemProvider = new DrawLineItemProvider(this);
+		}
+
+		return drawLineItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.Materials} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -348,6 +423,9 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	public void dispose()
 	{
 		if (vSandApplicationItemProvider != null) vSandApplicationItemProvider.dispose();
+		if (drawCircleItemProvider != null) drawCircleItemProvider.dispose();
+		if (drawSquareItemProvider != null) drawSquareItemProvider.dispose();
+		if (drawLineItemProvider != null) drawLineItemProvider.dispose();
 		if (materialsItemProvider != null) materialsItemProvider.dispose();
 		if (materialItemProvider != null) materialItemProvider.dispose();
 		if (transformationsItemProvider != null) transformationsItemProvider.dispose();

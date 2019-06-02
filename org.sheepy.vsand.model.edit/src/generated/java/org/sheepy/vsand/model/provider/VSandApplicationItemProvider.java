@@ -219,6 +219,7 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(VSandPackage.Literals.VSAND_APPLICATION__MATERIALS);
 			childrenFeatures.add(VSandPackage.Literals.VSAND_APPLICATION__TRANSFORMATIONS);
+			childrenFeatures.add(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE);
 		}
 		return childrenFeatures;
 	}
@@ -288,6 +289,7 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 				return;
 			case VSandPackage.VSAND_APPLICATION__MATERIALS:
 			case VSandPackage.VSAND_APPLICATION__TRANSFORMATIONS:
+			case VSandPackage.VSAND_APPLICATION__DRAW_QUEUE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -320,6 +322,21 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			(createChildParameter
 				(VSandPackage.Literals.VSAND_APPLICATION__TRANSFORMATIONS,
 				 VSandFactory.eINSTANCE.createTransformations()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE,
+				 VSandFactory.eINSTANCE.createDrawCircle()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE,
+				 VSandFactory.eINSTANCE.createDrawSquare()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE,
+				 VSandFactory.eINSTANCE.createDrawLine()));
 	}
 
 	/**

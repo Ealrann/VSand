@@ -16,6 +16,8 @@ class VSandApplication extends Application
 	contains Materials[1..1] materials
 	contains Transformations[1..1] transformations
 
+	contains DrawCommand[] drawQueue
+
 	refers Material mainMaterial
 	refers Material secondaryMaterial
 
@@ -25,6 +27,34 @@ class VSandApplication extends Application
 	boolean showSleepZones = "false"
 
 	int brushSize = "4"
+}
+
+interface DrawCommand
+{
+	refers Material material
+}
+
+class DrawCircle extends DrawCommand
+{
+	int x
+	int y
+	int size
+}
+
+class DrawSquare extends DrawCommand
+{
+	int x
+	int y
+	int size
+}
+
+class DrawLine extends DrawCommand
+{
+	int x1
+	int y1
+	int x2
+	int y2
+	int size
 }
 
 class Materials
