@@ -3,7 +3,7 @@ package org.sheepy.vsand.constants;
 import java.nio.ByteBuffer;
 import java.util.Random;
 
-import org.joml.Vector2f;
+import org.joml.Vector2fc;
 import org.joml.Vector2i;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
@@ -92,9 +92,9 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 		pushConstant.setData(buffer);
 	}
 
-	private Vector2i convertToBoardPosition(Vector2f mousePos)
+	private Vector2i convertToBoardPosition(Vector2fc mousePos)
 	{
-		final Vector2i res = new Vector2i((int) mousePos.x, (int) mousePos.y);
+		final Vector2i res = new Vector2i((int) mousePos.x(), (int) mousePos.y());
 
 		final int boardWidth = boardSize.x;
 		final int boardHeight = boardSize.y;

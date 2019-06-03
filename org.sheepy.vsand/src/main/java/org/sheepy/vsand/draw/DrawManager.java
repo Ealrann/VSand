@@ -1,6 +1,6 @@
 package org.sheepy.vsand.draw;
 
-import org.joml.Vector2f;
+import org.joml.Vector2fc;
 import org.joml.Vector2i;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.vsand.model.DrawCommand;
@@ -82,9 +82,9 @@ public class DrawManager
 		return res;
 	}
 
-	private Vector2i convertToBoardPosition(Vector2f mousePos)
+	private Vector2i convertToBoardPosition(Vector2fc mousePos)
 	{
-		final Vector2i res = new Vector2i((int) mousePos.x, (int) mousePos.y);
+		final Vector2i res = new Vector2i((int) mousePos.x(), (int) mousePos.y());
 
 		final int boardWidth = boardSize.x;
 		final int boardHeight = boardSize.y;
