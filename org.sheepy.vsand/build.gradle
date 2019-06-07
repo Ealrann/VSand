@@ -28,6 +28,10 @@ startScripts {
     applicationName = 'VSand'
 }
 
+test {
+  useJUnitPlatform()
+}
+
 dependencies {
 	implementation project(':org.sheepy.lily.core.impl')
 
@@ -39,6 +43,11 @@ dependencies {
 	implementation project(':org.sheepy.lily.vulkan.extra.graphic')
 
 	implementation project(':org.sheepy.lily.vulkan.extra.nuklear')
+
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.4.2'
+
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
 }
 
 switch ( OperatingSystem.current() ) {

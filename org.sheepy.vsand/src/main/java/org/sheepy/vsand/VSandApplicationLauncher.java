@@ -1,12 +1,10 @@
 package org.sheepy.vsand;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.sheepy.lily.core.api.application.ApplicationLauncher;
 import org.sheepy.lily.core.api.resource.IResourceLoader;
-import org.sheepy.lily.core.model.application.Application;
+import org.sheepy.vsand.model.VSandApplication;
 
 public class VSandApplicationLauncher
 {
@@ -16,25 +14,27 @@ public class VSandApplicationLauncher
 
 	public static void main(String[] args)
 	{
-		final var module = VSandApplicationLauncher.class.getModule();
-		final var resource = loadModuleResource(module);
-		final var application = (Application) resource.getContents().get(0);
-		final var mainLoop = new VSandMainLoop();
+		final var application = loadApplication();
+		final var mainLoop = VSandMainLoop.create(application);
 
 		ApplicationLauncher.launch(application, mainLoop);
 	}
 
-	private static Resource loadModuleResource(Module module)
+	public static VSandApplication loadApplication()
 	{
-		Resource resource = null;
+		VSandApplication res = null;
+
+		final var module = VSandApplicationLauncher.class.getModule();
 		try
 		{
-			final InputStream inputStream = module.getResourceAsStream(APPLICATION_PATH);
-			resource = resourceLoader.loadResource(inputStream);
+			final var inputStream = module.getResourceAsStream(APPLICATION_PATH);
+			final var resource = resourceLoader.loadResource(inputStream);
+			res = (VSandApplication) resource.getContents().get(0);
 		} catch (final IOException e)
 		{
 			e.printStackTrace();
 		}
-		return resource;
+
+		return res;
 	}
 }

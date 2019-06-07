@@ -16,25 +16,48 @@ import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.FPSCounter;
 import org.sheepy.vulkan.window.Window;
 
-public class VSandMainLoop implements IMainLoop
+public final class VSandMainLoop implements IMainLoop
 {
 	private final FPSCounter fpsCounter = new FPSCounter();
+	private final VSandApplication application;
+	private final boolean benchmarkMode;
+	private final int stopIteration;
 
 	private IVulkanEngineAdapter engineAdapter;
 	private IProcessAdapter boardProcessAdapter;
 	private IProcessAdapter renderProcessAdapter;
 
 	private IInputManager inputManager;
-	private VSandApplication application;
+	private long currentIteration = 0;
+	private long startNs;
+	private long frameDurationNs;
+	private long nextRenderDate;
+
+	public static final VSandMainLoop create(VSandApplication application)
+	{
+		return new VSandMainLoop(application, false, -1);
+	}
+
+	public static final VSandMainLoop createBenchmark(	VSandApplication application,
+														int iterationCount)
+	{
+		return new VSandMainLoop(application, true, iterationCount);
+	}
+
+	private VSandMainLoop(VSandApplication application, boolean benchmarkMode, int stopIteration)
+	{
+		this.application = application;
+		this.benchmarkMode = benchmarkMode;
+		this.stopIteration = stopIteration;
+	}
 
 	@Override
 	public void load(Application _application)
 	{
-		application = (VSandApplication) _application;
-
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		engineAdapter = IVulkanEngineAdapter.adapt(vulkanEngine);
 		final Window window = engineAdapter.getWindow();
+		frameDurationNs = (long) ((1. / window.getRefreshRate()) * 1e9);
 		inputManager = engineAdapter.getInputManager();
 
 		gatherProcesses(vulkanEngine);
@@ -43,9 +66,15 @@ public class VSandMainLoop implements IMainLoop
 		final var mainDrawManager = new DrawManager(application, inputManager, boardSize);
 		final var secondaryDrawManager = new DrawManager(application, inputManager, boardSize);
 
-		final var vsandInputManager = new VSandInputManager(window, application, mainDrawManager,
-				secondaryDrawManager);
-		inputManager.addListener(vsandInputManager);
+		if (benchmarkMode == false)
+		{
+			final var vsandInputManager = new VSandInputManager(window, application,
+					mainDrawManager, secondaryDrawManager);
+			inputManager.addListener(vsandInputManager);
+		}
+
+		startNs = System.nanoTime();
+		nextRenderDate = System.nanoTime() + frameDurationNs;
 	}
 
 	private void gatherProcesses(VulkanEngine vulkanEngine)
@@ -77,7 +106,36 @@ public class VSandMainLoop implements IMainLoop
 			application.setPaused(true);
 		}
 
-		renderProcessAdapter.prepareNextAndExecute();
+		if (benchmarkMode == false)
+		{
+			renderProcessAdapter.prepareNextAndExecute();
+		}
+		else
+		{
+			if (nextRenderDate > System.nanoTime())
+			{
+				renderProcessAdapter.prepareNextAndExecute();
+				nextRenderDate = System.nanoTime() + frameDurationNs;
+			}
+		}
+
+		currentIteration++;
+		if (currentIteration == stopIteration)
+		{
+			application.setRun(false);
+			printBenchmarkResult();
+		}
+	}
+
+	private void printBenchmarkResult()
+	{
+		final double duration = (System.nanoTime() - startNs) / 1e9;
+		final double durationPerIteration = duration / stopIteration;
+		
+		final long score = (long) ((1. / durationPerIteration) * 100);
+
+		System.out.println("Benchmark duration: " + duration + " seconds");
+		System.out.println("Score: " + score);
 	}
 
 	@Override
