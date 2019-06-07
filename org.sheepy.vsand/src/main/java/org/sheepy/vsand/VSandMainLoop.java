@@ -132,7 +132,7 @@ public final class VSandMainLoop implements IMainLoop
 		final double duration = (System.nanoTime() - startNs) / 1e9;
 		final double durationPerIteration = duration / stopIteration;
 		
-		final long score = (long) ((1. / durationPerIteration) * 100);
+		final long score = (long) ((1. / durationPerIteration));
 
 		System.out.println("Benchmark duration: " + duration + " seconds");
 		System.out.println("Score: " + score);
