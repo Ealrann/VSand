@@ -112,7 +112,7 @@ public final class VSandMainLoop implements IMainLoop
 		}
 		else
 		{
-			if (nextRenderDate > System.nanoTime())
+			if (nextRenderDate < System.nanoTime())
 			{
 				renderProcessAdapter.prepareNextAndExecute();
 				nextRenderDate = System.nanoTime() + frameDurationNs;
