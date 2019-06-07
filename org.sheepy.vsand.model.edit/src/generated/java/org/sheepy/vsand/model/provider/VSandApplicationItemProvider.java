@@ -19,6 +19,7 @@ import org.sheepy.lily.core.model.application.ApplicationPackage;
 import org.sheepy.lily.core.model.application.provider.ApplicationItemProvider;
 import org.sheepy.lily.core.model.presentation.PresentationFactory;
 import org.sheepy.lily.core.model.root.LObject;
+import org.sheepy.lily.vulkan.model.VulkanFactory;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandPackage;
@@ -58,9 +59,12 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			addMainMaterialPropertyDescriptor(object);
 			addSecondaryMaterialPropertyDescriptor(object);
 			addNextModePropertyDescriptor(object);
+			addPausedPropertyDescriptor(object);
+			addSpeedPropertyDescriptor(object);
 			addForceClearPropertyDescriptor(object);
 			addShowSleepZonesPropertyDescriptor(object);
 			addBrushSizePropertyDescriptor(object);
+			addBoardUpdateTaskPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -135,6 +139,52 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Paused feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addPausedPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandApplication_paused_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_paused_feature", "_UI_VSandApplication_type"),
+				 VSandPackage.Literals.VSAND_APPLICATION__PAUSED,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Speed feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSpeedPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandApplication_speed_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_speed_feature", "_UI_VSandApplication_type"),
+				 VSandPackage.Literals.VSAND_APPLICATION__SPEED,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This adds a property descriptor for the Force Clear feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -199,6 +249,29 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Board Update Task feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addBoardUpdateTaskPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandApplication_boardUpdateTask_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_boardUpdateTask_feature", "_UI_VSandApplication_type"),
+				 VSandPackage.Literals.VSAND_APPLICATION__BOARD_UPDATE_TASK,
+				 true,
+				 false,
+				 true,
+				 null,
 				 null,
 				 null));
 	}
@@ -282,6 +355,8 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 		switch (notification.getFeatureID(VSandApplication.class))
 		{
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
+			case VSandPackage.VSAND_APPLICATION__PAUSED:
+			case VSandPackage.VSAND_APPLICATION__SPEED:
 			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
 			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
@@ -312,6 +387,11 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			(createChildParameter
 				(ApplicationPackage.Literals.APPLICATION__VIEWS,
 				 PresentationFactory.eINSTANCE.createTranparentUIView()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(ApplicationPackage.Literals.APPLICATION__ENGINES,
+				 VulkanFactory.eINSTANCE.createVulkanEngine()));
 
 		newChildDescriptors.add
 			(createChildParameter

@@ -6,7 +6,6 @@ import org.sheepy.lily.core.api.input.event.KeyEvent;
 import org.sheepy.lily.core.api.input.event.MouseButtonEvent;
 import org.sheepy.lily.core.api.input.event.ScrollEvent;
 import org.sheepy.lily.core.model.types.EKeyState;
-import org.sheepy.lily.vulkan.model.process.CompositeTask;
 import org.sheepy.vsand.draw.DrawManager;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
@@ -15,7 +14,6 @@ import org.sheepy.vulkan.window.Window;
 public class VSandInputManager implements IInputListener
 {
 	private final VSandApplication application;
-	private final CompositeTask stepTasks;
 	private final Window window;
 	private final DrawManager leftDrawManager;
 	private final DrawManager rightDrawManager;
@@ -27,13 +25,11 @@ public class VSandInputManager implements IInputListener
 
 	public VSandInputManager(	Window window,
 								VSandApplication application,
-								CompositeTask stepTasks,
 								DrawManager leftDrawManager,
 								DrawManager rightDrawManager)
 	{
 		this.window = window;
 		this.application = application;
-		this.stepTasks = stepTasks;
 		this.leftDrawManager = leftDrawManager;
 		this.rightDrawManager = rightDrawManager;
 	}
@@ -76,19 +72,19 @@ public class VSandInputManager implements IInputListener
 			{
 			// Space bar
 			case 32:
-				stepTasks.setEnabled(!stepTasks.isEnabled());
+				application.setPaused(!application.isPaused());
 				break;
 			// *
 			case 331:
-				int speedMinus = stepTasks.getRepeatCount();
+				int speedMinus = application.getSpeed();
 				speedMinus = Math.max(1, speedMinus / 2);
-				stepTasks.setRepeatCount(speedMinus);
+				application.setSpeed(speedMinus);
 				break;
 			// /
 			case 332:
-				int speedPlus = stepTasks.getRepeatCount();
+				int speedPlus = application.getSpeed();
 				speedPlus = Math.min(16, speedPlus * 2);
-				stepTasks.setRepeatCount(speedPlus);
+				application.setSpeed(speedPlus);
 				break;
 			// -
 			case 333:
@@ -96,7 +92,6 @@ public class VSandInputManager implements IInputListener
 				brushMinus = Math.max(1, brushMinus - 1);
 				application.setBrushSize(brushMinus);
 				break;
-
 			// +
 			case 334:
 				int brushPlus = application.getBrushSize();
@@ -106,8 +101,6 @@ public class VSandInputManager implements IInputListener
 			// n
 			case 'n' - 32:
 				application.setNextMode(true);
-				stepTasks.setEnabled(true);
-				stepTasks.setRepeatCount(1);
 				break;
 			// f
 			case 'f' - 32:

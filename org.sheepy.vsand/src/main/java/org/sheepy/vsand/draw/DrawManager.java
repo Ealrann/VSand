@@ -2,6 +2,7 @@ package org.sheepy.vsand.draw;
 
 import org.joml.Vector2fc;
 import org.joml.Vector2i;
+import org.joml.Vector2ic;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.Material;
@@ -13,12 +14,14 @@ public class DrawManager
 {
 	private final VSandApplication application;
 	private final IInputManager inputManager;
-	private final Vector2i boardSize;
+	private final Vector2ic boardSize;
 
 	private boolean wasUsed = false;
-	private Vector2i previousCursor;
+	private Vector2ic previousCursor;
 
-	public DrawManager(VSandApplication application, IInputManager inputManager, Vector2i boardSize)
+	public DrawManager(	VSandApplication application,
+						IInputManager inputManager,
+						Vector2ic boardSize)
 	{
 		this.application = application;
 		this.inputManager = inputManager;
@@ -54,13 +57,14 @@ public class DrawManager
 		final var cursor = inputManager.getCursorPosition();
 		final var cursorBoard = convertToBoardPosition(cursor);
 
-		if (firstDraw || (previousCursor.x == cursorBoard.x && previousCursor.y == cursorBoard.y))
+		if (firstDraw
+				|| (previousCursor.x() == cursorBoard.x() && previousCursor.y() == cursorBoard.y()))
 		{
 			final var command = VSandFactory.eINSTANCE.createDrawCircle();
 			command.setMaterial(material);
 			command.setSize(size.getSize());
-			command.setX(cursorBoard.x);
-			command.setY(cursorBoard.y);
+			command.setX(cursorBoard.x());
+			command.setY(cursorBoard.y());
 
 			res = command;
 		}
@@ -69,10 +73,10 @@ public class DrawManager
 			final var command = VSandFactory.eINSTANCE.createDrawLine();
 			command.setMaterial(material);
 			command.setSize(size.getSize());
-			command.setX1(previousCursor.x);
-			command.setY1(previousCursor.y);
-			command.setX2(cursorBoard.x);
-			command.setY2(cursorBoard.y);
+			command.setX1(previousCursor.x());
+			command.setY1(previousCursor.y());
+			command.setX2(cursorBoard.x());
+			command.setY2(cursorBoard.y());
 
 			res = command;
 		}
@@ -82,12 +86,12 @@ public class DrawManager
 		return res;
 	}
 
-	private Vector2i convertToBoardPosition(Vector2fc mousePos)
+	private Vector2ic convertToBoardPosition(Vector2fc mousePos)
 	{
-		final Vector2i res = new Vector2i((int) mousePos.x(), (int) mousePos.y());
+		final var res = new Vector2i((int) mousePos.x(), (int) mousePos.y());
 
-		final int boardWidth = boardSize.x;
-		final int boardHeight = boardSize.y;
+		final int boardWidth = boardSize.x();
+		final int boardHeight = boardSize.y();
 
 		final int width = application.getSize().x;
 		final int height = application.getSize().y;

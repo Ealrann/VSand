@@ -214,13 +214,31 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__NEXT_MODE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Paused</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__PAUSED = ApplicationPackage.APPLICATION_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Speed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__SPEED = ApplicationPackage.APPLICATION_FEATURE_COUNT + 7;
+
+	/**
 	 * The feature id for the '<em><b>Force Clear</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__FORCE_CLEAR = ApplicationPackage.APPLICATION_FEATURE_COUNT + 6;
+	int VSAND_APPLICATION__FORCE_CLEAR = ApplicationPackage.APPLICATION_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Show Sleep Zones</b></em>' attribute.
@@ -229,7 +247,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__SHOW_SLEEP_ZONES = ApplicationPackage.APPLICATION_FEATURE_COUNT + 7;
+	int VSAND_APPLICATION__SHOW_SLEEP_ZONES = ApplicationPackage.APPLICATION_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Brush Size</b></em>' attribute.
@@ -238,7 +256,16 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 8;
+	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 10;
+
+	/**
+	 * The feature id for the '<em><b>Board Update Task</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__BOARD_UPDATE_TASK = ApplicationPackage.APPLICATION_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of structural features of the '<em>Application</em>' class.
@@ -247,7 +274,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 9;
+	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 12;
 
 	/**
 	 * The operation id for the '<em>LInference Object</em>' operation.
@@ -1073,6 +1100,28 @@ public interface VSandPackage extends EPackage
 	EAttribute getVSandApplication_NextMode();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#isPaused <em>Paused</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Paused</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#isPaused()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EAttribute getVSandApplication_Paused();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#getSpeed <em>Speed</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Speed</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#getSpeed()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EAttribute getVSandApplication_Speed();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#isForceClear <em>Force Clear</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1104,6 +1153,17 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 */
 	EAttribute getVSandApplication_BrushSize();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask <em>Board Update Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Board Update Task</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EReference getVSandApplication_BoardUpdateTask();
 
 	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}'.
@@ -1674,6 +1734,22 @@ public interface VSandPackage extends EPackage
 		EAttribute VSAND_APPLICATION__NEXT_MODE = eINSTANCE.getVSandApplication_NextMode();
 
 		/**
+		 * The meta object literal for the '<em><b>Paused</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VSAND_APPLICATION__PAUSED = eINSTANCE.getVSandApplication_Paused();
+
+		/**
+		 * The meta object literal for the '<em><b>Speed</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VSAND_APPLICATION__SPEED = eINSTANCE.getVSandApplication_Speed();
+
+		/**
 		 * The meta object literal for the '<em><b>Force Clear</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1696,6 +1772,14 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EAttribute VSAND_APPLICATION__BRUSH_SIZE = eINSTANCE.getVSandApplication_BrushSize();
+
+		/**
+		 * The meta object literal for the '<em><b>Board Update Task</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference VSAND_APPLICATION__BOARD_UPDATE_TASK = eINSTANCE.getVSandApplication_BoardUpdateTask();
 
 		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}' class.

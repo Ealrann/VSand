@@ -12,9 +12,13 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.sheepy.lily.core.model.action.ActionPackage;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
 import org.sheepy.lily.core.model.inference.InferencePackage;
+import org.sheepy.lily.core.model.maintainer.MaintainerPackage;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.root.RootPackage;
 import org.sheepy.lily.core.model.types.TypesPackage;
+import org.sheepy.lily.vulkan.model.VulkanPackage;
+import org.sheepy.lily.vulkan.model.process.ProcessPackage;
+import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 import org.sheepy.vsand.model.DrawCircle;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.DrawLine;
@@ -27,6 +31,9 @@ import org.sheepy.vsand.model.Transformations;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.VSandPackage;
+import org.sheepy.vulkan.model.barrier.BarrierPackage;
+import org.sheepy.vulkan.model.enumeration.EnumerationPackage;
+import org.sheepy.vulkan.model.pipeline.PipelinePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -160,9 +167,16 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		RootPackage.eINSTANCE.eClass();
 		InferencePackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
+		ProcessPackage.eINSTANCE.eClass();
 		PresentationPackage.eINSTANCE.eClass();
 		TypesPackage.eINSTANCE.eClass();
 		ActionPackage.eINSTANCE.eClass();
+		VulkanPackage.eINSTANCE.eClass();
+		ResourcePackage.eINSTANCE.eClass();
+		EnumerationPackage.eINSTANCE.eClass();
+		PipelinePackage.eINSTANCE.eClass();
+		BarrierPackage.eINSTANCE.eClass();
+		MaintainerPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theVSandPackage.createPackageContents();
@@ -261,7 +275,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_ForceClear()
+	public EAttribute getVSandApplication_Paused()
 	{
 		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(6);
 	}
@@ -272,7 +286,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_ShowSleepZones()
+	public EAttribute getVSandApplication_Speed()
 	{
 		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(7);
 	}
@@ -283,9 +297,42 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_BrushSize()
+	public EAttribute getVSandApplication_ForceClear()
 	{
 		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getVSandApplication_ShowSleepZones()
+	{
+		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getVSandApplication_BrushSize()
+	{
+		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getVSandApplication_BoardUpdateTask()
+	{
+		return (EReference)vSandApplicationEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -821,9 +868,12 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__MAIN_MATERIAL);
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__SECONDARY_MATERIAL);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__NEXT_MODE);
+		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__PAUSED);
+		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SPEED);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__FORCE_CLEAR);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SHOW_SLEEP_ZONES);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__BRUSH_SIZE);
+		createEReference(vSandApplicationEClass, VSAND_APPLICATION__BOARD_UPDATE_TASK);
 
 		drawCommandEClass = createEClass(DRAW_COMMAND);
 		createEReference(drawCommandEClass, DRAW_COMMAND__MATERIAL);
@@ -907,6 +957,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		// Obtain other dependent packages
 		ApplicationPackage theApplicationPackage = (ApplicationPackage)EPackage.Registry.INSTANCE.getEPackage(ApplicationPackage.eNS_URI);
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
+		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
 		PresentationPackage thePresentationPackage = (PresentationPackage)EPackage.Registry.INSTANCE.getEPackage(PresentationPackage.eNS_URI);
 
 		// Create type parameters
@@ -928,9 +979,12 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEReference(getVSandApplication_MainMaterial(), this.getMaterial(), null, "mainMaterial", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_SecondaryMaterial(), this.getMaterial(), null, "secondaryMaterial", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_NextMode(), theEcorePackage.getEBoolean(), "nextMode", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_Paused(), theEcorePackage.getEBoolean(), "paused", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_Speed(), theEcorePackage.getEInt(), "speed", "1", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_ForceClear(), theEcorePackage.getEBoolean(), "forceClear", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_ShowSleepZones(), theEcorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_BrushSize(), theEcorePackage.getEInt(), "brushSize", "4", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVSandApplication_BoardUpdateTask(), theProcessPackage.getCompositeTask(), null, "boardUpdateTask", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(drawCommandEClass, DrawCommand.class, "DrawCommand", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDrawCommand_Material(), this.getMaterial(), null, "material", null, 0, 1, DrawCommand.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

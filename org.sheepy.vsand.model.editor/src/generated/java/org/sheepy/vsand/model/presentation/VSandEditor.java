@@ -151,9 +151,14 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.sheepy.lily.core.model.action.provider.ActionItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.application.provider.ApplicationItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.inference.provider.InferenceItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.maintainer.provider.MaintainerItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.presentation.provider.PresentationItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.root.provider.RootItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.types.provider.TypesItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.model.process.provider.ProcessItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.model.provider.VulkanItemProviderAdapterFactory;
+import org.sheepy.vulkan.model.barrier.provider.BarrierItemProviderAdapterFactory;
+import org.sheepy.vulkan.model.pipeline.provider.PipelineItemProviderAdapterFactory;
 
 
 /**
@@ -737,9 +742,15 @@ public class VSandEditor
 		adapterFactory.addAdapterFactory(new ApplicationItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new RootItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new InferenceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ProcessItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new PresentationItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new TypesItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ActionItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new VulkanItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.sheepy.lily.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new PipelineItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new BarrierItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new MaintainerItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
 		// Create the command stack that will notify this editor as commands are executed.

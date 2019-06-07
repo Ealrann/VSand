@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.sheepy.lily.core.model.application.impl.ApplicationImpl;
+import org.sheepy.lily.vulkan.model.process.CompositeTask;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.Materials;
@@ -33,9 +34,12 @@ import org.sheepy.vsand.model.VSandPackage;
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getMainMaterial <em>Main Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getSecondaryMaterial <em>Secondary Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isNextMode <em>Next Mode</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isPaused <em>Paused</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getSpeed <em>Speed</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isForceClear <em>Force Clear</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isShowSleepZones <em>Show Sleep Zones</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBrushSize <em>Brush Size</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBoardUpdateTask <em>Board Update Task</em>}</li>
  * </ul>
  *
  * @generated
@@ -113,6 +117,46 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	protected boolean nextMode = NEXT_MODE_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #isPaused() <em>Paused</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isPaused()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean PAUSED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isPaused() <em>Paused</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isPaused()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean paused = PAUSED_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getSpeed() <em>Speed</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpeed()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int SPEED_EDEFAULT = 1;
+
+	/**
+	 * The cached value of the '{@link #getSpeed() <em>Speed</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpeed()
+	 * @generated
+	 * @ordered
+	 */
+	protected int speed = SPEED_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #isForceClear() <em>Force Clear</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -171,6 +215,16 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @ordered
 	 */
 	protected int brushSize = BRUSH_SIZE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getBoardUpdateTask() <em>Board Update Task</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBoardUpdateTask()
+	 * @generated
+	 * @ordered
+	 */
+	protected CompositeTask boardUpdateTask;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -429,6 +483,56 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @generated
 	 */
 	@Override
+	public boolean isPaused()
+	{
+		return paused;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setPaused(boolean newPaused)
+	{
+		boolean oldPaused = paused;
+		paused = newPaused;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__PAUSED, oldPaused, paused));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int getSpeed()
+	{
+		return speed;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setSpeed(int newSpeed)
+	{
+		int oldSpeed = speed;
+		speed = newSpeed;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__SPEED, oldSpeed, speed));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public boolean isForceClear()
 	{
 		return forceClear;
@@ -504,6 +608,51 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @generated
 	 */
 	@Override
+	public CompositeTask getBoardUpdateTask()
+	{
+		if (boardUpdateTask != null && boardUpdateTask.eIsProxy())
+		{
+			InternalEObject oldBoardUpdateTask = (InternalEObject)boardUpdateTask;
+			boardUpdateTask = (CompositeTask)eResolveProxy(oldBoardUpdateTask);
+			if (boardUpdateTask != oldBoardUpdateTask)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK, oldBoardUpdateTask, boardUpdateTask));
+			}
+		}
+		return boardUpdateTask;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CompositeTask basicGetBoardUpdateTask()
+	{
+		return boardUpdateTask;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setBoardUpdateTask(CompositeTask newBoardUpdateTask)
+	{
+		CompositeTask oldBoardUpdateTask = boardUpdateTask;
+		boardUpdateTask = newBoardUpdateTask;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK, oldBoardUpdateTask, boardUpdateTask));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
 	{
 		switch (featureID)
@@ -542,12 +691,19 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return basicGetSecondaryMaterial();
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
 				return isNextMode();
+			case VSandPackage.VSAND_APPLICATION__PAUSED:
+				return isPaused();
+			case VSandPackage.VSAND_APPLICATION__SPEED:
+				return getSpeed();
 			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
 				return isForceClear();
 			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
 				return isShowSleepZones();
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				return getBrushSize();
+			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
+				if (resolve) return getBoardUpdateTask();
+				return basicGetBoardUpdateTask();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -582,6 +738,12 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
 				setNextMode((Boolean)newValue);
 				return;
+			case VSandPackage.VSAND_APPLICATION__PAUSED:
+				setPaused((Boolean)newValue);
+				return;
+			case VSandPackage.VSAND_APPLICATION__SPEED:
+				setSpeed((Integer)newValue);
+				return;
 			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
 				setForceClear((Boolean)newValue);
 				return;
@@ -590,6 +752,9 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				setBrushSize((Integer)newValue);
+				return;
+			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
+				setBoardUpdateTask((CompositeTask)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -623,6 +788,12 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
 				setNextMode(NEXT_MODE_EDEFAULT);
 				return;
+			case VSandPackage.VSAND_APPLICATION__PAUSED:
+				setPaused(PAUSED_EDEFAULT);
+				return;
+			case VSandPackage.VSAND_APPLICATION__SPEED:
+				setSpeed(SPEED_EDEFAULT);
+				return;
 			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
 				setForceClear(FORCE_CLEAR_EDEFAULT);
 				return;
@@ -631,6 +802,9 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				setBrushSize(BRUSH_SIZE_EDEFAULT);
+				return;
+			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
+				setBoardUpdateTask((CompositeTask)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -658,12 +832,18 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return secondaryMaterial != null;
 			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
 				return nextMode != NEXT_MODE_EDEFAULT;
+			case VSandPackage.VSAND_APPLICATION__PAUSED:
+				return paused != PAUSED_EDEFAULT;
+			case VSandPackage.VSAND_APPLICATION__SPEED:
+				return speed != SPEED_EDEFAULT;
 			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
 				return forceClear != FORCE_CLEAR_EDEFAULT;
 			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
 				return showSleepZones != SHOW_SLEEP_ZONES_EDEFAULT;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				return brushSize != BRUSH_SIZE_EDEFAULT;
+			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
+				return boardUpdateTask != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -681,6 +861,10 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (nextMode: ");
 		result.append(nextMode);
+		result.append(", paused: ");
+		result.append(paused);
+		result.append(", speed: ");
+		result.append(speed);
 		result.append(", forceClear: ");
 		result.append(forceClear);
 		result.append(", showSleepZones: ");

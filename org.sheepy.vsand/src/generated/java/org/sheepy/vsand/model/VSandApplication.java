@@ -4,6 +4,7 @@ package org.sheepy.vsand.model;
 
 import org.eclipse.emf.common.util.EList;
 import org.sheepy.lily.core.model.application.Application;
+import org.sheepy.lily.vulkan.model.process.CompositeTask;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,9 +21,12 @@ import org.sheepy.lily.core.model.application.Application;
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getMainMaterial <em>Main Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getSecondaryMaterial <em>Secondary Material</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#isNextMode <em>Next Mode</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#isPaused <em>Paused</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getSpeed <em>Speed</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#isForceClear <em>Force Clear</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#isShowSleepZones <em>Show Sleep Zones</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask <em>Board Update Task</em>}</li>
  * </ul>
  *
  * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication()
@@ -176,6 +180,52 @@ public interface VSandApplication extends Application
 	void setNextMode(boolean value);
 
 	/**
+	 * Returns the value of the '<em><b>Paused</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Paused</em>' attribute.
+	 * @see #setPaused(boolean)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_Paused()
+	 * @model default="false" unique="false"
+	 * @generated
+	 */
+	boolean isPaused();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#isPaused <em>Paused</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Paused</em>' attribute.
+	 * @see #isPaused()
+	 * @generated
+	 */
+	void setPaused(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Speed</b></em>' attribute.
+	 * The default value is <code>"1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Speed</em>' attribute.
+	 * @see #setSpeed(int)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_Speed()
+	 * @model default="1" unique="false"
+	 * @generated
+	 */
+	int getSpeed();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getSpeed <em>Speed</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Speed</em>' attribute.
+	 * @see #getSpeed()
+	 * @generated
+	 */
+	void setSpeed(int value);
+
+	/**
 	 * Returns the value of the '<em><b>Force Clear</b></em>' attribute.
 	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
@@ -247,4 +297,26 @@ public interface VSandApplication extends Application
 	 * @generated
 	 */
 	void setBrushSize(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Board Update Task</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Board Update Task</em>' reference.
+	 * @see #setBoardUpdateTask(CompositeTask)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_BoardUpdateTask()
+	 * @model
+	 * @generated
+	 */
+	CompositeTask getBoardUpdateTask();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask <em>Board Update Task</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Board Update Task</em>' reference.
+	 * @see #getBoardUpdateTask()
+	 * @generated
+	 */
+	void setBoardUpdateTask(CompositeTask value);
 } // VSandApplication

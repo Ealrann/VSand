@@ -16,20 +16,25 @@ public class VSandApplicationLauncher
 
 	public static void main(String[] args)
 	{
-		Module module = VSandApplicationLauncher.class.getModule();
+		final var module = VSandApplicationLauncher.class.getModule();
+		final var resource = loadModuleResource(module);
+		final var application = (Application) resource.getContents().get(0);
+		final var mainLoop = new VSandMainLoop();
+
+		ApplicationLauncher.launch(application, mainLoop);
+	}
+
+	private static Resource loadModuleResource(Module module)
+	{
 		Resource resource = null;
 		try
 		{
-			InputStream inputStream = module.getResourceAsStream(APPLICATION_PATH);
+			final InputStream inputStream = module.getResourceAsStream(APPLICATION_PATH);
 			resource = resourceLoader.loadResource(inputStream);
-		} catch (IOException e)
+		} catch (final IOException e)
 		{
 			e.printStackTrace();
 		}
-
-		Application application = (Application) resource.getContents().get(0);
-
-		VSandMainLoop mainLoop = new VSandMainLoop();
-		ApplicationLauncher.launch(application, mainLoop);
+		return resource;
 	}
 }

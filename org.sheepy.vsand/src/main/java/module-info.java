@@ -11,6 +11,7 @@ import org.sheepy.vsand.loader.BoardDecisionLoader;
 import org.sheepy.vsand.loader.BoardImageLoader;
 import org.sheepy.vsand.loader.ConfigurationBufferLoader;
 import org.sheepy.vsand.loader.TransformationBufferLoader;
+import org.sheepy.vsand.logic.ApplicationBehaviour;
 import org.sheepy.vsand.model.VSandModelExtension;
 import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
 
@@ -25,7 +26,8 @@ import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
 		DrawPushConstantAdapter.class,
 		DrawCircleAdapter.class,
 		DrawSquareAdapter.class,
-		DrawLineAdapter.class
+		DrawLineAdapter.class,
+		ApplicationBehaviour.class
 })
 
 module org.sheepy.vsand
@@ -48,6 +50,7 @@ module org.sheepy.vsand
 	opens org.sheepy.vsand.constants;
 	opens org.sheepy.vsand.draw;
 	opens org.sheepy.vsand.loader;
+	opens org.sheepy.vsand.logic;
 	opens org.sheepy.vsand.ui;
 
 	uses IInputManager;
