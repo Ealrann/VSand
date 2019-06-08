@@ -16,19 +16,19 @@ import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.input.IVulkanInputManager;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
-import org.sheepy.lily.vulkan.model.process.PushConstant;
+import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.EShapeSize;
 
 @Statefull
-@Adapter(scope = PushConstant.class, name = "VSandPushConstants")
+@Adapter(scope = ConstantBuffer.class, name = "VSandPushConstants")
 public final class VSandPushConstantAdapter implements IVulkanAdapter
 {
 	private final int BYTE_SIZE = Integer.BYTES * 7;
 
 	private final Random random = new Random(System.nanoTime());
-	private final PushConstant pushConstant;
+	private final ConstantBuffer constantBuffer;
 	private final VSandApplication application;
 	private final Vector2i boardSize;
 
@@ -36,11 +36,11 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 
 	private IVulkanInputManager inputManager;
 
-	public VSandPushConstantAdapter(PushConstant pushConstant)
+	public VSandPushConstantAdapter(ConstantBuffer constantBuffer)
 	{
-		this.pushConstant = pushConstant;
+		this.constantBuffer = constantBuffer;
 
-		application = (VSandApplication) ModelUtil.getApplication(pushConstant);
+		application = (VSandApplication) ModelUtil.getApplication(constantBuffer);
 		boardSize = new Vector2i(application.getSize());
 	}
 
@@ -89,7 +89,7 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 
 		buffer.flip();
 
-		pushConstant.setData(buffer);
+		constantBuffer.setData(buffer);
 	}
 
 	private Vector2i convertToBoardPosition(Vector2fc mousePos)

@@ -106,9 +106,13 @@
         <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
           <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
         </resources>
+        <resources xsi:type="resource:ConstantBuffer" name="VSandPushConstants"/>
       </resourcePkg>
       <partPkg>
         <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" workgroupSizeX="16" workgroupSizeY="16" workgroupSizeZ="16" width="1248" height="704" depth="1">
+          <resourcePkg>
+            <resources xsi:type="resource:ConstantBuffer" name="DrawConstants"/>
+          </resourcePkg>
           <pushConstantRanges size="68">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
@@ -117,7 +121,7 @@
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.0/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="process:PushConstant" name="DrawConstants">
+            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@partPkg/@parts.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourcePkg/@resources.4"/>
@@ -132,7 +136,7 @@
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="process:PushConstant" name="VSandPushConstants">
+            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.10">
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="process:CompositeTask" name="Update Board">
@@ -164,7 +168,7 @@
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.2/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="process:PushConstant" name="VSandPushConstants">
+            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.10">
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="process:PipelineBarrier" dstStage="COMPUTE_SHADER_BIT">
