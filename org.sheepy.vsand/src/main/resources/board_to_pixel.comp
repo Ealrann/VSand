@@ -36,15 +36,12 @@ layout (push_constant) uniform PushConstants {
 	int drawMaterialId;
 } pushConstants;
 
-layout(binding = 0) uniform SConfiguration
+layout(rgba8, binding = 0) uniform image2D outImage;
+
+layout(binding = 1) uniform SConfiguration
 {
 	Entry materials[MATERIAL_COUNT];
 }configuration;
-
-layout(binding = 1) buffer readonly SBoard
-{
-	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
-}oldBoard;
 
 // The chunk state board.
 layout(binding = 2) buffer SChunks
@@ -52,7 +49,10 @@ layout(binding = 2) buffer SChunks
 	int data[CHUNK_WIDTH][CHUNK_HEIGHT];
 }chunks;
 
-layout(rgba8, binding = 3) uniform image2D outImage;
+layout(binding = 3) buffer readonly SBoard
+{
+	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+}oldBoard;
 
 const uint G_MASK = 255 << 8;
 const uint B_MASK = 255;

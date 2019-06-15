@@ -21,17 +21,17 @@ const int SWIZZLED_HEIGHT = HEIGHT / 2;
 
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
-// The game board, with all the values.
-layout(binding = 0) buffer SBoard
-{
-	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
-}board;
-
 // The chunk state board.
-layout(binding = 1) buffer SChunks
+layout(binding = 0) buffer SChunks
 {
 	int data[CHUNK_WIDTH][CHUNK_HEIGHT];
 }chunks;
+
+// The game board, with all the values.
+layout(binding = 1) buffer SBoard
+{
+	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+}board;
 
 layout (push_constant) uniform PushConstants
 {

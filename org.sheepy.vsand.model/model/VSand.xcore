@@ -96,9 +96,11 @@ class Transformations
 
 class Transformation
 {
-	String name
+ 	@GenModel(notify="true")
 	refers Material reactant
+ 	@GenModel(notify="true")
 	refers Material catalyst
+ 	@GenModel(notify="true")
 	refers Material target
 	int probability
 	int propagation = "1"

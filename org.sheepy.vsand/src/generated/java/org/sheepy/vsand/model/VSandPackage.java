@@ -762,22 +762,13 @@ public interface VSandPackage extends EPackage
 	int TRANSFORMATION = 8;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TRANSFORMATION__NAME = 0;
-
-	/**
 	 * The feature id for the '<em><b>Reactant</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__REACTANT = 1;
+	int TRANSFORMATION__REACTANT = 0;
 
 	/**
 	 * The feature id for the '<em><b>Catalyst</b></em>' reference.
@@ -786,7 +777,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__CATALYST = 2;
+	int TRANSFORMATION__CATALYST = 1;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' reference.
@@ -795,7 +786,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__TARGET = 3;
+	int TRANSFORMATION__TARGET = 2;
 
 	/**
 	 * The feature id for the '<em><b>Probability</b></em>' attribute.
@@ -804,7 +795,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__PROBABILITY = 4;
+	int TRANSFORMATION__PROBABILITY = 3;
 
 	/**
 	 * The feature id for the '<em><b>Propagation</b></em>' attribute.
@@ -813,7 +804,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__PROPAGATION = 5;
+	int TRANSFORMATION__PROPAGATION = 4;
 
 	/**
 	 * The feature id for the '<em><b>Is Static Transformation</b></em>' attribute.
@@ -822,7 +813,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__IS_STATIC_TRANSFORMATION = 6;
+	int TRANSFORMATION__IS_STATIC_TRANSFORMATION = 5;
 
 	/**
 	 * The number of structural features of the '<em>Transformation</em>' class.
@@ -831,7 +822,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION_FEATURE_COUNT = 7;
+	int TRANSFORMATION_FEATURE_COUNT = 6;
 
 	/**
 	 * The number of operations of the '<em>Transformation</em>' class.
@@ -1488,17 +1479,6 @@ public interface VSandPackage extends EPackage
 	EClass getTransformation();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Transformation#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.sheepy.vsand.model.Transformation#getName()
-	 * @see #getTransformation()
-	 * @generated
-	 */
-	EAttribute getTransformation_Name();
-
-	/**
 	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.Transformation#getReactant <em>Reactant</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2036,14 +2016,6 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EClass TRANSFORMATION = eINSTANCE.getTransformation();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TRANSFORMATION__NAME = eINSTANCE.getTransformation_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Reactant</b></em>' reference feature.

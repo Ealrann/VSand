@@ -21,7 +21,6 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-
 import org.sheepy.vsand.model.Transformation;
 import org.sheepy.vsand.model.VSandPackage;
 
@@ -64,7 +63,6 @@ public class TransformationItemProvider
 		{
 			super.getPropertyDescriptors(object);
 
-			addNamePropertyDescriptor(object);
 			addReactantPropertyDescriptor(object);
 			addCatalystPropertyDescriptor(object);
 			addTargetPropertyDescriptor(object);
@@ -73,29 +71,6 @@ public class TransformationItemProvider
 			addIsStaticTransformationPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Name feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addNamePropertyDescriptor(Object object)
-	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Transformation_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_name_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
 	}
 
 	/**
@@ -252,15 +227,21 @@ public class TransformationItemProvider
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String getText(Object object)
 	{
-		String label = ((Transformation)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_Transformation_type") :
-			getString("_UI_Transformation_type") + " " + label;
+		final var transfo = (Transformation) object;
+		final var reactant = transfo.getReactant();
+		final var catalyst = transfo.getCatalyst();
+		final var target = transfo.getTarget();
+		
+		final String reactantName = reactant != null ? reactant.getName() : "";
+		final String catalystName = catalyst != null ? catalyst.getName() : "All";
+		final String targetName = target != null ? target.getName() : "";
+		
+		return String.format("Transformation: [%s] + [%s] = [%s]", reactantName, catalystName, targetName);
 	}
 
 
@@ -278,7 +259,9 @@ public class TransformationItemProvider
 
 		switch (notification.getFeatureID(Transformation.class))
 		{
-			case VSandPackage.TRANSFORMATION__NAME:
+			case VSandPackage.TRANSFORMATION__REACTANT:
+			case VSandPackage.TRANSFORMATION__CATALYST:
+			case VSandPackage.TRANSFORMATION__TARGET:
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 			case VSandPackage.TRANSFORMATION__PROPAGATION:
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:

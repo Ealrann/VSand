@@ -671,20 +671,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getTransformation_Name()
-	{
-		return (EAttribute)transformationEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EReference getTransformation_Reactant()
 	{
-		return (EReference)transformationEClass.getEStructuralFeatures().get(1);
+		return (EReference)transformationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -695,7 +684,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	@Override
 	public EReference getTransformation_Catalyst()
 	{
-		return (EReference)transformationEClass.getEStructuralFeatures().get(2);
+		return (EReference)transformationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -706,7 +695,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	@Override
 	public EReference getTransformation_Target()
 	{
-		return (EReference)transformationEClass.getEStructuralFeatures().get(3);
+		return (EReference)transformationEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -717,7 +706,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	@Override
 	public EAttribute getTransformation_Probability()
 	{
-		return (EAttribute)transformationEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)transformationEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -728,7 +717,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	@Override
 	public EAttribute getTransformation_Propagation()
 	{
-		return (EAttribute)transformationEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)transformationEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -739,7 +728,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	@Override
 	public EAttribute getTransformation_IsStaticTransformation()
 	{
-		return (EAttribute)transformationEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)transformationEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -912,7 +901,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEReference(transformationsEClass, TRANSFORMATIONS__TRANSFORMATIONS);
 
 		transformationEClass = createEClass(TRANSFORMATION);
-		createEAttribute(transformationEClass, TRANSFORMATION__NAME);
 		createEReference(transformationEClass, TRANSFORMATION__REACTANT);
 		createEReference(transformationEClass, TRANSFORMATION__CATALYST);
 		createEReference(transformationEClass, TRANSFORMATION__TARGET);
@@ -1023,7 +1011,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEReference(getTransformations_Transformations(), this.getTransformation(), null, "transformations", null, 0, -1, Transformations.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(transformationEClass, Transformation.class, "Transformation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getTransformation_Name(), theEcorePackage.getEString(), "name", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTransformation_Reactant(), this.getMaterial(), null, "reactant", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTransformation_Catalyst(), this.getMaterial(), null, "catalyst", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTransformation_Target(), this.getMaterial(), null, "target", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

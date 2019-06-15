@@ -22,7 +22,6 @@ import org.sheepy.vsand.model.VSandPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getReactant <em>Reactant</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getCatalyst <em>Catalyst</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getTarget <em>Target</em>}</li>
@@ -35,26 +34,6 @@ import org.sheepy.vsand.model.VSandPackage;
  */
 public class TransformationImpl extends MinimalEObjectImpl.Container implements Transformation
 {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getReactant() <em>Reactant</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -164,31 +143,6 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	protected EClass eStaticClass()
 	{
 		return VSandPackage.Literals.TRANSFORMATION;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.TRANSFORMATION__NAME, oldName, name));
 	}
 
 	/**
@@ -411,8 +365,6 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	{
 		switch (featureID)
 		{
-			case VSandPackage.TRANSFORMATION__NAME:
-				return getName();
 			case VSandPackage.TRANSFORMATION__REACTANT:
 				if (resolve) return getReactant();
 				return basicGetReactant();
@@ -442,9 +394,6 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	{
 		switch (featureID)
 		{
-			case VSandPackage.TRANSFORMATION__NAME:
-				setName((String)newValue);
-				return;
 			case VSandPackage.TRANSFORMATION__REACTANT:
 				setReactant((Material)newValue);
 				return;
@@ -477,9 +426,6 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	{
 		switch (featureID)
 		{
-			case VSandPackage.TRANSFORMATION__NAME:
-				setName(NAME_EDEFAULT);
-				return;
 			case VSandPackage.TRANSFORMATION__REACTANT:
 				setReactant((Material)null);
 				return;
@@ -512,8 +458,6 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	{
 		switch (featureID)
 		{
-			case VSandPackage.TRANSFORMATION__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case VSandPackage.TRANSFORMATION__REACTANT:
 				return reactant != null;
 			case VSandPackage.TRANSFORMATION__CATALYST:
@@ -541,9 +485,7 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 		if (eIsProxy()) return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", probability: ");
+		result.append(" (probability: ");
 		result.append(probability);
 		result.append(", propagation: ");
 		result.append(propagation);

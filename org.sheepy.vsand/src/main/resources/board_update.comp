@@ -60,7 +60,7 @@ layout (push_constant) uniform PushConstants {
 } pushConstants;
 
 // The definition of materials.
-layout(binding = 0) uniform SConfiguration
+layout(set = 0, binding = 0) uniform SConfiguration
 {
 	Entry materials[MATERIAL_COUNT];
 }configuration;
@@ -72,26 +72,26 @@ layout(binding = 0) uniform SConfiguration
 // 14 bits for the probability (not all used, probability is only an integer from 0 to 1000).
 // 8 bits for the propagated distance.
 // 8 bits for the target value.
-layout(binding = 1) uniform STransformation
+layout(set = 0, binding = 1) uniform STransformation
 {
 	// float[] is horrible in uniform buffers (std140), so we use uvec4[]
 	uvec4 data[TRANSFOM_ARRAY_COUNT];
 }transformations;
 
 // The chunk state board.
-layout(binding = 2) buffer SChunks
+layout(set = 0, binding = 2) buffer SChunks
 {
 	int data[CHUNK_WIDTH][CHUNK_HEIGHT];
 }chunks;
 
 // The game board, with all the values.
-layout(binding = 3) buffer readonly SBoardOld
+layout(set = 1, binding = 0) buffer readonly SBoardOld
 {
 	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
 }oldBoard;
 
 // The next game board, with all the values.
-layout(binding = 4) buffer SBoardNext
+layout(set = 1, binding = 1) buffer SBoardNext
 {
 	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
 }nextBoard;
@@ -584,7 +584,7 @@ bool transformation(ivec2 loc, ivec2 localLoc, bool moved)
 				if(differentValue[i] && transfo != -1 && (!moved || !staticTransfo))
 				{
 					uint probability = (transfo << 2) >> 18;
-					if (rand <= probability)
+					if (rand < probability)
 					{
 						transfoToApply = transfo;
 					}
