@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:graphicpipeline="org.sheepy.vulkan.model.graphicpipeline" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:model_2="org.sheepy.lily.vulkan.extra.nuklear.model" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2">
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:graphicpipeline="org.sheepy.vulkan.model.graphicpipeline" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:model_2="org.sheepy.lily.vulkan.extra.nuklear.model" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.0">
   <views xsi:type="presentation:TranparentUIView" currentUIPage="//@views.0/@uiPages.0">
     <uiPages>
       <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
         <controls xsi:type="ui:DynamicRowLayout"/>
         <controls xsi:type="ui:VariableLabel" text="Speed">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.0"/>
         </controls>
         <controls xsi:type="ui:Slider" minValue="1" maxValue="16">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.0"/>
         </controls>
         <controls xsi:type="ui:VariableLabel" text="Brush Size">
           <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
@@ -52,15 +52,28 @@
         <usages>TransferSrc</usages>
         <usages>Storage</usages>
         <usages>TransferDst</usages>
-        <initialLayout stage="COMPUTE_SHADER_BIT" layout="GENERAL">
+        <initialLayout stage="COMPUTE_SHADER_BIT" layout="TRANSFER_SRC_OPTIMAL">
           <accessMask>SHADER_WRITE_BIT</accessMask>
         </initialLayout>
       </resources>
-      <resources xsi:type="resource:Semaphore" name="ComputeSemaphore" waitStage="COMPUTE_SHADER_BIT"/>
     </resourcePkg>
-    <processes xsi:type="compute:ComputeProcess" name="Board Compute" waitingFenceDuringAcquire="true" resetAllowed="true" signals="//@engines.0/@resourcePkg/@resources.1">
+    <processes xsi:type="compute:ComputeProcess" name="Board Compute" waitingFenceDuringAcquire="true" resetAllowed="true">
       <resourcePkg>
-        <resources xsi:type="resource:Buffer" name="Board Buffer">
+        <resources xsi:type="resource:Buffer" name="Board Buffer 1">
+          <descriptor descriptorType="STORAGE_BUFFER">
+            <shaderStages>COMPUTE_BIT</shaderStages>
+          </descriptor>
+          <usages>STORAGE_BUFFER_BIT</usages>
+          <usages>TRANSFER_DST_BIT</usages>
+        </resources>
+        <resources xsi:type="resource:Buffer" name="Board Buffer 2">
+          <descriptor descriptorType="STORAGE_BUFFER">
+            <shaderStages>COMPUTE_BIT</shaderStages>
+          </descriptor>
+          <usages>STORAGE_BUFFER_BIT</usages>
+          <usages>TRANSFER_DST_BIT</usages>
+        </resources>
+        <resources xsi:type="resource:Buffer" name="Chunk Buffer">
           <descriptor descriptorType="STORAGE_BUFFER">
             <shaderStages>COMPUTE_BIT</shaderStages>
           </descriptor>
@@ -75,33 +88,17 @@
           <usages>TRANSFER_DST_BIT</usages>
         </resources>
         <resources xsi:type="resource:Buffer" name="Transformation">
-          <descriptor descriptorType="STORAGE_BUFFER">
+          <descriptor descriptorType="UNIFORM_BUFFER">
             <shaderStages>COMPUTE_BIT</shaderStages>
           </descriptor>
           <usages>TRANSFER_DST_BIT</usages>
-          <usages>STORAGE_BUFFER_BIT</usages>
-        </resources>
-        <resources xsi:type="resource:Buffer" name="Decision">
-          <descriptor descriptorType="STORAGE_BUFFER">
-            <shaderStages>COMPUTE_BIT</shaderStages>
-          </descriptor>
-          <usages>TRANSFER_DST_BIT</usages>
-          <usages>STORAGE_BUFFER_BIT</usages>
+          <usages>UNIFORM_BUFFER_BIT</usages>
         </resources>
         <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
           <file xsi:type="resource:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
         </resources>
-        <resources xsi:type="resource:Shader" name="step1" stage="COMPUTE_BIT">
-          <file xsi:type="resource:StringModuleResource" name="" path="game_step1_chooseTO.comp.spv" moduleName="org.sheepy.vsand"/>
-        </resources>
-        <resources xsi:type="resource:Shader" name="step2" stage="COMPUTE_BIT">
-          <file xsi:type="resource:StringModuleResource" name="" path="game_step2_acceptFROM.comp.spv" moduleName="org.sheepy.vsand"/>
-        </resources>
-        <resources xsi:type="resource:Shader" name="step3" stage="COMPUTE_BIT">
-          <file xsi:type="resource:StringModuleResource" name="" path="game_step3_swap.comp.spv" moduleName="org.sheepy.vsand"/>
-        </resources>
-        <resources xsi:type="resource:Shader" name="step4" stage="COMPUTE_BIT">
-          <file xsi:type="resource:StringModuleResource" name="" path="game_step4_transformation.comp.spv" moduleName="org.sheepy.vsand"/>
+        <resources xsi:type="resource:Shader" name="boardUpdate" stage="COMPUTE_BIT">
+          <file xsi:type="resource:StringModuleResource" name="" path="board_update.comp.spv" moduleName="org.sheepy.vsand"/>
         </resources>
         <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
           <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
@@ -109,7 +106,7 @@
         <resources xsi:type="resource:ConstantBuffer" name="VSandPushConstants"/>
       </resourcePkg>
       <partPkg>
-        <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" workgroupSizeX="16" workgroupSizeY="16" workgroupSizeZ="16" width="1248" height="704" depth="1">
+        <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute">
           <resourcePkg>
             <resources xsi:type="resource:ConstantBuffer" name="DrawConstants"/>
           </resourcePkg>
@@ -117,90 +114,118 @@
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0"/>
+            <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.2"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.0/@descriptorSetPkg/@descriptorSets.0"/>
             <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@partPkg/@parts.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourcePkg/@resources.4"/>
+            <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
+              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
+                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
+                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+              </barriers>
+              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.2">
+                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
+                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+              </barriers>
+            </tasks>
+            <tasks xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
         </parts>
-        <parts xsi:type="compute:ComputePipeline" name="Step" stage="Compute" workgroupSizeX="16" workgroupSizeY="16" workgroupSizeZ="16" width="1248" height="704" depth="1">
+        <parts xsi:type="compute:ComputePipeline" name="Step" stage="Compute">
           <pushConstantRanges size="28">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Step" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2"/>
+            <descriptorSets name="Step - board 1 to 2" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.4 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
+            <descriptorSets name="Step - board 2 to 1" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.4 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0"/>
           </descriptorSetPkg>
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.10">
-              <stages>COMPUTE_BIT</stages>
-            </tasks>
             <tasks xsi:type="process:CompositeTask" name="Update Board">
-              <tasks xsi:type="process:PipelineBarrier" name="DecisionReadToWrite" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
-                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.3">
+              <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
+              <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
+                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
+                  <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
+                  <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+                </barriers>
+                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.2">
                   <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
                   <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
                 </barriers>
               </tasks>
-              <tasks xsi:type="compute:Computer" name="Step1" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5"/>
-              <tasks xsi:type="compute:Computer" name="Step2" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6"/>
-              <tasks xsi:type="compute:Computer" name="Step3" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7"/>
-              <tasks xsi:type="process:PipelineBarrier" name="DecisionWriteToRead" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
-                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.3">
+              <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.8">
+                <stages>COMPUTE_BIT</stages>
+              </tasks>
+              <tasks xsi:type="compute:Computer" name="Board update" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6" workgroupCountX="78" workgroupCountY="44"/>
+              <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.1"/>
+              <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
+                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
+                  <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
+                  <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+                </barriers>
+                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
                   <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
                   <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
                 </barriers>
               </tasks>
-              <tasks xsi:type="compute:Computer" name="Step4" shader="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
+              <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.8">
+                <stages>COMPUTE_BIT</stages>
+              </tasks>
+              <tasks xsi:type="compute:Computer" name="Board update" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6" workgroupCountX="78" workgroupCountY="44"/>
             </tasks>
           </taskPkg>
         </parts>
-        <parts xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" workgroupSizeX="16" workgroupSizeY="16" workgroupSizeZ="16" width="1248" height="704" depth="1">
+        <parts xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute">
           <pushConstantRanges size="28">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@resourcePkg/@resources.0"/>
+            <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@resourcePkg/@resources.0"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.2/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.10">
+            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.8">
               <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="process:PipelineBarrier" dstStage="COMPUTE_SHADER_BIT">
-              <barriers xsi:type="resource:ImageBarrier" dstLayout="GENERAL" image="//@engines.0/@resourcePkg/@resources.0">
+            <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="COMPUTE_SHADER_BIT" srcQueue="//@engines.0/@processes.1" dstQueue="//@engines.0/@processes.0">
+              <barriers xsi:type="resource:ImageBarrier" srcLayout="TRANSFER_SRC_OPTIMAL" dstLayout="GENERAL" image="//@engines.0/@resourcePkg/@resources.0">
+                <srcAccessMask>TRANSFER_READ_BIT</srcAccessMask>
                 <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
               </barriers>
             </tasks>
-            <tasks xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resourcePkg/@resources.9"/>
+            <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
+              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
+                <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
+                <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
+              </barriers>
+              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.2">
+                <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
+                <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
+              </barriers>
+            </tasks>
+            <tasks xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
         </parts>
       </partPkg>
     </processes>
-    <processes xsi:type="graphic:GraphicProcess" resetAllowed="true" waitFor="//@engines.0/@resourcePkg/@resources.1">
+    <processes xsi:type="graphic:GraphicProcess" resetAllowed="true">
       <partPkg>
         <parts xsi:type="process:Pipeline" name="Blit" stage="Transfer">
           <taskPkg>
             <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="TRANSFER_BIT" srcQueue="//@engines.0/@processes.0" dstQueue="//@engines.0/@processes.1">
-              <barriers xsi:type="resource:ImageBarrier" dstLayout="TRANSFER_SRC_OPTIMAL" image="//@engines.0/@resourcePkg/@resources.0">
+              <barriers xsi:type="resource:ImageBarrier" srcLayout="GENERAL" dstLayout="TRANSFER_SRC_OPTIMAL" image="//@engines.0/@resourcePkg/@resources.0">
                 <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
                 <dstAccessMask>TRANSFER_READ_BIT</dstAccessMask>
               </barriers>
+            </tasks>
+            <tasks xsi:type="process:PipelineBarrier" dstStage="TRANSFER_BIT">
               <barriers xsi:type="graphic:SwapImageBarrier" dstLayout="TRANSFER_DST_OPTIMAL">
                 <dstAccessMask>TRANSFER_WRITE_BIT</dstAccessMask>
               </barriers>
             </tasks>
             <tasks xsi:type="graphic:BlitToSwapImage" image="//@engines.0/@resourcePkg/@resources.0"/>
-            <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="BOTTOM_OF_PIPE_BIT">
-              <barriers xsi:type="resource:ImageBarrier" srcLayout="TRANSFER_SRC_OPTIMAL" dstLayout="GENERAL" image="//@engines.0/@resourcePkg/@resources.0">
-                <srcAccessMask>TRANSFER_READ_BIT</srcAccessMask>
-                <dstAccessMask>UNDEFINED</dstAccessMask>
-              </barriers>
-            </tasks>
           </taskPkg>
         </parts>
         <parts xsi:type="graphic:GraphicsPipeline" name="GUI" shaders="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.4 //@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.5">
@@ -307,7 +332,8 @@
     <materials name="LavaBoiling" density="2" runoff="6" r="244" g="244" b="67" userFriendly="false"/>
     <materials name="Fuel" density="1" runoff="30" r="212" g="158" b="59"/>
     <materials name="Petrol" density="2" runoff="30" r="30" g="30" b="95"/>
-    <materials name="PetrolFire" density="2" runoff="30" r="50" g="15" b="106" userFriendly="false"/>
+    <materials name="PetrolFire" density="1" runoff="30" r="50" g="15" b="106" userFriendly="false"/>
+    <materials name="Sparkle" r="185" g="50" b="65" userFriendly="false"/>
   </materials>
   <transformations>
     <transformations name="WATER__PLANT" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.12" target="//@materials/@materials.12" probability="800"/>
@@ -351,24 +377,27 @@
     <transformations name="WETDIRT__LAVA" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.15" target="//@materials/@materials.6" probability="200"/>
     <transformations name="GRASS__LAVA" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="200"/>
     <transformations name="DIRT__LAVABOILING" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.16" target="//@materials/@materials.15" probability="200"/>
-    <transformations name="WALL__LAVA" reactant="//@materials/@materials.3" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="2"/>
+    <transformations name="WALL__LAVA" reactant="//@materials/@materials.3" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="1"/>
     <transformations name="CONCRETE__LAVA" reactant="//@materials/@materials.4" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="5"/>
     <transformations name="VAPOR__LAVA" reactant="//@materials/@materials.6" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="100"/>
     <transformations name="WATER__LAVA" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.15" target="//@materials/@materials.6" probability="400"/>
     <transformations name="WATER__LAVABOILING" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.16" target="//@materials/@materials.6" probability="800"/>
     <transformations name="LAVA_BOILING__WATER" reactant="//@materials/@materials.16" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="5"/>
     <transformations name="LAVA__WATER" reactant="//@materials/@materials.15" catalyst="//@materials/@materials.5" target="//@materials/@materials.6" probability="25"/>
-    <transformations name="FUEL_FIRE" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.9" target="//@materials/@materials.9" probability="1000" propagation="4"/>
-    <transformations name="FUEL_FIREFINAL" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.11" target="//@materials/@materials.9" probability="1000" propagation="4"/>
-    <transformations name="FUEL_FIRESTATIC" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.10" target="//@materials/@materials.9" probability="1000" propagation="4"/>
+    <transformations name="FUEL_FIRE" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.9" target="//@materials/@materials.20" probability="1000" propagation="3"/>
+    <transformations name="FUEL_SPARKLE" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.20" target="//@materials/@materials.20" probability="1000" propagation="4"/>
+    <transformations name="FUEL_FIREFINAL" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.11" target="//@materials/@materials.20" probability="1000" propagation="3"/>
+    <transformations name="FUEL_FIRESTATIC" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.10" target="//@materials/@materials.20" probability="1000" propagation="3"/>
     <transformations name="PETROL_FIRE" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.9" target="//@materials/@materials.19" probability="400" propagation="2"/>
     <transformations name="PETROL_FIREFINAL" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.11" target="//@materials/@materials.19" probability="400" propagation="2"/>
     <transformations name="PETROL_FIRESTATIC" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.10" target="//@materials/@materials.19" probability="400" propagation="2"/>
     <transformations name="PETROL_LAVA" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.15" target="//@materials/@materials.19" probability="1000" propagation="2"/>
-    <transformations name="PETROL_PETROLFIRE" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.19" target="//@materials/@materials.19" probability="50"/>
-    <transformations name="PETROLFIRE_ALL" reactant="//@materials/@materials.19" target="//@materials/@materials.18" probability="60"/>
-    <transformations name="PETROLFIRE_VOID" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="30"/>
+    <transformations name="PETROL_PETROLFIRE" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.19" target="//@materials/@materials.19" probability="40" propagation="2"/>
+    <transformations name="PETROLFIRE_ALL" reactant="//@materials/@materials.19" target="//@materials/@materials.18" probability="120"/>
+    <transformations name="PETROLFIRE_VOID" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="25"/>
     <transformations name="VOID_PETROLFIRE" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.19" target="//@materials/@materials.9" probability="175"/>
     <transformations name="WATER_PERTOLFIRE" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.19" target="//@materials/@materials.6" probability="250"/>
+    <transformations name="SPARKLE_ALL" reactant="//@materials/@materials.20" target="//@materials/@materials.11" probability="80"/>
+    <transformations name="VOID_SPARKLE" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.20" target="//@materials/@materials.11" probability="1000" propagation="5"/>
   </transformations>
 </model:VSandApplication>

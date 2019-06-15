@@ -16,14 +16,22 @@
 
 #define MATERIAL_COUNT 32
 
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
+
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
 // The game board, with all the values.
 layout(binding = 0) buffer SBoard
 {
-	int data[WIDTH][HEIGHT];
-	int chunks[CHUNK_WIDTH][CHUNK_HEIGHT];
+	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
 }board;
+
+// The chunk state board.
+layout(binding = 1) buffer SChunks
+{
+	int data[CHUNK_WIDTH][CHUNK_HEIGHT];
+}chunks;
 
 layout (push_constant) uniform PushConstants
 {
@@ -49,13 +57,14 @@ layout (push_constant) uniform PushConstants
 	int x4;
 	int y4;
 
-	int value;
+	uint value;
 
 }attributes;
 
 bool testCircle(int x, int y);
 bool testLine(int x, int y);
 int computeSide(int x, int y, int x1, int y1, int x2, int y2);
+void setValue(int x, int y, uint value);
 
 void main()
 {
@@ -83,10 +92,23 @@ void main()
 
 			if (isInShape)
 			{
-				board.data[x][y] = attributes.value;
-				board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 7;
+				setValue(x, y, attributes.value);
+				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = 3;
 			}
 		}
+	}
+}
+
+void setValue(int x, int y, uint value)
+{
+	if(x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+	{
+		uint swizzledX = x >> 1;
+		uint swizzledY = y >> 1;
+		uint offset = ((x & 1)	| ((y & 1) << 1)) << 3;
+
+		atomicAnd(board.data[swizzledX][swizzledY], 0xFFFFFFFF ^ (0xFF << offset));
+		atomicOr(board.data[swizzledX][swizzledY], value << offset);
 	}
 }
 

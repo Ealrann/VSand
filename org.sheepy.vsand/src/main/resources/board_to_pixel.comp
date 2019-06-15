@@ -1,4 +1,4 @@
-#version 450
+#version 460
 #extension GL_ARB_separate_shader_objects : enable
 
 #define WIDTH 1248
@@ -7,14 +7,15 @@
 #define CHUNK_WIDTH 78
 #define CHUNK_HEIGHT 44
 
-#define WORKGROUP_SIZE_X 16
-#define WORKGROUP_SIZE_Y 16
+#define WORKGROUP_SIZE 8
+#define EFFECTIVE_SIZE 16
 
 #define MATERIAL_COUNT 32
 
-precision lowp float;
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
 
-layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
 struct Entry
 {
@@ -40,78 +41,148 @@ layout(binding = 0) uniform SConfiguration
 	Entry materials[MATERIAL_COUNT];
 }configuration;
 
-layout(binding = 1) buffer SBoard
+layout(binding = 1) buffer readonly SBoard
 {
-	int data[WIDTH][HEIGHT];
-	int chunks[CHUNK_WIDTH][CHUNK_HEIGHT];
-}board;
+	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+}oldBoard;
 
-layout(rgba8, binding = 2) uniform image2D outImage;
+// The chunk state board.
+layout(binding = 2) buffer SChunks
+{
+	int data[CHUNK_WIDTH][CHUNK_HEIGHT];
+}chunks;
+
+layout(rgba8, binding = 3) uniform image2D outImage;
 
 const uint G_MASK = 255 << 8;
 const uint B_MASK = 255;
 const vec4 DEBUG_COLOR = vec4(1.0, 0.5, 0.5, 0.0);
+const uvec4 unswizzleVec = uvec4(0xFF, 0xFF00, 0xFF0000, 0xFF000000);
+const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
+const uvec2 xDir = uvec2(1, 0);
+const uvec2 yDir = uvec2(0, 1);
 
+shared bool colorTweakPreTest;
+shared bool sleeping;
 
-bool testCircle(int x, int y, int circleX, int circleY, int radius);
+bool testSquare(ivec2 upLeftCorner1, ivec2 downRightCorner1, ivec2 upLeftCorner2, ivec2 downRightCorner2);
+bool testCircle(ivec2 loc, ivec2 circleLoc, int radius);
+vec4 computeColor(ivec2 loc, vec4 color);
 
 void main()
 {
-	if (gl_GlobalInvocationID.y >= HEIGHT)
-		return;
-	
-	int x = int(gl_GlobalInvocationID.x);
-	int y = int(gl_GlobalInvocationID.y);
-
-	bool colorTweak = false;
-	vec4 addColor = vec4(0, 0, 0, 0);
-	if(testCircle(x, y, pushConstants.mousePos.x, pushConstants.mousePos.y, pushConstants.drawRadius))
-	{
-		Entry material = configuration.materials[pushConstants.drawMaterialId];
-		addColor+= vec4(material.color.xyz + 0.2, 0);
-		atomicOr(board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y], 12);
-		colorTweak = true;
-	}
-
-	int chunkState = board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y];
 	if(gl_LocalInvocationIndex == 0)
 	{
-		atomicCompSwap(board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y], 4, 8);
-		atomicCompSwap(board.chunks[gl_WorkGroupID.x][gl_WorkGroupID.y], 6, 10);
-	}
+		int chunkState = chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y];
 
-	if(pushConstants.forceClear == 0 && colorTweak == false && (chunkState & 12) == 0)
-	{
-		if(pushConstants.showSleepChunks == 1)
+		ivec2 workgroupUpLeftCorner = ivec2(gl_WorkGroupID.xy) * EFFECTIVE_SIZE;
+		ivec2 workgroupDownRightCorner = ivec2(gl_WorkGroupID.xy + 1) * EFFECTIVE_SIZE - 1;
+		ivec2 cercleUpLeftCorner = pushConstants.mousePos - pushConstants.drawRadius;
+		ivec2 cercleDownRightCorner = pushConstants.mousePos + pushConstants.drawRadius;
+
+		colorTweakPreTest = testSquare(workgroupUpLeftCorner,
+																		workgroupDownRightCorner,
+																		cercleUpLeftCorner,
+																		cercleDownRightCorner);
+
+		if((chunkState & 2) != 0)
 		{
-			addColor += vec4(1, 0.5, 0.5, 0);
-			colorTweak = true;
+			sleeping = false;
+			if(colorTweakPreTest == false)
+			{
+				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = chunkState ^ 2;
+			}
 		}
 		else
 		{
-			return;
+			sleeping = true;
 		}
 	}
 
-	uint index = board.data[x][y];
-	Entry material = configuration.materials[index];
-	
-	if(colorTweak)
-		imageStore(outImage, ivec2(x, y), ((material.color * 3) + addColor) / 4);
-	else
-		imageStore(outImage, ivec2(x, y), material.color);
+
+	barrier();
+
+	if(gl_LocalInvocationIndex == 0 && colorTweakPreTest == true)
+	{
+		chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 2;
+	}
+
+	ivec2 loc = ivec2(gl_GlobalInvocationID.xy) * 2;
+
+	if(  loc.x >= WIDTH
+		|| loc.y >= HEIGHT
+		|| (   pushConstants.forceClear == 0
+				&& colorTweakPreTest == false
+				&& sleeping == true
+				&& pushConstants.showSleepChunks == 0))
+	{
+		return;
+	}
+
+  uvec2 swizzled = loc >> 1;
+	uvec4 unswizzledValue = (unswizzleVec & oldBoard.data[swizzled.x][swizzled.y]) >> unswizzleOffset;
+
+	vec4 color1 = configuration.materials[unswizzledValue.x].color;
+	vec4 color2 = configuration.materials[unswizzledValue.y].color;
+	vec4 color3 = configuration.materials[unswizzledValue.z].color;
+	vec4 color4 = configuration.materials[unswizzledValue.w].color;
+
+	ivec2 loc1 = loc;
+	ivec2 loc2 = loc + ivec2(1, 0);
+	ivec2 loc3 = loc + ivec2(0, 1);
+	ivec2 loc4 = loc + 1;
+
+	vec4 finalColor1 = computeColor(loc1, color1);
+	vec4 finalColor2 = computeColor(loc2, color2);
+	vec4 finalColor3 = computeColor(loc3, color3);
+	vec4 finalColor4 = computeColor(loc4, color4);
+
+	imageStore(outImage, loc1, finalColor1);
+	imageStore(outImage, loc2, finalColor2);
+	imageStore(outImage, loc3, finalColor3);
+	imageStore(outImage, loc4, finalColor4);
 }
 
-bool testCircle(int x, int y, int circleX, int circleY, int radius)
+vec4 computeColor(ivec2 loc, vec4 color)
 {
-	if(x >= pushConstants.mousePos.x - pushConstants.drawRadius
-		&& y >= pushConstants.mousePos.y - pushConstants.drawRadius
-		&& x <= pushConstants.mousePos.x + pushConstants.drawRadius
-		&& y <= pushConstants.mousePos.y + pushConstants.drawRadius)
+	bool colorTweak = false;
+	vec4 addColor = vec4(0, 0, 0, 0);
+	if(colorTweakPreTest && testCircle(loc, pushConstants.mousePos, pushConstants.drawRadius))
 	{
-		int distX = (circleX - x) * (circleX - x);
-		int distY = (circleY - y) * (circleY - y);
-		return (distX + distY) <= (radius * radius);
+		Entry material = configuration.materials[pushConstants.drawMaterialId];
+		addColor += vec4(material.color.xyz + 0.2, 0);
+
+		colorTweak = true;
 	}
-	return false;
+
+	if(    sleeping == true
+			&& pushConstants.showSleepChunks == 1)
+	{
+		addColor += vec4(1, 0.5, 0.5, 0);
+		colorTweak = true;
+	}
+
+	if(colorTweak)
+	{
+		return (color * 3 + addColor) / 4;
+	}
+	else
+	{
+		return color;
+	}
+}
+
+
+bool testSquare(ivec2 upLeftCorner1, ivec2 downRightCorner1, ivec2 upLeftCorner2, ivec2 downRightCorner2)
+{
+   return !((downRightCorner1.x < upLeftCorner2.x)
+			|| (downRightCorner1.y < upLeftCorner2.y)
+			|| (downRightCorner2.x < upLeftCorner1.x)
+			|| (downRightCorner2.y < upLeftCorner1.y));
+}
+
+bool testCircle(ivec2 loc, ivec2 circleLoc, int radius)
+{
+	ivec2 dist = (circleLoc - loc) * (circleLoc - loc);
+	return (dist.x + dist.y) <= (radius * radius);
 }

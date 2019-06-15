@@ -15,7 +15,7 @@ public class VSandBenchmarkLauncher
 	public static void main(String[] args)
 	{
 		final var application = createTestApplication();
-		final var mainLoop = VSandMainLoop.createBenchmark(application, 3000);
+		final var mainLoop = VSandMainLoop.createBenchmark(application, 1400);
 
 		ApplicationLauncher.launch(application, mainLoop);
 	}

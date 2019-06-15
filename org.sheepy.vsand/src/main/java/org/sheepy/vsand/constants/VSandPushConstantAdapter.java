@@ -3,12 +3,14 @@ package org.sheepy.vsand.constants;
 import java.nio.ByteBuffer;
 import java.util.Random;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.joml.Vector2fc;
 import org.joml.Vector2i;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Autorun;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
+import org.sheepy.lily.core.api.adapter.annotation.NotifyChanged;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.api.adapter.annotation.Tick;
 import org.sheepy.lily.core.api.util.ModelUtil;
@@ -17,6 +19,7 @@ import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.input.IVulkanInputManager;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
+import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.EShapeSize;
@@ -54,6 +57,17 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 		inputManager = engineAdapter.getInputManager();
 
 		updateBuffer();
+	}
+
+	@NotifyChanged
+	public void notifyChanged(Notification notification)
+	{
+		if (notification.getFeature() == ResourcePackage.Literals.CONSTANT_BUFFER__BEING_PUSHED
+				&& notification.getNewBooleanValue() == true)
+		{
+			final float rNumber = random.nextFloat();
+			buffer.putFloat(0, rNumber);
+		}
 	}
 
 	@Dispose

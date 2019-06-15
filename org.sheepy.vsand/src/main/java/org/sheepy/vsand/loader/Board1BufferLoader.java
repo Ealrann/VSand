@@ -10,18 +10,17 @@ import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 
-@Adapter(scope = Buffer.class, name = "Board Buffer")
-public final class BoardBufferLoader implements IVulkanAdapter
+@Adapter(scope = Buffer.class, name = "Board Buffer 1")
+public final class Board1BufferLoader implements IVulkanAdapter
 {
 	@Autorun
 	public static void load(Buffer buffer)
 	{
 		final var application = ModelUtil.getApplication(buffer);
-		final int width = application.getSize().x;
-		final int height = application.getSize().y;
+		final int width = application.getSize().x / 2;
+		final int height = application.getSize().y / 2;
 		final int sizeBoard = width * height;
-		final int sizeChunks = (int) (Math.ceil(width / 16.) * Math.ceil(height / 16.));
-		final int sizeByte = (sizeBoard + sizeChunks) * Integer.BYTES;
+		final int sizeByte = sizeBoard * Integer.BYTES;
 
 		buffer.setSize(sizeByte);
 

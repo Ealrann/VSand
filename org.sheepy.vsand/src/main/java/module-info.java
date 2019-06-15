@@ -6,9 +6,10 @@ import org.sheepy.vsand.constants.VSandPushConstantAdapter;
 import org.sheepy.vsand.draw.DrawCircleAdapter;
 import org.sheepy.vsand.draw.DrawLineAdapter;
 import org.sheepy.vsand.draw.DrawSquareAdapter;
-import org.sheepy.vsand.loader.BoardBufferLoader;
-import org.sheepy.vsand.loader.BoardDecisionLoader;
+import org.sheepy.vsand.loader.Board1BufferLoader;
+import org.sheepy.vsand.loader.Board2BufferLoader;
 import org.sheepy.vsand.loader.BoardImageLoader;
+import org.sheepy.vsand.loader.ChunkBufferLoader;
 import org.sheepy.vsand.loader.ConfigurationBufferLoader;
 import org.sheepy.vsand.loader.TransformationBufferLoader;
 import org.sheepy.vsand.logic.ApplicationBehaviour;
@@ -18,9 +19,10 @@ import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
 @Adapters(classifiers = {
 		MaterialSelectorPanelAdapter.class,
 		ConfigurationBufferLoader.class,
-		BoardBufferLoader.class,
+		Board1BufferLoader.class,
+		Board2BufferLoader.class,
+		ChunkBufferLoader.class,
 		BoardImageLoader.class,
-		BoardDecisionLoader.class,
 		TransformationBufferLoader.class,
 		VSandPushConstantAdapter.class,
 		DrawPushConstantAdapter.class,
