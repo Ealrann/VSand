@@ -328,13 +328,15 @@
     <materials name="FireFinal" isStatic="true" r="255" userFriendly="false"/>
     <materials name="Plant" isStatic="true" density="15" r="67" g="244" b="67"/>
     <materials name="Wax" isStatic="true" density="20" r="254" g="254" b="231"/>
-    <materials name="LiquidWax" density="2" runoff="1" r="231" g="254" b="254" userFriendly="false"/>
+    <materials name="LiquidWax" density="2" runoff="3" r="231" g="254" b="254" userFriendly="false"/>
+    <materials name="BurningWax" isStatic="true" r="244" g="38" b="38" userFriendly="false"/>
     <materials name="Lava" density="4" runoff="5" r="244" g="111" b="67"/>
     <materials name="LavaBoiling" density="2" runoff="6" r="244" g="244" b="67" userFriendly="false"/>
     <materials name="Fuel" density="1" runoff="30" r="212" g="158" b="59"/>
     <materials name="Petrol" density="2" runoff="30" r="30" g="30" b="95"/>
     <materials name="PetrolFire" density="1" runoff="30" r="50" g="15" b="106" userFriendly="false"/>
     <materials name="Sparkle" r="185" g="50" b="65" userFriendly="false"/>
+    <materials name="HotWax" density="1" runoff="3" r="231" g="254" b="254" userFriendly="false"/>
   </materials>
   <transformations>
     <transformations reactant="//@materials/@materials.5" catalyst="//@materials/@materials.12" target="//@materials/@materials.12" probability="800"/>
@@ -360,46 +362,50 @@
     <transformations reactant="//@materials/@materials.8" catalyst="//@materials/@materials.10" target="//@materials/@materials.10" probability="240"/>
     <transformations reactant="//@materials/@materials.8" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000"/>
     <transformations reactant="//@materials/@materials.5" catalyst="//@materials/@materials.8" target="//@materials/@materials.8" probability="1"/>
-    <transformations reactant="//@materials/@materials.13" catalyst="//@materials/@materials.9" target="//@materials/@materials.10" probability="200"/>
-    <transformations reactant="//@materials/@materials.13" catalyst="//@materials/@materials.10" target="//@materials/@materials.10" probability="15"/>
-    <transformations reactant="//@materials/@materials.11" catalyst="//@materials/@materials.13" target="//@materials/@materials.14" probability="650"/>
-    <transformations reactant="//@materials/@materials.13" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000"/>
-    <transformations reactant="//@materials/@materials.14" target="//@materials/@materials.13" probability="100" isStaticTransformation="true"/>
-    <transformations reactant="//@materials/@materials.15" target="//@materials/@materials.16" probability="8"/>
-    <transformations reactant="//@materials/@materials.16" target="//@materials/@materials.15" probability="50"/>
-    <transformations reactant="//@materials/@materials.0" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="40"/>
-    <transformations reactant="//@materials/@materials.16" catalyst="//@materials/@materials.15" target="//@materials/@materials.15" probability="40"/>
-    <transformations reactant="//@materials/@materials.13" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="250"/>
-    <transformations reactant="//@materials/@materials.14" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="250"/>
-    <transformations reactant="//@materials/@materials.12" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="400"/>
-    <transformations reactant="//@materials/@materials.1" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="200"/>
-    <transformations reactant="//@materials/@materials.1" catalyst="//@materials/@materials.16" target="//@materials/@materials.15" probability="500"/>
-    <transformations reactant="//@materials/@materials.2" catalyst="//@materials/@materials.15" target="//@materials/@materials.0" probability="200"/>
-    <transformations reactant="//@materials/@materials.7" catalyst="//@materials/@materials.15" target="//@materials/@materials.6" probability="200"/>
-    <transformations reactant="//@materials/@materials.8" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="200"/>
-    <transformations reactant="//@materials/@materials.2" catalyst="//@materials/@materials.16" target="//@materials/@materials.15" probability="200"/>
-    <transformations reactant="//@materials/@materials.3" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="1"/>
-    <transformations reactant="//@materials/@materials.4" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="5"/>
-    <transformations reactant="//@materials/@materials.6" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="100"/>
-    <transformations reactant="//@materials/@materials.5" catalyst="//@materials/@materials.15" target="//@materials/@materials.6" probability="400"/>
-    <transformations reactant="//@materials/@materials.5" catalyst="//@materials/@materials.16" target="//@materials/@materials.6" probability="800"/>
-    <transformations reactant="//@materials/@materials.16" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="5"/>
-    <transformations reactant="//@materials/@materials.15" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="25"/>
-    <transformations reactant="//@materials/@materials.17" catalyst="//@materials/@materials.9" target="//@materials/@materials.20" probability="1000" propagation="3"/>
-    <transformations reactant="//@materials/@materials.17" catalyst="//@materials/@materials.20" target="//@materials/@materials.20" probability="1000" propagation="4"/>
-    <transformations reactant="//@materials/@materials.17" catalyst="//@materials/@materials.11" target="//@materials/@materials.20" probability="1000" propagation="3"/>
-    <transformations reactant="//@materials/@materials.17" catalyst="//@materials/@materials.10" target="//@materials/@materials.20" probability="1000" propagation="3"/>
-    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.9" target="//@materials/@materials.19" probability="400" propagation="2"/>
-    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.11" target="//@materials/@materials.19" probability="400" propagation="2"/>
-    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.10" target="//@materials/@materials.19" probability="400" propagation="2"/>
-    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.15" target="//@materials/@materials.9" probability="300" propagation="2"/>
-    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.19" target="//@materials/@materials.19" probability="40"/>
-    <transformations reactant="//@materials/@materials.19" target="//@materials/@materials.18" probability="40"/>
-    <transformations reactant="//@materials/@materials.19" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="35"/>
-    <transformations reactant="//@materials/@materials.0" catalyst="//@materials/@materials.19" target="//@materials/@materials.9" probability="175"/>
-    <transformations reactant="//@materials/@materials.19" catalyst="//@materials/@materials.5" target="//@materials/@materials.18" probability="260"/>
-    <transformations reactant="//@materials/@materials.5" catalyst="//@materials/@materials.19" target="//@materials/@materials.6" probability="80"/>
-    <transformations reactant="//@materials/@materials.20" target="//@materials/@materials.11" probability="80"/>
-    <transformations reactant="//@materials/@materials.0" catalyst="//@materials/@materials.20" target="//@materials/@materials.11" probability="1000" propagation="5"/>
+    <transformations reactant="//@materials/@materials.13" catalyst="//@materials/@materials.9" target="//@materials/@materials.15" probability="100"/>
+    <transformations reactant="//@materials/@materials.13" catalyst="//@materials/@materials.10" target="//@materials/@materials.15" probability="75"/>
+    <transformations reactant="//@materials/@materials.13" catalyst="//@materials/@materials.11" target="//@materials/@materials.15" probability="1000"/>
+    <transformations reactant="//@materials/@materials.13" catalyst="//@materials/@materials.22" target="//@materials/@materials.15" probability="1000"/>
+    <transformations reactant="//@materials/@materials.22" target="//@materials/@materials.14" probability="200"/>
+    <transformations reactant="//@materials/@materials.15" target="//@materials/@materials.22" probability="30"/>
+    <transformations reactant="//@materials/@materials.15" catalyst="//@materials/@materials.0" target="//@materials/@materials.10" probability="350"/>
+    <transformations reactant="//@materials/@materials.14" target="//@materials/@materials.13" probability="7" isStaticTransformation="true"/>
+    <transformations reactant="//@materials/@materials.16" target="//@materials/@materials.17" probability="8"/>
+    <transformations reactant="//@materials/@materials.17" target="//@materials/@materials.16" probability="50"/>
+    <transformations reactant="//@materials/@materials.0" catalyst="//@materials/@materials.17" target="//@materials/@materials.9" probability="40"/>
+    <transformations reactant="//@materials/@materials.17" catalyst="//@materials/@materials.16" target="//@materials/@materials.16" probability="40"/>
+    <transformations reactant="//@materials/@materials.13" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="250"/>
+    <transformations reactant="//@materials/@materials.14" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="250"/>
+    <transformations reactant="//@materials/@materials.12" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="400"/>
+    <transformations reactant="//@materials/@materials.1" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="200"/>
+    <transformations reactant="//@materials/@materials.1" catalyst="//@materials/@materials.17" target="//@materials/@materials.16" probability="500"/>
+    <transformations reactant="//@materials/@materials.2" catalyst="//@materials/@materials.16" target="//@materials/@materials.0" probability="200"/>
+    <transformations reactant="//@materials/@materials.7" catalyst="//@materials/@materials.16" target="//@materials/@materials.6" probability="200"/>
+    <transformations reactant="//@materials/@materials.8" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="200"/>
+    <transformations reactant="//@materials/@materials.2" catalyst="//@materials/@materials.17" target="//@materials/@materials.16" probability="200"/>
+    <transformations reactant="//@materials/@materials.3" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="1"/>
+    <transformations reactant="//@materials/@materials.4" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="5"/>
+    <transformations reactant="//@materials/@materials.6" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="100"/>
+    <transformations reactant="//@materials/@materials.5" catalyst="//@materials/@materials.16" target="//@materials/@materials.6" probability="400"/>
+    <transformations reactant="//@materials/@materials.5" catalyst="//@materials/@materials.17" target="//@materials/@materials.6" probability="800"/>
+    <transformations reactant="//@materials/@materials.17" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="5"/>
+    <transformations reactant="//@materials/@materials.16" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="25"/>
+    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.9" target="//@materials/@materials.21" probability="1000" propagation="3"/>
+    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.21" target="//@materials/@materials.21" probability="1000" propagation="4"/>
+    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.11" target="//@materials/@materials.21" probability="1000" propagation="3"/>
+    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.10" target="//@materials/@materials.21" probability="1000" propagation="3"/>
+    <transformations reactant="//@materials/@materials.18" catalyst="//@materials/@materials.16" target="//@materials/@materials.21" probability="1000"/>
+    <transformations reactant="//@materials/@materials.19" catalyst="//@materials/@materials.9" target="//@materials/@materials.20" probability="400" propagation="2"/>
+    <transformations reactant="//@materials/@materials.19" catalyst="//@materials/@materials.11" target="//@materials/@materials.20" probability="400" propagation="2"/>
+    <transformations reactant="//@materials/@materials.19" catalyst="//@materials/@materials.10" target="//@materials/@materials.20" probability="400" propagation="2"/>
+    <transformations reactant="//@materials/@materials.19" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="300" propagation="2"/>
+    <transformations reactant="//@materials/@materials.19" catalyst="//@materials/@materials.20" target="//@materials/@materials.20" probability="40"/>
+    <transformations reactant="//@materials/@materials.20" target="//@materials/@materials.19" probability="40"/>
+    <transformations reactant="//@materials/@materials.20" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="35"/>
+    <transformations reactant="//@materials/@materials.0" catalyst="//@materials/@materials.20" target="//@materials/@materials.9" probability="175"/>
+    <transformations reactant="//@materials/@materials.20" catalyst="//@materials/@materials.5" target="//@materials/@materials.19" probability="260"/>
+    <transformations reactant="//@materials/@materials.5" catalyst="//@materials/@materials.20" target="//@materials/@materials.6" probability="80"/>
+    <transformations reactant="//@materials/@materials.21" target="//@materials/@materials.11" probability="80"/>
+    <transformations reactant="//@materials/@materials.0" catalyst="//@materials/@materials.21" target="//@materials/@materials.11" probability="1000" propagation="5"/>
   </transformations>
 </model:VSandApplication>
