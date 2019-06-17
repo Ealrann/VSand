@@ -124,6 +124,15 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__RESIZEABLE = ApplicationPackage.APPLICATION__RESIZEABLE;
 
 	/**
+	 * The feature id for the '<em><b>Headless</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__HEADLESS = ApplicationPackage.APPLICATION__HEADLESS;
+
+	/**
 	 * The feature id for the '<em><b>Title</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

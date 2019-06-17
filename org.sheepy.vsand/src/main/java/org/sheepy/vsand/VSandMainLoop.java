@@ -56,25 +56,33 @@ public final class VSandMainLoop implements IMainLoop
 	{
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		engineAdapter = IVulkanEngineAdapter.adapt(vulkanEngine);
-		final Window window = engineAdapter.getWindow();
-		frameDurationNs = (long) ((1. / window.getRefreshRate()) * 1e9);
-		inputManager = engineAdapter.getInputManager();
+		if (application.isHeadless() == false)
+		{
+			final Window window = engineAdapter.getWindow();
+			frameDurationNs = (long) ((1. / window.getRefreshRate()) * 1e9);
+			inputManager = engineAdapter.getInputManager();
+			if (benchmarkMode == false)
+			{
+				final var boardSize = new Vector2i(application.getSize());
+				final var mainDrawManager = new DrawManager(application, inputManager, boardSize);
+				final var secondaryDrawManager = new DrawManager(application, inputManager,
+						boardSize);
+				final var vsandInputManager = new VSandInputManager(window, application,
+						mainDrawManager, secondaryDrawManager);
+				inputManager.addListener(vsandInputManager);
+			}
+		}
 
 		gatherProcesses(vulkanEngine);
 
-		final var boardSize = new Vector2i(application.getSize());
-		final var mainDrawManager = new DrawManager(application, inputManager, boardSize);
-		final var secondaryDrawManager = new DrawManager(application, inputManager, boardSize);
-
-		if (benchmarkMode == false)
-		{
-			final var vsandInputManager = new VSandInputManager(window, application,
-					mainDrawManager, secondaryDrawManager);
-			inputManager.addListener(vsandInputManager);
-		}
-
 		startNs = System.nanoTime();
 		nextRenderDate = System.nanoTime() + frameDurationNs;
+
+
+		if (benchmarkMode == true)
+		{
+			System.out.println("VSand benchmark is running...");
+		}
 	}
 
 	private void gatherProcesses(VulkanEngine vulkanEngine)
@@ -106,16 +114,19 @@ public final class VSandMainLoop implements IMainLoop
 			application.setPaused(true);
 		}
 
-		if (benchmarkMode == false)
+		if (renderProcessAdapter != null)
 		{
-			renderProcessAdapter.prepareNextAndExecute();
-		}
-		else
-		{
-			if (nextRenderDate < System.nanoTime())
+			if (benchmarkMode == false)
 			{
 				renderProcessAdapter.prepareNextAndExecute();
-				nextRenderDate = System.nanoTime() + frameDurationNs;
+			}
+			else
+			{
+				if (nextRenderDate < System.nanoTime())
+				{
+					renderProcessAdapter.prepareNextAndExecute();
+					nextRenderDate = System.nanoTime() + frameDurationNs;
+				}
 			}
 		}
 

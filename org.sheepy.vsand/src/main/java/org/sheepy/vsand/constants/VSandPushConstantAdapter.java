@@ -93,9 +93,17 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 		buffer.putInt(application.isShowSleepZones() ? 1 : 0);
 		buffer.putInt(size.getSize() >> 1);
 
-		final var cursorPosition = convertToBoardPosition(inputManager.getCursorPosition());
-		buffer.putInt(cursorPosition.x);
-		buffer.putInt(cursorPosition.y);
+		if (inputManager != null)
+		{
+			final var cursorPosition = convertToBoardPosition(inputManager.getCursorPosition());
+			buffer.putInt(cursorPosition.x);
+			buffer.putInt(cursorPosition.y);
+		}
+		else
+		{
+			buffer.putInt(0);
+			buffer.putInt(0);
+		}
 
 		final Material mainMaterial = application.getMainMaterial();
 		final int index = application.getMaterials().getMaterials().indexOf(mainMaterial);
