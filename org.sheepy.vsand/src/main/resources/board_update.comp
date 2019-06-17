@@ -226,13 +226,10 @@ void main()
 
 
 	bool swapped = false;
-	if((choosedTo || acceptedFrom) && !closeBorder)
+	if((choosedTo || acceptedFrom) && !closeBorder && !farBorder)
 	{
+		updated = true;
 		swapped = swap(loc, localLoc);
-		if(swapped)
-		{
-			updated = true;
-		}
 	}
 
 
@@ -266,7 +263,7 @@ void main()
 
 	if(gl_LocalInvocationIndex == 1)
 	{
-		if(updated || choosedTo)
+		if(updated)
 		{
 			chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = 3;
 		}
@@ -308,7 +305,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 
 	uint currentValue = board[localLoc.x][localLoc.y];
 	int density = materials[currentValue].density;
-	uint valueDown = board[localLoc.x][localLoc.y + 1];
+	uint valueDown = localLoc.y < WORKGROUP_SIZE - 1 ? board[localLoc.x][localLoc.y + 1] : getValue(ivec2(loc.x, loc.y + 1));
 
 	bool wantToFallDown = materials[valueDown].isStatic == 0
 			&& density > materials[valueDown].density;
@@ -326,15 +323,15 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 	if(!wantToFallDown || !luck)
 	{
 		// If not falling down, we check the right/left move
-		uint valueLeft = board[localLoc.x - 1][localLoc.y];
-		uint valueRight = board[localLoc.x + 1][localLoc.y];
-		uint valueUp = board[localLoc.x][localLoc.y - 1];
-		bool isPressed = materials[valueUp].density == density && materials[valueUp].isStatic == 0;
+		uint valueLeft = localLoc.x > 0 ? board[localLoc.x - 1][localLoc.y] : getValue(ivec2(loc.x - 1, loc.y));
+		uint valueRight = localLoc.x < WORKGROUP_SIZE - 1 ? board[localLoc.x + 1][localLoc.y] : getValue(ivec2(loc.x + 1, loc.y));
+		uint valueUp = localLoc.y > 0 ? board[localLoc.x][localLoc.y - 1] : getValue(ivec2(loc.x, loc.y - 1));
+		bool isPressed = valueUp == currentValue;
 		int runoff = materials[currentValue].runoff;
 		int distLeft = runoff;
 		int distRight = runoff;
 
-		if (materials[valueLeft].density < density)
+		if (materials[valueLeft].density < density && materials[valueLeft].isStatic == 0)
 		{
 			if(isPressed && luck)
 				distLeft = 0;
@@ -345,13 +342,13 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 					res = true; // prevent no luck sleep
 			}
 		}
-		if (materials[valueRight].density < density)
+		if (materials[valueRight].density < density && materials[valueRight].isStatic == 0)
 		{
 			if(isPressed && luck)
 				distRight = 0;
 			else
 			{
-				distRight = isPressed ? 0 : checkFree(loc, localLoc, runoff, 1, density);
+				distRight = checkFree(loc, localLoc, runoff, 1, density);
 				if(isPressed)
 					res = true; // prevent no luck sleep
 			}
@@ -620,7 +617,7 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 	{
 		if (up)
 		{
-			uint valueUp = localLoc.y - offset > 0 ? decision[localLoc.x][localLoc.y - 1 - offset] >> 24 : 0;
+			uint valueUp = localLoc.y - offset > 1 ? decision[localLoc.x][localLoc.y - offset] >> 24 : 0;
 			if (valueUp == currentValue)
 			{
 				board[localLoc.x][localLoc.y - offset] = targetValue;
@@ -632,7 +629,7 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 		}
 		if (down)
 		{
-			uint valueDown = localLoc.y + offset < (HEIGHT - 1) ? decision[localLoc.x][localLoc.y + 1 + offset] >> 24 : 0;
+			uint valueDown = localLoc.y + offset < (HEIGHT - 2) ? decision[localLoc.x][localLoc.y + offset] >> 24 : 0;
 			if (valueDown == currentValue)
 			{
 				board[localLoc.x][localLoc.y + offset] = targetValue;
@@ -644,7 +641,7 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 		}
 		if (right)
 		{
-			uint valueRight = localLoc.x + offset < (WIDTH - 1) ? decision[localLoc.x + 1 + offset][localLoc.y] >> 24 : 0;
+			uint valueRight = localLoc.x + offset < (WIDTH - 2) ? decision[localLoc.x + offset][localLoc.y] >> 24 : 0;
 			if (valueRight == currentValue)
 			{
 				board[localLoc.x + offset][localLoc.y] = targetValue;
@@ -656,7 +653,7 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 		}
 		if (left)
 		{
-			uint valueLeft = localLoc.x - offset > 0 ? decision[localLoc.x - 1 - offset][localLoc.y] >> 24 : 0;
+			uint valueLeft = localLoc.x - offset > 1 ? decision[localLoc.x - offset][localLoc.y] >> 24 : 0;
 			if (valueLeft == currentValue)
 			{
 				board[localLoc.x - offset][localLoc.y] = targetValue;
@@ -676,10 +673,7 @@ int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity)
 {
 	int course = 0;
 
-	loc.y += 1;
-	localLoc.y += 1;
-
-	if (loc.y < HEIGHT)
+	if (loc.y + 1 < HEIGHT)
 	{
 		if(loc.x < runoff) runoff = loc.x;
 		if(WIDTH - 1 - loc.x < runoff) runoff = WIDTH - 1 - loc.x;
@@ -690,7 +684,16 @@ int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity)
 			localLoc.x += dir;
 
 			bool xValid = localLoc.x >= 0 && localLoc.x < WORKGROUP_SIZE;
-			uint valueDown = xValid ? board[localLoc.x][localLoc.y] : getValue(loc);
+			uint neighborValue = xValid ? board[localLoc.x][localLoc.y] : getValue(loc);
+			if (configuration.materials[neighborValue].isStatic == 1
+					|| configuration.materials[neighborValue].density >= srcDensity)
+			{
+				course = runoff + 1;
+				break;
+			}
+
+
+			uint valueDown = xValid ? board[localLoc.x][localLoc.y + 1] : getValue(ivec2(loc.x, loc.y + 1));
 			if ((xValid && materials[valueDown].isStatic == 0	&& materials[valueDown].density < srcDensity)
 				|| (!xValid && valueDown == 0))
 			{
