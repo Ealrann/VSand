@@ -1,10 +1,12 @@
 # Vulkanized Sand
 Rewrite of the [**Falling Sand**](https://en.wikipedia.org/wiki/Falling-sand_game) game with Vulkan ([LWJGL3](https://www.lwjgl.org/)).
 
-Since that kind of game requires a lot of computing power, I wanted to exploit the graphic card capabilities to process AND to display the particles (*parallel computing*).
+Since that kind of game requires a lot of computing power, I wanted to exploit the graphic card capabilities to process and to display the particles (*parallel computing*).
 
 License GPL-3.0. Feel free to redistribute (please let me know).
 Since version 1.2, the VSand releases contain an [OpenJDK with OpenJ9](https://www.eclipse.org/openj9/).
+
+Since v1.2.2, you can launch the game in *benchmark* mode, with or without window (*headless*). This mode run a predefined scene as fast as possible (no v-sync wait), for a fixed number of frames, and will then compute a score based on the duration.
 
 ### Requirements
 
