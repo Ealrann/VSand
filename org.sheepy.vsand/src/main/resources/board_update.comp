@@ -314,7 +314,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 	bool luck = false;
 	if (wantToFallDown)
 	{
-		luck = gold_noise(loc, pushConstants.random) < 0.95;
+		luck = gold_noise(loc, pushConstants.random) < 0.92;
 		if (luck)
 		{
 			decision[localLoc.x][localLoc.y] |= TO_DOWN | (valueDown << TARGET_VALUE_POSITION);
