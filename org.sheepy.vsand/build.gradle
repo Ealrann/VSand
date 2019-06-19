@@ -4,7 +4,24 @@ plugins {
 	id 'application'
 	id 'distribution'
 	id 'org.mini2Dx.butler'
-	id 'org.beryx.jlink' version '2.10.4'
+	id 'org.beryx.jlink' version '2.11.0'
+}
+
+switch ( OperatingSystem.current() ) {
+	case OperatingSystem.WINDOWS:
+		project.ext.OS = "windows"
+		break
+	case OperatingSystem.LINUX:
+		project.ext.OS = "linux"
+		break
+	case OperatingSystem.MAC_OS:
+		project.ext.OS = "macos"
+		break
+}
+
+task copyReleng(type: Copy) {
+    from "releng/$project.ext.OS"
+    into 'build/image'
 }
 
 jlink {
@@ -17,6 +34,7 @@ jlink {
     }
 }
 
+tasks.jlink.finalizedBy(copyReleng)
 
 butler {
   user = "ealrann"
@@ -33,17 +51,12 @@ butler {
   }
 }
 
-
 mainClassName = 'org.sheepy.vsand/org.sheepy.vsand.VSandApplicationLauncher'
 jar {
     manifest {
         attributes 'Implementation-Title': "modular-hello",
                 'Main-Class': 'org.sheepy.vsand.VSandApplicationLauncher'
     }
-}
-
-startScripts {
-    applicationName = 'VSand'
 }
 
 test {
@@ -66,24 +79,6 @@ dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.4.2'
 
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
-}
-
-switch ( OperatingSystem.current() ) {
-	case OperatingSystem.WINDOWS:
-		project.ext.OS = "windows"
-		break
-	case OperatingSystem.LINUX:
-		project.ext.OS = "linux"
-		break
-	case OperatingSystem.MAC_OS:
-		project.ext.OS = "macos"
-		break
-}
-
-distributions {
-	main {
-		baseName = "VSand_$OS"
-	}
 }
 
 sourceSets {

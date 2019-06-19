@@ -1,0 +1,1 @@
+In order to get the benchmark result, you should run the benchmark inside a console. 
