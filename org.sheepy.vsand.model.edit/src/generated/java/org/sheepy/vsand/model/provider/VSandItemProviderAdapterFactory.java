@@ -27,6 +27,9 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.presentation.UIPage;
 import org.sheepy.lily.core.model.presentation.util.PresentationSwitch;
+import org.sheepy.lily.vulkan.model.ResourcePkg;
+import org.sheepy.lily.vulkan.model.VulkanPackage;
+import org.sheepy.lily.vulkan.model.util.VulkanSwitch;
 import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.model.util.VSandAdapterFactory;
 
@@ -103,6 +106,81 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 		}
 
 		return vSandApplicationItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.BoardConstantBuffer} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected BoardConstantBufferItemProvider boardConstantBufferItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.sheepy.vsand.model.BoardConstantBuffer}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createBoardConstantBufferAdapter()
+	{
+		if (boardConstantBufferItemProvider == null)
+		{
+			boardConstantBufferItemProvider = new BoardConstantBufferItemProvider(this);
+		}
+
+		return boardConstantBufferItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.DrawConstantBuffer} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DrawConstantBufferItemProvider drawConstantBufferItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.sheepy.vsand.model.DrawConstantBuffer}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDrawConstantBufferAdapter()
+	{
+		if (drawConstantBufferItemProvider == null)
+		{
+			drawConstantBufferItemProvider = new DrawConstantBufferItemProvider(this);
+		}
+
+		return drawConstantBufferItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.PixelConstantBuffer} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected PixelConstantBufferItemProvider pixelConstantBufferItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.sheepy.vsand.model.PixelConstantBuffer}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createPixelConstantBufferAdapter()
+	{
+		if (pixelConstantBufferItemProvider == null)
+		{
+			pixelConstantBufferItemProvider = new PixelConstantBufferItemProvider(this);
+		}
+
+		return pixelConstantBufferItemProvider;
 	}
 
 	/**
@@ -423,6 +501,9 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 	public void dispose()
 	{
 		if (vSandApplicationItemProvider != null) vSandApplicationItemProvider.dispose();
+		if (boardConstantBufferItemProvider != null) boardConstantBufferItemProvider.dispose();
+		if (drawConstantBufferItemProvider != null) drawConstantBufferItemProvider.dispose();
+		if (pixelConstantBufferItemProvider != null) pixelConstantBufferItemProvider.dispose();
 		if (drawCircleItemProvider != null) drawCircleItemProvider.dispose();
 		if (drawSquareItemProvider != null) drawSquareItemProvider.dispose();
 		if (drawLineItemProvider != null) drawLineItemProvider.dispose();
@@ -431,6 +512,110 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 		if (transformationsItemProvider != null) transformationsItemProvider.dispose();
 		if (transformationItemProvider != null) transformationItemProvider.dispose();
 		if (materialSelectorPanelItemProvider != null) materialSelectorPanelItemProvider.dispose();
+	}
+
+	/**
+	 * A child creation extender for the {@link VulkanPackage}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public static class VulkanChildCreationExtender implements IChildCreationExtender
+	{
+		/**
+		 * The switch for creating child descriptors specific to each extended class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		protected static class CreationSwitch extends VulkanSwitch<Object>
+		{
+			/**
+			 * The child descriptors being populated.
+			 * <!-- begin-user-doc -->
+			 * <!-- end-user-doc -->
+			 * @generated
+			 */
+			protected List<Object> newChildDescriptors;
+
+			/**
+			 * The domain in which to create the children.
+			 * <!-- begin-user-doc -->
+			 * <!-- end-user-doc -->
+			 * @generated
+			 */
+			protected EditingDomain editingDomain;
+
+			/**
+			 * Creates the a switch for populating child descriptors in the given domain.
+			 * <!-- begin-user-doc -->
+			 * <!-- end-user-doc -->
+			 * @generated
+			 */
+			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) 
+			{
+				this.newChildDescriptors = newChildDescriptors;
+				this.editingDomain = editingDomain;
+			}
+			/**
+			 * <!-- begin-user-doc -->
+			 * <!-- end-user-doc -->
+			 * @generated
+			 */
+			@Override
+			public Object caseResourcePkg(ResourcePkg object)
+			{
+				newChildDescriptors.add
+					(createChildParameter
+						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						 VSandFactory.eINSTANCE.createBoardConstantBuffer()));
+
+				newChildDescriptors.add
+					(createChildParameter
+						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						 VSandFactory.eINSTANCE.createDrawConstantBuffer()));
+
+				newChildDescriptors.add
+					(createChildParameter
+						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						 VSandFactory.eINSTANCE.createPixelConstantBuffer()));
+
+				return null;
+			}
+ 
+			/**
+			 * <!-- begin-user-doc -->
+			 * <!-- end-user-doc -->
+			 * @generated
+			 */
+			protected CommandParameter createChildParameter(Object feature, Object child)
+			{
+				return new CommandParameter(null, feature, child);
+			}
+
+		}
+
+		/**
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain)
+		{
+			ArrayList<Object> result = new ArrayList<Object>();
+			new CreationSwitch(result, editingDomain).doSwitch((EObject)object);
+			return result;
+		}
+
+		/**
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public ResourceLocator getResourceLocator()
+		{
+			return VSandEditPlugin.INSTANCE;
+		}
 	}
 
 	/**

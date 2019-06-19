@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
+import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -340,6 +341,198 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION_OPERATION_COUNT = ApplicationPackage.APPLICATION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.BoardConstantBufferImpl <em>Board Constant Buffer</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.impl.BoardConstantBufferImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getBoardConstantBuffer()
+	 * @generated
+	 */
+	int BOARD_CONSTANT_BUFFER = 1;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOARD_CONSTANT_BUFFER__NAME = ResourcePackage.CONSTANT_BUFFER__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Data</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOARD_CONSTANT_BUFFER__DATA = ResourcePackage.CONSTANT_BUFFER__DATA;
+
+	/**
+	 * The feature id for the '<em><b>Being Pushed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOARD_CONSTANT_BUFFER__BEING_PUSHED = ResourcePackage.CONSTANT_BUFFER__BEING_PUSHED;
+
+	/**
+	 * The feature id for the '<em><b>Current Board Buffer</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Board Constant Buffer</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOARD_CONSTANT_BUFFER_FEATURE_COUNT = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Board Constant Buffer</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOARD_CONSTANT_BUFFER_OPERATION_COUNT = ResourcePackage.CONSTANT_BUFFER_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.DrawConstantBufferImpl <em>Draw Constant Buffer</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.impl.DrawConstantBufferImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawConstantBuffer()
+	 * @generated
+	 */
+	int DRAW_CONSTANT_BUFFER = 2;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CONSTANT_BUFFER__NAME = ResourcePackage.CONSTANT_BUFFER__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Data</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CONSTANT_BUFFER__DATA = ResourcePackage.CONSTANT_BUFFER__DATA;
+
+	/**
+	 * The feature id for the '<em><b>Being Pushed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CONSTANT_BUFFER__BEING_PUSHED = ResourcePackage.CONSTANT_BUFFER__BEING_PUSHED;
+
+	/**
+	 * The feature id for the '<em><b>Board Constant Buffer</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Draw Constant Buffer</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CONSTANT_BUFFER_FEATURE_COUNT = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Draw Constant Buffer</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CONSTANT_BUFFER_OPERATION_COUNT = ResourcePackage.CONSTANT_BUFFER_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.PixelConstantBufferImpl <em>Pixel Constant Buffer</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.impl.PixelConstantBufferImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getPixelConstantBuffer()
+	 * @generated
+	 */
+	int PIXEL_CONSTANT_BUFFER = 3;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PIXEL_CONSTANT_BUFFER__NAME = ResourcePackage.CONSTANT_BUFFER__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Data</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PIXEL_CONSTANT_BUFFER__DATA = ResourcePackage.CONSTANT_BUFFER__DATA;
+
+	/**
+	 * The feature id for the '<em><b>Being Pushed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PIXEL_CONSTANT_BUFFER__BEING_PUSHED = ResourcePackage.CONSTANT_BUFFER__BEING_PUSHED;
+
+	/**
+	 * The feature id for the '<em><b>Board Constant Buffer</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PIXEL_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Pixel Constant Buffer</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PIXEL_CONSTANT_BUFFER_FEATURE_COUNT = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Pixel Constant Buffer</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PIXEL_CONSTANT_BUFFER_OPERATION_COUNT = ResourcePackage.CONSTANT_BUFFER_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -347,7 +540,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawCommand()
 	 * @generated
 	 */
-	int DRAW_COMMAND = 1;
+	int DRAW_COMMAND = 4;
 
 	/**
 	 * The feature id for the '<em><b>Material</b></em>' reference.
@@ -384,7 +577,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawCircle()
 	 * @generated
 	 */
-	int DRAW_CIRCLE = 2;
+	int DRAW_CIRCLE = 5;
 
 	/**
 	 * The feature id for the '<em><b>Material</b></em>' reference.
@@ -448,7 +641,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawSquare()
 	 * @generated
 	 */
-	int DRAW_SQUARE = 3;
+	int DRAW_SQUARE = 6;
 
 	/**
 	 * The feature id for the '<em><b>Material</b></em>' reference.
@@ -512,7 +705,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawLine()
 	 * @generated
 	 */
-	int DRAW_LINE = 4;
+	int DRAW_LINE = 7;
 
 	/**
 	 * The feature id for the '<em><b>Material</b></em>' reference.
@@ -594,7 +787,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterials()
 	 * @generated
 	 */
-	int MATERIALS = 5;
+	int MATERIALS = 8;
 
 	/**
 	 * The feature id for the '<em><b>Materials</b></em>' containment reference list.
@@ -631,7 +824,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterial()
 	 * @generated
 	 */
-	int MATERIAL = 6;
+	int MATERIAL = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -731,7 +924,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getTransformations()
 	 * @generated
 	 */
-	int TRANSFORMATIONS = 7;
+	int TRANSFORMATIONS = 10;
 
 	/**
 	 * The feature id for the '<em><b>Transformations</b></em>' containment reference list.
@@ -768,7 +961,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getTransformation()
 	 * @generated
 	 */
-	int TRANSFORMATION = 8;
+	int TRANSFORMATION = 11;
 
 	/**
 	 * The feature id for the '<em><b>Reactant</b></em>' reference.
@@ -850,7 +1043,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialSelectorPanel()
 	 * @generated
 	 */
-	int MATERIAL_SELECTOR_PANEL = 9;
+	int MATERIAL_SELECTOR_PANEL = 12;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1164,6 +1357,69 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 */
 	EReference getVSandApplication_BoardUpdateTask();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.BoardConstantBuffer <em>Board Constant Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Board Constant Buffer</em>'.
+	 * @see org.sheepy.vsand.model.BoardConstantBuffer
+	 * @generated
+	 */
+	EClass getBoardConstantBuffer();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.BoardConstantBuffer#getCurrentBoardBuffer <em>Current Board Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Current Board Buffer</em>'.
+	 * @see org.sheepy.vsand.model.BoardConstantBuffer#getCurrentBoardBuffer()
+	 * @see #getBoardConstantBuffer()
+	 * @generated
+	 */
+	EAttribute getBoardConstantBuffer_CurrentBoardBuffer();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.DrawConstantBuffer <em>Draw Constant Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Draw Constant Buffer</em>'.
+	 * @see org.sheepy.vsand.model.DrawConstantBuffer
+	 * @generated
+	 */
+	EClass getDrawConstantBuffer();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.DrawConstantBuffer#getBoardConstantBuffer <em>Board Constant Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Board Constant Buffer</em>'.
+	 * @see org.sheepy.vsand.model.DrawConstantBuffer#getBoardConstantBuffer()
+	 * @see #getDrawConstantBuffer()
+	 * @generated
+	 */
+	EReference getDrawConstantBuffer_BoardConstantBuffer();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.PixelConstantBuffer <em>Pixel Constant Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Pixel Constant Buffer</em>'.
+	 * @see org.sheepy.vsand.model.PixelConstantBuffer
+	 * @generated
+	 */
+	EClass getPixelConstantBuffer();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.PixelConstantBuffer#getBoardConstantBuffer <em>Board Constant Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Board Constant Buffer</em>'.
+	 * @see org.sheepy.vsand.model.PixelConstantBuffer#getBoardConstantBuffer()
+	 * @see #getPixelConstantBuffer()
+	 * @generated
+	 */
+	EReference getPixelConstantBuffer_BoardConstantBuffer();
 
 	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}'.
@@ -1769,6 +2025,60 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EReference VSAND_APPLICATION__BOARD_UPDATE_TASK = eINSTANCE.getVSandApplication_BoardUpdateTask();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.BoardConstantBufferImpl <em>Board Constant Buffer</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.impl.BoardConstantBufferImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getBoardConstantBuffer()
+		 * @generated
+		 */
+		EClass BOARD_CONSTANT_BUFFER = eINSTANCE.getBoardConstantBuffer();
+
+		/**
+		 * The meta object literal for the '<em><b>Current Board Buffer</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = eINSTANCE.getBoardConstantBuffer_CurrentBoardBuffer();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.DrawConstantBufferImpl <em>Draw Constant Buffer</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.impl.DrawConstantBufferImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getDrawConstantBuffer()
+		 * @generated
+		 */
+		EClass DRAW_CONSTANT_BUFFER = eINSTANCE.getDrawConstantBuffer();
+
+		/**
+		 * The meta object literal for the '<em><b>Board Constant Buffer</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DRAW_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER = eINSTANCE.getDrawConstantBuffer_BoardConstantBuffer();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.PixelConstantBufferImpl <em>Pixel Constant Buffer</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.impl.PixelConstantBufferImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getPixelConstantBuffer()
+		 * @generated
+		 */
+		EClass PIXEL_CONSTANT_BUFFER = eINSTANCE.getPixelConstantBuffer();
+
+		/**
+		 * The meta object literal for the '<em><b>Board Constant Buffer</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PIXEL_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER = eINSTANCE.getPixelConstantBuffer_BoardConstantBuffer();
 
 		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}' class.

@@ -28,10 +28,14 @@ layout(binding = 0) buffer SChunks
 }chunks;
 
 // The game board, with all the values.
-layout(binding = 1) buffer SBoard
+layout(binding = 1) buffer SBoard1
 {
 	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
-}board;
+}board1;
+layout(binding = 2) buffer SBoard2
+{
+	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+}board2;
 
 layout (push_constant) uniform PushConstants
 {
@@ -58,6 +62,8 @@ layout (push_constant) uniform PushConstants
 	int y4;
 
 	uint value;
+
+	uint boardToWrite;
 
 }attributes;
 
@@ -107,8 +113,16 @@ void setValue(int x, int y, uint value)
 		uint swizzledY = y >> 1;
 		uint offset = ((x & 1)	| ((y & 1) << 1)) << 3;
 
-		atomicAnd(board.data[swizzledX][swizzledY], 0xFFFFFFFF ^ (0xFF << offset));
-		atomicOr(board.data[swizzledX][swizzledY], value << offset);
+		if(attributes.boardToWrite == 0)
+		{
+			atomicAnd(board1.data[swizzledX][swizzledY], 0xFFFFFFFF ^ (0xFF << offset));
+			atomicOr(board1.data[swizzledX][swizzledY], value << offset);
+		}
+		else
+		{
+			atomicAnd(board2.data[swizzledX][swizzledY], 0xFFFFFFFF ^ (0xFF << offset));
+			atomicOr(board2.data[swizzledX][swizzledY], value << offset);
+		}
 	}
 }
 

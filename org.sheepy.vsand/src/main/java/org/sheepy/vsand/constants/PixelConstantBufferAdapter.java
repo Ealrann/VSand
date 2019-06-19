@@ -1,7 +1,6 @@
 package org.sheepy.vsand.constants;
 
 import java.nio.ByteBuffer;
-import java.util.Random;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.joml.Vector2fc;
@@ -18,20 +17,20 @@ import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.input.IVulkanInputManager;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
-import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.PixelConstantBuffer;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.EShapeSize;
 
 @Statefull
-@Adapter(scope = ConstantBuffer.class, name = "VSandPushConstants")
-public final class VSandPushConstantAdapter implements IVulkanAdapter
+@Adapter(scope = PixelConstantBuffer.class)
+public final class PixelConstantBufferAdapter implements IVulkanAdapter
 {
-	private final int BYTE_SIZE = Integer.BYTES * 7;
+	private final int BYTE_SIZE = 7 * Integer.BYTES;
+	private final int BOARD_INDEX_POSITION = 6 * Integer.BYTES;
 
-	private final Random random = new Random(System.nanoTime());
-	private final ConstantBuffer constantBuffer;
+	private final PixelConstantBuffer constantBuffer;
 	private final VSandApplication application;
 	private final Vector2i boardSize;
 
@@ -39,7 +38,7 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 
 	private IVulkanInputManager inputManager;
 
-	public VSandPushConstantAdapter(ConstantBuffer constantBuffer)
+	public PixelConstantBufferAdapter(PixelConstantBuffer constantBuffer)
 	{
 		this.constantBuffer = constantBuffer;
 
@@ -59,21 +58,20 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 		updateBuffer();
 	}
 
+	@Dispose
+	public void dispose()
+	{
+		MemoryUtil.memFree(buffer);
+	}
+
 	@NotifyChanged
 	public void notifyChanged(Notification notification)
 	{
 		if (notification.getFeature() == ResourcePackage.Literals.CONSTANT_BUFFER__BEING_PUSHED
 				&& notification.getNewBooleanValue() == true)
 		{
-			final float rNumber = random.nextFloat();
-			buffer.putFloat(0, rNumber);
+			buffer.putInt(BOARD_INDEX_POSITION, constantBuffer.getBoardConstantBuffer().getCurrentBoardBuffer());
 		}
-	}
-
-	@Dispose
-	public void dispose()
-	{
-		MemoryUtil.memFree(buffer);
 	}
 
 	@Tick
@@ -85,12 +83,15 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 			forceClear = 1;
 		}
 
-		final float rNumber = random.nextFloat();
 		final var size = EShapeSize.values()[application.getBrushSize() - 1];
 
-		buffer.putFloat(rNumber);
 		buffer.putInt(forceClear);
 		buffer.putInt(application.isShowSleepZones() ? 1 : 0);
+
+		final Material mainMaterial = application.getMainMaterial();
+		final int index = application.getMaterials().getMaterials().indexOf(mainMaterial);
+		buffer.putInt(index);
+
 		buffer.putInt(size.getSize() >> 1);
 
 		if (inputManager != null)
@@ -104,10 +105,8 @@ public final class VSandPushConstantAdapter implements IVulkanAdapter
 			buffer.putInt(0);
 			buffer.putInt(0);
 		}
-
-		final Material mainMaterial = application.getMainMaterial();
-		final int index = application.getMaterials().getMaterials().indexOf(mainMaterial);
-		buffer.putInt(index);
+		
+		buffer.putInt(0);
 
 		buffer.flip();
 

@@ -11,6 +11,7 @@ package org.sheepy.vsand.model
 import org.sheepy.lily.core.model.application.Application
 import org.sheepy.lily.core.model.presentation.IPanel
 import org.sheepy.lily.vulkan.model.process.CompositeTask
+import org.sheepy.lily.vulkan.model.resource.ConstantBuffer
 
 class VSandApplication extends Application
 {
@@ -32,6 +33,21 @@ class VSandApplication extends Application
 	int brushSize = "4"
 	
 	refers CompositeTask boardUpdateTask
+}
+
+class BoardConstantBuffer extends ConstantBuffer
+{
+	int currentBoardBuffer = "0"
+}
+
+class DrawConstantBuffer extends ConstantBuffer
+{
+	refers BoardConstantBuffer boardConstantBuffer
+}
+
+class PixelConstantBuffer extends ConstantBuffer
+{
+	refers BoardConstantBuffer boardConstantBuffer
 }
 
 interface DrawCommand

@@ -1,8 +1,9 @@
 import org.sheepy.lily.core.api.adapter.annotation.Adapters;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.resource.IModelExtension;
-import org.sheepy.vsand.constants.DrawPushConstantAdapter;
-import org.sheepy.vsand.constants.VSandPushConstantAdapter;
+import org.sheepy.vsand.constants.BoardConstantBufferAdapter;
+import org.sheepy.vsand.constants.DrawConstantBufferAdapter;
+import org.sheepy.vsand.constants.PixelConstantBufferAdapter;
 import org.sheepy.vsand.draw.DrawCircleAdapter;
 import org.sheepy.vsand.draw.DrawLineAdapter;
 import org.sheepy.vsand.draw.DrawSquareAdapter;
@@ -24,8 +25,9 @@ import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
 		ChunkBufferLoader.class,
 		BoardImageLoader.class,
 		TransformationBufferLoader.class,
-		VSandPushConstantAdapter.class,
-		DrawPushConstantAdapter.class,
+		BoardConstantBufferAdapter.class,
+		DrawConstantBufferAdapter.class,
+		PixelConstantBufferAdapter.class,
 		DrawCircleAdapter.class,
 		DrawSquareAdapter.class,
 		DrawLineAdapter.class,

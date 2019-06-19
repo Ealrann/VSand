@@ -65,6 +65,9 @@ public class VSandFactoryImpl extends EFactoryImpl implements VSandFactory
 		switch (eClass.getClassifierID())
 		{
 			case VSandPackage.VSAND_APPLICATION: return createVSandApplication();
+			case VSandPackage.BOARD_CONSTANT_BUFFER: return createBoardConstantBuffer();
+			case VSandPackage.DRAW_CONSTANT_BUFFER: return createDrawConstantBuffer();
+			case VSandPackage.PIXEL_CONSTANT_BUFFER: return createPixelConstantBuffer();
 			case VSandPackage.DRAW_CIRCLE: return createDrawCircle();
 			case VSandPackage.DRAW_SQUARE: return createDrawSquare();
 			case VSandPackage.DRAW_LINE: return createDrawLine();
@@ -88,6 +91,42 @@ public class VSandFactoryImpl extends EFactoryImpl implements VSandFactory
 	{
 		VSandApplicationImpl vSandApplication = new VSandApplicationImpl();
 		return vSandApplication;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public BoardConstantBuffer createBoardConstantBuffer()
+	{
+		BoardConstantBufferImpl boardConstantBuffer = new BoardConstantBufferImpl();
+		return boardConstantBuffer;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public DrawConstantBuffer createDrawConstantBuffer()
+	{
+		DrawConstantBufferImpl drawConstantBuffer = new DrawConstantBufferImpl();
+		return drawConstantBuffer;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public PixelConstantBuffer createPixelConstantBuffer()
+	{
+		PixelConstantBufferImpl pixelConstantBuffer = new PixelConstantBufferImpl();
+		return pixelConstantBuffer;
 	}
 
 	/**

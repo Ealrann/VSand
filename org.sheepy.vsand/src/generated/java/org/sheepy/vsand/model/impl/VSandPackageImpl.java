@@ -19,13 +19,16 @@ import org.sheepy.lily.core.model.types.TypesPackage;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
+import org.sheepy.vsand.model.BoardConstantBuffer;
 import org.sheepy.vsand.model.DrawCircle;
 import org.sheepy.vsand.model.DrawCommand;
+import org.sheepy.vsand.model.DrawConstantBuffer;
 import org.sheepy.vsand.model.DrawLine;
 import org.sheepy.vsand.model.DrawSquare;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.Materials;
+import org.sheepy.vsand.model.PixelConstantBuffer;
 import org.sheepy.vsand.model.Transformation;
 import org.sheepy.vsand.model.Transformations;
 import org.sheepy.vsand.model.VSandApplication;
@@ -49,6 +52,27 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	private EClass vSandApplicationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass boardConstantBufferEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass drawConstantBufferEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass pixelConstantBufferEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -168,11 +192,11 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		InferencePackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
 		ProcessPackage.eINSTANCE.eClass();
-		PresentationPackage.eINSTANCE.eClass();
-		TypesPackage.eINSTANCE.eClass();
-		ActionPackage.eINSTANCE.eClass();
-		VulkanPackage.eINSTANCE.eClass();
 		ResourcePackage.eINSTANCE.eClass();
+		TypesPackage.eINSTANCE.eClass();
+		VulkanPackage.eINSTANCE.eClass();
+		PresentationPackage.eINSTANCE.eClass();
+		ActionPackage.eINSTANCE.eClass();
 		EnumerationPackage.eINSTANCE.eClass();
 		PipelinePackage.eINSTANCE.eClass();
 		BarrierPackage.eINSTANCE.eClass();
@@ -333,6 +357,72 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	public EReference getVSandApplication_BoardUpdateTask()
 	{
 		return (EReference)vSandApplicationEClass.getEStructuralFeatures().get(11);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getBoardConstantBuffer()
+	{
+		return boardConstantBufferEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getBoardConstantBuffer_CurrentBoardBuffer()
+	{
+		return (EAttribute)boardConstantBufferEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getDrawConstantBuffer()
+	{
+		return drawConstantBufferEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getDrawConstantBuffer_BoardConstantBuffer()
+	{
+		return (EReference)drawConstantBufferEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getPixelConstantBuffer()
+	{
+		return pixelConstantBufferEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getPixelConstantBuffer_BoardConstantBuffer()
+	{
+		return (EReference)pixelConstantBufferEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -864,6 +954,15 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__BRUSH_SIZE);
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__BOARD_UPDATE_TASK);
 
+		boardConstantBufferEClass = createEClass(BOARD_CONSTANT_BUFFER);
+		createEAttribute(boardConstantBufferEClass, BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER);
+
+		drawConstantBufferEClass = createEClass(DRAW_CONSTANT_BUFFER);
+		createEReference(drawConstantBufferEClass, DRAW_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER);
+
+		pixelConstantBufferEClass = createEClass(PIXEL_CONSTANT_BUFFER);
+		createEReference(pixelConstantBufferEClass, PIXEL_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER);
+
 		drawCommandEClass = createEClass(DRAW_COMMAND);
 		createEReference(drawCommandEClass, DRAW_COMMAND__MATERIAL);
 
@@ -946,6 +1045,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		ApplicationPackage theApplicationPackage = (ApplicationPackage)EPackage.Registry.INSTANCE.getEPackage(ApplicationPackage.eNS_URI);
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
+		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
 		PresentationPackage thePresentationPackage = (PresentationPackage)EPackage.Registry.INSTANCE.getEPackage(PresentationPackage.eNS_URI);
 
 		// Create type parameters
@@ -954,6 +1054,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		// Add supertypes to classes
 		vSandApplicationEClass.getESuperTypes().add(theApplicationPackage.getApplication());
+		boardConstantBufferEClass.getESuperTypes().add(theResourcePackage.getConstantBuffer());
+		drawConstantBufferEClass.getESuperTypes().add(theResourcePackage.getConstantBuffer());
+		pixelConstantBufferEClass.getESuperTypes().add(theResourcePackage.getConstantBuffer());
 		drawCircleEClass.getESuperTypes().add(this.getDrawCommand());
 		drawSquareEClass.getESuperTypes().add(this.getDrawCommand());
 		drawLineEClass.getESuperTypes().add(this.getDrawCommand());
@@ -973,6 +1076,15 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getVSandApplication_ShowSleepZones(), theEcorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_BrushSize(), theEcorePackage.getEInt(), "brushSize", "4", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_BoardUpdateTask(), theProcessPackage.getCompositeTask(), null, "boardUpdateTask", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(boardConstantBufferEClass, BoardConstantBuffer.class, "BoardConstantBuffer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getBoardConstantBuffer_CurrentBoardBuffer(), theEcorePackage.getEInt(), "currentBoardBuffer", "0", 0, 1, BoardConstantBuffer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(drawConstantBufferEClass, DrawConstantBuffer.class, "DrawConstantBuffer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDrawConstantBuffer_BoardConstantBuffer(), this.getBoardConstantBuffer(), null, "boardConstantBuffer", null, 0, 1, DrawConstantBuffer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(pixelConstantBufferEClass, PixelConstantBuffer.class, "PixelConstantBuffer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPixelConstantBuffer_BoardConstantBuffer(), this.getBoardConstantBuffer(), null, "boardConstantBuffer", null, 0, 1, PixelConstantBuffer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(drawCommandEClass, DrawCommand.class, "DrawCommand", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDrawCommand_Material(), this.getMaterial(), null, "material", null, 0, 1, DrawCommand.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

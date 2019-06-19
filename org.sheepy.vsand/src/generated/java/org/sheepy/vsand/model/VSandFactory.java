@@ -32,6 +32,33 @@ public interface VSandFactory extends EFactory
 	VSandApplication createVSandApplication();
 
 	/**
+	 * Returns a new object of class '<em>Board Constant Buffer</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Board Constant Buffer</em>'.
+	 * @generated
+	 */
+	BoardConstantBuffer createBoardConstantBuffer();
+
+	/**
+	 * Returns a new object of class '<em>Draw Constant Buffer</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Draw Constant Buffer</em>'.
+	 * @generated
+	 */
+	DrawConstantBuffer createDrawConstantBuffer();
+
+	/**
+	 * Returns a new object of class '<em>Pixel Constant Buffer</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Pixel Constant Buffer</em>'.
+	 * @generated
+	 */
+	PixelConstantBuffer createPixelConstantBuffer();
+
+	/**
 	 * Returns a new object of class '<em>Draw Circle</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

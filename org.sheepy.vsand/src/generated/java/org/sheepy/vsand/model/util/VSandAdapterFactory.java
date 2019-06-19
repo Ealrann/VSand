@@ -15,6 +15,8 @@ import org.sheepy.lily.core.model.presentation.IPositionElement;
 import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.core.model.types.LNamedElement;
+import org.sheepy.lily.vulkan.model.IResource;
+import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.*;
 
 /**
@@ -86,6 +88,21 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createVSandApplicationAdapter();
 			}
 			@Override
+			public Adapter caseBoardConstantBuffer(BoardConstantBuffer object)
+			{
+				return createBoardConstantBufferAdapter();
+			}
+			@Override
+			public Adapter caseDrawConstantBuffer(DrawConstantBuffer object)
+			{
+				return createDrawConstantBufferAdapter();
+			}
+			@Override
+			public Adapter casePixelConstantBuffer(PixelConstantBuffer object)
+			{
+				return createPixelConstantBufferAdapter();
+			}
+			@Override
 			public Adapter caseDrawCommand(DrawCommand object)
 			{
 				return createDrawCommandAdapter();
@@ -151,6 +168,16 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createLNamedElementAdapter();
 			}
 			@Override
+			public Adapter caseIResource(IResource object)
+			{
+				return createIResourceAdapter();
+			}
+			@Override
+			public Adapter caseConstantBuffer(ConstantBuffer object)
+			{
+				return createConstantBufferAdapter();
+			}
+			@Override
 			public Adapter caseIUIElement(IUIElement object)
 			{
 				return createIUIElementAdapter();
@@ -198,6 +225,51 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createVSandApplicationAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.BoardConstantBuffer <em>Board Constant Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.BoardConstantBuffer
+	 * @generated
+	 */
+	public Adapter createBoardConstantBufferAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.DrawConstantBuffer <em>Draw Constant Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.DrawConstantBuffer
+	 * @generated
+	 */
+	public Adapter createDrawConstantBufferAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.PixelConstantBuffer <em>Pixel Constant Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.PixelConstantBuffer
+	 * @generated
+	 */
+	public Adapter createPixelConstantBufferAdapter()
 	{
 		return null;
 	}
@@ -393,6 +465,36 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createLNamedElementAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IResource <em>IResource</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.lily.vulkan.model.IResource
+	 * @generated
+	 */
+	public Adapter createIResourceAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.ConstantBuffer <em>Constant Buffer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.lily.vulkan.model.resource.ConstantBuffer
+	 * @generated
+	 */
+	public Adapter createConstantBufferAdapter()
 	{
 		return null;
 	}

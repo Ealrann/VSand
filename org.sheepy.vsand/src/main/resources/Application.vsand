@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:graphicpipeline="org.sheepy.vulkan.model.graphicpipeline" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:model_2="org.sheepy.lily.vulkan.extra.nuklear.model" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.0">
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:graphicpipeline="org.sheepy.vulkan.model.graphicpipeline" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:model_2="org.sheepy.lily.vulkan.extra.nuklear.model" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2">
   <views xsi:type="presentation:TranparentUIView" currentUIPage="//@views.0/@uiPages.0">
     <uiPages>
       <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
         <controls xsi:type="ui:DynamicRowLayout"/>
         <controls xsi:type="ui:VariableLabel" text="Speed">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.0"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
         </controls>
         <controls xsi:type="ui:Slider" minValue="1" maxValue="16">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.0"/>
+          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
         </controls>
         <controls xsi:type="ui:VariableLabel" text="Brush Size">
           <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
@@ -103,18 +103,18 @@
         <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
           <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
         </resources>
-        <resources xsi:type="resource:ConstantBuffer" name="VSandPushConstants"/>
+        <resources xsi:type="model:BoardConstantBuffer"/>
       </resourcePkg>
       <partPkg>
         <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute">
           <resourcePkg>
-            <resources xsi:type="resource:ConstantBuffer" name="DrawConstants"/>
+            <resources xsi:type="model:DrawConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
-          <pushConstantRanges size="68">
+          <pushConstantRanges size="72">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Draw board 1" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0"/>
+            <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.0/@descriptorSetPkg/@descriptorSets.0"/>
@@ -130,47 +130,38 @@
                 <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
                 <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
               </barriers>
+              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
+                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
+                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+              </barriers>
             </tasks>
             <tasks xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
         </parts>
         <parts xsi:type="compute:ComputePipeline" name="Step" stage="Compute">
-          <pushConstantRanges size="28">
+          <pushConstantRanges size="8">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Update Board Common" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.4 //@engines.0/@processes.0/@resourcePkg/@resources.2"/>
-            <descriptorSets name="Update Board - 1 to 2" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
-            <descriptorSets name="Update Board - 2 to 1" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.1 //@engines.0/@processes.0/@resourcePkg/@resources.0"/>
+            <descriptorSets name="Update Board Common" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.4 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
           </descriptorSetPkg>
           <taskPkg>
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
+            <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
+              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
+                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
+                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+              </barriers>
+              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.2">
+                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
+                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+              </barriers>
+              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
+                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
+                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
+              </barriers>
+            </tasks>
             <tasks xsi:type="process:CompositeTask" name="Update Board">
-              <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0 //@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.1"/>
-              <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
-                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
-                  <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
-                  <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-                </barriers>
-                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.2">
-                  <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
-                  <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-                </barriers>
-              </tasks>
-              <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.8">
-                <stages>COMPUTE_BIT</stages>
-              </tasks>
-              <tasks xsi:type="compute:Computer" name="Board update" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6" workgroupCountX="78" workgroupCountY="44"/>
-              <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0 //@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.2"/>
-              <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
-                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
-                  <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
-                  <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-                </barriers>
-                <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
-                  <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
-                  <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
-                </barriers>
-              </tasks>
               <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.8">
                 <stages>COMPUTE_BIT</stages>
               </tasks>
@@ -179,15 +170,18 @@
           </taskPkg>
         </parts>
         <parts xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute">
+          <resourcePkg>
+            <resources xsi:type="model:PixelConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
+          </resourcePkg>
           <pushConstantRanges size="28">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0"/>
+            <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.2/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.8">
+            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@partPkg/@parts.2/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="COMPUTE_SHADER_BIT" srcQueue="//@engines.0/@processes.1" dstQueue="//@engines.0/@processes.0">
@@ -202,6 +196,10 @@
                 <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
               </barriers>
               <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.2">
+                <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
+                <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
+              </barriers>
+              <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
                 <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
                 <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
               </barriers>
