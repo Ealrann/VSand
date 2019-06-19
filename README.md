@@ -18,6 +18,8 @@ You can find the last release here:
 
 https://github.com/Ealrann/VSand/releases
 
+The game is also available on [itch.io](https://ealrann.itch.io/vsand).
+
 If you like the game, and want to buy me a coffee:
 
 [![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZETXTGG9ZGENU)
