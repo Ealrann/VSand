@@ -3,6 +3,7 @@ import org.gradle.internal.os.OperatingSystem
 plugins {
 	id 'application'
 	id 'distribution'
+	id 'org.mini2Dx.butler'
 	id 'org.beryx.jlink' version '2.10.4'
 }
 
@@ -15,6 +16,23 @@ jlink {
         jvmArgs = ['-Dlog4j.configurationFile=./log4j2.xml']
     }
 }
+
+
+butler {
+  user = "ealrann"
+  game = "vsand"
+  userVersion = project.version
+
+  windows {
+	binDirectory = "$projectDir/build/image"
+    channel = "windows"
+  }
+  linux {
+	binDirectory = "$projectDir/build/image"
+    channel = "linux"
+  }
+}
+
 
 mainClassName = 'org.sheepy.vsand/org.sheepy.vsand.VSandApplicationLauncher'
 jar {
