@@ -311,9 +311,10 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 
 	bool wantToFallDown = materials[valueDown].isStatic == 0
 			&& density > materials[valueDown].density;
-	bool luck = gold_noise(loc, pushConstants.random) < 0.95;
+	bool luck = false;
 	if (wantToFallDown)
 	{
+		luck = gold_noise(loc, pushConstants.random) < 0.95;
 		if (luck)
 		{
 			decision[localLoc.x][localLoc.y] |= TO_DOWN | (valueDown << TARGET_VALUE_POSITION);
@@ -332,6 +333,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 		int runoff = materials[currentValue].runoff;
 		int distLeft = runoff;
 		int distRight = runoff;
+		luck = pushConstants.random < 0.3;
 
 		if (materials[valueLeft].density < density && materials[valueLeft].isStatic == 0)
 		{
