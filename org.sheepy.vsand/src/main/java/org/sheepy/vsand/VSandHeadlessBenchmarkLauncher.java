@@ -13,7 +13,7 @@ public class VSandHeadlessBenchmarkLauncher
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		EcoreUtil.delete(vulkanEngine.getProcesses().get(1));
 
-		final var mainLoop = VSandMainLoop.createBenchmark(application, 1400);
+		final var mainLoop = VSandMainLoop.createBenchmark(application, VSandBenchmarkLauncher.DEFAULT_ITERATION_COUNT);
 
 		ApplicationLauncher.launch(application, mainLoop);
 	}

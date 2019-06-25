@@ -12,10 +12,12 @@ import org.sheepy.vsand.model.VSandFactory;
 
 public class VSandBenchmarkLauncher
 {
+	public static final int DEFAULT_ITERATION_COUNT = 3000;
+
 	public static void main(String[] args)
 	{
 		final var application = createTestApplication();
-		final var mainLoop = VSandMainLoop.createBenchmark(application, 3000);
+		final var mainLoop = VSandMainLoop.createBenchmark(application, DEFAULT_ITERATION_COUNT);
 
 		ApplicationLauncher.launch(application, mainLoop);
 	}
