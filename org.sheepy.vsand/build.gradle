@@ -4,7 +4,7 @@ plugins {
 	id 'application'
 	id 'distribution'
 	id 'org.mini2Dx.butler'
-	id 'org.beryx.jlink' version '2.11.0'
+	id 'org.beryx.jlink' version '2.11.1'
 }
 
 switch ( OperatingSystem.current() ) {
