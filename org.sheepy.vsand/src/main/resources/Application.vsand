@@ -300,7 +300,7 @@
       <renderPassInfo>
         <attachments xsi:type="graphic:SwapImageAttachmentDescription" name="Swapchain" stencilLoadOp="DONT_CARE" stencilStoreOp="DONT_CARE" initialLayout="TRANSFER_DST_OPTIMAL" finalLayout="PRESENT_SRC_KHR"/>
         <subpasses name="UI">
-          <refs attachement="//@engines.0/@processes.1/@renderPassInfo/@attachments.0" layout="COLOR_ATTACHMENT_OPTIMAL"/>
+          <refs attachment="//@engines.0/@processes.1/@renderPassInfo/@attachments.0" layout="COLOR_ATTACHMENT_OPTIMAL"/>
         </subpasses>
         <dependencies dstSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.0">
           <srcStageMask>ALL_COMMANDS_BIT</srcStageMask>
