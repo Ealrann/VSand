@@ -2,6 +2,7 @@ package org.sheepy.vsand.constants;
 
 import java.nio.ByteBuffer;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.lwjgl.system.MemoryUtil;
@@ -21,7 +22,7 @@ public final class BoardConstantBufferAdapter implements IVulkanAdapter
 	private final int BYTE_SIZE = 2 * Integer.BYTES;
 	private final int BOARD_INDEX_POSITION = 1 * Integer.BYTES;
 
-	private final Random random = new Random(System.nanoTime());
+	private final Random random = ThreadLocalRandom.current();
 	private final BoardConstantBuffer constantBuffer;
 
 	private ByteBuffer buffer = null;
