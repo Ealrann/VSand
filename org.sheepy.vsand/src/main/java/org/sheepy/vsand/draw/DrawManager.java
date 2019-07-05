@@ -93,8 +93,8 @@ public class DrawManager
 		final int boardWidth = boardSize.x();
 		final int boardHeight = boardSize.y();
 
-		final int width = application.getSize().x;
-		final int height = application.getSize().y;
+		final int width = application.getSize().x();
+		final int height = application.getSize().y();
 		if (width != boardWidth || height != boardHeight)
 		{
 			res.x *= (float) boardWidth / width;

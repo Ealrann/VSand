@@ -17,8 +17,8 @@ public final class ChunkBufferLoader implements IVulkanAdapter
 	public static void load(Buffer buffer)
 	{
 		final var application = ModelUtil.getApplication(buffer);
-		final int width = application.getSize().x;
-		final int height = application.getSize().y;
+		final int width = application.getSize().x();
+		final int height = application.getSize().y();
 		final int sizeChunks = (int) (Math.floor(width / 16.) * Math.floor(height / 16.));
 		final int sizeByte = sizeChunks * Integer.BYTES;
 

@@ -17,8 +17,8 @@ public final class Board2BufferLoader implements IVulkanAdapter
 	public static void load(Buffer buffer)
 	{
 		final var application = ModelUtil.getApplication(buffer);
-		final int width = application.getSize().x / 2;
-		final int height = application.getSize().y / 2;
+		final int width = application.getSize().x() / 2;
+		final int height = application.getSize().y() / 2;
 		final int sizeBoard = width * height;
 		final int sizeByte = sizeBoard * Integer.BYTES;
 

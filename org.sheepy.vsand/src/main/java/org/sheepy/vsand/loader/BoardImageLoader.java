@@ -18,8 +18,8 @@ public final class BoardImageLoader implements IVulkanAdapter
 	public static void load(Image image)
 	{
 		final var application = (VSandApplication) ModelUtil.getApplication(image);
-		final int width = application.getSize().x;
-		final int height = application.getSize().y;
+		final int width = application.getSize().x();
+		final int height = application.getSize().y();
 
 		image.setWidth(width);
 		image.setHeight(height);
