@@ -20,47 +20,41 @@ switch ( OperatingSystem.current() ) {
 }
 
 task copyReleng(type: Copy) {
-    from "releng/$project.ext.OS"
-    into 'build/image'
+	from "releng/$project.ext.OS"
+	into 'build/image'
 }
 
 jlink {
-		moduleName = 'org.sheepy.vsand'
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages',
-    			'--exclude-files', '**java_*.properties']
-    launcher{
-        name = 'VSand'
-        jvmArgs = ['-Dlog4j.configurationFile=./log4j2.xml']
-    }
+	moduleName = 'org.sheepy.vsand'
+	options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages',
+				'--exclude-files', '**java_*.properties']
+	launcher{
+		name = 'VSand'
+		jvmArgs = ['-Xshareclasses']
+	}
 }
 
 tasks.jlink.finalizedBy(copyReleng)
 
 butler {
-  user = "ealrann"
-  game = "vsand"
-  userVersion = project.version
+	user = "ealrann"
+	game = "vsand"
+	userVersion = project.version
 
-  windows {
-	binDirectory = "$projectDir/build/image"
-    channel = "windows"
-  }
-  linux {
-	binDirectory = "$projectDir/build/image"
-    channel = "linux"
-  }
+	windows {
+		binDirectory = "$projectDir/build/image"
+		channel = "windows"
+	}
+	linux {
+		binDirectory = "$projectDir/build/image"
+		channel = "linux"
+	}
 }
 
 mainClassName = 'org.sheepy.vsand/org.sheepy.vsand.VSandApplicationLauncher'
-jar {
-    manifest {
-        attributes 'Implementation-Title': "modular-hello",
-                'Main-Class': 'org.sheepy.vsand.VSandApplicationLauncher'
-    }
-}
 
 test {
-  useJUnitPlatform()
+	useJUnitPlatform()
 }
 
 dependencies {
