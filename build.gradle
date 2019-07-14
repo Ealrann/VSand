@@ -2,10 +2,7 @@ import org.gradle.internal.os.OperatingSystem
 
 buildscript {
 	repositories {
-		mavenLocal()
 		mavenCentral()
-		maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-		maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 		maven { url "https://plugins.gradle.org/m2/" }
 		jcenter()
 	}
@@ -19,10 +16,7 @@ plugins {
 }
 
 repositories {
-	mavenLocal()
 	mavenCentral()
-	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-	maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 }
 
 project.ext.targetPlatform = OperatingSystem.current()
@@ -63,8 +57,6 @@ subprojects {
 	afterEvaluate {
 		repositories {
 			jcenter()
-			maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-			maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 		}
 	}
 }
