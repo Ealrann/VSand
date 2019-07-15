@@ -50,7 +50,7 @@ public class MaterialsImpl extends MinimalEObjectImpl.Container implements Mater
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MaterialsImpl()
+	protected MaterialsImpl()
 	{
 		super();
 	}

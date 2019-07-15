@@ -100,7 +100,7 @@ public class DrawCircleImpl extends MinimalEObjectImpl.Container implements Draw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DrawCircleImpl()
+	protected DrawCircleImpl()
 	{
 		super();
 	}

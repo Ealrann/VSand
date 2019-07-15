@@ -45,7 +45,7 @@ public class PixelConstantBufferImpl extends ConstantBufferImpl implements Pixel
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PixelConstantBufferImpl()
+	protected PixelConstantBufferImpl()
 	{
 		super();
 	}

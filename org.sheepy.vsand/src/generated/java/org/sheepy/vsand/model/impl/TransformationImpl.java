@@ -129,7 +129,7 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TransformationImpl()
+	protected TransformationImpl()
 	{
 		super();
 	}

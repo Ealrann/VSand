@@ -7,19 +7,9 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.ui.EclipseUIPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.sheepy.lily.core.model.action.provider.ActionEditPlugin;
-import org.sheepy.lily.core.model.application.provider.ApplicationEditPlugin;
-import org.sheepy.lily.core.model.inference.provider.InferenceEditPlugin;
-import org.sheepy.lily.core.model.maintainer.provider.MaintainerEditPlugin;
-import org.sheepy.lily.core.model.presentation.provider.PresentationEditPlugin;
-import org.sheepy.lily.core.model.root.provider.RootEditPlugin;
-import org.sheepy.lily.core.model.types.provider.TypesEditPlugin;
-import org.sheepy.lily.vulkan.model.process.provider.ProcessEditPlugin;
-import org.sheepy.lily.vulkan.model.provider.VulkanEditPlugin;
-import org.sheepy.lily.vulkan.model.resource.provider.ResourceEditPlugin;
-import org.sheepy.vulkan.model.barrier.provider.BarrierEditPlugin;
-import org.sheepy.vulkan.model.enumeration.provider.EnumerationEditPlugin;
-import org.sheepy.vulkan.model.pipeline.provider.PipelineEditPlugin;
+import org.sheepy.lily.core.model.types.provider.LilyEditPlugin;
+import org.sheepy.lily.vulkan.model.process.compute.provider.LilyVulkanEditPlugin;
+import org.sheepy.vulkan.model.barrier.provider.VulkanEditPlugin;
 
 /**
  * This is the central singleton for the VSand editor plugin.
@@ -56,19 +46,9 @@ public final class VSandEditorPlugin extends EMFPlugin
 		super
 			(new ResourceLocator [] 
 			{
-				ApplicationEditPlugin.INSTANCE,
-				RootEditPlugin.INSTANCE,
-				InferenceEditPlugin.INSTANCE,
-				ProcessEditPlugin.INSTANCE,
-				ResourceEditPlugin.INSTANCE,
-				TypesEditPlugin.INSTANCE,
+				LilyEditPlugin.INSTANCE,
+				LilyVulkanEditPlugin.INSTANCE,
 				VulkanEditPlugin.INSTANCE,
-				PresentationEditPlugin.INSTANCE,
-				ActionEditPlugin.INSTANCE,
-				EnumerationEditPlugin.INSTANCE,
-				PipelineEditPlugin.INSTANCE,
-				BarrierEditPlugin.INSTANCE,
-				MaintainerEditPlugin.INSTANCE,
 			});
 	}
 

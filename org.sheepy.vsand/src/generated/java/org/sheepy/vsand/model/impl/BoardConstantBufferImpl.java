@@ -53,7 +53,7 @@ public class BoardConstantBufferImpl extends ConstantBufferImpl implements Board
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public BoardConstantBufferImpl()
+	protected BoardConstantBufferImpl()
 	{
 		super();
 	}

@@ -2,8 +2,8 @@
 @GenModel(editDirectory="/org.sheepy.vsand.model.edit/src/generated/java")
 @GenModel(editorDirectory="/org.sheepy.vsand.model.editor/src/generated/java", creationSubmenus="true",
 	multipleEditorPages="false")
-@GenModel(modelName="VSand", prefix="VSand")
-@GenModel(publicConstructors="true", complianceLevel="11.0", resource="XMI")
+@GenModel(modelName="VSand", prefix="VSand", operationReflection="false")
+@GenModel(complianceLevel="11.0", resource="XMI")
 @GenModel(childCreationExtenders="true")
 
 package org.sheepy.vsand.model

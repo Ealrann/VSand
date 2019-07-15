@@ -50,7 +50,7 @@ public class TransformationsImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TransformationsImpl()
+	protected TransformationsImpl()
 	{
 		super();
 	}

@@ -100,7 +100,7 @@ public class DrawSquareImpl extends MinimalEObjectImpl.Container implements Draw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DrawSquareImpl()
+	protected DrawSquareImpl()
 	{
 		super();
 	}

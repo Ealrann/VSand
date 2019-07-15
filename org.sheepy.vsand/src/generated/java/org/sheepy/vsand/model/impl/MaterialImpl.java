@@ -199,7 +199,7 @@ public class MaterialImpl extends MinimalEObjectImpl.Container implements Materi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MaterialImpl()
+	protected MaterialImpl()
 	{
 		super();
 	}

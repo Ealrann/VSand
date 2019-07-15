@@ -231,7 +231,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VSandApplicationImpl()
+	protected VSandApplicationImpl()
 	{
 		super();
 	}

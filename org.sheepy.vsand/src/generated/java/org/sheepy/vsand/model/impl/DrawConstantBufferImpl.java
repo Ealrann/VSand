@@ -45,7 +45,7 @@ public class DrawConstantBufferImpl extends ConstantBufferImpl implements DrawCo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DrawConstantBufferImpl()
+	protected DrawConstantBufferImpl()
 	{
 		super();
 	}

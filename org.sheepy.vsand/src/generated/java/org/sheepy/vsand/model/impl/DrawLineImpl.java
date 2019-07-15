@@ -138,7 +138,7 @@ public class DrawLineImpl extends MinimalEObjectImpl.Container implements DrawLi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DrawLineImpl()
+	protected DrawLineImpl()
 	{
 		super();
 	}

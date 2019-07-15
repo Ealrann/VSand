@@ -17,7 +17,6 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
 import org.sheepy.lily.core.model.application.provider.ApplicationItemProvider;
-import org.sheepy.lily.core.model.presentation.PresentationFactory;
 import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.vulkan.model.VulkanFactory;
 import org.sheepy.vsand.model.VSandApplication;
@@ -382,11 +381,6 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object)
 	{
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(ApplicationPackage.Literals.APPLICATION__VIEWS,
-				 PresentationFactory.eINSTANCE.createTranparentUIView()));
 
 		newChildDescriptors.add
 			(createChildParameter
