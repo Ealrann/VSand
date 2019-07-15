@@ -282,11 +282,13 @@
             <states>VIEWPORT</states>
             <states>SCISSOR</states>
           </dynamicState>
-          <vertexDescriptor xsi:type="graphic:IndexedVertexDescriptor" strideLength="20">
-            <attributes format="R32G32_SFLOAT"/>
-            <attributes format="R32G32_SFLOAT" offset="8"/>
-            <attributes format="R8G8B8A8_UNORM" offset="16"/>
-          </vertexDescriptor>
+          <vertexInputState>
+            <inputDescriptor strideLength="20">
+              <attributes name="Position" format="R32G32_SFLOAT"/>
+              <attributes name="UV" format="R32G32_SFLOAT" offset="8"/>
+              <attributes name="Color" format="R8G8B8A8_UNORM" offset="16"/>
+            </inputDescriptor>
+          </vertexInputState>
         </parts>
       </partPkg>
       <configuration acquireWaitStage="COMPUTE_SHADER_BIT">
