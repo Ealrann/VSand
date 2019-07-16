@@ -4,7 +4,6 @@ plugins {
 	id 'application'
 	id 'distribution'
 	id 'org.mini2Dx.butler'
-	id 'org.beryx.jlink' version '2.11.1'
 }
 
 switch ( OperatingSystem.current() ) {
@@ -19,22 +18,38 @@ switch ( OperatingSystem.current() ) {
 		break
 }
 
+task jlink(type: Exec, dependsOn: ['installDist', 'cleanJlink']) {
+  def javaHome = System.properties.'java.home'
+
+  workingDir 'build'
+
+  commandLine "$javaHome/bin/jlink",
+    '--strip-debug',
+    '--no-header-files',
+    '--no-man-pages',
+    '--exclude-files', '**java_*.properties',
+    '--compress', '2',
+    '--add-modules', "java.base,java.xml,jdk.unsupported,openj9.sharedclasses",
+    '--output', 'image'
+}
+
+task cleanJlink(type: Delete) {
+  delete 'build/image'
+}
+
 task copyReleng(type: Copy) {
 	from "releng/$project.ext.OS"
 	into 'build/image'
 }
 
-jlink {
-	moduleName = 'org.sheepy.vsand'
-	options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages',
-				'--exclude-files', '**java_*.properties']
-	launcher{
-		name = 'VSand'
-		jvmArgs = ['-Xshareclasses']
-	}
+task copyModules(type: Copy) {
+	from "build/install/org.sheepy.vsand/lib/"
+	into 'build/image/modules'
 }
 
 tasks.jlink.finalizedBy(copyReleng)
+tasks.jlink.finalizedBy(copyModules)
+
 
 butler {
 	user = "ealrann"
@@ -58,16 +73,16 @@ test {
 }
 
 dependencies {
-	implementation project(':org.sheepy.lily.core.impl')
+	implementation 'org.sheepy.lily.core:org.sheepy.lily.core.impl'
 
-	implementation project(':org.sheepy.lily.vulkan.api')
-	implementation project(':org.sheepy.lily.vulkan.process.compute')
-	implementation project(':org.sheepy.lily.vulkan.process.graphic')
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.api'
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.process.compute'
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.process.graphic'
 
-	implementation project(':org.sheepy.lily.vulkan.extra.api')
-	implementation project(':org.sheepy.lily.vulkan.extra.graphic')
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.api'
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.graphic'
 
-	implementation project(':org.sheepy.lily.vulkan.extra.nuklear')
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.nuklear'
 
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
 	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.4.2'
