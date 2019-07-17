@@ -8,14 +8,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-
-import org.sheepy.lily.vulkan.model.resource.provider.ConstantBufferItemProvider;
-
 import org.sheepy.vsand.model.DrawConstantBuffer;
 import org.sheepy.vsand.model.VSandPackage;
 
@@ -25,7 +19,7 @@ import org.sheepy.vsand.model.VSandPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class DrawConstantBufferItemProvider extends ConstantBufferItemProvider
+public class DrawConstantBufferItemProvider extends BoardConstantBufferItemProvider
 {
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -131,18 +125,6 @@ public class DrawConstantBufferItemProvider extends ConstantBufferItemProvider
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object)
 	{
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-	}
-
-	/**
-	 * Return the resource locator for this item provider's resources.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public ResourceLocator getResourceLocator()
-	{
-		return VSandEditPlugin.INSTANCE;
 	}
 
 }

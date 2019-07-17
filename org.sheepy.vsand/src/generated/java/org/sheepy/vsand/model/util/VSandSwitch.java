@@ -104,6 +104,7 @@ public class VSandSwitch<T> extends Switch<T>
 			{
 				DrawConstantBuffer drawConstantBuffer = (DrawConstantBuffer)theEObject;
 				T result = caseDrawConstantBuffer(drawConstantBuffer);
+				if (result == null) result = caseBoardConstantBuffer(drawConstantBuffer);
 				if (result == null) result = caseConstantBuffer(drawConstantBuffer);
 				if (result == null) result = caseIResource(drawConstantBuffer);
 				if (result == null) result = caseLNamedElement(drawConstantBuffer);
@@ -114,6 +115,7 @@ public class VSandSwitch<T> extends Switch<T>
 			{
 				PixelConstantBuffer pixelConstantBuffer = (PixelConstantBuffer)theEObject;
 				T result = casePixelConstantBuffer(pixelConstantBuffer);
+				if (result == null) result = caseBoardConstantBuffer(pixelConstantBuffer);
 				if (result == null) result = caseConstantBuffer(pixelConstantBuffer);
 				if (result == null) result = caseIResource(pixelConstantBuffer);
 				if (result == null) result = caseLNamedElement(pixelConstantBuffer);

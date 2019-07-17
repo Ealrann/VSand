@@ -8,9 +8,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.sheepy.lily.vulkan.model.resource.impl.ConstantBufferImpl;
-
 import org.sheepy.vsand.model.BoardConstantBuffer;
 import org.sheepy.vsand.model.DrawConstantBuffer;
 import org.sheepy.vsand.model.VSandPackage;
@@ -28,7 +25,7 @@ import org.sheepy.vsand.model.VSandPackage;
  *
  * @generated
  */
-public class DrawConstantBufferImpl extends ConstantBufferImpl implements DrawConstantBuffer
+public class DrawConstantBufferImpl extends BoardConstantBufferImpl implements DrawConstantBuffer
 {
 	/**
 	 * The cached value of the '{@link #getBoardConstantBuffer() <em>Board Constant Buffer</em>}' reference.

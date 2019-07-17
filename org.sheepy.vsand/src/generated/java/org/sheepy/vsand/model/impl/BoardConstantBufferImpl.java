@@ -7,9 +7,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.sheepy.lily.vulkan.model.resource.impl.ConstantBufferImpl;
-
 import org.sheepy.vsand.model.BoardConstantBuffer;
 import org.sheepy.vsand.model.VSandPackage;
 

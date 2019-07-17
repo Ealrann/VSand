@@ -5,12 +5,12 @@ Bundle-SymbolicName: org.sheepy.vsand.model.edit;singleton:=true
 Automatic-Module-Name: org.sheepy.vsand.model.edit
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: org.sheepy.vsand.model.provider.VSandEditPlugin$Implementation
+Bundle-Activator: org.sheepy.vsand.model.provider.VSandEditPlugin$Implementation$Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.sheepy.vsand.model.provider
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime;resolution:=optional;x-installation:=greedy,
  org.sheepy.vsand.model;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
  org.sheepy.lily.vulkan.model;visibility:=reexport,
@@ -18,6 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.sheepy.vulkan.model;visibility:=reexport,
  org.sheepy.vulkan.model.edit;visibility:=reexport,
  org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.edit;visibility:=reexport,
  org.sheepy.lily.core.model;visibility:=reexport,
  org.sheepy.lily.core.model.edit;visibility:=reexport
+Import-Package: org.osgi.framework
 Bundle-ActivationPolicy: lazy

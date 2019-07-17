@@ -187,19 +187,19 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		isInited = true;
 
 		// Initialize simple dependencies
+		EcorePackage.eINSTANCE.eClass();
+		TypesPackage.eINSTANCE.eClass();
+		ActionPackage.eINSTANCE.eClass();
 		ApplicationPackage.eINSTANCE.eClass();
 		RootPackage.eINSTANCE.eClass();
 		InferencePackage.eINSTANCE.eClass();
-		EcorePackage.eINSTANCE.eClass();
-		ProcessPackage.eINSTANCE.eClass();
-		ResourcePackage.eINSTANCE.eClass();
-		TypesPackage.eINSTANCE.eClass();
-		VulkanPackage.eINSTANCE.eClass();
 		PresentationPackage.eINSTANCE.eClass();
-		ActionPackage.eINSTANCE.eClass();
+		VulkanPackage.eINSTANCE.eClass();
+		ResourcePackage.eINSTANCE.eClass();
+		BarrierPackage.eINSTANCE.eClass();
 		EnumerationPackage.eINSTANCE.eClass();
 		PipelinePackage.eINSTANCE.eClass();
-		BarrierPackage.eINSTANCE.eClass();
+		ProcessPackage.eINSTANCE.eClass();
 		MaintainerPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
@@ -1055,8 +1055,8 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		// Add supertypes to classes
 		vSandApplicationEClass.getESuperTypes().add(theApplicationPackage.getApplication());
 		boardConstantBufferEClass.getESuperTypes().add(theResourcePackage.getConstantBuffer());
-		drawConstantBufferEClass.getESuperTypes().add(theResourcePackage.getConstantBuffer());
-		pixelConstantBufferEClass.getESuperTypes().add(theResourcePackage.getConstantBuffer());
+		drawConstantBufferEClass.getESuperTypes().add(this.getBoardConstantBuffer());
+		pixelConstantBufferEClass.getESuperTypes().add(this.getBoardConstantBuffer());
 		drawCircleEClass.getESuperTypes().add(this.getDrawCommand());
 		drawSquareEClass.getESuperTypes().add(this.getDrawCommand());
 		drawLineEClass.getESuperTypes().add(this.getDrawCommand());

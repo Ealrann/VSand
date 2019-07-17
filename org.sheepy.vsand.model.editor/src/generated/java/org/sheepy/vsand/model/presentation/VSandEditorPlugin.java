@@ -7,6 +7,7 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.ui.EclipseUIPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 import org.sheepy.lily.core.model.types.provider.LilyEditPlugin;
 import org.sheepy.lily.vulkan.model.process.compute.provider.LilyVulkanEditPlugin;
 import org.sheepy.vulkan.model.barrier.provider.VulkanEditPlugin;
@@ -46,6 +47,7 @@ public final class VSandEditorPlugin extends EMFPlugin
 		super
 			(new ResourceLocator [] 
 			{
+				EcoreEditPlugin.INSTANCE,
 				LilyEditPlugin.INSTANCE,
 				LilyVulkanEditPlugin.INSTANCE,
 				VulkanEditPlugin.INSTANCE,

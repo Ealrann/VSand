@@ -358,7 +358,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int DRAW_CONSTANT_BUFFER__NAME = ResourcePackage.CONSTANT_BUFFER__NAME;
+	int DRAW_CONSTANT_BUFFER__NAME = BOARD_CONSTANT_BUFFER__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Being Pushed</b></em>' attribute.
@@ -367,7 +367,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int DRAW_CONSTANT_BUFFER__BEING_PUSHED = ResourcePackage.CONSTANT_BUFFER__BEING_PUSHED;
+	int DRAW_CONSTANT_BUFFER__BEING_PUSHED = BOARD_CONSTANT_BUFFER__BEING_PUSHED;
 
 	/**
 	 * The feature id for the '<em><b>Data</b></em>' attribute.
@@ -376,7 +376,16 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int DRAW_CONSTANT_BUFFER__DATA = ResourcePackage.CONSTANT_BUFFER__DATA;
+	int DRAW_CONSTANT_BUFFER__DATA = BOARD_CONSTANT_BUFFER__DATA;
+
+	/**
+	 * The feature id for the '<em><b>Current Board Buffer</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DRAW_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER;
 
 	/**
 	 * The feature id for the '<em><b>Board Constant Buffer</b></em>' reference.
@@ -385,7 +394,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int DRAW_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 0;
+	int DRAW_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER = BOARD_CONSTANT_BUFFER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Draw Constant Buffer</em>' class.
@@ -394,7 +403,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int DRAW_CONSTANT_BUFFER_FEATURE_COUNT = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 1;
+	int DRAW_CONSTANT_BUFFER_FEATURE_COUNT = BOARD_CONSTANT_BUFFER_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.PixelConstantBufferImpl <em>Pixel Constant Buffer</em>}' class.
@@ -413,7 +422,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int PIXEL_CONSTANT_BUFFER__NAME = ResourcePackage.CONSTANT_BUFFER__NAME;
+	int PIXEL_CONSTANT_BUFFER__NAME = BOARD_CONSTANT_BUFFER__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Being Pushed</b></em>' attribute.
@@ -422,7 +431,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int PIXEL_CONSTANT_BUFFER__BEING_PUSHED = ResourcePackage.CONSTANT_BUFFER__BEING_PUSHED;
+	int PIXEL_CONSTANT_BUFFER__BEING_PUSHED = BOARD_CONSTANT_BUFFER__BEING_PUSHED;
 
 	/**
 	 * The feature id for the '<em><b>Data</b></em>' attribute.
@@ -431,7 +440,16 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int PIXEL_CONSTANT_BUFFER__DATA = ResourcePackage.CONSTANT_BUFFER__DATA;
+	int PIXEL_CONSTANT_BUFFER__DATA = BOARD_CONSTANT_BUFFER__DATA;
+
+	/**
+	 * The feature id for the '<em><b>Current Board Buffer</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PIXEL_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER;
 
 	/**
 	 * The feature id for the '<em><b>Board Constant Buffer</b></em>' reference.
@@ -440,7 +458,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int PIXEL_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 0;
+	int PIXEL_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER = BOARD_CONSTANT_BUFFER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Pixel Constant Buffer</em>' class.
@@ -449,7 +467,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int PIXEL_CONSTANT_BUFFER_FEATURE_COUNT = ResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 1;
+	int PIXEL_CONSTANT_BUFFER_FEATURE_COUNT = BOARD_CONSTANT_BUFFER_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.sheepy.vsand.model.DrawCommand <em>Draw Command</em>}' class.

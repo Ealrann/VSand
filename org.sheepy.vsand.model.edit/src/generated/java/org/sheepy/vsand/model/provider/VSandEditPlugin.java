@@ -5,6 +5,8 @@ package org.sheepy.vsand.model.provider;
 import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
+import org.osgi.framework.BundleActivator;
 import org.sheepy.lily.core.model.types.provider.LilyEditPlugin;
 import org.sheepy.lily.vulkan.model.process.compute.provider.LilyVulkanEditPlugin;
 import org.sheepy.vulkan.model.barrier.provider.VulkanEditPlugin;
@@ -44,6 +46,7 @@ public final class VSandEditPlugin extends EMFPlugin
 		super
 		  (new ResourceLocator [] 
 		   {
+		     EcoreEditPlugin.INSTANCE,
 		     LilyEditPlugin.INSTANCE,
 		     LilyVulkanEditPlugin.INSTANCE,
 		     VulkanEditPlugin.INSTANCE,
@@ -96,6 +99,21 @@ public final class VSandEditPlugin extends EMFPlugin
 			// Remember the static instance.
 			//
 			plugin = this;
+		}
+
+		/**
+		 * The actual implementation of the purely OSGi-compatible <b>Bundle Activator</b>.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final class Activator extends EMFPlugin.OSGiDelegatingBundleActivator
+		{
+			@Override
+			protected BundleActivator createBundle()
+			{
+				return new Implementation();
+			}
 		}
 	}
 

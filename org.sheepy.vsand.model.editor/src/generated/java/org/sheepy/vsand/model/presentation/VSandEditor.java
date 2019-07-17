@@ -147,6 +147,14 @@ import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 
 import org.sheepy.vsand.model.provider.VSandItemProviderAdapterFactory;
 
+import org.eclipse.emf.common.command.AbstractCommand;
+import org.eclipse.emf.common.ui.viewer.ColumnViewerInformationControlToolTipSupport;
+import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
+import org.eclipse.emf.edit.ui.provider.DecoratingColumLabelProvider;
+import org.eclipse.emf.edit.ui.provider.DiagnosticDecorator;
+import org.eclipse.emf.edit.ui.util.FindAndReplaceTarget;
+import org.eclipse.emf.edit.ui.util.IRevertablePart;
+import org.eclipse.jface.text.IFindReplaceTarget;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.sheepy.lily.core.model.action.provider.ActionItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.application.provider.ApplicationItemProviderAdapterFactory;
@@ -169,7 +177,7 @@ import org.sheepy.vulkan.model.pipeline.provider.PipelineItemProviderAdapterFact
  */
 public class VSandEditor
 	extends MultiPageEditorPart
-	implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerProvider, IGotoMarker
+	implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerProvider, IGotoMarker, IRevertablePart
 {
 	/**
 	 * This keeps track of the editing domain that is used to track all changes to the model.
@@ -463,23 +471,33 @@ public class VSandEditor
 						protected Collection<Resource> removedResources = new ArrayList<Resource>();
 
 						@Override
-						public boolean visit(IResourceDelta delta)
+						public boolean visit(final IResourceDelta delta)
 						{
 							if (delta.getResource().getType() == IResource.FILE)
 							{
 								if (delta.getKind() == IResourceDelta.REMOVED ||
-								    delta.getKind() == IResourceDelta.CHANGED && delta.getFlags() != IResourceDelta.MARKERS)
+								    delta.getKind() == IResourceDelta.CHANGED)
 								{
-									Resource resource = resourceSet.getResource(URI.createPlatformResourceURI(delta.getFullPath().toString(), true), false);
+									final Resource resource = resourceSet.getResource(URI.createPlatformResourceURI(delta.getFullPath().toString(), true), false);
 									if (resource != null)
 									{
 										if (delta.getKind() == IResourceDelta.REMOVED)
 										{
 											removedResources.add(resource);
 										}
-										else if (!savedResources.remove(resource))
+										else
 										{
-											changedResources.add(resource);
+											if ((delta.getFlags() & IResourceDelta.MARKERS) != 0)
+											{
+												DiagnosticDecorator.DiagnosticAdapter.update(resource, markerHelper.getMarkerDiagnostics(resource, (IFile)delta.getResource(), false));
+											}
+											if ((delta.getFlags() & IResourceDelta.CONTENT) != 0)
+											{
+												if (!savedResources.remove(resource))
+												{
+													changedResources.add(resource);
+												}
+											}
 										}
 									}
 								}
@@ -739,23 +757,38 @@ public class VSandEditor
 
 		adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new VSandItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new TypesItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ActionItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ApplicationItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new RootItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new InferenceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ProcessItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new org.sheepy.lily.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new TypesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new VulkanItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new PresentationItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ActionItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new PipelineItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new VulkanItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.sheepy.lily.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new BarrierItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new PipelineItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ProcessItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new MaintainerItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
 		// Create the command stack that will notify this editor as commands are executed.
 		//
-		BasicCommandStack commandStack = new BasicCommandStack();
+		BasicCommandStack commandStack =
+			new BasicCommandStack()
+			{
+				@Override
+				public void execute(Command command)
+				{
+					// Cancel live validation before executing a command that will trigger a new round of validation.
+					//
+					if (!(command instanceof AbstractCommand.NonDirtying))
+					{
+						DiagnosticDecorator.cancel(editingDomain);
+					}
+					super.execute(command);
+				}
+			};
 
 		// Add a listener to set the most recent command's affected objects to be the selection of the viewer with focus.
 		//
@@ -1106,11 +1139,12 @@ public class VSandEditor
 
 			selectionViewer.setUseHashlookup(true);
 			selectionViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-			selectionViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+			selectionViewer.setLabelProvider(new DecoratingColumLabelProvider(new AdapterFactoryLabelProvider(adapterFactory), new DiagnosticDecorator(editingDomain, selectionViewer, VSandEditorPlugin.getPlugin().getDialogSettings())));
 			selectionViewer.setInput(editingDomain.getResourceSet());
 			selectionViewer.setSelection(new StructuredSelection(editingDomain.getResourceSet().getResources().get(0)), true);
 
 			new AdapterFactoryTreeEditor(selectionViewer.getTree(), adapterFactory);
+			new ColumnViewerInformationControlToolTipSupport(selectionViewer, new DiagnosticDecorator.EditingDomainLocationListener(editingDomain, selectionViewer));
 
 			createContextMenuFor(selectionViewer);
 			int pageIndex = addPage(tree);
@@ -1240,6 +1274,10 @@ public class VSandEditor
 		{
 			return key.cast(this);
 		}
+		else if (key.equals(IFindReplaceTarget.class)) 
+		{
+			return FindAndReplaceTarget.getAdapter(key, this, VSandEditorPlugin.getPlugin());
+		}
 		else
 		{
 			return super.getAdapter(key);
@@ -1271,8 +1309,10 @@ public class VSandEditor
 					//
 					contentOutlineViewer.setUseHashlookup(true);
 					contentOutlineViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-					contentOutlineViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+					contentOutlineViewer.setLabelProvider(new DecoratingColumLabelProvider(new AdapterFactoryLabelProvider(adapterFactory), new DiagnosticDecorator(editingDomain, contentOutlineViewer, VSandEditorPlugin.getPlugin().getDialogSettings())));
 					contentOutlineViewer.setInput(editingDomain.getResourceSet());
+
+					new ColumnViewerInformationControlToolTipSupport(contentOutlineViewer, new DiagnosticDecorator.EditingDomainLocationListener(editingDomain, contentOutlineViewer));
 
 					// Make sure our popups work.
 					//
@@ -1330,7 +1370,7 @@ public class VSandEditor
 	public IPropertySheetPage getPropertySheetPage()
 	{
 		PropertySheetPage propertySheetPage =
-			new ExtendedPropertySheetPage(editingDomain, ExtendedPropertySheetPage.Decoration.NONE, null, 0, false)
+			new ExtendedPropertySheetPage(editingDomain, ExtendedPropertySheetPage.Decoration.LIVE, VSandEditorPlugin.getPlugin().getDialogSettings(), 10, true)
 			{
 				@Override
 				public void setSelectionToViewer(List<?> selection)
@@ -1393,6 +1433,58 @@ public class VSandEditor
 	public boolean isDirty()
 	{
 		return ((BasicCommandStack)editingDomain.getCommandStack()).isSaveNeeded();
+	}
+
+	/**
+	 * This is for implementing {@link IRevertablePart}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void doRevert()
+	{
+		DiagnosticDecorator.cancel(editingDomain);
+		
+		ResourceSet resourceSet = editingDomain.getResourceSet();
+		List<Resource> resources = resourceSet.getResources();
+		List<Resource> unloadedResources = new ArrayList<Resource>();
+		updateProblemIndication = false;
+		for (int i = 0; i < resources.size(); ++i)
+		{
+			Resource resource = resources.get(i);
+			if (resource.isLoaded())
+			{
+				resource.unload();
+				unloadedResources.add(resource);
+			}
+		}
+
+		resourceToDiagnosticMap.clear();
+		for (Resource resource : unloadedResources)
+		{
+			try
+			{
+				resource.load(resourceSet.getLoadOptions());
+			}
+			catch (IOException exception)
+			{
+				if (!resourceToDiagnosticMap.containsKey(resource))
+				{
+					resourceToDiagnosticMap.put(resource, analyzeResourceProblems(resource, exception));
+				}
+			}
+		}
+
+		editingDomain.getCommandStack().flush();
+
+		if (AdapterFactoryEditingDomain.isStale(editorSelection))
+		{
+			setSelection(StructuredSelection.EMPTY);
+		}
+
+		updateProblemIndication = true;
+		updateProblemIndication();
 	}
 
 	/**

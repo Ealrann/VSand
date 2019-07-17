@@ -7,11 +7,11 @@
 <plugin>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated GameOfLife -->
+      <!-- @generated VSand -->
       <package
             uri="org.sheepy.vsand.model"
             class="org.sheepy.vsand.model.VSandPackage"
-            genModel="model/VSand.xcore"/>
+            genModel="model/VSand.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.extension_parser">

@@ -2,8 +2,6 @@
  */
 package org.sheepy.vsand.model;
 
-import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Draw Constant Buffer</b></em>'.
@@ -20,7 +18,7 @@ import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
  * @model
  * @generated
  */
-public interface DrawConstantBuffer extends ConstantBuffer
+public interface DrawConstantBuffer extends BoardConstantBuffer
 {
 	/**
 	 * Returns the value of the '<em><b>Board Constant Buffer</b></em>' reference.
