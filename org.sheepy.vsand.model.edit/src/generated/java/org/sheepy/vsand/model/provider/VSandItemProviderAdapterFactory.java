@@ -5,13 +5,19 @@ package org.sheepy.vsand.model.provider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
+
 import org.eclipse.emf.common.util.ResourceLocator;
+
 import org.eclipse.emf.ecore.EObject;
+
 import org.eclipse.emf.edit.command.CommandParameter;
+
 import org.eclipse.emf.edit.domain.EditingDomain;
+
 import org.eclipse.emf.edit.provider.ChangeNotifier;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -24,13 +30,19 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.presentation.UIPage;
+
 import org.sheepy.lily.core.model.presentation.util.PresentationSwitch;
+
 import org.sheepy.lily.vulkan.model.ResourcePkg;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
+
 import org.sheepy.lily.vulkan.model.util.VulkanSwitch;
+
 import org.sheepy.vsand.model.VSandFactory;
+
 import org.sheepy.vsand.model.util.VSandAdapterFactory;
 
 /**
@@ -42,7 +54,8 @@ import org.sheepy.vsand.model.util.VSandAdapterFactory;
  * <!-- end-user-doc -->
  * @generated
  */
-public class VSandItemProviderAdapterFactory extends VSandAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable
+public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
+		implements ComposeableAdapterFactory, IChangeNotifier, IDisposable
 {
 	/**
 	 * This keeps track of the root adapter factory that delegates to this adapter factory.
@@ -441,7 +454,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 		if (isFactoryForType(type))
 		{
 			Object adapter = super.adapt(object, type);
-			if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter)))
+			if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter)))
 			{
 				return adapter;
 			}
@@ -552,7 +565,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 			 * <!-- end-user-doc -->
 			 * @generated
 			 */
-			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) 
+			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain)
 			{
 				this.newChildDescriptors = newChildDescriptors;
 				this.editingDomain = editingDomain;
@@ -565,14 +578,12 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 			@Override
 			public Object caseUIPage(UIPage object)
 			{
-				newChildDescriptors.add
-					(createChildParameter
-						(PresentationPackage.Literals.UI_PAGE__PANELS,
-						 VSandFactory.eINSTANCE.createMaterialSelectorPanel()));
+				newChildDescriptors.add(createChildParameter(PresentationPackage.Literals.UI_PAGE__PANELS,
+						VSandFactory.eINSTANCE.createMaterialSelectorPanel()));
 
 				return null;
 			}
- 
+
 			/**
 			 * <!-- begin-user-doc -->
 			 * <!-- end-user-doc -->
@@ -590,10 +601,11 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
+		@Override
 		public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain)
 		{
 			ArrayList<Object> result = new ArrayList<Object>();
-			new CreationSwitch(result, editingDomain).doSwitch((EObject)object);
+			new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
 			return result;
 		}
 
@@ -602,6 +614,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
+		@Override
 		public ResourceLocator getResourceLocator()
 		{
 			return VSandEditPlugin.INSTANCE;
@@ -646,7 +659,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 			 * <!-- end-user-doc -->
 			 * @generated
 			 */
-			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) 
+			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain)
 			{
 				this.newChildDescriptors = newChildDescriptors;
 				this.editingDomain = editingDomain;
@@ -659,24 +672,18 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 			@Override
 			public Object caseResourcePkg(ResourcePkg object)
 			{
-				newChildDescriptors.add
-					(createChildParameter
-						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
-						 VSandFactory.eINSTANCE.createBoardConstantBuffer()));
+				newChildDescriptors.add(createChildParameter(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						VSandFactory.eINSTANCE.createBoardConstantBuffer()));
 
-				newChildDescriptors.add
-					(createChildParameter
-						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
-						 VSandFactory.eINSTANCE.createDrawConstantBuffer()));
+				newChildDescriptors.add(createChildParameter(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						VSandFactory.eINSTANCE.createDrawConstantBuffer()));
 
-				newChildDescriptors.add
-					(createChildParameter
-						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
-						 VSandFactory.eINSTANCE.createPixelConstantBuffer()));
+				newChildDescriptors.add(createChildParameter(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						VSandFactory.eINSTANCE.createPixelConstantBuffer()));
 
 				return null;
 			}
- 
+
 			/**
 			 * <!-- begin-user-doc -->
 			 * <!-- end-user-doc -->
@@ -694,10 +701,11 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
+		@Override
 		public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain)
 		{
 			ArrayList<Object> result = new ArrayList<Object>();
-			new CreationSwitch(result, editingDomain).doSwitch((EObject)object);
+			new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
 			return result;
 		}
 
@@ -706,6 +714,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory impleme
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
+		@Override
 		public ResourceLocator getResourceLocator()
 		{
 			return VSandEditPlugin.INSTANCE;

@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -30,14 +29,8 @@ import org.sheepy.vsand.model.VSandPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class DrawLineItemProvider 
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource
+public class DrawLineItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource
 {
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -81,19 +74,12 @@ public class DrawLineItemProvider
 	 */
 	protected void addMaterialPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawCommand_material_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawCommand_material_feature", "_UI_DrawCommand_type"),
-				 VSandPackage.Literals.DRAW_COMMAND__MATERIAL,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawCommand_material_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawCommand_material_feature",
+								"_UI_DrawCommand_type"),
+						VSandPackage.Literals.DRAW_COMMAND__MATERIAL, true, false, true, null, null, null));
 	}
 
 	/**
@@ -104,19 +90,12 @@ public class DrawLineItemProvider
 	 */
 	protected void addX1PropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawLine_x1_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_x1_feature", "_UI_DrawLine_type"),
-				 VSandPackage.Literals.DRAW_LINE__X1,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawLine_x1_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_x1_feature", "_UI_DrawLine_type"),
+						VSandPackage.Literals.DRAW_LINE__X1, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -127,19 +106,12 @@ public class DrawLineItemProvider
 	 */
 	protected void addY1PropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawLine_y1_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_y1_feature", "_UI_DrawLine_type"),
-				 VSandPackage.Literals.DRAW_LINE__Y1,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawLine_y1_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_y1_feature", "_UI_DrawLine_type"),
+						VSandPackage.Literals.DRAW_LINE__Y1, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -150,19 +122,12 @@ public class DrawLineItemProvider
 	 */
 	protected void addX2PropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawLine_x2_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_x2_feature", "_UI_DrawLine_type"),
-				 VSandPackage.Literals.DRAW_LINE__X2,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawLine_x2_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_x2_feature", "_UI_DrawLine_type"),
+						VSandPackage.Literals.DRAW_LINE__X2, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -173,19 +138,12 @@ public class DrawLineItemProvider
 	 */
 	protected void addY2PropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawLine_y2_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_y2_feature", "_UI_DrawLine_type"),
-				 VSandPackage.Literals.DRAW_LINE__Y2,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawLine_y2_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_y2_feature", "_UI_DrawLine_type"),
+						VSandPackage.Literals.DRAW_LINE__Y2, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -196,19 +154,13 @@ public class DrawLineItemProvider
 	 */
 	protected void addSizePropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawLine_size_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_size_feature", "_UI_DrawLine_type"),
-				 VSandPackage.Literals.DRAW_LINE__SIZE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawLine_size_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawLine_size_feature",
+								"_UI_DrawLine_type"),
+						VSandPackage.Literals.DRAW_LINE__SIZE, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -232,10 +184,9 @@ public class DrawLineItemProvider
 	@Override
 	public String getText(Object object)
 	{
-		DrawLine drawLine = (DrawLine)object;
+		DrawLine drawLine = (DrawLine) object;
 		return getString("_UI_DrawLine_type") + " " + drawLine.getX1();
 	}
-
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -251,13 +202,13 @@ public class DrawLineItemProvider
 
 		switch (notification.getFeatureID(DrawLine.class))
 		{
-			case VSandPackage.DRAW_LINE__X1:
-			case VSandPackage.DRAW_LINE__Y1:
-			case VSandPackage.DRAW_LINE__X2:
-			case VSandPackage.DRAW_LINE__Y2:
-			case VSandPackage.DRAW_LINE__SIZE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case VSandPackage.DRAW_LINE__X1:
+		case VSandPackage.DRAW_LINE__Y1:
+		case VSandPackage.DRAW_LINE__X2:
+		case VSandPackage.DRAW_LINE__Y2:
+		case VSandPackage.DRAW_LINE__SIZE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -76,19 +75,12 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	 */
 	protected void addMainMaterialPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_mainMaterial_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_mainMaterial_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__MAIN_MATERIAL,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_VSandApplication_mainMaterial_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_mainMaterial_feature",
+								"_UI_VSandApplication_type"),
+						VSandPackage.Literals.VSAND_APPLICATION__MAIN_MATERIAL, true, false, true, null, null, null));
 	}
 
 	/**
@@ -99,19 +91,12 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	 */
 	protected void addSecondaryMaterialPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_secondaryMaterial_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_secondaryMaterial_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__SECONDARY_MATERIAL,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_VSandApplication_secondaryMaterial_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_secondaryMaterial_feature",
+						"_UI_VSandApplication_type"),
+				VSandPackage.Literals.VSAND_APPLICATION__SECONDARY_MATERIAL, true, false, true, null, null, null));
 	}
 
 	/**
@@ -122,19 +107,13 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	 */
 	protected void addNextModePropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_nextMode_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_nextMode_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__NEXT_MODE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_VSandApplication_nextMode_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_nextMode_feature",
+								"_UI_VSandApplication_type"),
+						VSandPackage.Literals.VSAND_APPLICATION__NEXT_MODE, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -145,19 +124,13 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	 */
 	protected void addPausedPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_paused_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_paused_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__PAUSED,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_VSandApplication_paused_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_paused_feature",
+								"_UI_VSandApplication_type"),
+						VSandPackage.Literals.VSAND_APPLICATION__PAUSED, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -168,19 +141,13 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	 */
 	protected void addSpeedPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_speed_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_speed_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__SPEED,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_VSandApplication_speed_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_speed_feature",
+								"_UI_VSandApplication_type"),
+						VSandPackage.Literals.VSAND_APPLICATION__SPEED, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -191,19 +158,13 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	 */
 	protected void addForceClearPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_forceClear_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_forceClear_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__FORCE_CLEAR,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_VSandApplication_forceClear_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_forceClear_feature",
+								"_UI_VSandApplication_type"),
+						VSandPackage.Literals.VSAND_APPLICATION__FORCE_CLEAR, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -214,19 +175,13 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	 */
 	protected void addShowSleepZonesPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_showSleepZones_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_showSleepZones_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__SHOW_SLEEP_ZONES,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_VSandApplication_showSleepZones_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_showSleepZones_feature",
+								"_UI_VSandApplication_type"),
+						VSandPackage.Literals.VSAND_APPLICATION__SHOW_SLEEP_ZONES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -237,19 +192,13 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	 */
 	protected void addBrushSizePropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_brushSize_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_brushSize_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__BRUSH_SIZE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_VSandApplication_brushSize_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_brushSize_feature",
+								"_UI_VSandApplication_type"),
+						VSandPackage.Literals.VSAND_APPLICATION__BRUSH_SIZE, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -260,19 +209,12 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	 */
 	protected void addBoardUpdateTaskPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_boardUpdateTask_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_boardUpdateTask_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__BOARD_UPDATE_TASK,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_VSandApplication_boardUpdateTask_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_boardUpdateTask_feature",
+						"_UI_VSandApplication_type"),
+				VSandPackage.Literals.VSAND_APPLICATION__BOARD_UPDATE_TASK, true, false, true, null, null, null));
 	}
 
 	/**
@@ -331,13 +273,12 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	@Override
 	public String getText(Object object)
 	{
-		EList<LObject> labelValue = ((VSandApplication)object).getContentObjects();
+		EList<LObject> labelValue = ((VSandApplication) object).getContentObjects();
 		String label = labelValue == null ? null : labelValue.toString();
-		return label == null || label.length() == 0 ?
-			getString("_UI_VSandApplication_type") :
-			getString("_UI_VSandApplication_type") + " " + label;
+		return label == null || label.length() == 0
+				? getString("_UI_VSandApplication_type")
+				: getString("_UI_VSandApplication_type") + " " + label;
 	}
-
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -353,19 +294,19 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 
 		switch (notification.getFeatureID(VSandApplication.class))
 		{
-			case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
-			case VSandPackage.VSAND_APPLICATION__PAUSED:
-			case VSandPackage.VSAND_APPLICATION__SPEED:
-			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
-			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
-			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case VSandPackage.VSAND_APPLICATION__MATERIALS:
-			case VSandPackage.VSAND_APPLICATION__TRANSFORMATIONS:
-			case VSandPackage.VSAND_APPLICATION__DRAW_QUEUE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case VSandPackage.VSAND_APPLICATION__NEXT_MODE:
+		case VSandPackage.VSAND_APPLICATION__PAUSED:
+		case VSandPackage.VSAND_APPLICATION__SPEED:
+		case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
+		case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
+		case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
+		case VSandPackage.VSAND_APPLICATION__MATERIALS:
+		case VSandPackage.VSAND_APPLICATION__TRANSFORMATIONS:
+		case VSandPackage.VSAND_APPLICATION__DRAW_QUEUE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -382,35 +323,23 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	{
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
-			(createChildParameter
-				(ApplicationPackage.Literals.APPLICATION__ENGINES,
-				 VulkanFactory.eINSTANCE.createVulkanEngine()));
+		newChildDescriptors.add(createChildParameter(ApplicationPackage.Literals.APPLICATION__ENGINES,
+				VulkanFactory.eINSTANCE.createVulkanEngine()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(VSandPackage.Literals.VSAND_APPLICATION__MATERIALS,
-				 VSandFactory.eINSTANCE.createMaterials()));
+		newChildDescriptors.add(createChildParameter(VSandPackage.Literals.VSAND_APPLICATION__MATERIALS,
+				VSandFactory.eINSTANCE.createMaterials()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(VSandPackage.Literals.VSAND_APPLICATION__TRANSFORMATIONS,
-				 VSandFactory.eINSTANCE.createTransformations()));
+		newChildDescriptors.add(createChildParameter(VSandPackage.Literals.VSAND_APPLICATION__TRANSFORMATIONS,
+				VSandFactory.eINSTANCE.createTransformations()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE,
-				 VSandFactory.eINSTANCE.createDrawCircle()));
+		newChildDescriptors.add(createChildParameter(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE,
+				VSandFactory.eINSTANCE.createDrawCircle()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE,
-				 VSandFactory.eINSTANCE.createDrawSquare()));
+		newChildDescriptors.add(createChildParameter(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE,
+				VSandFactory.eINSTANCE.createDrawSquare()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE,
-				 VSandFactory.eINSTANCE.createDrawLine()));
+		newChildDescriptors.add(createChildParameter(VSandPackage.Literals.VSAND_APPLICATION__DRAW_QUEUE,
+				VSandFactory.eINSTANCE.createDrawLine()));
 	}
 
 	/**

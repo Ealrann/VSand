@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -30,14 +29,8 @@ import org.sheepy.vsand.model.VSandPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class DrawCircleItemProvider 
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource
+public class DrawCircleItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource
 {
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -79,19 +72,12 @@ public class DrawCircleItemProvider
 	 */
 	protected void addMaterialPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawCommand_material_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawCommand_material_feature", "_UI_DrawCommand_type"),
-				 VSandPackage.Literals.DRAW_COMMAND__MATERIAL,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawCommand_material_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawCommand_material_feature",
+								"_UI_DrawCommand_type"),
+						VSandPackage.Literals.DRAW_COMMAND__MATERIAL, true, false, true, null, null, null));
 	}
 
 	/**
@@ -102,19 +88,13 @@ public class DrawCircleItemProvider
 	 */
 	protected void addXPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawCircle_x_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawCircle_x_feature", "_UI_DrawCircle_type"),
-				 VSandPackage.Literals.DRAW_CIRCLE__X,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawCircle_x_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawCircle_x_feature",
+								"_UI_DrawCircle_type"),
+						VSandPackage.Literals.DRAW_CIRCLE__X, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -125,19 +105,13 @@ public class DrawCircleItemProvider
 	 */
 	protected void addYPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawCircle_y_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawCircle_y_feature", "_UI_DrawCircle_type"),
-				 VSandPackage.Literals.DRAW_CIRCLE__Y,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawCircle_y_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawCircle_y_feature",
+								"_UI_DrawCircle_type"),
+						VSandPackage.Literals.DRAW_CIRCLE__Y, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -148,19 +122,13 @@ public class DrawCircleItemProvider
 	 */
 	protected void addSizePropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawCircle_size_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawCircle_size_feature", "_UI_DrawCircle_type"),
-				 VSandPackage.Literals.DRAW_CIRCLE__SIZE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawCircle_size_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_DrawCircle_size_feature",
+								"_UI_DrawCircle_type"),
+						VSandPackage.Literals.DRAW_CIRCLE__SIZE, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -184,10 +152,9 @@ public class DrawCircleItemProvider
 	@Override
 	public String getText(Object object)
 	{
-		DrawCircle drawCircle = (DrawCircle)object;
+		DrawCircle drawCircle = (DrawCircle) object;
 		return getString("_UI_DrawCircle_type") + " " + drawCircle.getX();
 	}
-
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -203,11 +170,11 @@ public class DrawCircleItemProvider
 
 		switch (notification.getFeatureID(DrawCircle.class))
 		{
-			case VSandPackage.DRAW_CIRCLE__X:
-			case VSandPackage.DRAW_CIRCLE__Y:
-			case VSandPackage.DRAW_CIRCLE__SIZE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case VSandPackage.DRAW_CIRCLE__X:
+		case VSandPackage.DRAW_CIRCLE__Y:
+		case VSandPackage.DRAW_CIRCLE__SIZE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

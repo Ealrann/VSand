@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -30,14 +29,8 @@ import org.sheepy.vsand.model.VSandPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class TransformationItemProvider 
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource
+public class TransformationItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource
 {
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -81,19 +74,12 @@ public class TransformationItemProvider
 	 */
 	protected void addReactantPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Transformation_reactant_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_reactant_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__REACTANT,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Transformation_reactant_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Transformation_reactant_feature",
+								"_UI_Transformation_type"),
+						VSandPackage.Literals.TRANSFORMATION__REACTANT, true, false, true, null, null, null));
 	}
 
 	/**
@@ -104,19 +90,12 @@ public class TransformationItemProvider
 	 */
 	protected void addCatalystPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Transformation_catalyst_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_catalyst_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__CATALYST,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Transformation_catalyst_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Transformation_catalyst_feature",
+								"_UI_Transformation_type"),
+						VSandPackage.Literals.TRANSFORMATION__CATALYST, true, false, true, null, null, null));
 	}
 
 	/**
@@ -127,19 +106,12 @@ public class TransformationItemProvider
 	 */
 	protected void addTargetPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Transformation_target_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_target_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__TARGET,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Transformation_target_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Transformation_target_feature",
+								"_UI_Transformation_type"),
+						VSandPackage.Literals.TRANSFORMATION__TARGET, true, false, true, null, null, null));
 	}
 
 	/**
@@ -150,19 +122,13 @@ public class TransformationItemProvider
 	 */
 	protected void addProbabilityPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Transformation_probability_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_probability_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__PROBABILITY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Transformation_probability_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Transformation_probability_feature",
+								"_UI_Transformation_type"),
+						VSandPackage.Literals.TRANSFORMATION__PROBABILITY, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -173,19 +139,13 @@ public class TransformationItemProvider
 	 */
 	protected void addPropagationPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Transformation_propagation_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_propagation_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__PROPAGATION,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Transformation_propagation_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Transformation_propagation_feature",
+								"_UI_Transformation_type"),
+						VSandPackage.Literals.TRANSFORMATION__PROPAGATION, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -196,19 +156,13 @@ public class TransformationItemProvider
 	 */
 	protected void addIsStaticTransformationPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Transformation_isStaticTransformation_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_isStaticTransformation_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__IS_STATIC_TRANSFORMATION,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_Transformation_isStaticTransformation_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_Transformation_isStaticTransformation_feature",
+						"_UI_Transformation_type"),
+				VSandPackage.Literals.TRANSFORMATION__IS_STATIC_TRANSFORMATION, true, false, false,
+				ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -236,14 +190,13 @@ public class TransformationItemProvider
 		final var reactant = transfo.getReactant();
 		final var catalyst = transfo.getCatalyst();
 		final var target = transfo.getTarget();
-		
+
 		final String reactantName = reactant != null ? reactant.getName() : "";
 		final String catalystName = catalyst != null ? catalyst.getName() : "All";
 		final String targetName = target != null ? target.getName() : "";
-		
+
 		return String.format("Transformation: [%s] + [%s] = [%s]", reactantName, catalystName, targetName);
 	}
-
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -259,14 +212,14 @@ public class TransformationItemProvider
 
 		switch (notification.getFeatureID(Transformation.class))
 		{
-			case VSandPackage.TRANSFORMATION__REACTANT:
-			case VSandPackage.TRANSFORMATION__CATALYST:
-			case VSandPackage.TRANSFORMATION__TARGET:
-			case VSandPackage.TRANSFORMATION__PROBABILITY:
-			case VSandPackage.TRANSFORMATION__PROPAGATION:
-			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case VSandPackage.TRANSFORMATION__REACTANT:
+		case VSandPackage.TRANSFORMATION__CATALYST:
+		case VSandPackage.TRANSFORMATION__TARGET:
+		case VSandPackage.TRANSFORMATION__PROBABILITY:
+		case VSandPackage.TRANSFORMATION__PROPAGATION:
+		case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

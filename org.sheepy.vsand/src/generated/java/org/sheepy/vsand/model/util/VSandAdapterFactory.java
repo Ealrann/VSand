@@ -79,8 +79,7 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VSandSwitch<Adapter> modelSwitch =
-		new VSandSwitch<Adapter>()
+	protected VSandSwitch<Adapter> modelSwitch = new VSandSwitch<Adapter>()
 		{
 			@Override
 			public Adapter caseVSandApplication(VSandApplication object)
@@ -212,7 +211,6 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	{
 		return modelSwitch.doSwitch((EObject)target);
 	}
-
 
 	/**
 	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.VSandApplication <em>Application</em>}'.

@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Draw Circle</b></em>'.

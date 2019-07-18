@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -31,14 +30,8 @@ import org.sheepy.vsand.model.VSandPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class MaterialItemProvider 
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource
+public class MaterialItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource
 {
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -84,19 +77,13 @@ public class MaterialItemProvider
 	 */
 	protected void addNamePropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Material_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Material_name_feature", "_UI_Material_type"),
-				 VSandPackage.Literals.MATERIAL__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 getString("_UI_BasicPropertyCategory"),
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Material_name_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Material_name_feature",
+								"_UI_Material_type"),
+						VSandPackage.Literals.MATERIAL__NAME, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, getString("_UI_BasicPropertyCategory"), null));
 	}
 
 	/**
@@ -107,19 +94,13 @@ public class MaterialItemProvider
 	 */
 	protected void addIsStaticPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Material_isStatic_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Material_isStatic_feature", "_UI_Material_type"),
-				 VSandPackage.Literals.MATERIAL__IS_STATIC,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 getString("_UI_BasicPropertyCategory"),
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Material_isStatic_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Material_isStatic_feature",
+								"_UI_Material_type"),
+						VSandPackage.Literals.MATERIAL__IS_STATIC, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, getString("_UI_BasicPropertyCategory"), null));
 	}
 
 	/**
@@ -130,19 +111,13 @@ public class MaterialItemProvider
 	 */
 	protected void addDensityPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Material_density_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Material_density_feature", "_UI_Material_type"),
-				 VSandPackage.Literals.MATERIAL__DENSITY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_BasicPropertyCategory"),
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Material_density_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Material_density_feature",
+								"_UI_Material_type"),
+						VSandPackage.Literals.MATERIAL__DENSITY, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_BasicPropertyCategory"), null));
 	}
 
 	/**
@@ -153,19 +128,13 @@ public class MaterialItemProvider
 	 */
 	protected void addRunoffPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Material_runoff_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Material_runoff_feature", "_UI_Material_type"),
-				 VSandPackage.Literals.MATERIAL__RUNOFF,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_BasicPropertyCategory"),
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Material_runoff_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Material_runoff_feature",
+								"_UI_Material_type"),
+						VSandPackage.Literals.MATERIAL__RUNOFF, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_BasicPropertyCategory"), null));
 	}
 
 	/**
@@ -176,19 +145,12 @@ public class MaterialItemProvider
 	 */
 	protected void addRPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Material_r_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Material_r_feature", "_UI_Material_type"),
-				 VSandPackage.Literals.MATERIAL__R,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_ColorPropertyCategory"),
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Material_r_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Material_r_feature", "_UI_Material_type"),
+						VSandPackage.Literals.MATERIAL__R, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_ColorPropertyCategory"), null));
 	}
 
 	/**
@@ -199,19 +161,12 @@ public class MaterialItemProvider
 	 */
 	protected void addGPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Material_g_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Material_g_feature", "_UI_Material_type"),
-				 VSandPackage.Literals.MATERIAL__G,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_ColorPropertyCategory"),
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Material_g_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Material_g_feature", "_UI_Material_type"),
+						VSandPackage.Literals.MATERIAL__G, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_ColorPropertyCategory"), null));
 	}
 
 	/**
@@ -222,19 +177,12 @@ public class MaterialItemProvider
 	 */
 	protected void addBPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Material_b_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Material_b_feature", "_UI_Material_type"),
-				 VSandPackage.Literals.MATERIAL__B,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_ColorPropertyCategory"),
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Material_b_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Material_b_feature", "_UI_Material_type"),
+						VSandPackage.Literals.MATERIAL__B, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_ColorPropertyCategory"), null));
 	}
 
 	/**
@@ -245,19 +193,13 @@ public class MaterialItemProvider
 	 */
 	protected void addUserFriendlyPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Material_userFriendly_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Material_userFriendly_feature", "_UI_Material_type"),
-				 VSandPackage.Literals.MATERIAL__USER_FRIENDLY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 getString("_UI_UIPropertyCategory"),
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Material_userFriendly_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Material_userFriendly_feature",
+								"_UI_Material_type"),
+						VSandPackage.Literals.MATERIAL__USER_FRIENDLY, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, getString("_UI_UIPropertyCategory"), null));
 	}
 
 	/**
@@ -281,12 +223,11 @@ public class MaterialItemProvider
 	@Override
 	public String getText(Object object)
 	{
-		String label = ((Material)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_Material_type") :
-			getString("_UI_Material_type") + " " + label;
+		String label = ((Material) object).getName();
+		return label == null || label.length() == 0
+				? getString("_UI_Material_type")
+				: getString("_UI_Material_type") + " " + label;
 	}
-
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -302,16 +243,16 @@ public class MaterialItemProvider
 
 		switch (notification.getFeatureID(Material.class))
 		{
-			case VSandPackage.MATERIAL__NAME:
-			case VSandPackage.MATERIAL__IS_STATIC:
-			case VSandPackage.MATERIAL__DENSITY:
-			case VSandPackage.MATERIAL__RUNOFF:
-			case VSandPackage.MATERIAL__R:
-			case VSandPackage.MATERIAL__G:
-			case VSandPackage.MATERIAL__B:
-			case VSandPackage.MATERIAL__USER_FRIENDLY:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case VSandPackage.MATERIAL__NAME:
+		case VSandPackage.MATERIAL__IS_STATIC:
+		case VSandPackage.MATERIAL__DENSITY:
+		case VSandPackage.MATERIAL__RUNOFF:
+		case VSandPackage.MATERIAL__R:
+		case VSandPackage.MATERIAL__G:
+		case VSandPackage.MATERIAL__B:
+		case VSandPackage.MATERIAL__USER_FRIENDLY:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

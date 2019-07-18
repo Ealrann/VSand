@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -32,7 +31,8 @@ import org.sheepy.vsand.model.VSandPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource
+public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource
 {
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -81,19 +81,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addNamePropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_LNamedElement_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_LNamedElement_name_feature", "_UI_LNamedElement_type"),
-				 TypesPackage.Literals.LNAMED_ELEMENT__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_LNamedElement_name_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_LNamedElement_name_feature",
+								"_UI_LNamedElement_type"),
+						TypesPackage.Literals.LNAMED_ELEMENT__NAME, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -104,19 +98,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addPositionPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_IPositionElement_position_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_IPositionElement_position_feature", "_UI_IPositionElement_type"),
-				 PresentationPackage.Literals.IPOSITION_ELEMENT__POSITION,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_IPositionElement_position_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_IPositionElement_position_feature",
+								"_UI_IPositionElement_type"),
+						PresentationPackage.Literals.IPOSITION_ELEMENT__POSITION, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -127,19 +115,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addVerticalRelativePropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_IPositionElement_verticalRelative_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_IPositionElement_verticalRelative_feature", "_UI_IPositionElement_type"),
-				 PresentationPackage.Literals.IPOSITION_ELEMENT__VERTICAL_RELATIVE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_IPositionElement_verticalRelative_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_IPositionElement_verticalRelative_feature",
+						"_UI_IPositionElement_type"),
+				PresentationPackage.Literals.IPOSITION_ELEMENT__VERTICAL_RELATIVE, true, false, false,
+				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -150,19 +132,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addHorizontalRelativePropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_IPositionElement_horizontalRelative_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_IPositionElement_horizontalRelative_feature", "_UI_IPositionElement_type"),
-				 PresentationPackage.Literals.IPOSITION_ELEMENT__HORIZONTAL_RELATIVE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_IPositionElement_horizontalRelative_feature"),
+						getString("_UI_PropertyDescriptor_description",
+								"_UI_IPositionElement_horizontalRelative_feature", "_UI_IPositionElement_type"),
+						PresentationPackage.Literals.IPOSITION_ELEMENT__HORIZONTAL_RELATIVE, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -173,19 +149,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addLineHeightPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_MaterialSelectorPanel_lineHeight_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_lineHeight_feature", "_UI_MaterialSelectorPanel_type"),
-				 VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__LINE_HEIGHT,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_UIPropertyCategory"),
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_MaterialSelectorPanel_lineHeight_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_lineHeight_feature",
+								"_UI_MaterialSelectorPanel_type"),
+						VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__LINE_HEIGHT, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_UIPropertyCategory"), null));
 	}
 
 	/**
@@ -196,19 +166,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addPrimaryRPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_MaterialSelectorPanel_primaryR_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_primaryR_feature", "_UI_MaterialSelectorPanel_type"),
-				 VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__PRIMARY_R,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_PrimaryColorPropertyCategory"),
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_MaterialSelectorPanel_primaryR_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_primaryR_feature",
+						"_UI_MaterialSelectorPanel_type"),
+				VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__PRIMARY_R, true, false, false,
+				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_PrimaryColorPropertyCategory"), null));
 	}
 
 	/**
@@ -219,19 +183,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addPrimaryGPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_MaterialSelectorPanel_primaryG_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_primaryG_feature", "_UI_MaterialSelectorPanel_type"),
-				 VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__PRIMARY_G,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_PrimaryColorPropertyCategory"),
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_MaterialSelectorPanel_primaryG_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_primaryG_feature",
+						"_UI_MaterialSelectorPanel_type"),
+				VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__PRIMARY_G, true, false, false,
+				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_PrimaryColorPropertyCategory"), null));
 	}
 
 	/**
@@ -242,19 +200,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addPrimaryBPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_MaterialSelectorPanel_primaryB_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_primaryB_feature", "_UI_MaterialSelectorPanel_type"),
-				 VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__PRIMARY_B,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_PrimaryColorPropertyCategory"),
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_MaterialSelectorPanel_primaryB_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_primaryB_feature",
+						"_UI_MaterialSelectorPanel_type"),
+				VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__PRIMARY_B, true, false, false,
+				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_PrimaryColorPropertyCategory"), null));
 	}
 
 	/**
@@ -265,19 +217,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addSecondaryRPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_MaterialSelectorPanel_secondaryR_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_secondaryR_feature", "_UI_MaterialSelectorPanel_type"),
-				 VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__SECONDARY_R,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_SecondaryColorPropertyCategory"),
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_MaterialSelectorPanel_secondaryR_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_secondaryR_feature",
+						"_UI_MaterialSelectorPanel_type"),
+				VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__SECONDARY_R, true, false, false,
+				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_SecondaryColorPropertyCategory"), null));
 	}
 
 	/**
@@ -288,19 +234,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addSecondaryGPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_MaterialSelectorPanel_secondaryG_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_secondaryG_feature", "_UI_MaterialSelectorPanel_type"),
-				 VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__SECONDARY_G,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_SecondaryColorPropertyCategory"),
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_MaterialSelectorPanel_secondaryG_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_secondaryG_feature",
+						"_UI_MaterialSelectorPanel_type"),
+				VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__SECONDARY_G, true, false, false,
+				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_SecondaryColorPropertyCategory"), null));
 	}
 
 	/**
@@ -311,19 +251,13 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	 */
 	protected void addSecondaryBPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_MaterialSelectorPanel_secondaryB_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_secondaryB_feature", "_UI_MaterialSelectorPanel_type"),
-				 VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__SECONDARY_B,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 getString("_UI_SecondaryColorPropertyCategory"),
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_MaterialSelectorPanel_secondaryB_feature"),
+				getString("_UI_PropertyDescriptor_description", "_UI_MaterialSelectorPanel_secondaryB_feature",
+						"_UI_MaterialSelectorPanel_type"),
+				VSandPackage.Literals.MATERIAL_SELECTOR_PANEL__SECONDARY_B, true, false, false,
+				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, getString("_UI_SecondaryColorPropertyCategory"), null));
 	}
 
 	/**
@@ -347,12 +281,11 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 	@Override
 	public String getText(Object object)
 	{
-		String label = ((MaterialSelectorPanel)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_MaterialSelectorPanel_type") :
-			getString("_UI_MaterialSelectorPanel_type") + " " + label;
+		String label = ((MaterialSelectorPanel) object).getName();
+		return label == null || label.length() == 0
+				? getString("_UI_MaterialSelectorPanel_type")
+				: getString("_UI_MaterialSelectorPanel_type") + " " + label;
 	}
-
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -368,20 +301,20 @@ public class MaterialSelectorPanelItemProvider extends ItemProviderAdapter imple
 
 		switch (notification.getFeatureID(MaterialSelectorPanel.class))
 		{
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__NAME:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__CONTENT_OBJECTS:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__POSITION:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__VERTICAL_RELATIVE:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__HORIZONTAL_RELATIVE:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__LINE_HEIGHT:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__PRIMARY_R:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__PRIMARY_G:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__PRIMARY_B:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__SECONDARY_R:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__SECONDARY_G:
-			case VSandPackage.MATERIAL_SELECTOR_PANEL__SECONDARY_B:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__NAME:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__CONTENT_OBJECTS:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__POSITION:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__VERTICAL_RELATIVE:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__HORIZONTAL_RELATIVE:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__LINE_HEIGHT:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__PRIMARY_R:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__PRIMARY_G:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__PRIMARY_B:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__SECONDARY_R:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__SECONDARY_G:
+		case VSandPackage.MATERIAL_SELECTOR_PANEL__SECONDARY_B:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

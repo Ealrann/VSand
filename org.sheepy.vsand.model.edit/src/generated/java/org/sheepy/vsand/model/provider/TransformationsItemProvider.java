@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -32,14 +31,8 @@ import org.sheepy.vsand.model.VSandPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class TransformationsItemProvider 
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource
+public class TransformationsItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource
 {
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -126,7 +119,6 @@ public class TransformationsItemProvider
 		return getString("_UI_Transformations_type");
 	}
 
-
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
 	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
@@ -141,9 +133,9 @@ public class TransformationsItemProvider
 
 		switch (notification.getFeatureID(Transformations.class))
 		{
-			case VSandPackage.TRANSFORMATIONS__TRANSFORMATIONS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case VSandPackage.TRANSFORMATIONS__TRANSFORMATIONS:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -160,10 +152,8 @@ public class TransformationsItemProvider
 	{
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
-			(createChildParameter
-				(VSandPackage.Literals.TRANSFORMATIONS__TRANSFORMATIONS,
-				 VSandFactory.eINSTANCE.createTransformation()));
+		newChildDescriptors.add(createChildParameter(VSandPackage.Literals.TRANSFORMATIONS__TRANSFORMATIONS,
+				VSandFactory.eINSTANCE.createTransformation()));
 	}
 
 	/**

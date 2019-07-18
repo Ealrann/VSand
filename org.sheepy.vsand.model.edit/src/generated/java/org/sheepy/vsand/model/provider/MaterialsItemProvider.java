@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -32,14 +31,8 @@ import org.sheepy.vsand.model.VSandPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class MaterialsItemProvider 
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource
+public class MaterialsItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource
 {
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -126,7 +119,6 @@ public class MaterialsItemProvider
 		return getString("_UI_Materials_type");
 	}
 
-
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
 	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
@@ -141,9 +133,9 @@ public class MaterialsItemProvider
 
 		switch (notification.getFeatureID(Materials.class))
 		{
-			case VSandPackage.MATERIALS__MATERIALS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case VSandPackage.MATERIALS__MATERIALS:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -160,10 +152,8 @@ public class MaterialsItemProvider
 	{
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
-			(createChildParameter
-				(VSandPackage.Literals.MATERIALS__MATERIALS,
-				 VSandFactory.eINSTANCE.createMaterial()));
+		newChildDescriptors.add(createChildParameter(VSandPackage.Literals.MATERIALS__MATERIALS,
+				VSandFactory.eINSTANCE.createMaterial()));
 	}
 
 	/**

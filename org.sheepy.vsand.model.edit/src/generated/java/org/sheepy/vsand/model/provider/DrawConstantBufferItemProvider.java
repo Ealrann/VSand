@@ -2,7 +2,6 @@
  */
 package org.sheepy.vsand.model.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -58,19 +57,13 @@ public class DrawConstantBufferItemProvider extends BoardConstantBufferItemProvi
 	 */
 	protected void addBoardConstantBufferPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DrawConstantBuffer_boardConstantBuffer_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DrawConstantBuffer_boardConstantBuffer_feature", "_UI_DrawConstantBuffer_type"),
-				 VSandPackage.Literals.DRAW_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_DrawConstantBuffer_boardConstantBuffer_feature"),
+						getString("_UI_PropertyDescriptor_description",
+								"_UI_DrawConstantBuffer_boardConstantBuffer_feature", "_UI_DrawConstantBuffer_type"),
+						VSandPackage.Literals.DRAW_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER, true, false, true, null,
+						null, null));
 	}
 
 	/**
@@ -94,12 +87,11 @@ public class DrawConstantBufferItemProvider extends BoardConstantBufferItemProvi
 	@Override
 	public String getText(Object object)
 	{
-		String label = ((DrawConstantBuffer)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_DrawConstantBuffer_type") :
-			getString("_UI_DrawConstantBuffer_type") + " " + label;
+		String label = ((DrawConstantBuffer) object).getName();
+		return label == null || label.length() == 0
+				? getString("_UI_DrawConstantBuffer_type")
+				: getString("_UI_DrawConstantBuffer_type") + " " + label;
 	}
-
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
