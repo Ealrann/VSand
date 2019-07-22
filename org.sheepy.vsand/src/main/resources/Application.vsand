@@ -234,7 +234,7 @@
                 <shaderStages>FRAGMENT_BIT</shaderStages>
               </descriptor>
               <sampler/>
-              <image xsi:type="resource:StaticImage" name="NullImage" width="1" height="1" format="R8G8B8_UNORM">
+              <image xsi:type="resource:StaticImage" name="NullImage" width="1" height="1" format="R8G8B8A8_UNORM">
                 <initialLayout stage="FRAGMENT_SHADER_BIT">
                   <accessMask>SHADER_READ_BIT</accessMask>
                 </initialLayout>
