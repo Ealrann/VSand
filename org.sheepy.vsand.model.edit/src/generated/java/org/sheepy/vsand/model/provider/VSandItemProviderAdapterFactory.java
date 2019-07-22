@@ -454,7 +454,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 		if (isFactoryForType(type))
 		{
 			Object adapter = super.adapt(object, type);
-			if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter)))
+			if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter)))
 			{
 				return adapter;
 			}
@@ -578,8 +578,10 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 			@Override
 			public Object caseUIPage(UIPage object)
 			{
-				newChildDescriptors.add(createChildParameter(PresentationPackage.Literals.UI_PAGE__PANELS,
-						VSandFactory.eINSTANCE.createMaterialSelectorPanel()));
+				newChildDescriptors.add
+					(createChildParameter
+						(PresentationPackage.Literals.UI_PAGE__PANELS,
+						 VSandFactory.eINSTANCE.createMaterialSelectorPanel()));
 
 				return null;
 			}
@@ -605,7 +607,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 		public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain)
 		{
 			ArrayList<Object> result = new ArrayList<Object>();
-			new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
+			new CreationSwitch(result, editingDomain).doSwitch((EObject)object);
 			return result;
 		}
 
@@ -672,14 +674,20 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 			@Override
 			public Object caseResourcePkg(ResourcePkg object)
 			{
-				newChildDescriptors.add(createChildParameter(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
-						VSandFactory.eINSTANCE.createBoardConstantBuffer()));
+				newChildDescriptors.add
+					(createChildParameter
+						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						 VSandFactory.eINSTANCE.createBoardConstantBuffer()));
 
-				newChildDescriptors.add(createChildParameter(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
-						VSandFactory.eINSTANCE.createDrawConstantBuffer()));
+				newChildDescriptors.add
+					(createChildParameter
+						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						 VSandFactory.eINSTANCE.createDrawConstantBuffer()));
 
-				newChildDescriptors.add(createChildParameter(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
-						VSandFactory.eINSTANCE.createPixelConstantBuffer()));
+				newChildDescriptors.add
+					(createChildParameter
+						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						 VSandFactory.eINSTANCE.createPixelConstantBuffer()));
 
 				return null;
 			}
@@ -705,7 +713,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 		public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain)
 		{
 			ArrayList<Object> result = new ArrayList<Object>();
-			new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
+			new CreationSwitch(result, editingDomain).doSwitch((EObject)object);
 			return result;
 		}
 

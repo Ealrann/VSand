@@ -42,12 +42,14 @@ public final class VSandEditPlugin extends EMFPlugin
 	 */
 	public VSandEditPlugin()
 	{
-		super(new ResourceLocator[] {
-				EcoreEditPlugin.INSTANCE,
-				LilyEditPlugin.INSTANCE,
-				LilyVulkanEditPlugin.INSTANCE,
-				VulkanEditPlugin.INSTANCE,
-		});
+		super
+		  (new ResourceLocator [] 
+		   {
+		     EcoreEditPlugin.INSTANCE,
+		     LilyEditPlugin.INSTANCE,
+		     LilyVulkanEditPlugin.INSTANCE,
+		     VulkanEditPlugin.INSTANCE,
+		   });
 	}
 
 	/**

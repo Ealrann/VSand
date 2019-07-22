@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="model" nsURI="org.sheepy.vsand.model" nsPrefix="model">
-  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-    <details key="modelDirectory" value="/org.sheepy.vsand.model/src/generated/java"/>
-    <details key="editDirectory" value="/org.sheepy.vsand.model.edit/src/generated/java"/>
-    <details key="editorDirectory" value="/org.sheepy.vsand.model.editor/src/generated/java"/>
-    <details key="creationSubmenus" value="true"/>
-    <details key="multipleEditorPages" value="false"/>
-    <details key="modelName" value="VSand"/>
-    <details key="prefix" value="VSand"/>
-    <details key="operationReflection" value="false"/>
-    <details key="complianceLevel" value="11.0"/>
-    <details key="resource" value="XMI"/>
-    <details key="childCreationExtenders" value="true"/>
-    <details key="basePackage" value="org.sheepy.vsand"/>
-  </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="VSandApplication" eSuperTypes="../../org.sheepy.lily.core.model/model/application.ecore#//Application">
     <eStructuralFeatures xsi:type="ecore:EReference" name="materials" lowerBound="1"
         eType="#//Materials" containment="true" resolveProxies="false"/>

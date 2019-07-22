@@ -57,13 +57,19 @@ public class PixelConstantBufferItemProvider extends BoardConstantBufferItemProv
 	 */
 	protected void addBoardConstantBufferPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors
-				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-						getResourceLocator(), getString("_UI_PixelConstantBuffer_boardConstantBuffer_feature"),
-						getString("_UI_PropertyDescriptor_description",
-								"_UI_PixelConstantBuffer_boardConstantBuffer_feature", "_UI_PixelConstantBuffer_type"),
-						VSandPackage.Literals.PIXEL_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER, true, false, true, null,
-						null, null));
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_PixelConstantBuffer_boardConstantBuffer_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_PixelConstantBuffer_boardConstantBuffer_feature", "_UI_PixelConstantBuffer_type"),
+				 VSandPackage.Literals.PIXEL_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
 	}
 
 	/**
@@ -87,10 +93,10 @@ public class PixelConstantBufferItemProvider extends BoardConstantBufferItemProv
 	@Override
 	public String getText(Object object)
 	{
-		String label = ((PixelConstantBuffer) object).getName();
-		return label == null || label.length() == 0
-				? getString("_UI_PixelConstantBuffer_type")
-				: getString("_UI_PixelConstantBuffer_type") + " " + label;
+		String label = ((PixelConstantBuffer)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_PixelConstantBuffer_type") :
+			getString("_UI_PixelConstantBuffer_type") + " " + label;
 	}
 
 	/**
@@ -104,6 +110,7 @@ public class PixelConstantBufferItemProvider extends BoardConstantBufferItemProv
 	public void notifyChanged(Notification notification)
 	{
 		updateChildren(notification);
+		super.notifyChanged(notification);
 	}
 
 	/**

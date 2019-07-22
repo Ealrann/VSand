@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:graphicpipeline="org.sheepy.vulkan.model.graphicpipeline" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:model_2="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2">
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:graphicpipeline="org.sheepy.vulkan.model.graphicpipeline" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2">
   <views xsi:type="presentation:TranparentUIView" currentUIPage="//@views.0/@uiPages.0">
     <uiPages>
       <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
@@ -45,16 +45,16 @@
   </views>
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
-      <resources xsi:type="resource:Image" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM" fillWithZero="true">
-        <descriptor descriptorType="STORAGE_IMAGE">
-          <shaderStages>COMPUTE_BIT</shaderStages>
-        </descriptor>
-        <usages>TransferSrc</usages>
-        <usages>Storage</usages>
-        <usages>TransferDst</usages>
+      <resources xsi:type="resource:StaticImage" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM" fillWithZero="true">
         <initialLayout stage="COMPUTE_SHADER_BIT" layout="TRANSFER_SRC_OPTIMAL">
           <accessMask>SHADER_WRITE_BIT</accessMask>
         </initialLayout>
+        <usages>TransferSrc</usages>
+        <usages>Storage</usages>
+        <usages>TransferDst</usages>
+        <descriptor descriptorType="STORAGE_IMAGE">
+          <shaderStages>COMPUTE_BIT</shaderStages>
+        </descriptor>
       </resources>
     </resourcePkg>
     <processes xsi:type="compute:ComputeProcess" name="Board Compute" waitingFenceDuringAcquire="true" resetAllowed="true">
@@ -230,16 +230,31 @@
         <parts xsi:type="graphic:GraphicsPipeline" name="GUI" shaders="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.4 //@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.5">
           <resourcePkg>
             <resources xsi:type="resource:SampledImage" name="NullTexture">
-              <descriptor descriptorType="SAMPLED_IMAGE">
+              <descriptor descriptorType="COMBINED_IMAGE_SAMPLER">
                 <shaderStages>FRAGMENT_BIT</shaderStages>
               </descriptor>
               <sampler/>
+              <image xsi:type="resource:StaticImage" name="NullImage" width="1" height="1" format="R8G8B8_UNORM">
+                <initialLayout stage="FRAGMENT_SHADER_BIT">
+                  <accessMask>SHADER_READ_BIT</accessMask>
+                </initialLayout>
+                <usages>Sampled</usages>
+                <usages>TransferDst</usages>
+              </image>
             </resources>
-            <resources xsi:type="resource:Font" name="NuklearFont">
-              <descriptor descriptorType="SAMPLED_IMAGE">
-                <shaderStages>FRAGMENT_BIT</shaderStages>
-              </descriptor>
-              <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
+            <resources xsi:type="nuklear:NuklearFont">
+              <fontSampledImage name="Font Sampled Image">
+                <descriptor descriptorType="COMBINED_IMAGE_SAMPLER">
+                  <shaderStages>FRAGMENT_BIT</shaderStages>
+                </descriptor>
+                <sampler/>
+                <image xsi:type="resource:FontImage" name="Font">
+                  <initialLayout stage="FRAGMENT_SHADER_BIT">
+                    <accessMask>SHADER_READ_BIT</accessMask>
+                  </initialLayout>
+                  <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
+                </image>
+              </fontSampledImage>
             </resources>
             <resources xsi:type="resource:Buffer" name="IndexedVertexBuffer" size="524288">
               <descriptor descriptorType="UNIFORM_BUFFER">
@@ -250,7 +265,7 @@
               <usages>INDEX_BUFFER_BIT</usages>
               <usages>TRANSFER_DST_BIT</usages>
             </resources>
-            <resources xsi:type="model_2:NuklearContext" font="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1" nullTexture="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0" layoutTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.1"/>
+            <resources xsi:type="nuklear:NuklearContext" font="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1" nullTexture="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0" layoutTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.1"/>
             <resources xsi:type="resource:Shader" name="NkVertex">
               <file xsi:type="resource:StringModuleResource" name="Vertex" path="ui.vert.spv" moduleName="org.sheepy.lily.vulkan.extra.nuklear"/>
             </resources>
@@ -264,11 +279,11 @@
             <stages>FRAGMENT_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Graphic" descriptors="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0 //@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1"/>
+            <descriptorSets name="Graphic" descriptors="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0 //@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1/@fontSampledImage"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.1/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="model_2:NuklearLayoutTask" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.3" drawTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.3" pushBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6" vertexBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2"/>
+            <tasks xsi:type="nuklear:NuklearLayoutTask" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.3" drawTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.3" pushBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6" vertexBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2"/>
             <tasks xsi:type="process:PushBufferTask" pushBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6"/>
             <tasks xsi:type="process:CompositeTask" name="Nk draw"/>
           </taskPkg>

@@ -133,9 +133,9 @@ public class TransformationsItemProvider extends ItemProviderAdapter implements 
 
 		switch (notification.getFeatureID(Transformations.class))
 		{
-		case VSandPackage.TRANSFORMATIONS__TRANSFORMATIONS:
-			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-			return;
+			case VSandPackage.TRANSFORMATIONS__TRANSFORMATIONS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -152,8 +152,10 @@ public class TransformationsItemProvider extends ItemProviderAdapter implements 
 	{
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add(createChildParameter(VSandPackage.Literals.TRANSFORMATIONS__TRANSFORMATIONS,
-				VSandFactory.eINSTANCE.createTransformation()));
+		newChildDescriptors.add
+			(createChildParameter
+				(VSandPackage.Literals.TRANSFORMATIONS__TRANSFORMATIONS,
+				 VSandFactory.eINSTANCE.createTransformation()));
 	}
 
 	/**

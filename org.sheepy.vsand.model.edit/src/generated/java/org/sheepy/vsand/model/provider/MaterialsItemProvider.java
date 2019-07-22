@@ -133,9 +133,9 @@ public class MaterialsItemProvider extends ItemProviderAdapter implements IEditi
 
 		switch (notification.getFeatureID(Materials.class))
 		{
-		case VSandPackage.MATERIALS__MATERIALS:
-			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-			return;
+			case VSandPackage.MATERIALS__MATERIALS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -152,8 +152,10 @@ public class MaterialsItemProvider extends ItemProviderAdapter implements IEditi
 	{
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add(createChildParameter(VSandPackage.Literals.MATERIALS__MATERIALS,
-				VSandFactory.eINSTANCE.createMaterial()));
+		newChildDescriptors.add
+			(createChildParameter
+				(VSandPackage.Literals.MATERIALS__MATERIALS,
+				 VSandFactory.eINSTANCE.createMaterial()));
 	}
 
 	/**

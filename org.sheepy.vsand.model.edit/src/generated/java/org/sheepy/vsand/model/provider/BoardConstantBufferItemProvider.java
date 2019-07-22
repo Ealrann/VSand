@@ -63,13 +63,19 @@ public class BoardConstantBufferItemProvider extends ConstantBufferItemProvider
 	 */
 	protected void addCurrentBoardBufferPropertyDescriptor(Object object)
 	{
-		itemPropertyDescriptors
-				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-						getResourceLocator(), getString("_UI_BoardConstantBuffer_currentBoardBuffer_feature"),
-						getString("_UI_PropertyDescriptor_description",
-								"_UI_BoardConstantBuffer_currentBoardBuffer_feature", "_UI_BoardConstantBuffer_type"),
-						VSandPackage.Literals.BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER, true, false, false,
-						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BoardConstantBuffer_currentBoardBuffer_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BoardConstantBuffer_currentBoardBuffer_feature", "_UI_BoardConstantBuffer_type"),
+				 VSandPackage.Literals.BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
 	}
 
 	/**
@@ -93,10 +99,10 @@ public class BoardConstantBufferItemProvider extends ConstantBufferItemProvider
 	@Override
 	public String getText(Object object)
 	{
-		String label = ((BoardConstantBuffer) object).getName();
-		return label == null || label.length() == 0
-				? getString("_UI_BoardConstantBuffer_type")
-				: getString("_UI_BoardConstantBuffer_type") + " " + label;
+		String label = ((BoardConstantBuffer)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_BoardConstantBuffer_type") :
+			getString("_UI_BoardConstantBuffer_type") + " " + label;
 	}
 
 	/**
@@ -113,9 +119,9 @@ public class BoardConstantBufferItemProvider extends ConstantBufferItemProvider
 
 		switch (notification.getFeatureID(BoardConstantBuffer.class))
 		{
-		case VSandPackage.BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER:
-			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-			return;
+			case VSandPackage.BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
 		}
 		super.notifyChanged(notification);
 	}
