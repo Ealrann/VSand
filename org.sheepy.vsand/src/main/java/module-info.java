@@ -38,19 +38,9 @@ module org.sheepy.vsand
 {
 	requires openj9.sharedclasses;
 
-	requires org.sheepy.lily.vulkan.extra.nuklear;
-
-	requires org.sheepy.lily.core.impl;
-
-	requires org.sheepy.lily.vulkan.api;
-	requires org.sheepy.lily.vulkan.common;
-	requires org.sheepy.lily.vulkan.process;
-	requires org.sheepy.lily.vulkan.process.compute;
-	requires org.sheepy.lily.vulkan.process.graphic;
-	requires org.sheepy.lily.vulkan.resource;
-
+	requires org.sheepy.lily.vulkan.base;
 	requires org.sheepy.lily.vulkan.extra.api;
-	requires org.sheepy.lily.vulkan.extra.graphic;
+	requires org.sheepy.lily.vulkan.extra.nuklear;
 
 	opens org.sheepy.vsand;
 	opens org.sheepy.vsand.constants;

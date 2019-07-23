@@ -73,15 +73,10 @@ test {
 }
 
 dependencies {
-	implementation 'org.sheepy.lily.core:org.sheepy.lily.core.impl'
 
-	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.api'
-	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.process.compute'
-	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.process.graphic'
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.base'
 
 	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.api'
-	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.graphic'
-
 	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.nuklear'
 
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'

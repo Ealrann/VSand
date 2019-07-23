@@ -17,7 +17,7 @@ import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.model.presentation.IUIElement;
-import org.sheepy.lily.vulkan.common.util.UIUtil;
+import org.sheepy.lily.vulkan.api.util.UIUtil;
 import org.sheepy.lily.vulkan.nuklear.ui.IUIElementAdapter;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
