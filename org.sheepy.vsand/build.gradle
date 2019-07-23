@@ -18,7 +18,7 @@ switch ( OperatingSystem.current() ) {
 		break
 }
 
-task jlink(type: Exec, dependsOn: ['installDist', 'cleanJlink']) {
+task jlink(type: Exec, dependsOn: ['installDist']) {
   def javaHome = System.properties.'java.home'
 
   workingDir 'build'
@@ -47,6 +47,7 @@ task copyModules(type: Copy) {
 	into 'build/image/modules'
 }
 
+tasks.clean.dependsOn(cleanJlink)
 tasks.jlink.finalizedBy(copyReleng)
 tasks.jlink.finalizedBy(copyModules)
 
