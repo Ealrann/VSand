@@ -117,7 +117,7 @@
             <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
           </descriptorSetPkg>
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.0/@descriptorSetPkg/@descriptorSets.0"/>
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.0/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@partPkg/@parts.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
@@ -146,7 +146,7 @@
             <descriptorSets name="Update Board Common" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.4 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
           </descriptorSetPkg>
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
               <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
                 <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
@@ -180,7 +180,7 @@
             <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
           </descriptorSetPkg>
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.2/@descriptorSetPkg/@descriptorSets.0"/>
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.2/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@partPkg/@parts.2/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>

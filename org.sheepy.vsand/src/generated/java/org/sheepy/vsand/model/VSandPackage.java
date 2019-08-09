@@ -360,15 +360,6 @@ public interface VSandPackage extends EPackage
 	int BOARD_CONSTANT_BUFFER__NAME = ResourcePackage.CONSTANT_BUFFER__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Being Pushed</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOARD_CONSTANT_BUFFER__BEING_PUSHED = ResourcePackage.CONSTANT_BUFFER__BEING_PUSHED;
-
-	/**
 	 * The feature id for the '<em><b>Data</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -422,15 +413,6 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int DRAW_CONSTANT_BUFFER__NAME = BOARD_CONSTANT_BUFFER__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Being Pushed</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DRAW_CONSTANT_BUFFER__BEING_PUSHED = BOARD_CONSTANT_BUFFER__BEING_PUSHED;
 
 	/**
 	 * The feature id for the '<em><b>Data</b></em>' attribute.
@@ -495,15 +477,6 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int PIXEL_CONSTANT_BUFFER__NAME = BOARD_CONSTANT_BUFFER__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Being Pushed</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PIXEL_CONSTANT_BUFFER__BEING_PUSHED = BOARD_CONSTANT_BUFFER__BEING_PUSHED;
 
 	/**
 	 * The feature id for the '<em><b>Data</b></em>' attribute.
