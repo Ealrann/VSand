@@ -8,6 +8,8 @@ import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
+import org.sheepy.lily.vulkan.model.process.IPipelineTask;
+import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
 import org.sheepy.vsand.draw.DrawManager;
@@ -26,6 +28,7 @@ public final class VSandMainLoop implements IMainLoop
 	private IVulkanEngineAdapter engineAdapter;
 	private IProcessAdapter boardProcessAdapter;
 	private IProcessAdapter renderProcessAdapter;
+	private IPipelineTask boardImageBarrier;
 
 	private IInputManager inputManager;
 	private long currentIteration = 0;
@@ -65,10 +68,13 @@ public final class VSandMainLoop implements IMainLoop
 			{
 				final var boardSize = new Vector2i(application.getSize());
 				final var mainDrawManager = new DrawManager(application, inputManager, boardSize);
-				final var secondaryDrawManager = new DrawManager(application, inputManager,
-						boardSize);
-				final var vsandInputManager = new VSandInputManager(window, application,
-						mainDrawManager, secondaryDrawManager);
+				final var secondaryDrawManager = new DrawManager(	application,
+																	inputManager,
+																	boardSize);
+				final var vsandInputManager = new VSandInputManager(window,
+																	application,
+																	mainDrawManager,
+																	secondaryDrawManager);
 				inputManager.addListener(vsandInputManager);
 			}
 		}
@@ -77,7 +83,6 @@ public final class VSandMainLoop implements IMainLoop
 
 		startNs = System.nanoTime();
 		nextRenderDate = System.nanoTime() + frameDurationNs;
-
 
 		if (benchmarkMode == true)
 		{
@@ -93,6 +98,10 @@ public final class VSandMainLoop implements IMainLoop
 			if (process instanceof ComputeProcess)
 			{
 				boardProcessAdapter = IProcessAdapter.adapt(process);
+				final var boardToPixelPipeline = (ComputePipeline) ((ComputeProcess) process)	.getPartPkg()
+																								.getParts()
+																								.get(2);
+				boardImageBarrier = boardToPixelPipeline.getTaskPkg().getTasks().get(2);
 			}
 			else if (process instanceof GraphicProcess)
 			{
@@ -126,6 +135,11 @@ public final class VSandMainLoop implements IMainLoop
 				{
 					renderProcessAdapter.prepareNextAndExecute();
 					nextRenderDate = System.nanoTime() + frameDurationNs;
+					boardImageBarrier.setEnabled(true);
+				}
+				else
+				{
+					boardImageBarrier.setEnabled(false);
 				}
 			}
 		}
