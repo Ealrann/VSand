@@ -307,7 +307,7 @@
         </parts>
       </partPkg>
       <configuration acquireWaitStage="COMPUTE_SHADER_BIT">
-        <swapchainConfiguration presentationMode="Fifo" requiredSwapImageCount="2">
+        <swapchainConfiguration requiredSwapImageCount="2">
           <swapImageUsages>ColorAttachment</swapImageUsages>
           <swapImageUsages>TransferDst</swapImageUsages>
         </swapchainConfiguration>
