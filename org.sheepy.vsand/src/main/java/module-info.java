@@ -36,7 +36,7 @@ import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
 
 module org.sheepy.vsand
 {
-	requires openj9.sharedclasses;
+	requires static openj9.sharedclasses;
 
 	requires org.sheepy.lily.vulkan.base;
 	requires org.sheepy.lily.vulkan.extra.api;
