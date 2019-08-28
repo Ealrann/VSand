@@ -2,7 +2,7 @@
  */
 package org.sheepy.vsand.model;
 
-import org.eclipse.emf.ecore.EObject;
+import org.sheepy.lily.core.api.adapter.ILilyEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,9 +18,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see org.sheepy.vsand.model.VSandPackage#getDrawCommand()
  * @model interface="true" abstract="true"
+ * @extends ILilyEObject
  * @generated
  */
-public interface DrawCommand extends EObject
+public interface DrawCommand extends ILilyEObject
 {
 
 	/**

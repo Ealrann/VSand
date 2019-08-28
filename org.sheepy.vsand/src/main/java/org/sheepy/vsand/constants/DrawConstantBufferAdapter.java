@@ -62,10 +62,12 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 	@Tick
 	public void updateBuffer()
 	{
-		if (application.getDrawQueue().isEmpty() == false)
+		final var drawQueue = application.getDrawQueue();
+		if (drawQueue.isEmpty() == false)
 		{
-			final var command = application.getDrawQueue().remove(0);
+			final var command = drawQueue.get(0);
 			fillBufferWithCommand(command);
+			drawQueue.remove(0);
 
 			drawConstantBuffer.setData(buffer);
 

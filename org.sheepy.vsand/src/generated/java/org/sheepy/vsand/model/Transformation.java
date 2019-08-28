@@ -2,7 +2,7 @@
  */
 package org.sheepy.vsand.model;
 
-import org.eclipse.emf.ecore.EObject;
+import org.sheepy.lily.core.api.adapter.ILilyEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,9 +23,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see org.sheepy.vsand.model.VSandPackage#getTransformation()
  * @model
+ * @extends ILilyEObject
  * @generated
  */
-public interface Transformation extends EObject
+public interface Transformation extends ILilyEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Reactant</b></em>' reference.

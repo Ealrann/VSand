@@ -5,10 +5,10 @@ package org.sheepy.vsand.model.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
+import org.sheepy.lily.core.api.adapter.LilyEObject;
 import org.sheepy.vsand.model.DrawSquare;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandPackage;
@@ -29,7 +29,7 @@ import org.sheepy.vsand.model.VSandPackage;
  *
  * @generated
  */
-public class DrawSquareImpl extends MinimalEObjectImpl.Container implements DrawSquare
+public class DrawSquareImpl extends LilyEObject implements DrawSquare
 {
 	/**
 	 * The cached value of the '{@link #getMaterial() <em>Material</em>}' reference.
@@ -124,7 +124,7 @@ public class DrawSquareImpl extends MinimalEObjectImpl.Container implements Draw
 	@Override
 	public Material getMaterial()
 	{
-		if (material != null && material.eIsProxy())
+		if (material != null && ((EObject)material).eIsProxy())
 		{
 			InternalEObject oldMaterial = (InternalEObject)material;
 			material = (Material)eResolveProxy(oldMaterial);

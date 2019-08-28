@@ -2,7 +2,7 @@
  */
 package org.sheepy.vsand.model;
 
-import org.eclipse.emf.ecore.EObject;
+import org.sheepy.lily.core.api.adapter.ILilyEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,9 +25,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see org.sheepy.vsand.model.VSandPackage#getMaterial()
  * @model
+ * @extends ILilyEObject
  * @generated
  */
-public interface Material extends EObject
+public interface Material extends ILilyEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.

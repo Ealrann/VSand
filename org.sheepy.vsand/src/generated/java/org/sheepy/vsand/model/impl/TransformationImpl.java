@@ -5,11 +5,11 @@ package org.sheepy.vsand.model.impl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
+import org.sheepy.lily.core.api.adapter.LilyEObject;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.Transformation;
 import org.sheepy.vsand.model.VSandPackage;
@@ -32,7 +32,7 @@ import org.sheepy.vsand.model.VSandPackage;
  *
  * @generated
  */
-public class TransformationImpl extends MinimalEObjectImpl.Container implements Transformation
+public class TransformationImpl extends LilyEObject implements Transformation
 {
 	/**
 	 * The cached value of the '{@link #getReactant() <em>Reactant</em>}' reference.
@@ -153,7 +153,7 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public Material getReactant()
 	{
-		if (reactant != null && reactant.eIsProxy())
+		if (reactant != null && ((EObject)reactant).eIsProxy())
 		{
 			InternalEObject oldReactant = (InternalEObject)reactant;
 			reactant = (Material)eResolveProxy(oldReactant);
@@ -198,7 +198,7 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public Material getCatalyst()
 	{
-		if (catalyst != null && catalyst.eIsProxy())
+		if (catalyst != null && ((EObject)catalyst).eIsProxy())
 		{
 			InternalEObject oldCatalyst = (InternalEObject)catalyst;
 			catalyst = (Material)eResolveProxy(oldCatalyst);
@@ -243,7 +243,7 @@ public class TransformationImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public Material getTarget()
 	{
-		if (target != null && target.eIsProxy())
+		if (target != null && ((EObject)target).eIsProxy())
 		{
 			InternalEObject oldTarget = (InternalEObject)target;
 			target = (Material)eResolveProxy(oldTarget);

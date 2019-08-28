@@ -5,6 +5,7 @@ package org.sheepy.vsand.model.impl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -66,7 +67,7 @@ public class PixelConstantBufferImpl extends BoardConstantBufferImpl implements 
 	@Override
 	public BoardConstantBuffer getBoardConstantBuffer()
 	{
-		if (boardConstantBuffer != null && boardConstantBuffer.eIsProxy())
+		if (boardConstantBuffer != null && ((EObject)boardConstantBuffer).eIsProxy())
 		{
 			InternalEObject oldBoardConstantBuffer = (InternalEObject)boardConstantBuffer;
 			boardConstantBuffer = (BoardConstantBuffer)eResolveProxy(oldBoardConstantBuffer);

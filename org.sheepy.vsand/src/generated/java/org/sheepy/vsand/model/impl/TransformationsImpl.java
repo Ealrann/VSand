@@ -10,12 +10,10 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.sheepy.lily.core.api.adapter.LilyEObject;
 import org.sheepy.vsand.model.Transformation;
 import org.sheepy.vsand.model.Transformations;
 import org.sheepy.vsand.model.VSandPackage;
@@ -33,7 +31,7 @@ import org.sheepy.vsand.model.VSandPackage;
  *
  * @generated
  */
-public class TransformationsImpl extends MinimalEObjectImpl.Container implements Transformations
+public class TransformationsImpl extends LilyEObject implements Transformations
 {
 	/**
 	 * The cached value of the '{@link #getTransformations() <em>Transformations</em>}' containment reference list.

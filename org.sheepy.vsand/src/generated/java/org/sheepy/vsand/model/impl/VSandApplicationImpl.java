@@ -7,6 +7,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -370,7 +371,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	@Override
 	public Material getMainMaterial()
 	{
-		if (mainMaterial != null && mainMaterial.eIsProxy())
+		if (mainMaterial != null && ((EObject)mainMaterial).eIsProxy())
 		{
 			InternalEObject oldMainMaterial = (InternalEObject)mainMaterial;
 			mainMaterial = (Material)eResolveProxy(oldMainMaterial);
@@ -415,7 +416,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	@Override
 	public Material getSecondaryMaterial()
 	{
-		if (secondaryMaterial != null && secondaryMaterial.eIsProxy())
+		if (secondaryMaterial != null && ((EObject)secondaryMaterial).eIsProxy())
 		{
 			InternalEObject oldSecondaryMaterial = (InternalEObject)secondaryMaterial;
 			secondaryMaterial = (Material)eResolveProxy(oldSecondaryMaterial);
@@ -610,7 +611,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	@Override
 	public CompositeTask getBoardUpdateTask()
 	{
-		if (boardUpdateTask != null && boardUpdateTask.eIsProxy())
+		if (boardUpdateTask != null && ((EObject)boardUpdateTask).eIsProxy())
 		{
 			InternalEObject oldBoardUpdateTask = (InternalEObject)boardUpdateTask;
 			boardUpdateTask = (CompositeTask)eResolveProxy(oldBoardUpdateTask);

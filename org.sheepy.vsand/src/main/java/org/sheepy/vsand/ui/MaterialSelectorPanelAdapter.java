@@ -105,10 +105,14 @@ public final class MaterialSelectorPanelAdapter implements IUIElementAdapter
 		final var surface = context.window.getSize();
 		final int lineHeight = panel.getLineHeight();
 
-		primaryMaterialDrawer = new MaterialDrawer(lineHeight, panel.getPrimaryR(),
-				panel.getPrimaryG(), panel.getPrimaryB());
-		secondaryMaterialDrawer = new MaterialDrawer(lineHeight, panel.getSecondaryR(),
-				panel.getSecondaryG(), panel.getSecondaryB());
+		primaryMaterialDrawer = new MaterialDrawer(	lineHeight,
+													panel.getPrimaryR(),
+													panel.getPrimaryG(),
+													panel.getPrimaryB());
+		secondaryMaterialDrawer = new MaterialDrawer(	lineHeight,
+														panel.getSecondaryR(),
+														panel.getSecondaryG(),
+														panel.getSecondaryB());
 
 		width = lineHeight * 2 + LineData.TEXT_WIDTH;
 		height = lineHeight * datas.size();
@@ -157,25 +161,34 @@ public final class MaterialSelectorPanelAdapter implements IUIElementAdapter
 
 		backgroundColor.a((byte) 0);
 
-		for (final LineData data : datas)
+		for (int i = 0; i < datas.size(); i++)
 		{
-			if (nk_begin(nkContext, data.panelLabelId, data.rectLabel,
-					NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_BACKGROUND | NK_WINDOW_NO_INPUT))
+			final LineData data = datas.get(i);
+			if (nk_begin(	nkContext,
+							data.panelLabelId,
+							data.rectLabel,
+							NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_BACKGROUND | NK_WINDOW_NO_INPUT))
 			{
 				nk_layout_row_dynamic(context.nkContext, panel.getLineHeight() - 5, 1);
 				nk_label(nkContext, data.textBuffer, NK_TEXT_RIGHT);
 			}
 			nk_end(nkContext);
 
-			if (primaryMaterialDrawer.draw(nkContext, data, mainMaterial, data.panelButton1Id,
-					data.rectButton1))
+			if (primaryMaterialDrawer.draw(	nkContext,
+											data,
+											mainMaterial,
+											data.panelButton1Id,
+											data.rectButton1))
 			{
 				application.setMainMaterial(data.material);
 				dirty = true;
 			}
 
-			if (secondaryMaterialDrawer.draw(nkContext, data, secondaryMaterial,
-					data.panelButton2Id, data.rectButton2))
+			if (secondaryMaterialDrawer.draw(	nkContext,
+												data,
+												secondaryMaterial,
+												data.panelButton2Id,
+												data.rectButton2))
 			{
 				application.setSecondaryMaterial(data.material);
 				dirty = true;

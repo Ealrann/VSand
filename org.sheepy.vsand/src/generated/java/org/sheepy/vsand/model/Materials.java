@@ -3,8 +3,7 @@
 package org.sheepy.vsand.model;
 
 import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.emf.ecore.EObject;
+import org.sheepy.lily.core.api.adapter.ILilyEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,9 +19,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see org.sheepy.vsand.model.VSandPackage#getMaterials()
  * @model
+ * @extends ILilyEObject
  * @generated
  */
-public interface Materials extends EObject
+public interface Materials extends ILilyEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Materials</b></em>' containment reference list.
