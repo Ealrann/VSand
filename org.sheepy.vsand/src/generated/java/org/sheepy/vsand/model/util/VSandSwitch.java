@@ -178,6 +178,7 @@ public class VSandSwitch<T> extends Switch<T>
 			{
 				Transformation transformation = (Transformation)theEObject;
 				T result = caseTransformation(transformation);
+				if (result == null) result = caseITransformation(transformation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -191,6 +192,28 @@ public class VSandSwitch<T> extends Switch<T>
 				if (result == null) result = caseIPositionElement(materialSelectorPanel);
 				if (result == null) result = caseLObject(materialSelectorPanel);
 				if (result == null) result = caseIInferenceObject(materialSelectorPanel);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case VSandPackage.MULTIPLE_TRANSFORMATION:
+			{
+				MultipleTransformation multipleTransformation = (MultipleTransformation)theEObject;
+				T result = caseMultipleTransformation(multipleTransformation);
+				if (result == null) result = caseITransformation(multipleTransformation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case VSandPackage.MATERIAL_PROVIDER:
+			{
+				MaterialProvider materialProvider = (MaterialProvider)theEObject;
+				T result = caseMaterialProvider(materialProvider);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case VSandPackage.ITRANSFORMATION:
+			{
+				ITransformation iTransformation = (ITransformation)theEObject;
+				T result = caseITransformation(iTransformation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -402,6 +425,54 @@ public class VSandSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseMaterialSelectorPanel(MaterialSelectorPanel object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Multiple Transformation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Multiple Transformation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMultipleTransformation(MultipleTransformation object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Material Provider</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Material Provider</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMaterialProvider(MaterialProvider object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>ITransformation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>ITransformation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseITransformation(ITransformation object)
 	{
 		return null;
 	}

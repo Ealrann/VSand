@@ -945,6 +945,70 @@ public interface VSandPackage extends EPackage
 	int TRANSFORMATIONS_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.ITransformation <em>ITransformation</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.ITransformation
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getITransformation()
+	 * @generated
+	 */
+	int ITRANSFORMATION = 15;
+
+	/**
+	 * The feature id for the '<em><b>Probability</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITRANSFORMATION__PROBABILITY = 0;
+
+	/**
+	 * The feature id for the '<em><b>Propagation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITRANSFORMATION__PROPAGATION = 1;
+
+	/**
+	 * The feature id for the '<em><b>Is Static Transformation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITRANSFORMATION__IS_STATIC_TRANSFORMATION = 2;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITRANSFORMATION__TARGET = 3;
+
+	/**
+	 * The number of structural features of the '<em>ITransformation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITRANSFORMATION_FEATURE_COUNT = 4;
+
+	/**
+	 * The number of operations of the '<em>ITransformation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITRANSFORMATION_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.TransformationImpl <em>Transformation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -955,40 +1019,13 @@ public interface VSandPackage extends EPackage
 	int TRANSFORMATION = 11;
 
 	/**
-	 * The feature id for the '<em><b>Reactant</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TRANSFORMATION__REACTANT = 0;
-
-	/**
-	 * The feature id for the '<em><b>Catalyst</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TRANSFORMATION__CATALYST = 1;
-
-	/**
-	 * The feature id for the '<em><b>Target</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TRANSFORMATION__TARGET = 2;
-
-	/**
 	 * The feature id for the '<em><b>Probability</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__PROBABILITY = 3;
+	int TRANSFORMATION__PROBABILITY = ITRANSFORMATION__PROBABILITY;
 
 	/**
 	 * The feature id for the '<em><b>Propagation</b></em>' attribute.
@@ -997,7 +1034,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__PROPAGATION = 4;
+	int TRANSFORMATION__PROPAGATION = ITRANSFORMATION__PROPAGATION;
 
 	/**
 	 * The feature id for the '<em><b>Is Static Transformation</b></em>' attribute.
@@ -1006,7 +1043,34 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION__IS_STATIC_TRANSFORMATION = 5;
+	int TRANSFORMATION__IS_STATIC_TRANSFORMATION = ITRANSFORMATION__IS_STATIC_TRANSFORMATION;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TRANSFORMATION__TARGET = ITRANSFORMATION__TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Reactant</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TRANSFORMATION__REACTANT = ITRANSFORMATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Catalyst</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TRANSFORMATION__CATALYST = ITRANSFORMATION_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Transformation</em>' class.
@@ -1015,7 +1079,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION_FEATURE_COUNT = 6;
+	int TRANSFORMATION_FEATURE_COUNT = ITRANSFORMATION_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Transformation</em>' class.
@@ -1024,7 +1088,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORMATION_OPERATION_COUNT = 0;
+	int TRANSFORMATION_OPERATION_COUNT = ITRANSFORMATION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.
@@ -1206,6 +1270,143 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int MATERIAL_SELECTOR_PANEL_OPERATION_COUNT = PresentationPackage.IPANEL_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MultipleTransformationImpl <em>Multiple Transformation</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.impl.MultipleTransformationImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMultipleTransformation()
+	 * @generated
+	 */
+	int MULTIPLE_TRANSFORMATION = 13;
+
+	/**
+	 * The feature id for the '<em><b>Probability</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTIPLE_TRANSFORMATION__PROBABILITY = ITRANSFORMATION__PROBABILITY;
+
+	/**
+	 * The feature id for the '<em><b>Propagation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTIPLE_TRANSFORMATION__PROPAGATION = ITRANSFORMATION__PROPAGATION;
+
+	/**
+	 * The feature id for the '<em><b>Is Static Transformation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTIPLE_TRANSFORMATION__IS_STATIC_TRANSFORMATION = ITRANSFORMATION__IS_STATIC_TRANSFORMATION;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTIPLE_TRANSFORMATION__TARGET = ITRANSFORMATION__TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Reactants</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTIPLE_TRANSFORMATION__REACTANTS = ITRANSFORMATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Catalysts</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTIPLE_TRANSFORMATION__CATALYSTS = ITRANSFORMATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTIPLE_TRANSFORMATION__NAME = ITRANSFORMATION_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Multiple Transformation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTIPLE_TRANSFORMATION_FEATURE_COUNT = ITRANSFORMATION_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Multiple Transformation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTIPLE_TRANSFORMATION_OPERATION_COUNT = ITRANSFORMATION_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MaterialProviderImpl <em>Material Provider</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.impl.MaterialProviderImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialProvider()
+	 * @generated
+	 */
+	int MATERIAL_PROVIDER = 14;
+
+	/**
+	 * The feature id for the '<em><b>Materials</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MATERIAL_PROVIDER__MATERIALS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Filter Mode</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MATERIAL_PROVIDER__FILTER_MODE = 1;
+
+	/**
+	 * The number of structural features of the '<em>Material Provider</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MATERIAL_PROVIDER_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>Material Provider</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MATERIAL_PROVIDER_OPERATION_COUNT = 0;
 
 	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandApplication <em>Application</em>}'.
@@ -1757,50 +1958,6 @@ public interface VSandPackage extends EPackage
 	EReference getTransformation_Catalyst();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.Transformation#getTarget <em>Target</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Target</em>'.
-	 * @see org.sheepy.vsand.model.Transformation#getTarget()
-	 * @see #getTransformation()
-	 * @generated
-	 */
-	EReference getTransformation_Target();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Transformation#getProbability <em>Probability</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Probability</em>'.
-	 * @see org.sheepy.vsand.model.Transformation#getProbability()
-	 * @see #getTransformation()
-	 * @generated
-	 */
-	EAttribute getTransformation_Probability();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Transformation#getPropagation <em>Propagation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Propagation</em>'.
-	 * @see org.sheepy.vsand.model.Transformation#getPropagation()
-	 * @see #getTransformation()
-	 * @generated
-	 */
-	EAttribute getTransformation_Propagation();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Transformation#isIsStaticTransformation <em>Is Static Transformation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Static Transformation</em>'.
-	 * @see org.sheepy.vsand.model.Transformation#isIsStaticTransformation()
-	 * @see #getTransformation()
-	 * @generated
-	 */
-	EAttribute getTransformation_IsStaticTransformation();
-
-	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.MaterialSelectorPanel <em>Material Selector Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1886,6 +2043,135 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 */
 	EAttribute getMaterialSelectorPanel_SecondaryB();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.MultipleTransformation <em>Multiple Transformation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Multiple Transformation</em>'.
+	 * @see org.sheepy.vsand.model.MultipleTransformation
+	 * @generated
+	 */
+	EClass getMultipleTransformation();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.sheepy.vsand.model.MultipleTransformation#getReactants <em>Reactants</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Reactants</em>'.
+	 * @see org.sheepy.vsand.model.MultipleTransformation#getReactants()
+	 * @see #getMultipleTransformation()
+	 * @generated
+	 */
+	EReference getMultipleTransformation_Reactants();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.sheepy.vsand.model.MultipleTransformation#getCatalysts <em>Catalysts</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Catalysts</em>'.
+	 * @see org.sheepy.vsand.model.MultipleTransformation#getCatalysts()
+	 * @see #getMultipleTransformation()
+	 * @generated
+	 */
+	EReference getMultipleTransformation_Catalysts();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MultipleTransformation#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.sheepy.vsand.model.MultipleTransformation#getName()
+	 * @see #getMultipleTransformation()
+	 * @generated
+	 */
+	EAttribute getMultipleTransformation_Name();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.MaterialProvider <em>Material Provider</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Material Provider</em>'.
+	 * @see org.sheepy.vsand.model.MaterialProvider
+	 * @generated
+	 */
+	EClass getMaterialProvider();
+
+	/**
+	 * Returns the meta object for the reference list '{@link org.sheepy.vsand.model.MaterialProvider#getMaterials <em>Materials</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Materials</em>'.
+	 * @see org.sheepy.vsand.model.MaterialProvider#getMaterials()
+	 * @see #getMaterialProvider()
+	 * @generated
+	 */
+	EReference getMaterialProvider_Materials();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialProvider#isFilterMode <em>Filter Mode</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Filter Mode</em>'.
+	 * @see org.sheepy.vsand.model.MaterialProvider#isFilterMode()
+	 * @see #getMaterialProvider()
+	 * @generated
+	 */
+	EAttribute getMaterialProvider_FilterMode();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.ITransformation <em>ITransformation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>ITransformation</em>'.
+	 * @see org.sheepy.vsand.model.ITransformation
+	 * @generated
+	 */
+	EClass getITransformation();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.ITransformation#getProbability <em>Probability</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Probability</em>'.
+	 * @see org.sheepy.vsand.model.ITransformation#getProbability()
+	 * @see #getITransformation()
+	 * @generated
+	 */
+	EAttribute getITransformation_Probability();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.ITransformation#getPropagation <em>Propagation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Propagation</em>'.
+	 * @see org.sheepy.vsand.model.ITransformation#getPropagation()
+	 * @see #getITransformation()
+	 * @generated
+	 */
+	EAttribute getITransformation_Propagation();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.ITransformation#isIsStaticTransformation <em>Is Static Transformation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Static Transformation</em>'.
+	 * @see org.sheepy.vsand.model.ITransformation#isIsStaticTransformation()
+	 * @see #getITransformation()
+	 * @generated
+	 */
+	EAttribute getITransformation_IsStaticTransformation();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.ITransformation#getTarget <em>Target</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Target</em>'.
+	 * @see org.sheepy.vsand.model.ITransformation#getTarget()
+	 * @see #getITransformation()
+	 * @generated
+	 */
+	EReference getITransformation_Target();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -2344,38 +2630,6 @@ public interface VSandPackage extends EPackage
 		EReference TRANSFORMATION__CATALYST = eINSTANCE.getTransformation_Catalyst();
 
 		/**
-		 * The meta object literal for the '<em><b>Target</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference TRANSFORMATION__TARGET = eINSTANCE.getTransformation_Target();
-
-		/**
-		 * The meta object literal for the '<em><b>Probability</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TRANSFORMATION__PROBABILITY = eINSTANCE.getTransformation_Probability();
-
-		/**
-		 * The meta object literal for the '<em><b>Propagation</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TRANSFORMATION__PROPAGATION = eINSTANCE.getTransformation_Propagation();
-
-		/**
-		 * The meta object literal for the '<em><b>Is Static Transformation</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TRANSFORMATION__IS_STATIC_TRANSFORMATION = eINSTANCE.getTransformation_IsStaticTransformation();
-
-		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2440,6 +2694,108 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EAttribute MATERIAL_SELECTOR_PANEL__SECONDARY_B = eINSTANCE.getMaterialSelectorPanel_SecondaryB();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MultipleTransformationImpl <em>Multiple Transformation</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.impl.MultipleTransformationImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMultipleTransformation()
+		 * @generated
+		 */
+		EClass MULTIPLE_TRANSFORMATION = eINSTANCE.getMultipleTransformation();
+
+		/**
+		 * The meta object literal for the '<em><b>Reactants</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MULTIPLE_TRANSFORMATION__REACTANTS = eINSTANCE.getMultipleTransformation_Reactants();
+
+		/**
+		 * The meta object literal for the '<em><b>Catalysts</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MULTIPLE_TRANSFORMATION__CATALYSTS = eINSTANCE.getMultipleTransformation_Catalysts();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MULTIPLE_TRANSFORMATION__NAME = eINSTANCE.getMultipleTransformation_Name();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MaterialProviderImpl <em>Material Provider</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.impl.MaterialProviderImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialProvider()
+		 * @generated
+		 */
+		EClass MATERIAL_PROVIDER = eINSTANCE.getMaterialProvider();
+
+		/**
+		 * The meta object literal for the '<em><b>Materials</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MATERIAL_PROVIDER__MATERIALS = eINSTANCE.getMaterialProvider_Materials();
+
+		/**
+		 * The meta object literal for the '<em><b>Filter Mode</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MATERIAL_PROVIDER__FILTER_MODE = eINSTANCE.getMaterialProvider_FilterMode();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.ITransformation <em>ITransformation</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.ITransformation
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getITransformation()
+		 * @generated
+		 */
+		EClass ITRANSFORMATION = eINSTANCE.getITransformation();
+
+		/**
+		 * The meta object literal for the '<em><b>Probability</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ITRANSFORMATION__PROBABILITY = eINSTANCE.getITransformation_Probability();
+
+		/**
+		 * The meta object literal for the '<em><b>Propagation</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ITRANSFORMATION__PROPAGATION = eINSTANCE.getITransformation_Propagation();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Static Transformation</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ITRANSFORMATION__IS_STATIC_TRANSFORMATION = eINSTANCE.getITransformation_IsStaticTransformation();
+
+		/**
+		 * The meta object literal for the '<em><b>Target</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITRANSFORMATION__TARGET = eINSTANCE.getITransformation_Target();
 
 	}
 

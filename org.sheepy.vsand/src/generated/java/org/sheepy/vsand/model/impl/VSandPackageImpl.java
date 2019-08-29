@@ -25,9 +25,12 @@ import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.DrawConstantBuffer;
 import org.sheepy.vsand.model.DrawLine;
 import org.sheepy.vsand.model.DrawSquare;
+import org.sheepy.vsand.model.ITransformation;
 import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.MaterialProvider;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.Materials;
+import org.sheepy.vsand.model.MultipleTransformation;
 import org.sheepy.vsand.model.PixelConstantBuffer;
 import org.sheepy.vsand.model.Transformation;
 import org.sheepy.vsand.model.Transformations;
@@ -137,6 +140,27 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	private EClass materialSelectorPanelEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass multipleTransformationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass materialProviderEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iTransformationEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -785,50 +809,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EReference getTransformation_Target()
-	{
-		return (EReference)transformationEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getTransformation_Probability()
-	{
-		return (EAttribute)transformationEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getTransformation_Propagation()
-	{
-		return (EAttribute)transformationEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getTransformation_IsStaticTransformation()
-	{
-		return (EAttribute)transformationEClass.getEStructuralFeatures().get(5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getMaterialSelectorPanel()
 	{
 		return materialSelectorPanelEClass;
@@ -909,6 +889,138 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	public EAttribute getMaterialSelectorPanel_SecondaryB()
 	{
 		return (EAttribute)materialSelectorPanelEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getMultipleTransformation()
+	{
+		return multipleTransformationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getMultipleTransformation_Reactants()
+	{
+		return (EReference)multipleTransformationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getMultipleTransformation_Catalysts()
+	{
+		return (EReference)multipleTransformationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getMultipleTransformation_Name()
+	{
+		return (EAttribute)multipleTransformationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getMaterialProvider()
+	{
+		return materialProviderEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getMaterialProvider_Materials()
+	{
+		return (EReference)materialProviderEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getMaterialProvider_FilterMode()
+	{
+		return (EAttribute)materialProviderEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getITransformation()
+	{
+		return iTransformationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getITransformation_Probability()
+	{
+		return (EAttribute)iTransformationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getITransformation_Propagation()
+	{
+		return (EAttribute)iTransformationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getITransformation_IsStaticTransformation()
+	{
+		return (EAttribute)iTransformationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getITransformation_Target()
+	{
+		return (EReference)iTransformationEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -1004,10 +1116,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		transformationEClass = createEClass(TRANSFORMATION);
 		createEReference(transformationEClass, TRANSFORMATION__REACTANT);
 		createEReference(transformationEClass, TRANSFORMATION__CATALYST);
-		createEReference(transformationEClass, TRANSFORMATION__TARGET);
-		createEAttribute(transformationEClass, TRANSFORMATION__PROBABILITY);
-		createEAttribute(transformationEClass, TRANSFORMATION__PROPAGATION);
-		createEAttribute(transformationEClass, TRANSFORMATION__IS_STATIC_TRANSFORMATION);
 
 		materialSelectorPanelEClass = createEClass(MATERIAL_SELECTOR_PANEL);
 		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__LINE_HEIGHT);
@@ -1017,6 +1125,21 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__SECONDARY_R);
 		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__SECONDARY_G);
 		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__SECONDARY_B);
+
+		multipleTransformationEClass = createEClass(MULTIPLE_TRANSFORMATION);
+		createEReference(multipleTransformationEClass, MULTIPLE_TRANSFORMATION__REACTANTS);
+		createEReference(multipleTransformationEClass, MULTIPLE_TRANSFORMATION__CATALYSTS);
+		createEAttribute(multipleTransformationEClass, MULTIPLE_TRANSFORMATION__NAME);
+
+		materialProviderEClass = createEClass(MATERIAL_PROVIDER);
+		createEReference(materialProviderEClass, MATERIAL_PROVIDER__MATERIALS);
+		createEAttribute(materialProviderEClass, MATERIAL_PROVIDER__FILTER_MODE);
+
+		iTransformationEClass = createEClass(ITRANSFORMATION);
+		createEAttribute(iTransformationEClass, ITRANSFORMATION__PROBABILITY);
+		createEAttribute(iTransformationEClass, ITRANSFORMATION__PROPAGATION);
+		createEAttribute(iTransformationEClass, ITRANSFORMATION__IS_STATIC_TRANSFORMATION);
+		createEReference(iTransformationEClass, ITRANSFORMATION__TARGET);
 	}
 
 	/**
@@ -1062,7 +1185,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		drawCircleEClass.getESuperTypes().add(this.getDrawCommand());
 		drawSquareEClass.getESuperTypes().add(this.getDrawCommand());
 		drawLineEClass.getESuperTypes().add(this.getDrawCommand());
+		transformationEClass.getESuperTypes().add(this.getITransformation());
 		materialSelectorPanelEClass.getESuperTypes().add(thePresentationPackage.getIPanel());
+		multipleTransformationEClass.getESuperTypes().add(this.getITransformation());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(vSandApplicationEClass, VSandApplication.class, "VSandApplication", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1122,15 +1247,11 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getMaterial_UserFriendly(), theEcorePackage.getEBoolean(), "userFriendly", "true", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(transformationsEClass, Transformations.class, "Transformations", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getTransformations_Transformations(), this.getTransformation(), null, "transformations", null, 0, -1, Transformations.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTransformations_Transformations(), this.getITransformation(), null, "transformations", null, 0, -1, Transformations.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(transformationEClass, Transformation.class, "Transformation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTransformation_Reactant(), this.getMaterial(), null, "reactant", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTransformation_Catalyst(), this.getMaterial(), null, "catalyst", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTransformation_Target(), this.getMaterial(), null, "target", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTransformation_Probability(), theEcorePackage.getEInt(), "probability", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTransformation_Propagation(), theEcorePackage.getEInt(), "propagation", "1", 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTransformation_IsStaticTransformation(), theEcorePackage.getEBoolean(), "isStaticTransformation", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(materialSelectorPanelEClass, MaterialSelectorPanel.class, "MaterialSelectorPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMaterialSelectorPanel_LineHeight(), theEcorePackage.getEInt(), "lineHeight", "32", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1140,6 +1261,21 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getMaterialSelectorPanel_SecondaryR(), theEcorePackage.getEInt(), "secondaryR", "50", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterialSelectorPanel_SecondaryG(), theEcorePackage.getEInt(), "secondaryG", "50", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterialSelectorPanel_SecondaryB(), theEcorePackage.getEInt(), "secondaryB", "255", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(multipleTransformationEClass, MultipleTransformation.class, "MultipleTransformation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getMultipleTransformation_Reactants(), this.getMaterialProvider(), null, "reactants", null, 1, 1, MultipleTransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMultipleTransformation_Catalysts(), this.getMaterialProvider(), null, "catalysts", null, 1, 1, MultipleTransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMultipleTransformation_Name(), ecorePackage.getEString(), "name", "", 0, 1, MultipleTransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(materialProviderEClass, MaterialProvider.class, "MaterialProvider", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getMaterialProvider_Materials(), this.getMaterial(), null, "materials", null, 0, -1, MaterialProvider.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterialProvider_FilterMode(), ecorePackage.getEBoolean(), "filterMode", "false", 1, 1, MaterialProvider.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iTransformationEClass, ITransformation.class, "ITransformation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getITransformation_Probability(), theEcorePackage.getEInt(), "probability", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getITransformation_Propagation(), theEcorePackage.getEInt(), "propagation", "1", 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getITransformation_IsStaticTransformation(), theEcorePackage.getEBoolean(), "isStaticTransformation", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getITransformation_Target(), this.getMaterial(), null, "target", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

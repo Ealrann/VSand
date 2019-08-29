@@ -131,6 +131,24 @@ public interface VSandFactory extends EFactory
 	MaterialSelectorPanel createMaterialSelectorPanel();
 
 	/**
+	 * Returns a new object of class '<em>Multiple Transformation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Multiple Transformation</em>'.
+	 * @generated
+	 */
+	MultipleTransformation createMultipleTransformation();
+
+	/**
+	 * Returns a new object of class '<em>Material Provider</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Material Provider</em>'.
+	 * @generated
+	 */
+	MaterialProvider createMaterialProvider();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

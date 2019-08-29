@@ -26,7 +26,7 @@ public interface Transformations extends ILilyEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Transformations</b></em>' containment reference list.
-	 * The list contents are of type {@link org.sheepy.vsand.model.Transformation}.
+	 * The list contents are of type {@link org.sheepy.vsand.model.ITransformation}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Transformations</em>' containment reference list isn't clear,
@@ -38,6 +38,6 @@ public interface Transformations extends ILilyEObject
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<Transformation> getTransformations();
+	EList<ITransformation> getTransformations();
 
 } // Transformations

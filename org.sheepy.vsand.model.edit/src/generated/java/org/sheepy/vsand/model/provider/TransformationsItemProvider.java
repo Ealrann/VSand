@@ -156,6 +156,11 @@ public class TransformationsItemProvider extends ItemProviderAdapter implements 
 			(createChildParameter
 				(VSandPackage.Literals.TRANSFORMATIONS__TRANSFORMATIONS,
 				 VSandFactory.eINSTANCE.createTransformation()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(VSandPackage.Literals.TRANSFORMATIONS__TRANSFORMATIONS,
+				 VSandFactory.eINSTANCE.createMultipleTransformation()));
 	}
 
 	/**

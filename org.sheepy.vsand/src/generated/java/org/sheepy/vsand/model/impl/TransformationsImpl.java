@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.sheepy.lily.core.api.adapter.LilyEObject;
-import org.sheepy.vsand.model.Transformation;
+import org.sheepy.vsand.model.ITransformation;
 import org.sheepy.vsand.model.Transformations;
 import org.sheepy.vsand.model.VSandPackage;
 
@@ -41,7 +41,7 @@ public class TransformationsImpl extends LilyEObject implements Transformations
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Transformation> transformations;
+	protected EList<ITransformation> transformations;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -70,11 +70,11 @@ public class TransformationsImpl extends LilyEObject implements Transformations
 	 * @generated
 	 */
 	@Override
-	public EList<Transformation> getTransformations()
+	public EList<ITransformation> getTransformations()
 	{
 		if (transformations == null)
 		{
-			transformations = new EObjectContainmentEList<Transformation>(Transformation.class, this, VSandPackage.TRANSFORMATIONS__TRANSFORMATIONS);
+			transformations = new EObjectContainmentEList<ITransformation>(ITransformation.class, this, VSandPackage.TRANSFORMATIONS__TRANSFORMATIONS);
 		}
 		return transformations;
 	}
@@ -124,7 +124,7 @@ public class TransformationsImpl extends LilyEObject implements Transformations
 		{
 			case VSandPackage.TRANSFORMATIONS__TRANSFORMATIONS:
 				getTransformations().clear();
-				getTransformations().addAll((Collection<? extends Transformation>)newValue);
+				getTransformations().addAll((Collection<? extends ITransformation>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

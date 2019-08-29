@@ -86,10 +86,6 @@
     <genClasses ecoreClass="VSand.ecore#//Transformation">
       <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//Transformation/reactant"/>
       <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//Transformation/catalyst"/>
-      <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//Transformation/target"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//Transformation/probability"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//Transformation/propagation"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//Transformation/isStaticTransformation"/>
     </genClasses>
     <genClasses ecoreClass="VSand.ecore#//MaterialSelectorPanel">
       <genFeatures createChild="false" propertyCategory="UI" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/lineHeight"/>
@@ -99,6 +95,24 @@
       <genFeatures createChild="false" propertyCategory="Secondary Color" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/secondaryR"/>
       <genFeatures createChild="false" propertyCategory="Secondary Color" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/secondaryG"/>
       <genFeatures createChild="false" propertyCategory="Secondary Color" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/secondaryB"/>
+    </genClasses>
+    <genClasses ecoreClass="VSand.ecore#//MultipleTransformation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VSand.ecore#//MultipleTransformation/reactants"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VSand.ecore#//MultipleTransformation/catalysts"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//MultipleTransformation/name"/>
+    </genClasses>
+    <genClasses ecoreClass="VSand.ecore#//MaterialProvider">
+      <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//MaterialProvider/materials"/>
+      <genFeatures createChild="false" propertyCategory="If true, will consider ALL materials EXCEPT this ones."
+          propertyDescription="If true, will consider ALL materials EXCEPT this ones."
+          ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialProvider/filterMode"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="VSand.ecore#//ITransformation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//ITransformation/probability"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//ITransformation/propagation"/>
+      <genFeatures createChild="false" propertyDescription="If true, ignore the catalyst and react when stop moving"
+          ecoreFeature="ecore:EAttribute VSand.ecore#//ITransformation/isStaticTransformation"/>
+      <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//ITransformation/target"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

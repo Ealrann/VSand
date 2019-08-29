@@ -397,6 +397,56 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.MultipleTransformation} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected MultipleTransformationItemProvider multipleTransformationItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.sheepy.vsand.model.MultipleTransformation}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createMultipleTransformationAdapter()
+	{
+		if (multipleTransformationItemProvider == null)
+		{
+			multipleTransformationItemProvider = new MultipleTransformationItemProvider(this);
+		}
+
+		return multipleTransformationItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.MaterialProvider} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected MaterialProviderItemProvider materialProviderItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.sheepy.vsand.model.MaterialProvider}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createMaterialProviderAdapter()
+	{
+		if (materialProviderItemProvider == null)
+		{
+			materialProviderItemProvider = new MaterialProviderItemProvider(this);
+		}
+
+		return materialProviderItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -525,6 +575,8 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 		if (transformationsItemProvider != null) transformationsItemProvider.dispose();
 		if (transformationItemProvider != null) transformationItemProvider.dispose();
 		if (materialSelectorPanelItemProvider != null) materialSelectorPanelItemProvider.dispose();
+		if (multipleTransformationItemProvider != null) multipleTransformationItemProvider.dispose();
+		if (materialProviderItemProvider != null) materialProviderItemProvider.dispose();
 	}
 
 	/**

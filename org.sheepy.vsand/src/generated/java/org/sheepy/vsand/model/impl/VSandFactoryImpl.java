@@ -76,6 +76,8 @@ public class VSandFactoryImpl extends EFactoryImpl implements VSandFactory
 			case VSandPackage.TRANSFORMATIONS: return createTransformations();
 			case VSandPackage.TRANSFORMATION: return createTransformation();
 			case VSandPackage.MATERIAL_SELECTOR_PANEL: return createMaterialSelectorPanel();
+			case VSandPackage.MULTIPLE_TRANSFORMATION: return createMultipleTransformation();
+			case VSandPackage.MATERIAL_PROVIDER: return createMaterialProvider();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -223,6 +225,30 @@ public class VSandFactoryImpl extends EFactoryImpl implements VSandFactory
 	{
 		MaterialSelectorPanelImpl materialSelectorPanel = new MaterialSelectorPanelImpl();
 		return materialSelectorPanel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public MultipleTransformation createMultipleTransformation()
+	{
+		MultipleTransformationImpl multipleTransformation = new MultipleTransformationImpl();
+		return multipleTransformation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public MaterialProvider createMaterialProvider()
+	{
+		MaterialProviderImpl materialProvider = new MaterialProviderImpl();
+		return materialProvider;
 	}
 
 	/**

@@ -56,12 +56,12 @@ public class TransformationItemProvider extends ItemProviderAdapter implements I
 		{
 			super.getPropertyDescriptors(object);
 
-			addReactantPropertyDescriptor(object);
-			addCatalystPropertyDescriptor(object);
-			addTargetPropertyDescriptor(object);
 			addProbabilityPropertyDescriptor(object);
 			addPropagationPropertyDescriptor(object);
 			addIsStaticTransformationPropertyDescriptor(object);
+			addTargetPropertyDescriptor(object);
+			addReactantPropertyDescriptor(object);
+			addCatalystPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -124,9 +124,9 @@ public class TransformationItemProvider extends ItemProviderAdapter implements I
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Transformation_target_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_target_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__TARGET,
+				 getString("_UI_ITransformation_target_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ITransformation_target_feature", "_UI_ITransformation_type"),
+				 VSandPackage.Literals.ITRANSFORMATION__TARGET,
 				 true,
 				 false,
 				 true,
@@ -147,9 +147,9 @@ public class TransformationItemProvider extends ItemProviderAdapter implements I
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Transformation_probability_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_probability_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__PROBABILITY,
+				 getString("_UI_ITransformation_probability_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ITransformation_probability_feature", "_UI_ITransformation_type"),
+				 VSandPackage.Literals.ITRANSFORMATION__PROBABILITY,
 				 true,
 				 false,
 				 false,
@@ -170,9 +170,9 @@ public class TransformationItemProvider extends ItemProviderAdapter implements I
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Transformation_propagation_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_propagation_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__PROPAGATION,
+				 getString("_UI_ITransformation_propagation_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ITransformation_propagation_feature", "_UI_ITransformation_type"),
+				 VSandPackage.Literals.ITRANSFORMATION__PROPAGATION,
 				 true,
 				 false,
 				 false,
@@ -193,9 +193,9 @@ public class TransformationItemProvider extends ItemProviderAdapter implements I
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Transformation_isStaticTransformation_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Transformation_isStaticTransformation_feature", "_UI_Transformation_type"),
-				 VSandPackage.Literals.TRANSFORMATION__IS_STATIC_TRANSFORMATION,
+				 getString("_UI_ITransformation_isStaticTransformation_feature"),
+				 getString("_UI_ITransformation_isStaticTransformation_description"),
+				 VSandPackage.Literals.ITRANSFORMATION__IS_STATIC_TRANSFORMATION,
 				 true,
 				 false,
 				 false,
@@ -251,12 +251,12 @@ public class TransformationItemProvider extends ItemProviderAdapter implements I
 
 		switch (notification.getFeatureID(Transformation.class))
 		{
-			case VSandPackage.TRANSFORMATION__REACTANT:
-			case VSandPackage.TRANSFORMATION__CATALYST:
-			case VSandPackage.TRANSFORMATION__TARGET:
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 			case VSandPackage.TRANSFORMATION__PROPAGATION:
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
+			case VSandPackage.TRANSFORMATION__TARGET:
+			case VSandPackage.TRANSFORMATION__REACTANT:
+			case VSandPackage.TRANSFORMATION__CATALYST:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

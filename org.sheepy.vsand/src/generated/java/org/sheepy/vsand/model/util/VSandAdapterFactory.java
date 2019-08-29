@@ -147,6 +147,21 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createMaterialSelectorPanelAdapter();
 			}
 			@Override
+			public Adapter caseMultipleTransformation(MultipleTransformation object)
+			{
+				return createMultipleTransformationAdapter();
+			}
+			@Override
+			public Adapter caseMaterialProvider(MaterialProvider object)
+			{
+				return createMaterialProviderAdapter();
+			}
+			@Override
+			public Adapter caseITransformation(ITransformation object)
+			{
+				return createITransformationAdapter();
+			}
+			@Override
 			public Adapter caseIInferenceObject(IInferenceObject object)
 			{
 				return createIInferenceObjectAdapter();
@@ -403,6 +418,51 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createMaterialSelectorPanelAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.MultipleTransformation <em>Multiple Transformation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.MultipleTransformation
+	 * @generated
+	 */
+	public Adapter createMultipleTransformationAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.MaterialProvider <em>Material Provider</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.MaterialProvider
+	 * @generated
+	 */
+	public Adapter createMaterialProviderAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.ITransformation <em>ITransformation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.ITransformation
+	 * @generated
+	 */
+	public Adapter createITransformationAdapter()
 	{
 		return null;
 	}

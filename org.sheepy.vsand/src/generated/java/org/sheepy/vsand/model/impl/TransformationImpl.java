@@ -22,48 +22,18 @@ import org.sheepy.vsand.model.VSandPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getReactant <em>Reactant</em>}</li>
- *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getCatalyst <em>Catalyst</em>}</li>
- *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getTarget <em>Target</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getProbability <em>Probability</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getPropagation <em>Propagation</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#isIsStaticTransformation <em>Is Static Transformation</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getTarget <em>Target</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getReactant <em>Reactant</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.TransformationImpl#getCatalyst <em>Catalyst</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class TransformationImpl extends LilyEObject implements Transformation
 {
-	/**
-	 * The cached value of the '{@link #getReactant() <em>Reactant</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReactant()
-	 * @generated
-	 * @ordered
-	 */
-	protected Material reactant;
-
-	/**
-	 * The cached value of the '{@link #getCatalyst() <em>Catalyst</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCatalyst()
-	 * @generated
-	 * @ordered
-	 */
-	protected Material catalyst;
-
-	/**
-	 * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTarget()
-	 * @generated
-	 * @ordered
-	 */
-	protected Material target;
-
 	/**
 	 * The default value of the '{@link #getProbability() <em>Probability</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -123,6 +93,36 @@ public class TransformationImpl extends LilyEObject implements Transformation
 	 * @ordered
 	 */
 	protected boolean isStaticTransformation = IS_STATIC_TRANSFORMATION_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTarget()
+	 * @generated
+	 * @ordered
+	 */
+	protected Material target;
+
+	/**
+	 * The cached value of the '{@link #getReactant() <em>Reactant</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReactant()
+	 * @generated
+	 * @ordered
+	 */
+	protected Material reactant;
+
+	/**
+	 * The cached value of the '{@link #getCatalyst() <em>Catalyst</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCatalyst()
+	 * @generated
+	 * @ordered
+	 */
+	protected Material catalyst;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -365,21 +365,21 @@ public class TransformationImpl extends LilyEObject implements Transformation
 	{
 		switch (featureID)
 		{
-			case VSandPackage.TRANSFORMATION__REACTANT:
-				if (resolve) return getReactant();
-				return basicGetReactant();
-			case VSandPackage.TRANSFORMATION__CATALYST:
-				if (resolve) return getCatalyst();
-				return basicGetCatalyst();
-			case VSandPackage.TRANSFORMATION__TARGET:
-				if (resolve) return getTarget();
-				return basicGetTarget();
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 				return getProbability();
 			case VSandPackage.TRANSFORMATION__PROPAGATION:
 				return getPropagation();
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
 				return isIsStaticTransformation();
+			case VSandPackage.TRANSFORMATION__TARGET:
+				if (resolve) return getTarget();
+				return basicGetTarget();
+			case VSandPackage.TRANSFORMATION__REACTANT:
+				if (resolve) return getReactant();
+				return basicGetReactant();
+			case VSandPackage.TRANSFORMATION__CATALYST:
+				if (resolve) return getCatalyst();
+				return basicGetCatalyst();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -394,15 +394,6 @@ public class TransformationImpl extends LilyEObject implements Transformation
 	{
 		switch (featureID)
 		{
-			case VSandPackage.TRANSFORMATION__REACTANT:
-				setReactant((Material)newValue);
-				return;
-			case VSandPackage.TRANSFORMATION__CATALYST:
-				setCatalyst((Material)newValue);
-				return;
-			case VSandPackage.TRANSFORMATION__TARGET:
-				setTarget((Material)newValue);
-				return;
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 				setProbability((Integer)newValue);
 				return;
@@ -411,6 +402,15 @@ public class TransformationImpl extends LilyEObject implements Transformation
 				return;
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
 				setIsStaticTransformation((Boolean)newValue);
+				return;
+			case VSandPackage.TRANSFORMATION__TARGET:
+				setTarget((Material)newValue);
+				return;
+			case VSandPackage.TRANSFORMATION__REACTANT:
+				setReactant((Material)newValue);
+				return;
+			case VSandPackage.TRANSFORMATION__CATALYST:
+				setCatalyst((Material)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -426,15 +426,6 @@ public class TransformationImpl extends LilyEObject implements Transformation
 	{
 		switch (featureID)
 		{
-			case VSandPackage.TRANSFORMATION__REACTANT:
-				setReactant((Material)null);
-				return;
-			case VSandPackage.TRANSFORMATION__CATALYST:
-				setCatalyst((Material)null);
-				return;
-			case VSandPackage.TRANSFORMATION__TARGET:
-				setTarget((Material)null);
-				return;
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 				setProbability(PROBABILITY_EDEFAULT);
 				return;
@@ -443,6 +434,15 @@ public class TransformationImpl extends LilyEObject implements Transformation
 				return;
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
 				setIsStaticTransformation(IS_STATIC_TRANSFORMATION_EDEFAULT);
+				return;
+			case VSandPackage.TRANSFORMATION__TARGET:
+				setTarget((Material)null);
+				return;
+			case VSandPackage.TRANSFORMATION__REACTANT:
+				setReactant((Material)null);
+				return;
+			case VSandPackage.TRANSFORMATION__CATALYST:
+				setCatalyst((Material)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -458,18 +458,18 @@ public class TransformationImpl extends LilyEObject implements Transformation
 	{
 		switch (featureID)
 		{
-			case VSandPackage.TRANSFORMATION__REACTANT:
-				return reactant != null;
-			case VSandPackage.TRANSFORMATION__CATALYST:
-				return catalyst != null;
-			case VSandPackage.TRANSFORMATION__TARGET:
-				return target != null;
 			case VSandPackage.TRANSFORMATION__PROBABILITY:
 				return probability != PROBABILITY_EDEFAULT;
 			case VSandPackage.TRANSFORMATION__PROPAGATION:
 				return propagation != PROPAGATION_EDEFAULT;
 			case VSandPackage.TRANSFORMATION__IS_STATIC_TRANSFORMATION:
 				return isStaticTransformation != IS_STATIC_TRANSFORMATION_EDEFAULT;
+			case VSandPackage.TRANSFORMATION__TARGET:
+				return target != null;
+			case VSandPackage.TRANSFORMATION__REACTANT:
+				return reactant != null;
+			case VSandPackage.TRANSFORMATION__CATALYST:
+				return catalyst != null;
 		}
 		return super.eIsSet(featureID);
 	}
