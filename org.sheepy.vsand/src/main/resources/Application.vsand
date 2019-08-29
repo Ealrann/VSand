@@ -352,6 +352,8 @@
     <materials name="PetrolFire" density="1" runoff="30" r="50" g="15" b="106" userFriendly="false"/>
     <materials name="Sparkle" r="185" g="50" b="65" userFriendly="false"/>
     <materials name="HotWax" density="1" runoff="3" r="231" g="254" b="254" userFriendly="false"/>
+    <materials name="Acid" density="4" runoff="30" r="35" g="245" b="130"/>
+    <materials name="AcidVapor" density="-2" runoff="30" r="35" g="245" b="130" userFriendly="false"/>
   </materials>
   <transformations>
     <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.12" target="//@materials/@materials.12" probability="900"/>
@@ -422,5 +424,23 @@
     <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.20" target="//@materials/@materials.6" probability="80"/>
     <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.21" target="//@materials/@materials.11" probability="80"/>
     <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.21" target="//@materials/@materials.11" probability="1000" propagation="5"/>
+    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.23" catalyst="//@materials/@materials.0" target="//@materials/@materials.24" probability="10"/>
+    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.24" target="//@materials/@materials.23" probability="80"/>
+    <transformations xsi:type="model:MultipleTransformation" probability="20" target="//@materials/@materials.0" name="[Acid] + [All] = [Void]">
+      <reactants materials="//@materials/@materials.23 //@materials/@materials.24"/>
+      <catalysts materials="//@materials/@materials.23 //@materials/@materials.0 //@materials/@materials.24 //@materials/@materials.1 //@materials/@materials.5 //@materials/@materials.6" filterMode="true"/>
+    </transformations>
+    <transformations xsi:type="model:MultipleTransformation" probability="40" target="//@materials/@materials.0" name="[All] + [Acid] = [Void]">
+      <reactants materials="//@materials/@materials.0 //@materials/@materials.23 //@materials/@materials.24 //@materials/@materials.1 //@materials/@materials.6 //@materials/@materials.5" filterMode="true"/>
+      <catalysts materials="//@materials/@materials.23 //@materials/@materials.24"/>
+    </transformations>
+    <transformations xsi:type="model:MultipleTransformation" probability="1" target="//@materials/@materials.0" name="[Acid] + [Wall] = [Void]">
+      <reactants materials="//@materials/@materials.23 //@materials/@materials.24"/>
+      <catalysts materials="//@materials/@materials.3"/>
+    </transformations>
+    <transformations xsi:type="model:MultipleTransformation" probability="2" target="//@materials/@materials.0" name="[Wall] + [Acid] = [Void]">
+      <reactants materials="//@materials/@materials.3"/>
+      <catalysts materials="//@materials/@materials.23 //@materials/@materials.24"/>
+    </transformations>
   </transformations>
 </model:VSandApplication>
