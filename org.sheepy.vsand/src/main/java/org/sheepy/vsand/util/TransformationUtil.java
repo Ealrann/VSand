@@ -113,6 +113,11 @@ public final class TransformationUtil
 			{
 				final int reactantIndex = materialList.indexOf(reactant);
 
+				if (transfo.getTarget() == reactant)
+				{
+					warnRecursiveTransformation(reactant, catalyst);
+				}
+
 				int value = materialList.indexOf(transfo.getTarget());
 				value |= transfo.getProbability() << PROBABILITY_LOCATION;
 				value |= transfo.isIsStaticTransformation() ? STATIC_FLAG : 0;
@@ -137,15 +142,16 @@ public final class TransformationUtil
 					final int catalystIndex = materialList.indexOf(catalyst);
 					res[catalystIndex * MaterialUtil.MAX_MATERIAL_NUMBER + reactantIndex] = value;
 				}
-				// else
-				// {
-				// // null catalyst means: react with everything.
-				// for (int i = 0; i < MaterialUtil.MAX_MATERIAL_NUMBER; i++)
-				// {
-				// res[i * MaterialUtil.MAX_MATERIAL_NUMBER + reactantIndex] = value;
-				// }
-				// }
 			}
 		}
+	}
+
+	private static void warnRecursiveTransformation(final Material reactant,
+													final Material catalyst)
+	{
+		System.err.println(String.format(	"[Warning] Recursive transformation: The material %s react with %s to create %s",
+											reactant.getName(),
+											catalyst.getName(),
+											reactant.getName()));
 	}
 }
