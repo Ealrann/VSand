@@ -356,75 +356,75 @@
     <materials name="AcidVapor" density="-2" runoff="30" g="255" b="200" userFriendly="false"/>
   </materials>
   <transformations>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.12" target="//@materials/@materials.12" probability="900"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.9" target="//@materials/@materials.9" probability="40"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.9" target="//@materials/@materials.0" probability="300"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.9" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="1000"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.10" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="1000"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.4" target="//@materials/@materials.3" probability="10" isStaticTransformation="true"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.9" target="//@materials/@materials.6" probability="20"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.6" target="//@materials/@materials.5" probability="1"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.5" target="//@materials/@materials.7" probability="20"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.7" target="//@materials/@materials.2" probability="20" isStaticTransformation="true"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.0" target="//@materials/@materials.8" probability="20" isStaticTransformation="true"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.5" target="//@materials/@materials.8" probability="15" isStaticTransformation="true"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.7" target="//@materials/@materials.7" probability="10"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.10" target="//@materials/@materials.11" probability="100"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.11" target="//@materials/@materials.0" probability="500"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.11" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="500"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.9" target="//@materials/@materials.10" probability="240"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.10" target="//@materials/@materials.10" probability="240"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.9" target="//@materials/@materials.10" probability="240"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.10" target="//@materials/@materials.10" probability="240"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.11" target="//@materials/@materials.10" probability="1000"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.8" target="//@materials/@materials.8" probability="1"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.9" target="//@materials/@materials.15" probability="100"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.10" target="//@materials/@materials.15" probability="75"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.11" target="//@materials/@materials.15" probability="1000"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.22" target="//@materials/@materials.15" probability="1000"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.22" target="//@materials/@materials.14" probability="200"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.15" target="//@materials/@materials.22" probability="30"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.15" catalyst="//@materials/@materials.0" target="//@materials/@materials.10" probability="350"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.14" target="//@materials/@materials.13" probability="7" isStaticTransformation="true"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.16" target="//@materials/@materials.17" probability="8"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.17" target="//@materials/@materials.16" probability="50"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.17" target="//@materials/@materials.9" probability="40"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.16" target="//@materials/@materials.16" probability="40"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="250"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.14" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="250"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="400"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.1" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="200"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.1" catalyst="//@materials/@materials.17" target="//@materials/@materials.16" probability="500"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.16" target="//@materials/@materials.0" probability="200"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.16" target="//@materials/@materials.6" probability="200"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="200"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.17" target="//@materials/@materials.16" probability="200"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.3" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="1"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.4" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="5"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.6" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="100"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.16" target="//@materials/@materials.6" probability="400"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.17" target="//@materials/@materials.6" probability="800"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="5"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.16" catalyst="//@materials/@materials.5" target="//@materials/@materials.0" probability="35"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.9" target="//@materials/@materials.21" probability="1000" propagation="3"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.21" target="//@materials/@materials.21" probability="1000" propagation="4"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.11" target="//@materials/@materials.21" probability="1000" propagation="3"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.10" target="//@materials/@materials.21" probability="1000" propagation="3"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.16" target="//@materials/@materials.21" probability="1000"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.9" target="//@materials/@materials.20" probability="400" propagation="2"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.11" target="//@materials/@materials.20" probability="400" propagation="2"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.10" target="//@materials/@materials.20" probability="400" propagation="2"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.16" target="//@materials/@materials.9" probability="300" propagation="2"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.20" target="//@materials/@materials.20" probability="40"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.20" target="//@materials/@materials.19" probability="40"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.20" catalyst="//@materials/@materials.0" target="//@materials/@materials.9" probability="35"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.20" target="//@materials/@materials.9" probability="175"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.20" catalyst="//@materials/@materials.5" target="//@materials/@materials.19" probability="260"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.20" target="//@materials/@materials.6" probability="80"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.21" target="//@materials/@materials.11" probability="80"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.21" target="//@materials/@materials.11" probability="1000" propagation="5"/>
-    <transformations xsi:type="model:Transformation" reactant="//@materials/@materials.23" catalyst="//@materials/@materials.0" target="//@materials/@materials.24" probability="10"/>
+    <transformations xsi:type="model:Transformation" probability="900" target="//@materials/@materials.12" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.12"/>
+    <transformations xsi:type="model:Transformation" probability="40" target="//@materials/@materials.9" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.9"/>
+    <transformations xsi:type="model:Transformation" probability="300" target="//@materials/@materials.0" reactant="//@materials/@materials.9"/>
+    <transformations xsi:type="model:Transformation" probability="1000" target="//@materials/@materials.0" reactant="//@materials/@materials.9" catalyst="//@materials/@materials.5"/>
+    <transformations xsi:type="model:Transformation" probability="1000" target="//@materials/@materials.0" reactant="//@materials/@materials.10" catalyst="//@materials/@materials.5"/>
+    <transformations xsi:type="model:Transformation" probability="20" isStaticTransformation="true" target="//@materials/@materials.3" reactant="//@materials/@materials.4"/>
+    <transformations xsi:type="model:Transformation" probability="20" target="//@materials/@materials.6" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.9"/>
+    <transformations xsi:type="model:Transformation" probability="1" target="//@materials/@materials.5" reactant="//@materials/@materials.6"/>
+    <transformations xsi:type="model:Transformation" probability="20" target="//@materials/@materials.7" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.5"/>
+    <transformations xsi:type="model:Transformation" probability="20" isStaticTransformation="true" target="//@materials/@materials.2" reactant="//@materials/@materials.7"/>
+    <transformations xsi:type="model:Transformation" probability="20" isStaticTransformation="true" target="//@materials/@materials.8" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.0"/>
+    <transformations xsi:type="model:Transformation" probability="15" isStaticTransformation="true" target="//@materials/@materials.8" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.5"/>
+    <transformations xsi:type="model:Transformation" probability="10" target="//@materials/@materials.7" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.7"/>
+    <transformations xsi:type="model:Transformation" probability="100" target="//@materials/@materials.11" reactant="//@materials/@materials.10"/>
+    <transformations xsi:type="model:Transformation" probability="500" target="//@materials/@materials.0" reactant="//@materials/@materials.11"/>
+    <transformations xsi:type="model:Transformation" probability="500" target="//@materials/@materials.9" reactant="//@materials/@materials.11" catalyst="//@materials/@materials.0"/>
+    <transformations xsi:type="model:Transformation" probability="240" target="//@materials/@materials.10" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.9"/>
+    <transformations xsi:type="model:Transformation" probability="240" target="//@materials/@materials.10" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.10"/>
+    <transformations xsi:type="model:Transformation" probability="1000" target="//@materials/@materials.10" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.11"/>
+    <transformations xsi:type="model:Transformation" probability="240" target="//@materials/@materials.10" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.9"/>
+    <transformations xsi:type="model:Transformation" probability="240" target="//@materials/@materials.10" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.10"/>
+    <transformations xsi:type="model:Transformation" probability="1000" target="//@materials/@materials.10" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.11"/>
+    <transformations xsi:type="model:Transformation" probability="1" target="//@materials/@materials.8" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.8"/>
+    <transformations xsi:type="model:Transformation" probability="100" target="//@materials/@materials.15" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.9"/>
+    <transformations xsi:type="model:Transformation" probability="75" target="//@materials/@materials.15" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.10"/>
+    <transformations xsi:type="model:Transformation" probability="1000" target="//@materials/@materials.15" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.11"/>
+    <transformations xsi:type="model:Transformation" probability="1000" target="//@materials/@materials.15" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.22"/>
+    <transformations xsi:type="model:Transformation" probability="200" target="//@materials/@materials.14" reactant="//@materials/@materials.22"/>
+    <transformations xsi:type="model:Transformation" probability="30" target="//@materials/@materials.22" reactant="//@materials/@materials.15"/>
+    <transformations xsi:type="model:Transformation" probability="350" target="//@materials/@materials.10" reactant="//@materials/@materials.15" catalyst="//@materials/@materials.0"/>
+    <transformations xsi:type="model:Transformation" probability="7" isStaticTransformation="true" target="//@materials/@materials.13" reactant="//@materials/@materials.14"/>
+    <transformations xsi:type="model:Transformation" probability="8" target="//@materials/@materials.17" reactant="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="50" target="//@materials/@materials.16" reactant="//@materials/@materials.17"/>
+    <transformations xsi:type="model:Transformation" probability="40" target="//@materials/@materials.9" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.17"/>
+    <transformations xsi:type="model:Transformation" probability="40" target="//@materials/@materials.16" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="250" target="//@materials/@materials.9" reactant="//@materials/@materials.13" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="250" target="//@materials/@materials.9" reactant="//@materials/@materials.14" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="400" target="//@materials/@materials.9" reactant="//@materials/@materials.12" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="200" target="//@materials/@materials.9" reactant="//@materials/@materials.1" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="500" target="//@materials/@materials.16" reactant="//@materials/@materials.1" catalyst="//@materials/@materials.17"/>
+    <transformations xsi:type="model:Transformation" probability="200" target="//@materials/@materials.0" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="200" target="//@materials/@materials.6" reactant="//@materials/@materials.7" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="200" target="//@materials/@materials.9" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="200" target="//@materials/@materials.16" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.17"/>
+    <transformations xsi:type="model:Transformation" probability="1" target="//@materials/@materials.9" reactant="//@materials/@materials.3" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="5" target="//@materials/@materials.9" reactant="//@materials/@materials.4" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="100" target="//@materials/@materials.9" reactant="//@materials/@materials.6" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="400" target="//@materials/@materials.6" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="800" target="//@materials/@materials.6" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.17"/>
+    <transformations xsi:type="model:Transformation" probability="5" target="//@materials/@materials.0" reactant="//@materials/@materials.17" catalyst="//@materials/@materials.5"/>
+    <transformations xsi:type="model:Transformation" probability="35" target="//@materials/@materials.0" reactant="//@materials/@materials.16" catalyst="//@materials/@materials.5"/>
+    <transformations xsi:type="model:Transformation" probability="1000" propagation="3" target="//@materials/@materials.21" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.9"/>
+    <transformations xsi:type="model:Transformation" probability="1000" propagation="4" target="//@materials/@materials.21" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.21"/>
+    <transformations xsi:type="model:Transformation" probability="1000" propagation="3" target="//@materials/@materials.21" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.11"/>
+    <transformations xsi:type="model:Transformation" probability="1000" propagation="3" target="//@materials/@materials.21" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.10"/>
+    <transformations xsi:type="model:Transformation" probability="1000" target="//@materials/@materials.21" reactant="//@materials/@materials.18" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="400" propagation="2" target="//@materials/@materials.20" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.9"/>
+    <transformations xsi:type="model:Transformation" probability="400" propagation="2" target="//@materials/@materials.20" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.11"/>
+    <transformations xsi:type="model:Transformation" probability="400" propagation="2" target="//@materials/@materials.20" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.10"/>
+    <transformations xsi:type="model:Transformation" probability="300" propagation="2" target="//@materials/@materials.9" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.16"/>
+    <transformations xsi:type="model:Transformation" probability="40" target="//@materials/@materials.20" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.20"/>
+    <transformations xsi:type="model:Transformation" probability="40" target="//@materials/@materials.19" reactant="//@materials/@materials.20"/>
+    <transformations xsi:type="model:Transformation" probability="35" target="//@materials/@materials.9" reactant="//@materials/@materials.20" catalyst="//@materials/@materials.0"/>
+    <transformations xsi:type="model:Transformation" probability="175" target="//@materials/@materials.9" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.20"/>
+    <transformations xsi:type="model:Transformation" probability="260" target="//@materials/@materials.19" reactant="//@materials/@materials.20" catalyst="//@materials/@materials.5"/>
+    <transformations xsi:type="model:Transformation" probability="80" target="//@materials/@materials.6" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.20"/>
+    <transformations xsi:type="model:Transformation" probability="80" target="//@materials/@materials.11" reactant="//@materials/@materials.21"/>
+    <transformations xsi:type="model:Transformation" probability="1000" propagation="5" target="//@materials/@materials.11" reactant="//@materials/@materials.0" catalyst="//@materials/@materials.21"/>
+    <transformations xsi:type="model:Transformation" probability="1" propagation="2" target="//@materials/@materials.24" reactant="//@materials/@materials.23" catalyst="//@materials/@materials.0"/>
     <transformations xsi:type="model:Transformation" probability="90" target="//@materials/@materials.23" reactant="//@materials/@materials.24"/>
     <transformations xsi:type="model:MultipleTransformation" probability="20" target="//@materials/@materials.6" name="[Acid] + [All] = [Vapor]">
       <reactants materials="//@materials/@materials.23 //@materials/@materials.24"/>
