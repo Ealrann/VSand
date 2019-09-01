@@ -578,7 +578,10 @@ bool transformation(ivec2 loc, ivec2 localLoc, bool moved)
 			if(differentValue[i])
 			{
 				if(rand == -1)
-					rand = uint(gold_noise(loc, pushConstants.random) * 1000.);
+				{
+					float genRand = sqrt(gold_noise(loc, pushConstants.random));
+					rand = uint(round(genRand * 1000.));
+				}
 
 				uint transfo = transformations.data[transfoIndexX[i]][transfoIndexY[i]];
 				bool staticTransfo = (transfo & STATIC_TRANSFO_FLAG) != 0;

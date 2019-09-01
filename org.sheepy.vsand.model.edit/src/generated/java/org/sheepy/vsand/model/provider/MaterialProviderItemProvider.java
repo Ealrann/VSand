@@ -107,7 +107,7 @@ public class MaterialProviderItemProvider extends ItemProviderAdapter
 				 false,
 				 false,
 				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 getString("_UI_IftruewillconsiderALLmaterialsEXCEPTthisonesPropertyCategory"),
+				 null,
 				 null));
 	}
 

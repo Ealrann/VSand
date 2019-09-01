@@ -103,8 +103,7 @@
     </genClasses>
     <genClasses ecoreClass="VSand.ecore#//MaterialProvider">
       <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//MaterialProvider/materials"/>
-      <genFeatures createChild="false" propertyCategory="If true, will consider ALL materials EXCEPT this ones."
-          propertyDescription="If true, will consider ALL materials EXCEPT this ones."
+      <genFeatures createChild="false" propertyDescription="If true, will consider ALL materials EXCEPT this ones."
           ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialProvider/filterMode"/>
     </genClasses>
     <genClasses image="false" ecoreClass="VSand.ecore#//ITransformation">
