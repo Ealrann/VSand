@@ -9,6 +9,7 @@ import org.sheepy.vsand.model.VSandApplication;
 public class VSandApplicationLauncher
 {
 	private static final String APPLICATION_PATH = "Application.vsand";
+	private static final String APPLICATION_VERSION = "1.3.0";
 
 	private static final IResourceLoader resourceLoader = IResourceLoader.INSTANCE;
 
@@ -30,6 +31,7 @@ public class VSandApplicationLauncher
 			final var inputStream = module.getResourceAsStream(APPLICATION_PATH);
 			final var resource = resourceLoader.loadResource(inputStream);
 			res = (VSandApplication) resource.getContents().get(0);
+			res.setVersion(APPLICATION_VERSION);
 		} catch (final IOException e)
 		{
 			e.printStackTrace();

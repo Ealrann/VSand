@@ -41,6 +41,7 @@ import org.sheepy.vsand.model.VSandPackage;
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isShowSleepZones <em>Show Sleep Zones</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBrushSize <em>Brush Size</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBoardUpdateTask <em>Board Update Task</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getVersion <em>Version</em>}</li>
  * </ul>
  *
  * @generated
@@ -226,6 +227,26 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @ordered
 	 */
 	protected CompositeTask boardUpdateTask;
+
+	/**
+	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String VERSION_EDEFAULT = "0.0.0";
+
+	/**
+	 * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected String version = VERSION_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -654,6 +675,31 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @generated
 	 */
 	@Override
+	public String getVersion()
+	{
+		return version;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setVersion(String newVersion)
+	{
+		String oldVersion = version;
+		version = newVersion;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__VERSION, oldVersion, version));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
 	{
 		switch (featureID)
@@ -705,6 +751,8 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
 				if (resolve) return getBoardUpdateTask();
 				return basicGetBoardUpdateTask();
+			case VSandPackage.VSAND_APPLICATION__VERSION:
+				return getVersion();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -757,6 +805,9 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
 				setBoardUpdateTask((CompositeTask)newValue);
 				return;
+			case VSandPackage.VSAND_APPLICATION__VERSION:
+				setVersion((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -807,6 +858,9 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
 				setBoardUpdateTask((CompositeTask)null);
 				return;
+			case VSandPackage.VSAND_APPLICATION__VERSION:
+				setVersion(VERSION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -845,6 +899,8 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return brushSize != BRUSH_SIZE_EDEFAULT;
 			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
 				return boardUpdateTask != null;
+			case VSandPackage.VSAND_APPLICATION__VERSION:
+				return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -872,6 +928,8 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 		result.append(showSleepZones);
 		result.append(", brushSize: ");
 		result.append(brushSize);
+		result.append(", version: ");
+		result.append(version);
 		result.append(')');
 		return result.toString();
 	}

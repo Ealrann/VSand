@@ -27,6 +27,7 @@ import org.sheepy.lily.vulkan.model.process.CompositeTask;
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#isShowSleepZones <em>Show Sleep Zones</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask <em>Board Update Task</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getVersion <em>Version</em>}</li>
  * </ul>
  *
  * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication()
@@ -319,4 +320,27 @@ public interface VSandApplication extends Application
 	 * @generated
 	 */
 	void setBoardUpdateTask(CompositeTask value);
+
+	/**
+	 * Returns the value of the '<em><b>Version</b></em>' attribute.
+	 * The default value is <code>"0.0.0"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Version</em>' attribute.
+	 * @see #setVersion(String)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_Version()
+	 * @model default="0.0.0" required="true"
+	 * @generated
+	 */
+	String getVersion();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getVersion <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Version</em>' attribute.
+	 * @see #getVersion()
+	 * @generated
+	 */
+	void setVersion(String value);
 } // VSandApplication

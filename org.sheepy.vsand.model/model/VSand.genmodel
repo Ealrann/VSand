@@ -37,6 +37,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/showSleepZones"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/brushSize"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//VSandApplication/boardUpdateTask"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/version"/>
     </genClasses>
     <genClasses ecoreClass="VSand.ecore#//BoardConstantBuffer">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//BoardConstantBuffer/currentBoardBuffer"/>
