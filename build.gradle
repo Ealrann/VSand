@@ -8,7 +8,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.javamodularity:moduleplugin:1.5.0"
-        classpath "org.mini2Dx:butler:1.1.3"
+		classpath "org.mini2Dx:butler:1.1.3"
 	}
 }
 
@@ -30,7 +30,7 @@ subprojects {
 	apply plugin: 'eclipse'
 	apply plugin: "org.javamodularity.moduleplugin"
 
-	version "1.3.0"
+	version "1.3.1"
 
 	sourceCompatibility = 11
 	targetCompatibility = 11

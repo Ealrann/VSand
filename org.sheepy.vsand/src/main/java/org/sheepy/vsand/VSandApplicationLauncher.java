@@ -9,7 +9,7 @@ import org.sheepy.vsand.model.VSandApplication;
 public class VSandApplicationLauncher
 {
 	private static final String APPLICATION_PATH = "Application.vsand";
-	private static final String APPLICATION_VERSION = "1.3.0";
+	private static final String APPLICATION_VERSION = "1.3.1";
 
 	private static final IResourceLoader resourceLoader = IResourceLoader.INSTANCE;
 
