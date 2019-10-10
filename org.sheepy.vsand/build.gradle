@@ -89,7 +89,8 @@ dependencies {
 sourceSets {
 	main {
 		java.srcDirs = ['src/generated/java',
-			'src/main/java']
+			'src/main/java',
+			'src/main/shader']
 		resources.srcDirs = ['src/main/resources']
 	}
 }
