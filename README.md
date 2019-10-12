@@ -18,7 +18,7 @@ You can find the last release for free on [itch.io](https://ealrann.itch.io/vsan
 
 ### Any problem?
 
-The game run smooth on my computers, but I cannot test it on every existing configurations. If you find any problem (game doesn´t launch, crash, particles don´t move...), please considers opening an issue, or directly contact me.
+The game run smoothly on my computers, but I cannot test it on every existing configurations. If you find any problem (game doesn´t start, crash, particles don´t move...), please consider opening an issue, or directly contact me.
 
 ### Game
 
@@ -57,25 +57,19 @@ Here some materials you can find in the game:
 
 Feel free to add a new issues if you want to see new things in the game, or if you find a bug.
 
-If you want to contribute to the code, you first need to install:
-- Git.
-- Gradle.
-
-Clone the repo and download the submodule:
+If you want to contribute to the code, you can clone the repo using:
 
 `git clone --recursive https://github.com/Ealrann/VSand.git`
 
-Test the game:
+To launch the game:
 
-`gradle run`
+`./gradlew run`
 
-Prepare the project for eclipse environment:
-
-`gradle eclipse`
 
 ### Frameworks/API used
 #### Graphic
 - [**LWJGL 3**](https://www.lwjgl.org/)
+- [**JOML**](https://github.com/JOML-CI/JOML)
 - [**Vulkan**](https://www.khronos.org/vulkan/)
 - [**Nuklear**](https://github.com/vurtun/nuklear)
 #### Design/Code
