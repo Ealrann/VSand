@@ -22,7 +22,7 @@ repositories {
 project.ext.targetPlatform = OperatingSystem.current()
 
 
-project.ext.jomlVersion = "1.9.18"
+project.ext.jomlVersion = "1.9.19"
 project.ext.lwjglVersion = "3.2.3"
 
 subprojects {
