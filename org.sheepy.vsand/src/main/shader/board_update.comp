@@ -1,4 +1,4 @@
-#version 460
+#version 450
 
 #define WIDTH 1248
 #define HEIGHT 704

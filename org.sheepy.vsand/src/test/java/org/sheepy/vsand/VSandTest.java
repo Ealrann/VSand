@@ -1,7 +1,7 @@
 package org.sheepy.vsand;
 
 import org.junit.jupiter.api.Test;
-import org.sheepy.lily.core.api.application.ApplicationLauncher;
+import org.sheepy.lily.core.api.LilyLauncher;
 
 public class VSandTest
 {
@@ -11,6 +11,6 @@ public class VSandTest
 		final var application = VSandBenchmarkLauncher.createTestApplication();
 		final var mainLoop = VSandMainLoop.createBenchmark(application, 120);
 
-		ApplicationLauncher.launch(application, mainLoop);
+		LilyLauncher.launch(application, mainLoop);
 	}
 }

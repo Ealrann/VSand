@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.sheepy.lily.core.api.application.ApplicationLauncher;
+import org.sheepy.lily.core.api.LilyLauncher;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
@@ -19,7 +19,7 @@ public class VSandBenchmarkLauncher
 		final var application = createTestApplication();
 		final var mainLoop = VSandMainLoop.createBenchmark(application, DEFAULT_ITERATION_COUNT);
 
-		ApplicationLauncher.launch(application, mainLoop);
+		LilyLauncher.launch(application, mainLoop);
 	}
 
 	public static VSandApplication createTestApplication()

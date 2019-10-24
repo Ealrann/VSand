@@ -1,7 +1,7 @@
 package org.sheepy.vsand;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.sheepy.lily.core.api.application.ApplicationLauncher;
+import org.sheepy.lily.core.api.LilyLauncher;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 
 public class VSandHeadlessBenchmarkLauncher
@@ -15,6 +15,6 @@ public class VSandHeadlessBenchmarkLauncher
 
 		final var mainLoop = VSandMainLoop.createBenchmark(application, VSandBenchmarkLauncher.DEFAULT_ITERATION_COUNT);
 
-		ApplicationLauncher.launch(application, mainLoop);
+		LilyLauncher.launch(application, mainLoop);
 	}
 }

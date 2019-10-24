@@ -115,7 +115,7 @@ public final class VSandMainLoop implements IMainLoop
 	{
 		if (DebugUtil.DEBUG_ENABLED) fpsCounter.step();
 
-		boardProcessAdapter.prepareNextAndExecute();
+		boardProcessAdapter.run();
 
 		if (application.isNextMode() == true)
 		{
@@ -127,13 +127,13 @@ public final class VSandMainLoop implements IMainLoop
 		{
 			if (benchmarkMode == false)
 			{
-				renderProcessAdapter.prepareNextAndExecute();
+				renderProcessAdapter.run();
 			}
 			else
 			{
 				if (nextRenderDate < System.nanoTime())
 				{
-					renderProcessAdapter.prepareNextAndExecute();
+					renderProcessAdapter.run();
 					nextRenderDate = System.nanoTime() + frameDurationNs;
 					boardImageBarrier.setEnabled(true);
 				}
