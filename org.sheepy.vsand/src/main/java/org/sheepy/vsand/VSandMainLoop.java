@@ -58,7 +58,7 @@ public final class VSandMainLoop implements IMainLoop
 	public void load(Application _application)
 	{
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
-		engineAdapter = IVulkanEngineAdapter.adapt(vulkanEngine);
+		engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
 		if (application.isHeadless() == false)
 		{
 			final Window window = engineAdapter.getWindow();
@@ -97,7 +97,7 @@ public final class VSandMainLoop implements IMainLoop
 		{
 			if (process instanceof ComputeProcess)
 			{
-				boardProcessAdapter = IProcessAdapter.adapt(process);
+				boardProcessAdapter = process.adaptNotNull(IProcessAdapter.class);
 				final var boardToPixelPipeline = (ComputePipeline) ((ComputeProcess) process)	.getPartPkg()
 																								.getParts()
 																								.get(2);
@@ -105,7 +105,7 @@ public final class VSandMainLoop implements IMainLoop
 			}
 			else if (process instanceof GraphicProcess)
 			{
-				renderProcessAdapter = IProcessAdapter.adapt(process);
+				renderProcessAdapter = process.adaptNotNull(IProcessAdapter.class);
 			}
 		}
 	}

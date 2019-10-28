@@ -10,26 +10,34 @@ import org.sheepy.vsand.model.VSandPackage;
 @Adapter(scope = VSandApplication.class)
 public class ApplicationBehaviour implements IVulkanAdapter
 {
-	@NotifyChanged
-	public static void notifyChanged(Notification notification)
+	@NotifyChanged(featureIds = VSandPackage.VSAND_APPLICATION__NEXT_MODE)
+	public static void nextModeChanged(Notification notification)
 	{
 		final var application = (VSandApplication) notification.getNotifier();
 		final var upateTask = application.getBoardUpdateTask();
-		final var feature = notification.getFeature();
 
-		if (feature == VSandPackage.Literals.VSAND_APPLICATION__NEXT_MODE
-				&& notification.getNewBooleanValue() == true)
+		if (notification.getNewBooleanValue() == true)
 		{
 			upateTask.setEnabled(true);
 			upateTask.setRepeatCount(1);
 		}
-		else if(feature == VSandPackage.Literals.VSAND_APPLICATION__PAUSED)
-		{
-			upateTask.setEnabled(!notification.getNewBooleanValue());
-		}
-		else if (feature == VSandPackage.Literals.VSAND_APPLICATION__SPEED)
-		{
-			upateTask.setRepeatCount(notification.getNewIntValue());
-		}
+	}
+
+	@NotifyChanged(featureIds = VSandPackage.VSAND_APPLICATION__PAUSED)
+	public static void pausedChanged(Notification notification)
+	{
+		final var application = (VSandApplication) notification.getNotifier();
+		final var upateTask = application.getBoardUpdateTask();
+
+		upateTask.setEnabled(!notification.getNewBooleanValue());
+	}
+
+	@NotifyChanged(featureIds = VSandPackage.VSAND_APPLICATION__SPEED)
+	public static void speedChanged(Notification notification)
+	{
+		final var application = (VSandApplication) notification.getNotifier();
+		final var upateTask = application.getBoardUpdateTask();
+
+		upateTask.setRepeatCount(notification.getNewIntValue());
 	}
 }

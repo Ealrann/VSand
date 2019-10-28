@@ -82,9 +82,10 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T extends DrawCommand> void fillBufferWithCommand(final T command)
 	{
-		final IDrawCommandAdapter<T> adapter = IDrawCommandAdapter.adapt(command);
+		final var adapter = command.adaptNotNull(IDrawCommandAdapter.class);
 		adapter.fillBuffer(command, buffer);
 		buffer.putInt(0);
 		buffer.flip();

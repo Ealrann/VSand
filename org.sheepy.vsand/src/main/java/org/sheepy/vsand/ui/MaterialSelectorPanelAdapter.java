@@ -6,19 +6,17 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.joml.Vector2i;
 import org.lwjgl.nuklear.NkColor;
 import org.lwjgl.nuklear.NkRect;
 import org.lwjgl.system.MemoryUtil;
+import org.sheepy.lily.core.api.adapter.INotificationListener;
+import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
-import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.vulkan.api.util.UIUtil;
-import org.sheepy.lily.vulkan.nuklear.ui.IUIElementAdapter;
+import org.sheepy.lily.vulkan.nuklear.ui.IPanelAdapter;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.VSandApplication;
@@ -26,21 +24,12 @@ import org.sheepy.vsand.model.VSandPackage;
 import org.sheepy.vulkan.window.IWindowListener;
 
 @Statefull
-@org.sheepy.lily.core.api.adapter.annotation.Adapter(scope = MaterialSelectorPanel.class)
-public final class MaterialSelectorPanelAdapter implements IUIElementAdapter
+@Adapter(scope = MaterialSelectorPanel.class)
+public final class MaterialSelectorPanelAdapter implements IPanelAdapter
 {
-	private final Adapter materialAdapter = new AdapterImpl()
-	{
-		@Override
-		public void notifyChanged(Notification notification)
-		{
-			final var feature = notification.getFeature();
-			if (feature == VSandPackage.Literals.VSAND_APPLICATION__MAIN_MATERIAL
-					|| feature == VSandPackage.Literals.VSAND_APPLICATION__SECONDARY_MATERIAL)
-			{
-				dirty = true;
-			}
-		}
+	private static final int[] MATERIAL_FEATURES = {
+			VSandPackage.VSAND_APPLICATION__MAIN_MATERIAL,
+			VSandPackage.VSAND_APPLICATION__SECONDARY_MATERIAL
 	};
 
 	private final IWindowListener listener = new IWindowListener()
@@ -51,6 +40,8 @@ public final class MaterialSelectorPanelAdapter implements IUIElementAdapter
 			updateDataLocations(size);
 		}
 	};
+
+	private final INotificationListener materialAdapter = notification -> dirty = true;
 
 	private final VSandApplication application;
 	private final List<LineData> datas;
@@ -71,9 +62,19 @@ public final class MaterialSelectorPanelAdapter implements IUIElementAdapter
 	{
 		this.panel = panel;
 		application = (VSandApplication) EcoreUtil.getRootContainer(panel);
-		application.eAdapters().add(materialAdapter);
+		application.addListener(materialAdapter, MATERIAL_FEATURES);
 
 		datas = List.copyOf(buildLineDatas());
+	}
+
+	@Dispose
+	public void unsetTarget()
+	{
+		application.removeListener(materialAdapter, MATERIAL_FEATURES);
+		for (final LineData data : datas)
+		{
+			data.free();
+		}
 	}
 
 	private List<LineData> buildLineDatas()
@@ -88,16 +89,6 @@ public final class MaterialSelectorPanelAdapter implements IUIElementAdapter
 			}
 		}
 		return tmpDatas;
-	}
-
-	@Dispose
-	public void unsetTarget()
-	{
-		application.eAdapters().remove(materialAdapter);
-		for (final LineData data : datas)
-		{
-			data.free();
-		}
 	}
 
 	private void load(UIContext context, MaterialSelectorPanel panel)
@@ -134,7 +125,7 @@ public final class MaterialSelectorPanelAdapter implements IUIElementAdapter
 	}
 
 	@Override
-	public boolean layout(UIContext context, IUIElement control)
+	public boolean layout(UIContext context)
 	{
 		final boolean res = dirty;
 

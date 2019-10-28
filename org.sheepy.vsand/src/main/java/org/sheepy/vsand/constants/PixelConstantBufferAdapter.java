@@ -50,7 +50,7 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 		buffer = MemoryUtil.memAlloc(BYTE_SIZE);
 
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
-		final var engineAdapter = IVulkanEngineAdapter.adapt(vulkanEngine);
+		final var engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
 		inputManager = engineAdapter.getInputManager();
 
 		updateBuffer();
@@ -65,8 +65,8 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 	@Override
 	public void beforePush(ConstantBuffer b)
 	{
-		buffer.putInt(BOARD_INDEX_POSITION,
-				constantBuffer.getBoardConstantBuffer().getCurrentBoardBuffer());
+		buffer.putInt(	BOARD_INDEX_POSITION,
+						constantBuffer.getBoardConstantBuffer().getCurrentBoardBuffer());
 	}
 
 	@Tick
