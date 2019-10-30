@@ -21,7 +21,7 @@ import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandPackage;
-import org.sheepy.vulkan.window.IWindowListener;
+import org.sheepy.vulkan.window.IWindowListener.ISizeListener;
 
 @Statefull
 @Adapter(scope = MaterialSelectorPanel.class)
@@ -32,15 +32,7 @@ public final class MaterialSelectorPanelAdapter implements IPanelAdapter
 			VSandPackage.VSAND_APPLICATION__SECONDARY_MATERIAL
 	};
 
-	private final IWindowListener listener = new IWindowListener()
-	{
-		@Override
-		public void onResize(Vector2i size)
-		{
-			updateDataLocations(size);
-		}
-	};
-
+	private final ISizeListener listener = this::updateDataLocations;
 	private final INotificationListener materialAdapter = notification -> dirty = true;
 
 	private final VSandApplication application;
