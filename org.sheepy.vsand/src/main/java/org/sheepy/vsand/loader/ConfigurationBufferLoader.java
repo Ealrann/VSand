@@ -5,20 +5,20 @@ import java.nio.ByteBuffer;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.Autorun;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
+import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.MaterialUtil;
 
-@Adapter(scope = Buffer.class, name = "Configuration")
+@Adapter(scope = Buffer.class, name = "Configuration", lazy = false)
 public final class ConfigurationBufferLoader implements IVulkanAdapter
 {
 	private static final int BYTE_SIZE = MaterialUtil.MAX_MATERIAL_NUMBER * 8 * Integer.BYTES;
 
-	@Autorun
+	@Load
 	public static void load(Buffer buffer)
 	{
 		final var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);

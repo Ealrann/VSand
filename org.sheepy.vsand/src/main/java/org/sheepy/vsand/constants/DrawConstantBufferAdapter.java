@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.Autorun;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
+import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.api.adapter.annotation.Tick;
 import org.sheepy.lily.core.api.util.ModelUtil;
@@ -18,7 +18,7 @@ import org.sheepy.vsand.model.DrawConstantBuffer;
 import org.sheepy.vsand.model.VSandApplication;
 
 @Statefull
-@Adapter(scope = DrawConstantBuffer.class)
+@Adapter(scope = DrawConstantBuffer.class, lazy = false)
 public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 {
 	private final int BYTE_SIZE = 18 * Integer.BYTES;
@@ -38,7 +38,7 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 		application = (VSandApplication) ModelUtil.getApplication(drawConstantBuffer);
 	}
 
-	@Autorun
+	@Load
 	public void load()
 	{
 		buffer = MemoryUtil.memAlloc(BYTE_SIZE);

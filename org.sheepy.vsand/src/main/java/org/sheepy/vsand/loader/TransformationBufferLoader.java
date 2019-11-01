@@ -3,22 +3,22 @@ package org.sheepy.vsand.loader;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.Autorun;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
+import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.MaterialUtil;
 import org.sheepy.vsand.util.TransformationUtil;
 
-@Adapter(scope = Buffer.class, name = "Transformation")
+@Adapter(scope = Buffer.class, name = "Transformation", lazy = false)
 public final class TransformationBufferLoader implements IVulkanAdapter
 {
 	private static final int BYTE_SIZE = MaterialUtil.MAX_MATERIAL_NUMBER
 			* MaterialUtil.MAX_MATERIAL_NUMBER
 			* Integer.BYTES;
 
-	@Autorun
+	@Load
 	public static void load(Buffer buffer)
 	{
 		final var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);

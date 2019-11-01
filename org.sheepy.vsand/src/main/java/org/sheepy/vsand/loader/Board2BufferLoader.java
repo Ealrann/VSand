@@ -4,16 +4,16 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.Autorun;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
+import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 
-@Adapter(scope = Buffer.class, name = "Board Buffer 2")
+@Adapter(scope = Buffer.class, name = "Board Buffer 2", lazy = false)
 public final class Board2BufferLoader implements IVulkanAdapter
 {
-	@Autorun
+	@Load
 	public static void load(Buffer buffer)
 	{
 		final var application = ModelUtil.getApplication(buffer);

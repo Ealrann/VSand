@@ -6,8 +6,8 @@ import org.joml.Vector2fc;
 import org.joml.Vector2i;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.Autorun;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
+import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.core.api.adapter.annotation.Tick;
 import org.sheepy.lily.core.api.util.ModelUtil;
@@ -22,7 +22,7 @@ import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.EShapeSize;
 
 @Statefull
-@Adapter(scope = PixelConstantBuffer.class)
+@Adapter(scope = PixelConstantBuffer.class, lazy = false)
 public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 {
 	private final int BYTE_SIZE = 7 * Integer.BYTES;
@@ -44,7 +44,7 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 		boardSize = new Vector2i(application.getSize());
 	}
 
-	@Autorun
+	@Load
 	public void load()
 	{
 		buffer = MemoryUtil.memAlloc(BYTE_SIZE);
