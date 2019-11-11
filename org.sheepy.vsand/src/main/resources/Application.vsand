@@ -275,7 +275,7 @@
             <resources xsi:type="resource:Shader" name="NkFrag" stage="FRAGMENT_BIT">
               <file xsi:type="resource:StringModuleResource" name="Frag" path="ui.frag.spv" moduleName="org.sheepy.lily.vulkan.extra.nuklear"/>
             </resources>
-            <resources xsi:type="resource:PushBuffer" name="NkPushBuffer" size="524288" instanceCount="2"/>
+            <resources xsi:type="resource:TransferBuffer" name="NkPushBuffer" size="524288" instanceCount="2"/>
           </resourcePkg>
           <pushConstantRanges size="68">
             <stages>VERTEX_BIT</stages>
@@ -286,8 +286,8 @@
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.1/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="nuklear:NuklearLayoutTask" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.3" drawTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.3" pushBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6" vertexBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2"/>
-            <tasks xsi:type="process:PushBufferTask" pushBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6"/>
+            <tasks xsi:type="nuklear:NuklearLayoutTask" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.3" drawTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.3" transferBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6" vertexBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2"/>
+            <tasks xsi:type="process:FlushTransferBufferTask" transferBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6"/>
             <tasks xsi:type="process:CompositeTask" name="Nk draw"/>
           </taskPkg>
           <viewportState xsi:type="graphicpipeline:DynamicViewportState" viewportCount="1" scissorCount="1"/>
