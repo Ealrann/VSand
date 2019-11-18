@@ -26,6 +26,8 @@ public final class Board1BufferLoader implements IVulkanAdapter
 
 		// Fill the board buffer with Void matter (0)
 		final ByteBuffer bBuffer = MemoryUtil.memCalloc(sizeByte);
+		bBuffer.position(sizeByte);
+		bBuffer.flip();
 		buffer.setData(bBuffer);
 	}
 

@@ -26,6 +26,8 @@ public final class TransformationBufferLoader implements IVulkanAdapter
 		final int[] transfoArray = TransformationUtil.toArray(application);
 
 		byteBuffer.asIntBuffer().put(transfoArray);
+		byteBuffer.position(BYTE_SIZE);
+		byteBuffer.flip();
 
 		buffer.setSize(BYTE_SIZE);
 		buffer.setData(byteBuffer);
