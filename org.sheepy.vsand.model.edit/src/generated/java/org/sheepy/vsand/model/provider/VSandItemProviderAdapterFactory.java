@@ -30,12 +30,9 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-
-import org.sheepy.lily.core.model.presentation.PresentationPackage;
-import org.sheepy.lily.core.model.presentation.UIPage;
-
-import org.sheepy.lily.core.model.presentation.util.PresentationSwitch;
-
+import org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage;
+import org.sheepy.lily.vulkan.extra.model.nuklear.SelectorPanel;
+import org.sheepy.lily.vulkan.extra.model.nuklear.util.NuklearSwitch;
 import org.sheepy.lily.vulkan.model.ResourcePkg;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 
@@ -372,31 +369,6 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.MaterialSelectorPanel} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected MaterialSelectorPanelItemProvider materialSelectorPanelItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link org.sheepy.vsand.model.MaterialSelectorPanel}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createMaterialSelectorPanelAdapter()
-	{
-		if (materialSelectorPanelItemProvider == null)
-		{
-			materialSelectorPanelItemProvider = new MaterialSelectorPanelItemProvider(this);
-		}
-
-		return materialSelectorPanelItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.MultipleTransformation} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -444,6 +416,31 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 		}
 
 		return materialProviderItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.sheepy.vsand.model.InputMaterialProvider} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected InputMaterialProviderItemProvider inputMaterialProviderItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.sheepy.vsand.model.InputMaterialProvider}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createInputMaterialProviderAdapter()
+	{
+		if (inputMaterialProviderItemProvider == null)
+		{
+			inputMaterialProviderItemProvider = new InputMaterialProviderItemProvider(this);
+		}
+
+		return inputMaterialProviderItemProvider;
 	}
 
 	/**
@@ -574,18 +571,18 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 		if (materialItemProvider != null) materialItemProvider.dispose();
 		if (transformationsItemProvider != null) transformationsItemProvider.dispose();
 		if (transformationItemProvider != null) transformationItemProvider.dispose();
-		if (materialSelectorPanelItemProvider != null) materialSelectorPanelItemProvider.dispose();
 		if (multipleTransformationItemProvider != null) multipleTransformationItemProvider.dispose();
 		if (materialProviderItemProvider != null) materialProviderItemProvider.dispose();
+		if (inputMaterialProviderItemProvider != null) inputMaterialProviderItemProvider.dispose();
 	}
 
 	/**
-	 * A child creation extender for the {@link PresentationPackage}.
+	 * A child creation extender for the {@link NuklearPackage}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static class PresentationChildCreationExtender implements IChildCreationExtender
+	public static class NuklearChildCreationExtender implements IChildCreationExtender
 	{
 		/**
 		 * The switch for creating child descriptors specific to each extended class.
@@ -593,7 +590,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		protected static class CreationSwitch extends PresentationSwitch<Object>
+		protected static class CreationSwitch extends NuklearSwitch<Object>
 		{
 			/**
 			 * The child descriptors being populated.
@@ -617,7 +614,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 			 * <!-- end-user-doc -->
 			 * @generated
 			 */
-			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain)
+			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) 
 			{
 				this.newChildDescriptors = newChildDescriptors;
 				this.editingDomain = editingDomain;
@@ -628,16 +625,16 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 			 * @generated
 			 */
 			@Override
-			public Object caseUIPage(UIPage object)
+			public Object caseSelectorPanel(SelectorPanel object)
 			{
 				newChildDescriptors.add
 					(createChildParameter
-						(PresentationPackage.Literals.UI_PAGE__PANELS,
-						 VSandFactory.eINSTANCE.createMaterialSelectorPanel()));
+						(NuklearPackage.Literals.SELECTOR_PANEL__INPUT_PROVIDER,
+						 VSandFactory.eINSTANCE.createInputMaterialProvider()));
 
 				return null;
 			}
-
+ 
 			/**
 			 * <!-- begin-user-doc -->
 			 * <!-- end-user-doc -->

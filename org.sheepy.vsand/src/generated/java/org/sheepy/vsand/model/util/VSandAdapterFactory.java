@@ -10,9 +10,6 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.core.model.inference.IInferenceObject;
-import org.sheepy.lily.core.model.presentation.IPanel;
-import org.sheepy.lily.core.model.presentation.IPositionElement;
-import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.core.model.types.LNamedElement;
 import org.sheepy.lily.vulkan.model.IResource;
@@ -142,11 +139,6 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createTransformationAdapter();
 			}
 			@Override
-			public Adapter caseMaterialSelectorPanel(MaterialSelectorPanel object)
-			{
-				return createMaterialSelectorPanelAdapter();
-			}
-			@Override
 			public Adapter caseMultipleTransformation(MultipleTransformation object)
 			{
 				return createMultipleTransformationAdapter();
@@ -160,6 +152,11 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseITransformation(ITransformation object)
 			{
 				return createITransformationAdapter();
+			}
+			@Override
+			public Adapter caseInputMaterialProvider(InputMaterialProvider object)
+			{
+				return createInputMaterialProviderAdapter();
 			}
 			@Override
 			public Adapter caseIInferenceObject(IInferenceObject object)
@@ -192,19 +189,9 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createConstantBufferAdapter();
 			}
 			@Override
-			public Adapter caseIUIElement(IUIElement object)
+			public Adapter caseIInputProvider(org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider object)
 			{
-				return createIUIElementAdapter();
-			}
-			@Override
-			public Adapter caseIPositionElement(IPositionElement object)
-			{
-				return createIPositionElementAdapter();
-			}
-			@Override
-			public Adapter caseIPanel(IPanel object)
-			{
-				return createIPanelAdapter();
+				return createIInputProviderAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object)
@@ -408,21 +395,6 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.MaterialSelectorPanel <em>Material Selector Panel</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.vsand.model.MaterialSelectorPanel
-	 * @generated
-	 */
-	public Adapter createMaterialSelectorPanelAdapter()
-	{
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.MultipleTransformation <em>Multiple Transformation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -463,6 +435,21 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createITransformationAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sheepy.vsand.model.InputMaterialProvider <em>Input Material Provider</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sheepy.vsand.model.InputMaterialProvider
+	 * @generated
+	 */
+	public Adapter createInputMaterialProviderAdapter()
 	{
 		return null;
 	}
@@ -558,46 +545,16 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.presentation.IUIElement <em>IUI Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider <em>IInput Provider</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.lily.core.model.presentation.IUIElement
+	 * @see org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider
 	 * @generated
 	 */
-	public Adapter createIUIElementAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.presentation.IPositionElement <em>IPosition Element</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.core.model.presentation.IPositionElement
-	 * @generated
-	 */
-	public Adapter createIPositionElementAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.presentation.IPanel <em>IPanel</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.sheepy.lily.core.model.presentation.IPanel
-	 * @generated
-	 */
-	public Adapter createIPanelAdapter()
+	public Adapter createIInputProviderAdapter()
 	{
 		return null;
 	}

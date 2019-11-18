@@ -132,57 +132,6 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MaterialSelectorPanel" eSuperTypes="../../org.sheepy.lily.core.model/model/presentation.ecore#//IPanel">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineHeight" unique="false"
-        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
-        defaultValueLiteral="32">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="propertyCategory" value="UI"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="primaryR" unique="false"
-        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
-        defaultValueLiteral="255">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="propertyCategory" value="Primary Color"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="primaryG" unique="false"
-        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
-        defaultValueLiteral="50">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="propertyCategory" value="Primary Color"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="primaryB" unique="false"
-        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
-        defaultValueLiteral="50">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="propertyCategory" value="Primary Color"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="secondaryR" unique="false"
-        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
-        defaultValueLiteral="50">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="propertyCategory" value="Secondary Color"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="secondaryG" unique="false"
-        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
-        defaultValueLiteral="50">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="propertyCategory" value="Secondary Color"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="secondaryB" unique="false"
-        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
-        defaultValueLiteral="255">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="propertyCategory" value="Secondary Color"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MultipleTransformation" eSuperTypes="#//ITransformation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="reactants" lowerBound="1"
         eType="#//MaterialProvider" containment="true"/>
@@ -222,5 +171,9 @@
         <details key="notify" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InputMaterialProvider" eSuperTypes="../../org.sheepy.lily.vulkan.extra.model/model/Nuklear.ecore#//IInputProvider">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="materials" lowerBound="1"
+        eType="#//Materials"/>
   </eClassifiers>
 </ecore:EPackage>

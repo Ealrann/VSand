@@ -8,9 +8,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.core.model.inference.IInferenceObject;
-import org.sheepy.lily.core.model.presentation.IPanel;
-import org.sheepy.lily.core.model.presentation.IPositionElement;
-import org.sheepy.lily.core.model.presentation.IUIElement;
 import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.core.model.types.LNamedElement;
 import org.sheepy.lily.vulkan.model.IResource;
@@ -182,19 +179,6 @@ public class VSandSwitch<T> extends Switch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case VSandPackage.MATERIAL_SELECTOR_PANEL:
-			{
-				MaterialSelectorPanel materialSelectorPanel = (MaterialSelectorPanel)theEObject;
-				T result = caseMaterialSelectorPanel(materialSelectorPanel);
-				if (result == null) result = caseIPanel(materialSelectorPanel);
-				if (result == null) result = caseLNamedElement(materialSelectorPanel);
-				if (result == null) result = caseIUIElement(materialSelectorPanel);
-				if (result == null) result = caseIPositionElement(materialSelectorPanel);
-				if (result == null) result = caseLObject(materialSelectorPanel);
-				if (result == null) result = caseIInferenceObject(materialSelectorPanel);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case VSandPackage.MULTIPLE_TRANSFORMATION:
 			{
 				MultipleTransformation multipleTransformation = (MultipleTransformation)theEObject;
@@ -214,6 +198,14 @@ public class VSandSwitch<T> extends Switch<T>
 			{
 				ITransformation iTransformation = (ITransformation)theEObject;
 				T result = caseITransformation(iTransformation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case VSandPackage.INPUT_MATERIAL_PROVIDER:
+			{
+				InputMaterialProvider inputMaterialProvider = (InputMaterialProvider)theEObject;
+				T result = caseInputMaterialProvider(inputMaterialProvider);
+				if (result == null) result = caseIInputProvider(inputMaterialProvider);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -414,22 +406,6 @@ public class VSandSwitch<T> extends Switch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Material Selector Panel</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Material Selector Panel</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseMaterialSelectorPanel(MaterialSelectorPanel object)
-	{
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Multiple Transformation</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -473,6 +449,22 @@ public class VSandSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseITransformation(ITransformation object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Input Material Provider</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Input Material Provider</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseInputMaterialProvider(InputMaterialProvider object)
 	{
 		return null;
 	}
@@ -574,49 +566,17 @@ public class VSandSwitch<T> extends Switch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IUI Element</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IInput Provider</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IUI Element</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IInput Provider</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseIUIElement(IUIElement object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IPosition Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IPosition Element</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIPositionElement(IPositionElement object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IPanel</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IPanel</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIPanel(IPanel object)
+	public T caseIInputProvider(org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider object)
 	{
 		return null;
 	}

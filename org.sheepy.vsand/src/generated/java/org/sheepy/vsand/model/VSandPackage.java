@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
-import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 
 /**
@@ -970,7 +969,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getITransformation()
 	 * @generated
 	 */
-	int ITRANSFORMATION = 15;
+	int ITRANSFORMATION = 14;
 
 	/**
 	 * The feature id for the '<em><b>Probability</b></em>' attribute.
@@ -1109,187 +1108,6 @@ public interface VSandPackage extends EPackage
 	int TRANSFORMATION_OPERATION_COUNT = ITRANSFORMATION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl
-	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialSelectorPanel()
-	 * @generated
-	 */
-	int MATERIAL_SELECTOR_PANEL = 12;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__NAME = PresentationPackage.IPANEL__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Content Objects</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__CONTENT_OBJECTS = PresentationPackage.IPANEL__CONTENT_OBJECTS;
-
-	/**
-	 * The feature id for the '<em><b>Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__POSITION = PresentationPackage.IPANEL__POSITION;
-
-	/**
-	 * The feature id for the '<em><b>Vertical Relative</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__VERTICAL_RELATIVE = PresentationPackage.IPANEL__VERTICAL_RELATIVE;
-
-	/**
-	 * The feature id for the '<em><b>Horizontal Relative</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__HORIZONTAL_RELATIVE = PresentationPackage.IPANEL__HORIZONTAL_RELATIVE;
-
-	/**
-	 * The feature id for the '<em><b>Line Height</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__LINE_HEIGHT = PresentationPackage.IPANEL_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Primary R</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__PRIMARY_R = PresentationPackage.IPANEL_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Primary G</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__PRIMARY_G = PresentationPackage.IPANEL_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Primary B</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__PRIMARY_B = PresentationPackage.IPANEL_FEATURE_COUNT + 3;
-
-	/**
-	 * The feature id for the '<em><b>Secondary R</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__SECONDARY_R = PresentationPackage.IPANEL_FEATURE_COUNT + 4;
-
-	/**
-	 * The feature id for the '<em><b>Secondary G</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__SECONDARY_G = PresentationPackage.IPANEL_FEATURE_COUNT + 5;
-
-	/**
-	 * The feature id for the '<em><b>Secondary B</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL__SECONDARY_B = PresentationPackage.IPANEL_FEATURE_COUNT + 6;
-
-	/**
-	 * The number of structural features of the '<em>Material Selector Panel</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL_FEATURE_COUNT = PresentationPackage.IPANEL_FEATURE_COUNT + 7;
-
-	/**
-	 * The operation id for the '<em>LInference Object</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL___LINFERENCE_OBJECT = PresentationPackage.IPANEL___LINFERENCE_OBJECT;
-
-	/**
-	 * The operation id for the '<em>Create Containment EList</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL___CREATE_CONTAINMENT_ELIST__ECLASS = PresentationPackage.IPANEL___CREATE_CONTAINMENT_ELIST__ECLASS;
-
-	/**
-	 * The operation id for the '<em>LContents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL___LCONTENTS = PresentationPackage.IPANEL___LCONTENTS;
-
-	/**
-	 * The operation id for the '<em>LParent</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL___LPARENT = PresentationPackage.IPANEL___LPARENT;
-
-	/**
-	 * The operation id for the '<em>LAll Contents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL___LALL_CONTENTS = PresentationPackage.IPANEL___LALL_CONTENTS;
-
-	/**
-	 * The number of operations of the '<em>Material Selector Panel</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MATERIAL_SELECTOR_PANEL_OPERATION_COUNT = PresentationPackage.IPANEL_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.MultipleTransformationImpl <em>Multiple Transformation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1297,7 +1115,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMultipleTransformation()
 	 * @generated
 	 */
-	int MULTIPLE_TRANSFORMATION = 13;
+	int MULTIPLE_TRANSFORMATION = 12;
 
 	/**
 	 * The feature id for the '<em><b>Probability</b></em>' attribute.
@@ -1388,7 +1206,7 @@ public interface VSandPackage extends EPackage
 	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialProvider()
 	 * @generated
 	 */
-	int MATERIAL_PROVIDER = 14;
+	int MATERIAL_PROVIDER = 13;
 
 	/**
 	 * The feature id for the '<em><b>Materials</b></em>' reference list.
@@ -1425,6 +1243,43 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int MATERIAL_PROVIDER_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.InputMaterialProviderImpl <em>Input Material Provider</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.impl.InputMaterialProviderImpl
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getInputMaterialProvider()
+	 * @generated
+	 */
+	int INPUT_MATERIAL_PROVIDER = 15;
+
+	/**
+	 * The feature id for the '<em><b>Materials</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INPUT_MATERIAL_PROVIDER__MATERIALS = org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.IINPUT_PROVIDER_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Input Material Provider</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INPUT_MATERIAL_PROVIDER_FEATURE_COUNT = org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.IINPUT_PROVIDER_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Input Material Provider</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INPUT_MATERIAL_PROVIDER_OPERATION_COUNT = org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.IINPUT_PROVIDER_OPERATION_COUNT + 0;
 
 	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandApplication <em>Application</em>}'.
@@ -1987,93 +1842,6 @@ public interface VSandPackage extends EPackage
 	EReference getTransformation_Catalyst();
 
 	/**
-	 * Returns the meta object for class '{@link org.sheepy.vsand.model.MaterialSelectorPanel <em>Material Selector Panel</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Material Selector Panel</em>'.
-	 * @see org.sheepy.vsand.model.MaterialSelectorPanel
-	 * @generated
-	 */
-	EClass getMaterialSelectorPanel();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getLineHeight <em>Line Height</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Line Height</em>'.
-	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getLineHeight()
-	 * @see #getMaterialSelectorPanel()
-	 * @generated
-	 */
-	EAttribute getMaterialSelectorPanel_LineHeight();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryR <em>Primary R</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Primary R</em>'.
-	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryR()
-	 * @see #getMaterialSelectorPanel()
-	 * @generated
-	 */
-	EAttribute getMaterialSelectorPanel_PrimaryR();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryG <em>Primary G</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Primary G</em>'.
-	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryG()
-	 * @see #getMaterialSelectorPanel()
-	 * @generated
-	 */
-	EAttribute getMaterialSelectorPanel_PrimaryG();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryB <em>Primary B</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Primary B</em>'.
-	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getPrimaryB()
-	 * @see #getMaterialSelectorPanel()
-	 * @generated
-	 */
-	EAttribute getMaterialSelectorPanel_PrimaryB();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryR <em>Secondary R</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Secondary R</em>'.
-	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryR()
-	 * @see #getMaterialSelectorPanel()
-	 * @generated
-	 */
-	EAttribute getMaterialSelectorPanel_SecondaryR();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryG <em>Secondary G</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Secondary G</em>'.
-	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryG()
-	 * @see #getMaterialSelectorPanel()
-	 * @generated
-	 */
-	EAttribute getMaterialSelectorPanel_SecondaryG();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryB <em>Secondary B</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Secondary B</em>'.
-	 * @see org.sheepy.vsand.model.MaterialSelectorPanel#getSecondaryB()
-	 * @see #getMaterialSelectorPanel()
-	 * @generated
-	 */
-	EAttribute getMaterialSelectorPanel_SecondaryB();
-
-	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.MultipleTransformation <em>Multiple Transformation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2201,6 +1969,27 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 */
 	EReference getITransformation_Target();
+
+	/**
+	 * Returns the meta object for class '{@link org.sheepy.vsand.model.InputMaterialProvider <em>Input Material Provider</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Input Material Provider</em>'.
+	 * @see org.sheepy.vsand.model.InputMaterialProvider
+	 * @generated
+	 */
+	EClass getInputMaterialProvider();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.InputMaterialProvider#getMaterials <em>Materials</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Materials</em>'.
+	 * @see org.sheepy.vsand.model.InputMaterialProvider#getMaterials()
+	 * @see #getInputMaterialProvider()
+	 * @generated
+	 */
+	EReference getInputMaterialProvider_Materials();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -2667,72 +2456,6 @@ public interface VSandPackage extends EPackage
 		EReference TRANSFORMATION__CATALYST = eINSTANCE.getTransformation_Catalyst();
 
 		/**
-		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl <em>Material Selector Panel</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.sheepy.vsand.model.impl.MaterialSelectorPanelImpl
-		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getMaterialSelectorPanel()
-		 * @generated
-		 */
-		EClass MATERIAL_SELECTOR_PANEL = eINSTANCE.getMaterialSelectorPanel();
-
-		/**
-		 * The meta object literal for the '<em><b>Line Height</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute MATERIAL_SELECTOR_PANEL__LINE_HEIGHT = eINSTANCE.getMaterialSelectorPanel_LineHeight();
-
-		/**
-		 * The meta object literal for the '<em><b>Primary R</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute MATERIAL_SELECTOR_PANEL__PRIMARY_R = eINSTANCE.getMaterialSelectorPanel_PrimaryR();
-
-		/**
-		 * The meta object literal for the '<em><b>Primary G</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute MATERIAL_SELECTOR_PANEL__PRIMARY_G = eINSTANCE.getMaterialSelectorPanel_PrimaryG();
-
-		/**
-		 * The meta object literal for the '<em><b>Primary B</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute MATERIAL_SELECTOR_PANEL__PRIMARY_B = eINSTANCE.getMaterialSelectorPanel_PrimaryB();
-
-		/**
-		 * The meta object literal for the '<em><b>Secondary R</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute MATERIAL_SELECTOR_PANEL__SECONDARY_R = eINSTANCE.getMaterialSelectorPanel_SecondaryR();
-
-		/**
-		 * The meta object literal for the '<em><b>Secondary G</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute MATERIAL_SELECTOR_PANEL__SECONDARY_G = eINSTANCE.getMaterialSelectorPanel_SecondaryG();
-
-		/**
-		 * The meta object literal for the '<em><b>Secondary B</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute MATERIAL_SELECTOR_PANEL__SECONDARY_B = eINSTANCE.getMaterialSelectorPanel_SecondaryB();
-
-		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.MultipleTransformationImpl <em>Multiple Transformation</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2833,6 +2556,24 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EReference ITRANSFORMATION__TARGET = eINSTANCE.getITransformation_Target();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.InputMaterialProviderImpl <em>Input Material Provider</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.impl.InputMaterialProviderImpl
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getInputMaterialProvider()
+		 * @generated
+		 */
+		EClass INPUT_MATERIAL_PROVIDER = eINSTANCE.getInputMaterialProvider();
+
+		/**
+		 * The meta object literal for the '<em><b>Materials</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference INPUT_MATERIAL_PROVIDER__MATERIALS = eINSTANCE.getInputMaterialProvider_Materials();
 
 	}
 

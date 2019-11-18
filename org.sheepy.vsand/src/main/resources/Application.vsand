@@ -17,7 +17,10 @@
           <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
         </controls>
       </panels>
-      <panels xsi:type="model:MaterialSelectorPanel" name="Materials" verticalRelative="MIDDLE" horizontalRelative="RIGHT" secondaryR="100" secondaryG="255"/>
+      <panels xsi:type="nuklear:SelectorPanel" name="Primary Material" position="34;0" verticalRelative="MIDDLE" horizontalRelative="RIGHT" buttonSizePx="28" selectionR="229" selectionG="57" selectionB="53" printLabels="true">
+        <variableResolver variableDefinition="org.sheepy.vsand.model#VSandApplication#mainMaterial" target="/"/>
+        <inputProvider xsi:type="model:InputMaterialProvider" materials="//@materials"/>
+      </panels>
       <panels xsi:type="ui:Panel" name="Controls" width="300" height="265" showTitle="true" minimizable="true" minimized="true">
         <controls xsi:type="ui:DynamicRowLayout" columnCount="2"/>
         <controls xsi:type="ui:Label" text="Primary material"/>
@@ -43,6 +46,10 @@
           <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#version" target="/"/>
         </controls>
         <controls xsi:type="ui:Label" text="https://github.com/ealrann/VSand"/>
+      </panels>
+      <panels xsi:type="nuklear:SelectorPanel" name="Secondary Material" position="0;0" verticalRelative="MIDDLE" horizontalRelative="RIGHT" buttonSizePx="28" selectionR="3" selectionG="155" selectionB="229">
+        <variableResolver variableDefinition="org.sheepy.vsand.model#VSandApplication#secondaryMaterial" target="/"/>
+        <inputProvider xsi:type="model:InputMaterialProvider" materials="//@materials"/>
       </panels>
     </uiPages>
   </views>

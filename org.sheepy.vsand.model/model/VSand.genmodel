@@ -5,7 +5,7 @@
     modelPluginID="org.sheepy.vsand.model" modelName="VSand" rootExtendsInterface="org.sheepy.lily.core.api.adapter.ILilyEObject"
     rootExtendsClass="org.sheepy.lily.core.api.adapter.LilyEObject" testsDirectory=""
     booleanFlagsField="" importerID="org.eclipse.emf.importer.ecore" complianceLevel="11.0"
-    language="en" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../org.sheepy.lily.core.model/model/Lily.genmodel#//types ../../org.sheepy.lily.core.model/model/Lily.genmodel#//action ../../org.sheepy.lily.core.model/model/Lily.genmodel#//application ../../org.sheepy.lily.core.model/model/Lily.genmodel#//root ../../org.sheepy.lily.core.model/model/Lily.genmodel#//inference ../../org.sheepy.lily.core.model/model/Lily.genmodel#//presentation ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//model ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//resource ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//barrier ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//enumeration ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//pipeline ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//process ../../org.sheepy.lily.core.model/model/Lily.genmodel#//maintainer ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//image ../../org.sheepy.lily.core.model/model/Lily.genmodel#//cadence"
+    language="en" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../org.sheepy.lily.vulkan.extra.model/model/Extra.genmodel#//nuklear ../../org.sheepy.lily.core.model/model/Lily.genmodel#//types ../../org.sheepy.lily.core.model/model/Lily.genmodel#//action ../../org.sheepy.lily.core.model/model/Lily.genmodel#//application ../../org.sheepy.lily.core.model/model/Lily.genmodel#//root ../../org.sheepy.lily.core.model/model/Lily.genmodel#//inference ../../org.sheepy.lily.core.model/model/Lily.genmodel#//maintainer ../../org.sheepy.lily.core.model/model/Lily.genmodel#//presentation ../../org.sheepy.lily.core.model/model/Lily.genmodel#//ui ../../org.sheepy.lily.core.model/model/Lily.genmodel#//variable ../../org.sheepy.lily.core.model/model/Lily.genmodel#//cadence ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//process ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//model ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//resource ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//barrier ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//enumeration ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//image ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//pipeline"
     operationReflection="true" importOrganizing="true" decoration="Live" cleanup="true"
     eclipsePlatformVersion="2019-06" autoResizeProperties="true" autoExpandProperties="10"
     findAction="true" expandAllAction="true" collapseAllAction="true" revertAction="true">
@@ -88,15 +88,6 @@
       <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//Transformation/reactant"/>
       <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//Transformation/catalyst"/>
     </genClasses>
-    <genClasses ecoreClass="VSand.ecore#//MaterialSelectorPanel">
-      <genFeatures createChild="false" propertyCategory="UI" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/lineHeight"/>
-      <genFeatures createChild="false" propertyCategory="Primary Color" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/primaryR"/>
-      <genFeatures createChild="false" propertyCategory="Primary Color" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/primaryG"/>
-      <genFeatures createChild="false" propertyCategory="Primary Color" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/primaryB"/>
-      <genFeatures createChild="false" propertyCategory="Secondary Color" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/secondaryR"/>
-      <genFeatures createChild="false" propertyCategory="Secondary Color" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/secondaryG"/>
-      <genFeatures createChild="false" propertyCategory="Secondary Color" ecoreFeature="ecore:EAttribute VSand.ecore#//MaterialSelectorPanel/secondaryB"/>
-    </genClasses>
     <genClasses ecoreClass="VSand.ecore#//MultipleTransformation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VSand.ecore#//MultipleTransformation/reactants"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VSand.ecore#//MultipleTransformation/catalysts"/>
@@ -113,6 +104,9 @@
       <genFeatures createChild="false" propertyDescription="If true, ignore the catalyst and react when stop moving"
           ecoreFeature="ecore:EAttribute VSand.ecore#//ITransformation/isStaticTransformation"/>
       <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//ITransformation/target"/>
+    </genClasses>
+    <genClasses ecoreClass="VSand.ecore#//InputMaterialProvider">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//InputMaterialProvider/materials"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -19,6 +19,8 @@ Require-Bundle: org.eclipse.core.runtime;resolution:=optional;x-installation:=gr
  org.sheepy.vulkan.model.edit;visibility:=reexport,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
+ org.sheepy.lily.vulkan.extra.model;visibility:=reexport,
+ org.sheepy.lily.vulkan.extra.model.edit;visibility:=reexport,
  org.sheepy.lily.core.model;visibility:=reexport,
  org.sheepy.lily.core.model.edit;visibility:=reexport
 Import-Package: org.osgi.framework

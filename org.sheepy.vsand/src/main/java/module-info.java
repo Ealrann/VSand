@@ -15,10 +15,9 @@ import org.sheepy.vsand.loader.ConfigurationBufferLoader;
 import org.sheepy.vsand.loader.TransformationBufferLoader;
 import org.sheepy.vsand.logic.ApplicationBehaviour;
 import org.sheepy.vsand.model.VSandModelExtension;
-import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
+import org.sheepy.vsand.ui.MaterialSelectorInputProviderAdapter;
 
 @Adapters(classifiers = {
-		MaterialSelectorPanelAdapter.class,
 		ConfigurationBufferLoader.class,
 		Board1BufferLoader.class,
 		Board2BufferLoader.class,
@@ -31,7 +30,8 @@ import org.sheepy.vsand.ui.MaterialSelectorPanelAdapter;
 		DrawCircleAdapter.class,
 		DrawSquareAdapter.class,
 		DrawLineAdapter.class,
-		ApplicationBehaviour.class
+		ApplicationBehaviour.class,
+		MaterialSelectorInputProviderAdapter.class
 })
 
 module org.sheepy.vsand

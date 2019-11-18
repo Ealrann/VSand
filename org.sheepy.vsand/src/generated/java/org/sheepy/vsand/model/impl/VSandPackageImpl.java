@@ -17,6 +17,8 @@ import org.sheepy.lily.core.model.maintainer.MaintainerPackage;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
 import org.sheepy.lily.core.model.root.RootPackage;
 import org.sheepy.lily.core.model.types.TypesPackage;
+import org.sheepy.lily.core.model.ui.UiPackage;
+import org.sheepy.lily.core.model.variable.VariablePackage;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
@@ -27,9 +29,9 @@ import org.sheepy.vsand.model.DrawConstantBuffer;
 import org.sheepy.vsand.model.DrawLine;
 import org.sheepy.vsand.model.DrawSquare;
 import org.sheepy.vsand.model.ITransformation;
+import org.sheepy.vsand.model.InputMaterialProvider;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.MaterialProvider;
-import org.sheepy.vsand.model.MaterialSelectorPanel;
 import org.sheepy.vsand.model.Materials;
 import org.sheepy.vsand.model.MultipleTransformation;
 import org.sheepy.vsand.model.PixelConstantBuffer;
@@ -140,13 +142,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass materialSelectorPanelEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass multipleTransformationEClass = null;
 
 	/**
@@ -162,6 +157,13 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	private EClass iTransformationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass inputMaterialProviderEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -214,21 +216,24 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		// Initialize simple dependencies
 		EcorePackage.eINSTANCE.eClass();
+		org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.eINSTANCE.eClass();
 		TypesPackage.eINSTANCE.eClass();
 		ActionPackage.eINSTANCE.eClass();
 		ApplicationPackage.eINSTANCE.eClass();
 		RootPackage.eINSTANCE.eClass();
 		InferencePackage.eINSTANCE.eClass();
+		MaintainerPackage.eINSTANCE.eClass();
 		PresentationPackage.eINSTANCE.eClass();
+		UiPackage.eINSTANCE.eClass();
+		VariablePackage.eINSTANCE.eClass();
+		CadencePackage.eINSTANCE.eClass();
+		ProcessPackage.eINSTANCE.eClass();
 		VulkanPackage.eINSTANCE.eClass();
 		ResourcePackage.eINSTANCE.eClass();
 		BarrierPackage.eINSTANCE.eClass();
 		EnumerationPackage.eINSTANCE.eClass();
-		PipelinePackage.eINSTANCE.eClass();
-		ProcessPackage.eINSTANCE.eClass();
-		MaintainerPackage.eINSTANCE.eClass();
 		ImagePackage.eINSTANCE.eClass();
-		CadencePackage.eINSTANCE.eClass();
+		PipelinePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theVSandPackage.createPackageContents();
@@ -822,94 +827,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EClass getMaterialSelectorPanel()
-	{
-		return materialSelectorPanelEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getMaterialSelectorPanel_LineHeight()
-	{
-		return (EAttribute)materialSelectorPanelEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getMaterialSelectorPanel_PrimaryR()
-	{
-		return (EAttribute)materialSelectorPanelEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getMaterialSelectorPanel_PrimaryG()
-	{
-		return (EAttribute)materialSelectorPanelEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getMaterialSelectorPanel_PrimaryB()
-	{
-		return (EAttribute)materialSelectorPanelEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getMaterialSelectorPanel_SecondaryR()
-	{
-		return (EAttribute)materialSelectorPanelEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getMaterialSelectorPanel_SecondaryG()
-	{
-		return (EAttribute)materialSelectorPanelEClass.getEStructuralFeatures().get(5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getMaterialSelectorPanel_SecondaryB()
-	{
-		return (EAttribute)materialSelectorPanelEClass.getEStructuralFeatures().get(6);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getMultipleTransformation()
 	{
 		return multipleTransformationEClass;
@@ -1042,6 +959,28 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
+	public EClass getInputMaterialProvider()
+	{
+		return inputMaterialProviderEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getInputMaterialProvider_Materials()
+	{
+		return (EReference)inputMaterialProviderEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public VSandFactory getVSandFactory()
 	{
 		return (VSandFactory)getEFactoryInstance();
@@ -1131,15 +1070,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEReference(transformationEClass, TRANSFORMATION__REACTANT);
 		createEReference(transformationEClass, TRANSFORMATION__CATALYST);
 
-		materialSelectorPanelEClass = createEClass(MATERIAL_SELECTOR_PANEL);
-		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__LINE_HEIGHT);
-		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__PRIMARY_R);
-		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__PRIMARY_G);
-		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__PRIMARY_B);
-		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__SECONDARY_R);
-		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__SECONDARY_G);
-		createEAttribute(materialSelectorPanelEClass, MATERIAL_SELECTOR_PANEL__SECONDARY_B);
-
 		multipleTransformationEClass = createEClass(MULTIPLE_TRANSFORMATION);
 		createEReference(multipleTransformationEClass, MULTIPLE_TRANSFORMATION__REACTANTS);
 		createEReference(multipleTransformationEClass, MULTIPLE_TRANSFORMATION__CATALYSTS);
@@ -1154,6 +1084,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(iTransformationEClass, ITRANSFORMATION__PROPAGATION);
 		createEAttribute(iTransformationEClass, ITRANSFORMATION__IS_STATIC_TRANSFORMATION);
 		createEReference(iTransformationEClass, ITRANSFORMATION__TARGET);
+
+		inputMaterialProviderEClass = createEClass(INPUT_MATERIAL_PROVIDER);
+		createEReference(inputMaterialProviderEClass, INPUT_MATERIAL_PROVIDER__MATERIALS);
 	}
 
 	/**
@@ -1185,7 +1118,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
 		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
-		PresentationPackage thePresentationPackage = (PresentationPackage)EPackage.Registry.INSTANCE.getEPackage(PresentationPackage.eNS_URI);
+		org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage theNuklearPackage = (org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage)EPackage.Registry.INSTANCE.getEPackage(org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -1200,8 +1133,8 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		drawSquareEClass.getESuperTypes().add(this.getDrawCommand());
 		drawLineEClass.getESuperTypes().add(this.getDrawCommand());
 		transformationEClass.getESuperTypes().add(this.getITransformation());
-		materialSelectorPanelEClass.getESuperTypes().add(thePresentationPackage.getIPanel());
 		multipleTransformationEClass.getESuperTypes().add(this.getITransformation());
+		inputMaterialProviderEClass.getESuperTypes().add(theNuklearPackage.getIInputProvider());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(vSandApplicationEClass, VSandApplication.class, "VSandApplication", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1268,15 +1201,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEReference(getTransformation_Reactant(), this.getMaterial(), null, "reactant", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTransformation_Catalyst(), this.getMaterial(), null, "catalyst", null, 0, 1, Transformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(materialSelectorPanelEClass, MaterialSelectorPanel.class, "MaterialSelectorPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getMaterialSelectorPanel_LineHeight(), theEcorePackage.getEInt(), "lineHeight", "32", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterialSelectorPanel_PrimaryR(), theEcorePackage.getEInt(), "primaryR", "255", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterialSelectorPanel_PrimaryG(), theEcorePackage.getEInt(), "primaryG", "50", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterialSelectorPanel_PrimaryB(), theEcorePackage.getEInt(), "primaryB", "50", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterialSelectorPanel_SecondaryR(), theEcorePackage.getEInt(), "secondaryR", "50", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterialSelectorPanel_SecondaryG(), theEcorePackage.getEInt(), "secondaryG", "50", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterialSelectorPanel_SecondaryB(), theEcorePackage.getEInt(), "secondaryB", "255", 0, 1, MaterialSelectorPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(multipleTransformationEClass, MultipleTransformation.class, "MultipleTransformation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getMultipleTransformation_Reactants(), this.getMaterialProvider(), null, "reactants", null, 1, 1, MultipleTransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMultipleTransformation_Catalysts(), this.getMaterialProvider(), null, "catalysts", null, 1, 1, MultipleTransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1291,6 +1215,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getITransformation_Propagation(), theEcorePackage.getEInt(), "propagation", "1", 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getITransformation_IsStaticTransformation(), theEcorePackage.getEBoolean(), "isStaticTransformation", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getITransformation_Target(), this.getMaterial(), null, "target", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(inputMaterialProviderEClass, InputMaterialProvider.class, "InputMaterialProvider", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getInputMaterialProvider_Materials(), this.getMaterials(), null, "materials", null, 1, 1, InputMaterialProvider.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
