@@ -2,6 +2,8 @@
  */
 package org.sheepy.vsand.model;
 
+import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Input Material Provider</b></em>'.
@@ -18,7 +20,7 @@ package org.sheepy.vsand.model;
  * @model
  * @generated
  */
-public interface InputMaterialProvider extends org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider
+public interface InputMaterialProvider extends IInputProvider
 {
 	/**
 	 * Returns the value of the '<em><b>Materials</b></em>' reference.

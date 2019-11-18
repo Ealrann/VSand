@@ -19,19 +19,15 @@ public final class TransformationUtil
 	public static int[] toArray(VSandApplication application)
 	{
 		final var materials = application.getMaterials();
+		final var materialList = materials.getMaterials();
+		final int materialCount = materialList.size();
 		final var transformations = application.getTransformations();
 
-		final int[] res = new int[MaterialUtil.MAX_MATERIAL_NUMBER
-				* MaterialUtil.MAX_MATERIAL_NUMBER];
-		for (int i = 0; i < res.length; i += 4)
+		final int[] res = new int[materialCount * materialCount];
+		for (int i = 0; i < res.length; i++)
 		{
 			res[i] = -1;
-			res[i + 1] = -1;
-			res[i + 2] = -1;
-			res[i + 3] = -1;
 		}
-
-		final var materialList = materials.getMaterials();
 
 		for (final var transfo : transformations.getTransformations())
 		{
@@ -107,6 +103,7 @@ public final class TransformationUtil
 											List<Material> reactants,
 											List<Material> catalysts)
 	{
+		final int materialCount = materialList.size();
 		for (final Material reactant : reactants)
 		{
 			for (final Material catalyst : catalysts)
@@ -133,14 +130,14 @@ public final class TransformationUtil
 								&& (potentialCatalyst.isIsStatic() == true
 										|| potentialCatalyst.getDensity() >= reactant.getDensity()))
 						{
-							res[i * MaterialUtil.MAX_MATERIAL_NUMBER + reactantIndex] = value;
+							res[i * materialCount + reactantIndex] = value;
 						}
 					}
 				}
 				else if (catalyst != null)
 				{
 					final int catalystIndex = materialList.indexOf(catalyst);
-					res[catalystIndex * MaterialUtil.MAX_MATERIAL_NUMBER + reactantIndex] = value;
+					res[catalystIndex * materialCount + reactantIndex] = value;
 				}
 			}
 		}

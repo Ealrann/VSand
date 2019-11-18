@@ -11,20 +11,22 @@ import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
-import org.sheepy.vsand.util.MaterialUtil;
 
 @Adapter(scope = Buffer.class, name = "Configuration", lazy = false)
 public final class ConfigurationBufferLoader implements IVulkanAdapter
 {
-	private static final int BYTE_SIZE = MaterialUtil.MAX_MATERIAL_NUMBER * 8 * Integer.BYTES;
+	private static final int UNIT_BYTES = 8 * Integer.BYTES;
 
 	@Load
 	public static void load(Buffer buffer)
 	{
 		final var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);
+		final var materials = application.getMaterials().getMaterials();
+		final int materialCount = materials.size();
+		final int size = UNIT_BYTES * materialCount;
 
-		final ByteBuffer bBuffer = MemoryUtil.memAlloc(BYTE_SIZE);
-		for (final Material material : application.getMaterials().getMaterials())
+		final ByteBuffer bBuffer = MemoryUtil.memAlloc(size);
+		for (final Material material : materials)
 		{
 			bBuffer.putInt(material.isIsStatic() ? 1 : 0);
 			bBuffer.putInt(material.getDensity());
@@ -41,7 +43,7 @@ public final class ConfigurationBufferLoader implements IVulkanAdapter
 		}
 		bBuffer.flip();
 
-		buffer.setSize(BYTE_SIZE);
+		buffer.setSize(size);
 		buffer.setData(bBuffer);
 	}
 

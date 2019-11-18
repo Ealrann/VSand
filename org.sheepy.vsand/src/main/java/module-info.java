@@ -12,6 +12,7 @@ import org.sheepy.vsand.loader.Board2BufferLoader;
 import org.sheepy.vsand.loader.BoardImageLoader;
 import org.sheepy.vsand.loader.ChunkBufferLoader;
 import org.sheepy.vsand.loader.ConfigurationBufferLoader;
+import org.sheepy.vsand.loader.MaterialCountAdapter;
 import org.sheepy.vsand.loader.TransformationBufferLoader;
 import org.sheepy.vsand.logic.ApplicationBehaviour;
 import org.sheepy.vsand.model.VSandModelExtension;
@@ -31,7 +32,8 @@ import org.sheepy.vsand.ui.MaterialSelectorInputProviderAdapter;
 		DrawSquareAdapter.class,
 		DrawLineAdapter.class,
 		ApplicationBehaviour.class,
-		MaterialSelectorInputProviderAdapter.class
+		MaterialSelectorInputProviderAdapter.class,
+		MaterialCountAdapter.class
 })
 
 module org.sheepy.vsand

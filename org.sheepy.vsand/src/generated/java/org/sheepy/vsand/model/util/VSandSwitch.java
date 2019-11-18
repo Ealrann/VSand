@@ -10,6 +10,7 @@ import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.core.model.inference.IInferenceObject;
 import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.core.model.types.LNamedElement;
+import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
 import org.sheepy.lily.vulkan.model.IResource;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.*;
@@ -576,7 +577,7 @@ public class VSandSwitch<T> extends Switch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseIInputProvider(org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider object)
+	public T caseIInputProvider(IInputProvider object)
 	{
 		return null;
 	}

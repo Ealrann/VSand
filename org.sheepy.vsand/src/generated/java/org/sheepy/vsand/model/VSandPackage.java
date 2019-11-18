@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
+import org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
 
 /**
@@ -1261,7 +1262,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int INPUT_MATERIAL_PROVIDER__MATERIALS = org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.IINPUT_PROVIDER_FEATURE_COUNT + 0;
+	int INPUT_MATERIAL_PROVIDER__MATERIALS = NuklearPackage.IINPUT_PROVIDER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Input Material Provider</em>' class.
@@ -1270,7 +1271,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int INPUT_MATERIAL_PROVIDER_FEATURE_COUNT = org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.IINPUT_PROVIDER_FEATURE_COUNT + 1;
+	int INPUT_MATERIAL_PROVIDER_FEATURE_COUNT = NuklearPackage.IINPUT_PROVIDER_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Input Material Provider</em>' class.
@@ -1279,7 +1280,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int INPUT_MATERIAL_PROVIDER_OPERATION_COUNT = org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.IINPUT_PROVIDER_OPERATION_COUNT + 0;
+	int INPUT_MATERIAL_PROVIDER_OPERATION_COUNT = NuklearPackage.IINPUT_PROVIDER_OPERATION_COUNT + 0;
 
 	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandApplication <em>Application</em>}'.

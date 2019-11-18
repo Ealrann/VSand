@@ -9,7 +9,7 @@
 #define WORKGROUP_SIZE 8
 #define EFFECTIVE_SIZE 16
 
-#define MATERIAL_COUNT 32
+layout (constant_id = 0) const int MATERIAL_COUNT = 1;
 
 const int SWIZZLED_WIDTH = WIDTH / 2;
 const int SWIZZLED_HEIGHT = HEIGHT / 2;

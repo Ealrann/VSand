@@ -12,6 +12,7 @@ import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.core.model.inference.IInferenceObject;
 import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.core.model.types.LNamedElement;
+import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
 import org.sheepy.lily.vulkan.model.IResource;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.*;
@@ -189,7 +190,7 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createConstantBufferAdapter();
 			}
 			@Override
-			public Adapter caseIInputProvider(org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider object)
+			public Adapter caseIInputProvider(IInputProvider object)
 			{
 				return createIInputProviderAdapter();
 			}

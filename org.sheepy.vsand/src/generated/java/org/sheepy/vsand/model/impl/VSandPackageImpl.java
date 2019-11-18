@@ -19,6 +19,7 @@ import org.sheepy.lily.core.model.root.RootPackage;
 import org.sheepy.lily.core.model.types.TypesPackage;
 import org.sheepy.lily.core.model.ui.UiPackage;
 import org.sheepy.lily.core.model.variable.VariablePackage;
+import org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
 import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
@@ -216,7 +217,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		// Initialize simple dependencies
 		EcorePackage.eINSTANCE.eClass();
-		org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.eINSTANCE.eClass();
+		NuklearPackage.eINSTANCE.eClass();
 		TypesPackage.eINSTANCE.eClass();
 		ActionPackage.eINSTANCE.eClass();
 		ApplicationPackage.eINSTANCE.eClass();
@@ -1118,7 +1119,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
 		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
-		org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage theNuklearPackage = (org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage)EPackage.Registry.INSTANCE.getEPackage(org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage.eNS_URI);
+		NuklearPackage theNuklearPackage = (NuklearPackage)EPackage.Registry.INSTANCE.getEPackage(NuklearPackage.eNS_URI);
 
 		// Create type parameters
 

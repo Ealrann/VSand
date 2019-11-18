@@ -106,17 +106,21 @@
         </resources>
         <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
           <file xsi:type="resource:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
+          <constants name="MaterialCount" size="4"/>
         </resources>
         <resources xsi:type="resource:Shader" name="boardUpdate" stage="COMPUTE_BIT">
           <file xsi:type="resource:StringModuleResource" name="" path="board_update.comp.spv" moduleName="org.sheepy.vsand"/>
+          <constants name="MaterialCount" size="4"/>
         </resources>
         <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
           <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
+          <constants name="MaterialCount" size="4"/>
         </resources>
         <resources xsi:type="model:BoardConstantBuffer"/>
+        <resources xsi:type="resource:ConstantBuffer" name="MaterialCount"/>
       </resourcePkg>
       <partPkg>
-        <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute">
+        <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9">
           <resourcePkg>
             <resources xsi:type="model:DrawConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
@@ -148,7 +152,7 @@
             <tasks xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
         </parts>
-        <parts xsi:type="compute:ComputePipeline" name="Step" stage="Compute">
+        <parts xsi:type="compute:ComputePipeline" name="Step" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9">
           <pushConstantRanges size="8">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
@@ -179,7 +183,7 @@
             </tasks>
           </taskPkg>
         </parts>
-        <parts xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute">
+        <parts xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9">
           <resourcePkg>
             <resources xsi:type="model:PixelConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
