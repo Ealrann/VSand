@@ -21,8 +21,8 @@ import org.sheepy.vsand.model.VSandApplication;
 @Adapter(scope = DrawConstantBuffer.class, lazy = false)
 public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 {
-	private final int BYTE_SIZE = 18 * Integer.BYTES;
-	private final int BOARD_INDEX_POSITION = 17 * Integer.BYTES;
+	private static final int BYTE_SIZE = 18 * Integer.BYTES;
+	private static final int BOARD_INDEX_POSITION = 17 * Integer.BYTES;
 
 	private final DrawConstantBuffer drawConstantBuffer;
 	private final VSandApplication application;
@@ -30,7 +30,7 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 
 	private ByteBuffer buffer = null;
 
-	public DrawConstantBufferAdapter(DrawConstantBuffer drawConstantBuffer)
+	private DrawConstantBufferAdapter(DrawConstantBuffer drawConstantBuffer)
 	{
 		this.drawConstantBuffer = drawConstantBuffer;
 		pipeline = ModelUtil.findParent(drawConstantBuffer, IPipeline.class);
@@ -39,13 +39,13 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 	}
 
 	@Load
-	public void load()
+	private void load()
 	{
 		buffer = MemoryUtil.memAlloc(BYTE_SIZE);
 	}
 
 	@Dispose
-	public void dispose()
+	private void dispose()
 	{
 		MemoryUtil.memFree(buffer);
 	}
@@ -60,7 +60,7 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 	}
 
 	@Tick
-	public void updateBuffer()
+	private void updateBuffer()
 	{
 		final var drawQueue = application.getDrawQueue();
 		if (drawQueue.isEmpty() == false)

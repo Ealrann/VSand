@@ -14,7 +14,7 @@ import org.sheepy.vsand.model.VSandApplication;
 public final class MaterialCountAdapter implements IAdapter
 {
 	@Load
-	public static void load(ConstantBuffer buffer)
+	private static void load(ConstantBuffer buffer)
 	{
 		final var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);
 		final int count = application.getMaterials().getMaterials().size();

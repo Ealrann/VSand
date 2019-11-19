@@ -25,8 +25,8 @@ import org.sheepy.vsand.util.EShapeSize;
 @Adapter(scope = PixelConstantBuffer.class, lazy = false)
 public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 {
-	private final int BYTE_SIZE = 7 * Integer.BYTES;
-	private final int BOARD_INDEX_POSITION = 6 * Integer.BYTES;
+	private static final int BYTE_SIZE = 7 * Integer.BYTES;
+	private static final int BOARD_INDEX_POSITION = 6 * Integer.BYTES;
 
 	private final PixelConstantBuffer constantBuffer;
 	private final VSandApplication application;
@@ -36,7 +36,7 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 
 	private IVulkanInputManager inputManager;
 
-	public PixelConstantBufferAdapter(PixelConstantBuffer constantBuffer)
+	private PixelConstantBufferAdapter(PixelConstantBuffer constantBuffer)
 	{
 		this.constantBuffer = constantBuffer;
 
@@ -45,7 +45,7 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 	}
 
 	@Load
-	public void load()
+	private void load()
 	{
 		buffer = MemoryUtil.memAlloc(BYTE_SIZE);
 
@@ -57,7 +57,7 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 	}
 
 	@Dispose
-	public void dispose()
+	private void dispose()
 	{
 		MemoryUtil.memFree(buffer);
 	}
@@ -70,7 +70,7 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 	}
 
 	@Tick
-	public void updateBuffer()
+	private void updateBuffer()
 	{
 		int forceClear = 0;
 		if (application.isForceClear())

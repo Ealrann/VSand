@@ -17,21 +17,21 @@ import org.sheepy.vsand.model.BoardConstantBuffer;
 @Adapter(scope = BoardConstantBuffer.class, lazy = false)
 public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 {
-	private final int BYTE_SIZE = 2 * Integer.BYTES;
-	private final int BOARD_INDEX_POSITION = 1 * Integer.BYTES;
+	private static final int BYTE_SIZE = 2 * Integer.BYTES;
+	private static final int BOARD_INDEX_POSITION = 1 * Integer.BYTES;
 
 	private final Random random = ThreadLocalRandom.current();
 	private final BoardConstantBuffer boardConstantBuffer;
 
 	private ByteBuffer buffer = null;
 
-	public BoardConstantBufferAdapter(BoardConstantBuffer boardConstantBuffer)
+	private BoardConstantBufferAdapter(BoardConstantBuffer boardConstantBuffer)
 	{
 		this.boardConstantBuffer = boardConstantBuffer;
 	}
 
 	@Load
-	public void load()
+	private void load()
 	{
 		buffer = MemoryUtil.memAlloc(BYTE_SIZE);
 		boardConstantBuffer.setData(buffer);
@@ -50,7 +50,7 @@ public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 	}
 
 	@Dispose
-	public void dispose()
+	private void dispose()
 	{
 		MemoryUtil.memFree(buffer);
 		boardConstantBuffer.setData(null);

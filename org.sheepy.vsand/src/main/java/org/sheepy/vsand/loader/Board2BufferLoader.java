@@ -3,18 +3,18 @@ package org.sheepy.vsand.loader;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.system.MemoryUtil;
+import org.sheepy.lily.core.api.adapter.IAdapter;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.util.ModelUtil;
-import org.sheepy.lily.vulkan.api.adapter.IVulkanAdapter;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 
 @Adapter(scope = Buffer.class, name = "Board Buffer 2", lazy = false)
-public final class Board2BufferLoader implements IVulkanAdapter
+public final class Board2BufferLoader implements IAdapter
 {
 	@Load
-	public static void load(Buffer buffer)
+	private static void load(Buffer buffer)
 	{
 		final var application = ModelUtil.getApplication(buffer);
 		final int width = application.getSize().x() / 2;
@@ -32,7 +32,7 @@ public final class Board2BufferLoader implements IVulkanAdapter
 	}
 
 	@Dispose
-	public static void dispose(Buffer buffer)
+	private static void dispose(Buffer buffer)
 	{
 		MemoryUtil.memFree(buffer.getData());
 		buffer.setData(null);
