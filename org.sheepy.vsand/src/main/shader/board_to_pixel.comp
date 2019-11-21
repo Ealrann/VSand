@@ -79,15 +79,15 @@ void main()
 	{
 		int chunkState = chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y];
 
-		ivec2 workgroupUpLeftCorner = ivec2(gl_WorkGroupID.xy) * EFFECTIVE_SIZE;
+		ivec2 workgroupUpLeftCorner    = ivec2(gl_WorkGroupID.xy)     * EFFECTIVE_SIZE;
 		ivec2 workgroupDownRightCorner = ivec2(gl_WorkGroupID.xy + 1) * EFFECTIVE_SIZE - 1;
-		ivec2 cercleUpLeftCorner = pushConstants.mousePos - pushConstants.drawRadius;
+		ivec2 cercleUpLeftCorner    = pushConstants.mousePos - pushConstants.drawRadius;
 		ivec2 cercleDownRightCorner = pushConstants.mousePos + pushConstants.drawRadius;
 
 		colorTweakPreTest = testSquare(workgroupUpLeftCorner,
-																		workgroupDownRightCorner,
-																		cercleUpLeftCorner,
-																		cercleDownRightCorner);
+										workgroupDownRightCorner,
+										cercleUpLeftCorner,
+										cercleDownRightCorner);
 
 		if((chunkState & 2) != 0)
 		{
@@ -116,14 +116,14 @@ void main()
 	if(  loc.x >= WIDTH
 		|| loc.y >= HEIGHT
 		|| (   pushConstants.forceClear == 0
-				&& colorTweakPreTest == false
-				&& sleeping == true
-				&& pushConstants.showSleepChunks == 0))
+			&& colorTweakPreTest == false
+			&& sleeping == true
+			&& pushConstants.showSleepChunks == 0))
 	{
 		return;
 	}
 
-  uvec2 swizzled = loc >> 1;
+	uvec2 swizzled = loc >> 1;
 	uint value = pushConstants.boardToWrite == 0 ? board1.data[swizzled.x][swizzled.y] : board2.data[swizzled.x][swizzled.y];
 	uvec4 unswizzledValue = (unswizzleVec & value) >> unswizzleOffset;
 
@@ -160,8 +160,7 @@ vec4 computeColor(ivec2 loc, vec4 color)
 		colorTweak = true;
 	}
 
-	if(    sleeping == true
-			&& pushConstants.showSleepChunks == 1)
+	if(sleeping == true	&& pushConstants.showSleepChunks == 1)
 	{
 		addColor += vec4(1, 0.5, 0.5, 0);
 		colorTweak = true;

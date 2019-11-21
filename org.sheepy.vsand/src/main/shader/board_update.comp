@@ -1,5 +1,7 @@
 #version 450
 
+#include "rand_utils.glsl"
+
 #define WIDTH 1248
 #define HEIGHT 704
 
@@ -120,7 +122,6 @@ bool acceptFrom(ivec2 loc, ivec2 localLoc);
 bool swap(ivec2 loc, ivec2 localLoc);
 bool transformation(ivec2 loc, ivec2 localLoc, bool moved);
 int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity);
-float gold_noise(in ivec2 coordinate, in float seed);
 bool invalidCell(ivec2 loc);
 void fillBoardSharedBuffer(ivec2 loc, ivec2 localLoc);
 uint getValue(ivec2 loc);
@@ -142,10 +143,10 @@ void main()
 	bool farBorder = any(farBorderVec);
 
 	bvec4 closeBorderVec = equal(dualLoc, closeBorderLoc);
-  bool closeBorder = any(closeBorderVec);
+	bool closeBorder = any(closeBorderVec);
 
 	bvec4 innerBorderVec = equal(dualLoc, innerBorderLoc);
-  bool innerBorder = any(innerBorderVec);
+	bool innerBorder = any(innerBorderVec);
 
 	if(invalid)
 	{
@@ -153,7 +154,7 @@ void main()
 	}
 	else if (evenCell)
 	{
-  	fillBoardSharedBuffer(loc, localLoc);
+		fillBoardSharedBuffer(loc, localLoc);
 	}
 
 	if(gl_LocalInvocationIndex == 0)
@@ -195,13 +196,13 @@ void main()
 
 	bool dynamicCell = materials[currentValue].isStatic == 0;
 	bool borderActive = (((innerBorderVec.x || closeBorderVec.x) && chunkNeighborActive.x)
-										|| ((innerBorderVec.y || closeBorderVec.y) && chunkNeighborActive.y)
-										|| ((innerBorderVec.z || closeBorderVec.z) && chunkNeighborActive.z)
-										|| ((innerBorderVec.w || closeBorderVec.w) && chunkNeighborActive.w));
+					  || ((innerBorderVec.y || closeBorderVec.y) && chunkNeighborActive.y)
+					  || ((innerBorderVec.z || closeBorderVec.z) && chunkNeighborActive.z)
+					  || ((innerBorderVec.w || closeBorderVec.w) && chunkNeighborActive.w));
 
-  bool activeCell = !invalid && dynamicCell && (chunkActive || borderActive);
+	bool activeCell = !invalid && dynamicCell && (chunkActive || borderActive);
 
-  bool choosedTo = false;
+	bool choosedTo = false;
 	if (activeCell)
 	{
 		choosedTo = chooseTo(loc, localLoc);
@@ -249,9 +250,9 @@ void main()
 		uvec2 swizzledLoc = loc >> 1;
 
 		uint value = board[localLoc.x][localLoc.y]
-							| (board[localLoc.x + 1][localLoc.y] << 8)
-							| (board[localLoc.x][localLoc.y + 1] << 16)
-							| (board[localLoc.x + 1][localLoc.y + 1] << 24);
+				  | (board[localLoc.x + 1][localLoc.y] << 8)
+				  | (board[localLoc.x][localLoc.y + 1] << 16)
+				  | (board[localLoc.x + 1][localLoc.y + 1] << 24);
 
 		if(pushConstants.boardToWrite == 0)
 			board1.data[swizzledLoc.x][swizzledLoc.y] = value;
@@ -286,9 +287,9 @@ void fillBoardSharedBuffer(ivec2 loc, ivec2 localLoc)
 
 	uvec4 unswizzledValue = (unswizzleVec & value) >> unswizzleOffset;
 
-	board[localLoc.x][localLoc.y] = unswizzledValue.x;
-	board[localLoc.x + 1][localLoc.y] = unswizzledValue.y;
-	board[localLoc.x][localLoc.y + 1] = unswizzledValue.z;
+	board[localLoc.x][localLoc.y]         = unswizzledValue.x;
+	board[localLoc.x + 1][localLoc.y]     = unswizzledValue.y;
+	board[localLoc.x][localLoc.y + 1]     = unswizzledValue.z;
 	board[localLoc.x + 1][localLoc.y + 1] = unswizzledValue.w;
 }
 
@@ -314,7 +315,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 	bool luck = false;
 	if (wantToFallDown)
 	{
-		luck = gold_noise(loc, pushConstants.random) < 0.92;
+		luck = random(vec4(loc, pushConstants.random, 0)) < 0.92;
 		if (luck)
 		{
 			decision[localLoc.x][localLoc.y] |= TO_DOWN | (valueDown << TARGET_VALUE_POSITION);
@@ -379,7 +380,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 				}
 				else // if (distLeft == distRight)
 				{
-					if (gold_noise(ivec2(loc.yx), pushConstants.random) < 0.50)
+					if (random(vec4(loc, pushConstants.random, 1)) < 0.50)
 					{
 						tag = TO_RIGHT;
 						targetValue = valueRight;
@@ -439,7 +440,7 @@ bool acceptFrom(ivec2 loc, ivec2 localLoc)
 				iDir = UP;
 				break;
 			case 1 :
-				rand = gold_noise(ivec2(loc.yx), pushConstants.random);
+				rand = random(vec4(loc, pushConstants.random, 2));
 				iDir = rand < 0.50 ? RIGHT : LEFT;
 				break;
 			case 2 :
@@ -579,7 +580,7 @@ bool transformation(ivec2 loc, ivec2 localLoc, bool moved)
 			{
 				if(rand == -1)
 				{
-					float genRand = sqrt(gold_noise(loc, pushConstants.random));
+					float genRand = sqrt(random(vec4(loc, pushConstants.random, 3)));
 					rand = uint(round(genRand * 1000.));
 				}
 
@@ -714,12 +715,3 @@ int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity)
 	return course;
 }
 
-const float PHI = 1.61803398874989484820459 * 00000.1; // Golden Ratio
-const float PI  = 3.14159265358979323846264 * 00000.1; // PI
-const float SQ2 = 1.41421356237309504880169 * 10000.0; // Square Root of Two
-const vec2 PHI_PI = vec2(PHI, PI);
-
-highp float gold_noise(in ivec2 coordinate, in float seed)
-{
-    return fract(tan(distance(coordinate*(seed+PHI), PHI_PI))*SQ2);
-}
