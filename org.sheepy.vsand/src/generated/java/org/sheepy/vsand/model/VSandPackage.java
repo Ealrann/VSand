@@ -161,15 +161,6 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__CURRENT_VIEW = ApplicationPackage.APPLICATION__CURRENT_VIEW;
 
 	/**
-	 * The feature id for the '<em><b>Time Factor</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__TIME_FACTOR = ApplicationPackage.APPLICATION__TIME_FACTOR;
-
-	/**
 	 * The feature id for the '<em><b>Cadence</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -177,6 +168,15 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int VSAND_APPLICATION__CADENCE = ApplicationPackage.APPLICATION__CADENCE;
+
+	/**
+	 * The feature id for the '<em><b>Time Configuration</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__TIME_CONFIGURATION = ApplicationPackage.APPLICATION__TIME_CONFIGURATION;
 
 	/**
 	 * The feature id for the '<em><b>Materials</b></em>' containment reference.

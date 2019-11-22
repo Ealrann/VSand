@@ -342,6 +342,7 @@
       </renderPassInfo>
     </processes>
   </engines>
+  <timeConfiguration/>
   <materials>
     <materials name="Void" runoff="60"/>
     <materials name="Sand" density="5" runoff="1" r="244" g="244" b="67"/>
