@@ -120,7 +120,7 @@
         <resources xsi:type="resource:ConstantBuffer" name="MaterialCount"/>
       </resourcePkg>
       <partPkg>
-        <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9">
+        <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5">
           <resourcePkg>
             <resources xsi:type="model:DrawConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
@@ -149,10 +149,10 @@
                 <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
               </barriers>
             </tasks>
-            <tasks xsi:type="compute:Computer" name="Draw" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5" workgroupCountX="78" workgroupCountY="44"/>
+            <tasks xsi:type="compute:DispatchTask" name="Draw" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
         </parts>
-        <parts xsi:type="compute:ComputePipeline" name="Step" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9">
+        <parts xsi:type="compute:ComputePipeline" name="Step" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6">
           <pushConstantRanges size="8">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
@@ -179,11 +179,11 @@
               <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.8">
                 <stages>COMPUTE_BIT</stages>
               </tasks>
-              <tasks xsi:type="compute:Computer" name="Board update" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6" workgroupCountX="78" workgroupCountY="44"/>
+              <tasks xsi:type="compute:DispatchTask" name="Board update" workgroupCountX="78" workgroupCountY="44"/>
             </tasks>
           </taskPkg>
         </parts>
-        <parts xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9">
+        <parts xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7">
           <resourcePkg>
             <resources xsi:type="model:PixelConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
@@ -218,7 +218,7 @@
                 <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
               </barriers>
             </tasks>
-            <tasks xsi:type="compute:Computer" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7" workgroupCountX="78" workgroupCountY="44"/>
+            <tasks xsi:type="compute:DispatchTask" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
         </parts>
       </partPkg>
