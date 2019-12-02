@@ -62,45 +62,27 @@
         <usages>TransferSrc</usages>
         <usages>Storage</usages>
         <usages>TransferDst</usages>
-        <descriptor descriptorType="STORAGE_IMAGE">
-          <shaderStages>COMPUTE_BIT</shaderStages>
-        </descriptor>
       </resources>
     </resourcePkg>
     <processes xsi:type="compute:ComputeProcess" name="Board Compute" waitingFenceDuringAcquire="true" resetAllowed="true">
       <resourcePkg>
         <resources xsi:type="resource:Buffer" name="Board Buffer 1">
-          <descriptor descriptorType="STORAGE_BUFFER">
-            <shaderStages>COMPUTE_BIT</shaderStages>
-          </descriptor>
           <usages>STORAGE_BUFFER_BIT</usages>
           <usages>TRANSFER_DST_BIT</usages>
         </resources>
         <resources xsi:type="resource:Buffer" name="Board Buffer 2">
-          <descriptor descriptorType="STORAGE_BUFFER">
-            <shaderStages>COMPUTE_BIT</shaderStages>
-          </descriptor>
           <usages>STORAGE_BUFFER_BIT</usages>
           <usages>TRANSFER_DST_BIT</usages>
         </resources>
         <resources xsi:type="resource:Buffer" name="Chunk Buffer">
-          <descriptor descriptorType="STORAGE_BUFFER">
-            <shaderStages>COMPUTE_BIT</shaderStages>
-          </descriptor>
           <usages>STORAGE_BUFFER_BIT</usages>
           <usages>TRANSFER_DST_BIT</usages>
         </resources>
         <resources xsi:type="resource:Buffer" name="Configuration">
-          <descriptor descriptorType="UNIFORM_BUFFER">
-            <shaderStages>COMPUTE_BIT</shaderStages>
-          </descriptor>
           <usages>UNIFORM_BUFFER_BIT</usages>
           <usages>TRANSFER_DST_BIT</usages>
         </resources>
         <resources xsi:type="resource:Buffer" name="Transformation">
-          <descriptor descriptorType="UNIFORM_BUFFER">
-            <shaderStages>COMPUTE_BIT</shaderStages>
-          </descriptor>
           <usages>TRANSFER_DST_BIT</usages>
           <usages>UNIFORM_BUFFER_BIT</usages>
         </resources>
@@ -119,6 +101,31 @@
         <resources xsi:type="model:BoardConstantBuffer"/>
         <resources xsi:type="resource:ConstantBuffer" name="MaterialCount"/>
       </resourcePkg>
+      <descriptorPkg>
+        <descriptors xsi:type="resource:BufferDescriptor" name="Chunk" type="STORAGE_BUFFER">
+          <shaderStages>COMPUTE_BIT</shaderStages>
+          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.2"/>
+        </descriptors>
+        <descriptors xsi:type="resource:BufferDescriptor" name="Board1" type="STORAGE_BUFFER">
+          <shaderStages>COMPUTE_BIT</shaderStages>
+          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0"/>
+        </descriptors>
+        <descriptors xsi:type="resource:BufferDescriptor" name="Board2" type="STORAGE_BUFFER">
+          <shaderStages>COMPUTE_BIT</shaderStages>
+          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1"/>
+        </descriptors>
+        <descriptors xsi:type="resource:BufferDescriptor" name="Config" type="UNIFORM_BUFFER">
+          <shaderStages>COMPUTE_BIT</shaderStages>
+          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.3"/>
+        </descriptors>
+        <descriptors xsi:type="resource:BufferDescriptor" name="Transfo" type="UNIFORM_BUFFER">
+          <shaderStages>COMPUTE_BIT</shaderStages>
+          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.4"/>
+        </descriptors>
+        <descriptors xsi:type="resource:ImageDescriptor" name="BoardImage" type="STORAGE_IMAGE" image="//@engines.0/@resourcePkg/@resources.0">
+          <shaderStages>COMPUTE_BIT</shaderStages>
+        </descriptors>
+      </descriptorPkg>
       <partPkg>
         <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5">
           <resourcePkg>
@@ -128,7 +135,7 @@
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
+            <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.0/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
@@ -157,7 +164,7 @@
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Update Board Common" descriptors="//@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.4 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
+            <descriptorSets name="Update Board Common" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.4 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
@@ -187,11 +194,12 @@
           <resourcePkg>
             <resources xsi:type="model:PixelConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
+          <descriptorPkg/>
           <pushConstantRanges size="28">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.3 //@engines.0/@processes.0/@resourcePkg/@resources.2 //@engines.0/@processes.0/@resourcePkg/@resources.0 //@engines.0/@processes.0/@resourcePkg/@resources.1"/>
+            <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.5 //@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.2/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
@@ -241,12 +249,9 @@
             <tasks xsi:type="graphic:BlitToSwapImage" image="//@engines.0/@resourcePkg/@resources.0"/>
           </taskPkg>
         </parts>
-        <parts xsi:type="graphic:GraphicsPipeline" name="GUI" shaders="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.4 //@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.5">
+        <parts xsi:type="graphic:GraphicsPipeline" name="GUI" shaders="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.3 //@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.4">
           <resourcePkg>
             <resources xsi:type="resource:SampledImage" name="NullTexture">
-              <descriptor descriptorType="COMBINED_IMAGE_SAMPLER">
-                <shaderStages>FRAGMENT_BIT</shaderStages>
-              </descriptor>
               <sampler/>
               <image xsi:type="resource:StaticImage" name="NullImage" width="1" height="1" format="R8G8B8A8_UNORM">
                 <initialLayout stage="FRAGMENT_SHADER_BIT">
@@ -258,9 +263,6 @@
             </resources>
             <resources xsi:type="nuklear:NuklearFont">
               <fontSampledImage name="Font Sampled Image">
-                <descriptor descriptorType="COMBINED_IMAGE_SAMPLER">
-                  <shaderStages>FRAGMENT_BIT</shaderStages>
-                </descriptor>
                 <sampler/>
                 <image xsi:type="resource:FontImage" name="Font">
                   <initialLayout stage="FRAGMENT_SHADER_BIT">
@@ -270,16 +272,7 @@
                 </image>
               </fontSampledImage>
             </resources>
-            <resources xsi:type="resource:Buffer" name="IndexedVertexBuffer" size="524288">
-              <descriptor descriptorType="UNIFORM_BUFFER">
-                <shaderStages>VERTEX_BIT</shaderStages>
-                <shaderStages>FRAGMENT_BIT</shaderStages>
-              </descriptor>
-              <usages>VERTEX_BUFFER_BIT</usages>
-              <usages>INDEX_BUFFER_BIT</usages>
-              <usages>TRANSFER_DST_BIT</usages>
-            </resources>
-            <resources xsi:type="nuklear:NuklearContext" font="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1" nullTexture="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0" layoutTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.1"/>
+            <resources xsi:type="nuklear:NuklearContext" font="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1" nullTexture="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0" layoutTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
             <resources xsi:type="resource:Shader" name="NkVertex">
               <file xsi:type="resource:StringModuleResource" name="Vertex" path="ui.vert.spv" moduleName="org.sheepy.lily.vulkan.extra.nuklear"/>
             </resources>
@@ -287,18 +280,31 @@
               <file xsi:type="resource:StringModuleResource" name="Frag" path="ui.frag.spv" moduleName="org.sheepy.lily.vulkan.extra.nuklear"/>
             </resources>
             <resources xsi:type="resource:TransferBuffer" name="NkPushBuffer" size="524288" instanceCount="2"/>
+            <resources xsi:type="resource:CompositeBuffer" name="NuklearVertexBuffer" transferBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.5">
+              <dataProviders xsi:type="nuklear:NuklearVertexProvider" usage="VERTEX_BUFFER_BIT" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2"/>
+              <dataProviders xsi:type="nuklear:NuklearIndexProvider" usage="INDEX_BUFFER_BIT" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2"/>
+            </resources>
           </resourcePkg>
+          <descriptorPkg>
+            <descriptors xsi:type="resource:SampledImageDescriptor" name="NullTexture" type="COMBINED_IMAGE_SAMPLER" sampledImage="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0">
+              <shaderStages>FRAGMENT_BIT</shaderStages>
+            </descriptors>
+            <descriptors xsi:type="resource:SampledImageDescriptor" name="NkFont" type="COMBINED_IMAGE_SAMPLER" sampledImage="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1/@fontSampledImage">
+              <shaderStages>FRAGMENT_BIT</shaderStages>
+            </descriptors>
+          </descriptorPkg>
           <pushConstantRanges size="68">
             <stages>VERTEX_BIT</stages>
             <stages>FRAGMENT_BIT</stages>
           </pushConstantRanges>
           <descriptorSetPkg>
-            <descriptorSets name="Graphic" descriptors="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0 //@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1/@fontSampledImage"/>
+            <descriptorSets name="UI" descriptors="//@engines.0/@processes.1/@partPkg/@parts.1/@descriptorPkg/@descriptors.0 //@engines.0/@processes.1/@partPkg/@parts.1/@descriptorPkg/@descriptors.1"/>
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.1/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="nuklear:NuklearLayoutTask" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.3" drawTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.3" transferBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6" vertexBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2"/>
-            <tasks xsi:type="process:FlushTransferBufferTask" transferBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6"/>
+            <tasks xsi:type="process:PrepareCompositeTransfer" compositeBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6"/>
+            <tasks xsi:type="nuklear:NuklearLayoutTask" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2" drawTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.4" vertexBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6"/>
+            <tasks xsi:type="process:FlushTransferBufferTask" transferBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.5" flushDuringUpdate="true"/>
             <tasks xsi:type="process:CompositeTask" name="Nk draw"/>
           </taskPkg>
           <viewportState xsi:type="graphicpipeline:DynamicViewportState" viewportCount="1" scissorCount="1"/>
@@ -342,7 +348,6 @@
       </renderPassInfo>
     </processes>
   </engines>
-  <timeConfiguration/>
   <materials>
     <materials name="Void" runoff="60"/>
     <materials name="Sand" density="5" runoff="1" r="244" g="244" b="67"/>
