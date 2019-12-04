@@ -302,7 +302,10 @@
           </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.1/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="process:PrepareCompositeTransfer" compositeBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6"/>
+            <tasks xsi:type="process:PrepareCompositeTransfer" compositeBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6" prepareDuringUpdate="true">
+              <parts/>
+              <parts part="1"/>
+            </tasks>
             <tasks xsi:type="nuklear:NuklearLayoutTask" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2" drawTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.4" vertexBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6"/>
             <tasks xsi:type="process:FlushTransferBufferTask" transferBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.5" flushDuringUpdate="true"/>
             <tasks xsi:type="process:CompositeTask" name="Nk draw"/>

@@ -57,6 +57,14 @@ subprojects {
 	afterEvaluate {
 		repositories {
 			jcenter()
+			maven {
+				url "https://maven.pkg.github.com/ealrann/emf-standalone"
+				credentials {
+					// public credentials, with only read access
+					username = 'ealrann'
+					password = 'db51ab27ec44a5f93c5750a7f8648980847f3cac'
+				}
+			}
 		}
 	}
 }
