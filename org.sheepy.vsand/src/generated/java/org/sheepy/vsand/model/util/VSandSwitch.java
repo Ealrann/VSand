@@ -7,8 +7,6 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 import org.sheepy.lily.core.model.application.Application;
-import org.sheepy.lily.core.model.inference.IInferenceObject;
-import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.core.model.types.LNamedElement;
 import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
 import org.sheepy.lily.vulkan.model.IResource;
@@ -83,8 +81,6 @@ public class VSandSwitch<T> extends Switch<T>
 				VSandApplication vSandApplication = (VSandApplication)theEObject;
 				T result = caseVSandApplication(vSandApplication);
 				if (result == null) result = caseApplication(vSandApplication);
-				if (result == null) result = caseLObject(vSandApplication);
-				if (result == null) result = caseIInferenceObject(vSandApplication);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -466,38 +462,6 @@ public class VSandSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseInputMaterialProvider(InputMaterialProvider object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IInference Object</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IInference Object</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIInferenceObject(IInferenceObject object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>LObject</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>LObject</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseLObject(LObject object)
 	{
 		return null;
 	}

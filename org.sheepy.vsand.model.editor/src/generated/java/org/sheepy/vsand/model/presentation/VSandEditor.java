@@ -149,7 +149,6 @@ import org.sheepy.vsand.model.provider.VSandItemProviderAdapterFactory;
 
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.emf.common.ui.viewer.ColumnViewerInformationControlToolTipSupport;
-import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.DecoratingColumLabelProvider;
 import org.eclipse.emf.edit.ui.provider.DiagnosticDecorator;
 import org.eclipse.emf.edit.ui.util.FindAndReplaceTarget;
@@ -158,14 +157,18 @@ import org.eclipse.jface.text.IFindReplaceTarget;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.sheepy.lily.core.model.action.provider.ActionItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.application.provider.ApplicationItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.cadence.provider.CadenceItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.inference.provider.InferenceItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.maintainer.provider.MaintainerItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.presentation.provider.PresentationItemProviderAdapterFactory;
-import org.sheepy.lily.core.model.root.provider.RootItemProviderAdapterFactory;
 import org.sheepy.lily.core.model.types.provider.TypesItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.ui.provider.UiItemProviderAdapterFactory;
+import org.sheepy.lily.core.model.variable.provider.VariableItemProviderAdapterFactory;
+import org.sheepy.lily.vulkan.extra.model.nuklear.provider.NuklearItemProviderAdapterFactory;
 import org.sheepy.lily.vulkan.model.process.provider.ProcessItemProviderAdapterFactory;
 import org.sheepy.lily.vulkan.model.provider.VulkanItemProviderAdapterFactory;
 import org.sheepy.vulkan.model.barrier.provider.BarrierItemProviderAdapterFactory;
+import org.sheepy.vulkan.model.image.provider.ImageItemProviderAdapterFactory;
 import org.sheepy.vulkan.model.pipeline.provider.PipelineItemProviderAdapterFactory;
 
 
@@ -757,19 +760,22 @@ public class VSandEditor
 
 		adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new VSandItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new TypesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ActionItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ApplicationItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new RootItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new InferenceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new NuklearItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new UiItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new PresentationItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new VulkanItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new org.sheepy.lily.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new BarrierItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new PipelineItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ProcessItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ApplicationItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new VariableItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new TypesItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new InferenceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new MaintainerItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new CadenceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ActionItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ProcessItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.sheepy.lily.vulkan.model.resource.provider.ResourceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new VulkanItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new BarrierItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ImageItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new PipelineItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
 		// Create the command stack that will notify this editor as commands are executed.

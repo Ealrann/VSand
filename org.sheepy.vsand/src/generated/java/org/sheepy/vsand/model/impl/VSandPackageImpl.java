@@ -6,8 +6,6 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EcorePackage;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.sheepy.lily.core.model.action.ActionPackage;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
@@ -15,7 +13,6 @@ import org.sheepy.lily.core.model.cadence.CadencePackage;
 import org.sheepy.lily.core.model.inference.InferencePackage;
 import org.sheepy.lily.core.model.maintainer.MaintainerPackage;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
-import org.sheepy.lily.core.model.root.RootPackage;
 import org.sheepy.lily.core.model.types.TypesPackage;
 import org.sheepy.lily.core.model.ui.UiPackage;
 import org.sheepy.lily.core.model.variable.VariablePackage;
@@ -216,21 +213,19 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		isInited = true;
 
 		// Initialize simple dependencies
-		EcorePackage.eINSTANCE.eClass();
 		NuklearPackage.eINSTANCE.eClass();
-		TypesPackage.eINSTANCE.eClass();
-		ActionPackage.eINSTANCE.eClass();
+		UiPackage.eINSTANCE.eClass();
+		PresentationPackage.eINSTANCE.eClass();
 		ApplicationPackage.eINSTANCE.eClass();
-		RootPackage.eINSTANCE.eClass();
+		VariablePackage.eINSTANCE.eClass();
+		TypesPackage.eINSTANCE.eClass();
 		InferencePackage.eINSTANCE.eClass();
 		MaintainerPackage.eINSTANCE.eClass();
-		PresentationPackage.eINSTANCE.eClass();
-		UiPackage.eINSTANCE.eClass();
-		VariablePackage.eINSTANCE.eClass();
 		CadencePackage.eINSTANCE.eClass();
+		ActionPackage.eINSTANCE.eClass();
 		ProcessPackage.eINSTANCE.eClass();
-		VulkanPackage.eINSTANCE.eClass();
 		ResourcePackage.eINSTANCE.eClass();
+		VulkanPackage.eINSTANCE.eClass();
 		BarrierPackage.eINSTANCE.eClass();
 		EnumerationPackage.eINSTANCE.eClass();
 		ImagePackage.eINSTANCE.eClass();
@@ -1116,7 +1111,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		// Obtain other dependent packages
 		ApplicationPackage theApplicationPackage = (ApplicationPackage)EPackage.Registry.INSTANCE.getEPackage(ApplicationPackage.eNS_URI);
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
 		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
 		NuklearPackage theNuklearPackage = (NuklearPackage)EPackage.Registry.INSTANCE.getEPackage(NuklearPackage.eNS_URI);
@@ -1144,17 +1138,17 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEReference(getVSandApplication_DrawQueue(), this.getDrawCommand(), null, "drawQueue", null, 0, -1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_MainMaterial(), this.getMaterial(), null, "mainMaterial", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_SecondaryMaterial(), this.getMaterial(), null, "secondaryMaterial", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVSandApplication_NextMode(), theEcorePackage.getEBoolean(), "nextMode", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVSandApplication_Paused(), theEcorePackage.getEBoolean(), "paused", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVSandApplication_Speed(), theEcorePackage.getEInt(), "speed", "1", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVSandApplication_ForceClear(), theEcorePackage.getEBoolean(), "forceClear", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVSandApplication_ShowSleepZones(), theEcorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVSandApplication_BrushSize(), theEcorePackage.getEInt(), "brushSize", "4", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_NextMode(), ecorePackage.getEBoolean(), "nextMode", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_Paused(), ecorePackage.getEBoolean(), "paused", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_Speed(), ecorePackage.getEInt(), "speed", "1", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_ForceClear(), ecorePackage.getEBoolean(), "forceClear", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_ShowSleepZones(), ecorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_BrushSize(), ecorePackage.getEInt(), "brushSize", "4", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_BoardUpdateTask(), theProcessPackage.getCompositeTask(), null, "boardUpdateTask", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_Version(), ecorePackage.getEString(), "version", "0.0.0", 1, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(boardConstantBufferEClass, BoardConstantBuffer.class, "BoardConstantBuffer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBoardConstantBuffer_CurrentBoardBuffer(), theEcorePackage.getEInt(), "currentBoardBuffer", "0", 0, 1, BoardConstantBuffer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBoardConstantBuffer_CurrentBoardBuffer(), ecorePackage.getEInt(), "currentBoardBuffer", "0", 0, 1, BoardConstantBuffer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(drawConstantBufferEClass, DrawConstantBuffer.class, "DrawConstantBuffer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDrawConstantBuffer_BoardConstantBuffer(), this.getBoardConstantBuffer(), null, "boardConstantBuffer", null, 0, 1, DrawConstantBuffer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1166,34 +1160,34 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEReference(getDrawCommand_Material(), this.getMaterial(), null, "material", null, 0, 1, DrawCommand.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(drawCircleEClass, DrawCircle.class, "DrawCircle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDrawCircle_X(), theEcorePackage.getEInt(), "x", null, 0, 1, DrawCircle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDrawCircle_Y(), theEcorePackage.getEInt(), "y", null, 0, 1, DrawCircle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDrawCircle_Size(), theEcorePackage.getEInt(), "size", null, 0, 1, DrawCircle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawCircle_X(), ecorePackage.getEInt(), "x", null, 0, 1, DrawCircle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawCircle_Y(), ecorePackage.getEInt(), "y", null, 0, 1, DrawCircle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawCircle_Size(), ecorePackage.getEInt(), "size", null, 0, 1, DrawCircle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(drawSquareEClass, DrawSquare.class, "DrawSquare", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDrawSquare_X(), theEcorePackage.getEInt(), "x", null, 0, 1, DrawSquare.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDrawSquare_Y(), theEcorePackage.getEInt(), "y", null, 0, 1, DrawSquare.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDrawSquare_Size(), theEcorePackage.getEInt(), "size", null, 0, 1, DrawSquare.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawSquare_X(), ecorePackage.getEInt(), "x", null, 0, 1, DrawSquare.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawSquare_Y(), ecorePackage.getEInt(), "y", null, 0, 1, DrawSquare.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawSquare_Size(), ecorePackage.getEInt(), "size", null, 0, 1, DrawSquare.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(drawLineEClass, DrawLine.class, "DrawLine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDrawLine_X1(), theEcorePackage.getEInt(), "x1", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDrawLine_Y1(), theEcorePackage.getEInt(), "y1", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDrawLine_X2(), theEcorePackage.getEInt(), "x2", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDrawLine_Y2(), theEcorePackage.getEInt(), "y2", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDrawLine_Size(), theEcorePackage.getEInt(), "size", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawLine_X1(), ecorePackage.getEInt(), "x1", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawLine_Y1(), ecorePackage.getEInt(), "y1", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawLine_X2(), ecorePackage.getEInt(), "x2", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawLine_Y2(), ecorePackage.getEInt(), "y2", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDrawLine_Size(), ecorePackage.getEInt(), "size", null, 0, 1, DrawLine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(materialsEClass, Materials.class, "Materials", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getMaterials_Materials(), this.getMaterial(), null, "materials", null, 0, -1, Materials.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(materialEClass, Material.class, "Material", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getMaterial_Name(), theEcorePackage.getEString(), "name", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterial_IsStatic(), theEcorePackage.getEBoolean(), "isStatic", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterial_Density(), theEcorePackage.getEInt(), "density", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterial_Runoff(), theEcorePackage.getEInt(), "runoff", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterial_R(), theEcorePackage.getEInt(), "r", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterial_G(), theEcorePackage.getEInt(), "g", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterial_B(), theEcorePackage.getEInt(), "b", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMaterial_UserFriendly(), theEcorePackage.getEBoolean(), "userFriendly", "true", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_Name(), ecorePackage.getEString(), "name", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_IsStatic(), ecorePackage.getEBoolean(), "isStatic", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_Density(), ecorePackage.getEInt(), "density", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_Runoff(), ecorePackage.getEInt(), "runoff", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_R(), ecorePackage.getEInt(), "r", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_G(), ecorePackage.getEInt(), "g", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_B(), ecorePackage.getEInt(), "b", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_UserFriendly(), ecorePackage.getEBoolean(), "userFriendly", "true", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(transformationsEClass, Transformations.class, "Transformations", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTransformations_Transformations(), this.getITransformation(), null, "transformations", null, 0, -1, Transformations.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1212,9 +1206,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getMaterialProvider_FilterMode(), ecorePackage.getEBoolean(), "filterMode", "false", 1, 1, MaterialProvider.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iTransformationEClass, ITransformation.class, "ITransformation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getITransformation_Probability(), theEcorePackage.getEInt(), "probability", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getITransformation_Propagation(), theEcorePackage.getEInt(), "propagation", "1", 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getITransformation_IsStaticTransformation(), theEcorePackage.getEBoolean(), "isStaticTransformation", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getITransformation_Probability(), ecorePackage.getEInt(), "probability", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getITransformation_Propagation(), ecorePackage.getEInt(), "propagation", "1", 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getITransformation_IsStaticTransformation(), ecorePackage.getEBoolean(), "isStaticTransformation", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getITransformation_Target(), this.getMaterial(), null, "target", null, 0, 1, ITransformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(inputMaterialProviderEClass, InputMaterialProvider.class, "InputMaterialProvider", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

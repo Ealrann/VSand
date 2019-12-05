@@ -71,15 +71,6 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION = 0;
 
 	/**
-	 * The feature id for the '<em><b>Content Objects</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__CONTENT_OBJECTS = ApplicationPackage.APPLICATION__CONTENT_OBJECTS;
-
-	/**
 	 * The feature id for the '<em><b>Views</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -303,51 +294,6 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 13;
-
-	/**
-	 * The operation id for the '<em>LInference Object</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION___LINFERENCE_OBJECT = ApplicationPackage.APPLICATION___LINFERENCE_OBJECT;
-
-	/**
-	 * The operation id for the '<em>Create Containment EList</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION___CREATE_CONTAINMENT_ELIST__ECLASS = ApplicationPackage.APPLICATION___CREATE_CONTAINMENT_ELIST__ECLASS;
-
-	/**
-	 * The operation id for the '<em>LContents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION___LCONTENTS = ApplicationPackage.APPLICATION___LCONTENTS;
-
-	/**
-	 * The operation id for the '<em>LParent</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION___LPARENT = ApplicationPackage.APPLICATION___LPARENT;
-
-	/**
-	 * The operation id for the '<em>LAll Contents</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION___LALL_CONTENTS = ApplicationPackage.APPLICATION___LALL_CONTENTS;
 
 	/**
 	 * The number of operations of the '<em>Application</em>' class.

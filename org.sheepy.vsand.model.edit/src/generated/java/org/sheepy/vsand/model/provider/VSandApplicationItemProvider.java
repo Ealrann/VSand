@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
@@ -16,7 +15,6 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
 import org.sheepy.lily.core.model.application.provider.ApplicationItemProvider;
-import org.sheepy.lily.core.model.root.LObject;
 import org.sheepy.lily.vulkan.model.VulkanFactory;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandFactory;
@@ -354,8 +352,7 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	@Override
 	public String getText(Object object)
 	{
-		EList<LObject> labelValue = ((VSandApplication)object).getContentObjects();
-		String label = labelValue == null ? null : labelValue.toString();
+		String label = ((VSandApplication)object).getTitle();
 		return label == null || label.length() == 0 ?
 			getString("_UI_VSandApplication_type") :
 			getString("_UI_VSandApplication_type") + " " + label;
