@@ -104,7 +104,7 @@ public class VSandInputManager implements IInputListener
 				break;
 			// f
 			case 'f' - 32:
-				application.setFullscreen(!application.isFullscreen());
+				application.getScene().setFullscreen(!application.getScene().isFullscreen());
 				break;
 			// Echap
 			case 256:

@@ -7,9 +7,9 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 import org.sheepy.lily.core.model.application.Application;
+import org.sheepy.lily.core.model.application.IResource;
 import org.sheepy.lily.core.model.types.LNamedElement;
 import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
-import org.sheepy.lily.vulkan.model.IResource;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.*;
 

@@ -1,58 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:graphicpipeline="org.sheepy.vulkan.model.graphicpipeline" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" size="1248;704" currentView="//@views.0" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2">
-  <views xsi:type="presentation:TranparentUIView" currentUIPage="//@views.0/@uiPages.0">
-    <uiPages>
-      <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
-        <controls xsi:type="ui:DynamicRowLayout"/>
-        <controls xsi:type="ui:VariableLabel" text="Speed">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
-        </controls>
-        <controls xsi:type="ui:Slider" minValue="1" maxValue="16">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
-        </controls>
-        <controls xsi:type="ui:VariableLabel" text="Brush Size">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
-        </controls>
-        <controls xsi:type="ui:Slider" minValue="1" maxValue="8">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
-        </controls>
-      </panels>
-      <panels xsi:type="nuklear:SelectorPanel" name="Primary Material" position="34;0" verticalRelative="MIDDLE" horizontalRelative="RIGHT" buttonSizePx="28" selectionR="229" selectionG="57" selectionB="53" printLabels="true" autoHideLabels="false">
-        <variableResolver variableDefinition="org.sheepy.vsand.model#VSandApplication#mainMaterial" target="/"/>
-        <inputProvider xsi:type="model:InputMaterialProvider" materials="//@materials"/>
-      </panels>
-      <panels xsi:type="ui:Panel" name="Controls" width="300" height="265" showTitle="true" minimizable="true" minimized="true">
-        <controls xsi:type="ui:DynamicRowLayout" columnCount="2"/>
-        <controls xsi:type="ui:Label" text="Primary material"/>
-        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Scroll"/>
-        <controls xsi:type="ui:Label" text="Secondary material"/>
-        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Shift + Scroll"/>
-        <controls xsi:type="ui:Label" text="Speed"/>
-        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text=" /  *"/>
-        <controls xsi:type="ui:Label" text="Brush"/>
-        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text=" -  +"/>
-        <controls xsi:type="ui:Label" text="Pause"/>
-        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Space bar"/>
-        <controls xsi:type="ui:Label" text="Next Frame"/>
-        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="n"/>
-        <controls xsi:type="ui:Label" text="Fullscreen"/>
-        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="f"/>
-        <controls xsi:type="ui:Label" text="Quit"/>
-        <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Echap"/>
-        <controls xsi:type="ui:Label"/>
-        <controls xsi:type="ui:Label"/>
-        <controls xsi:type="ui:DynamicRowLayout"/>
-        <controls xsi:type="ui:VariableLabel" text="Version">
-          <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#version" target="/"/>
-        </controls>
-        <controls xsi:type="ui:Label" text="https://github.com/ealrann/VSand"/>
-      </panels>
-      <panels xsi:type="nuklear:SelectorPanel" name="Secondary Material" position="0;0" verticalRelative="MIDDLE" horizontalRelative="RIGHT" buttonSizePx="28" selectionR="3" selectionG="155" selectionB="229">
-        <variableResolver variableDefinition="org.sheepy.vsand.model#VSandApplication#secondaryMaterial" target="/"/>
-        <inputProvider xsi:type="model:InputMaterialProvider" materials="//@materials"/>
-      </panels>
-    </uiPages>
-  </views>
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2" size="1248;704">
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
       <resources xsi:type="resource:StaticImage" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM" fillWithZero="true">
@@ -87,15 +34,15 @@
           <usages>UNIFORM_BUFFER_BIT</usages>
         </resources>
         <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
-          <file xsi:type="resource:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
+          <file xsi:type="application:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
           <constants name="MaterialCount" size="4"/>
         </resources>
         <resources xsi:type="resource:Shader" name="boardUpdate" stage="COMPUTE_BIT">
-          <file xsi:type="resource:StringModuleResource" name="" path="board_update.comp.spv" moduleName="org.sheepy.vsand"/>
+          <file xsi:type="application:StringModuleResource" name="" path="board_update.comp.spv" moduleName="org.sheepy.vsand"/>
           <constants name="MaterialCount" size="4"/>
         </resources>
         <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
-          <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
+          <file xsi:type="application:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
           <constants name="MaterialCount" size="4"/>
         </resources>
         <resources xsi:type="model:BoardConstantBuffer"/>
@@ -232,103 +179,7 @@
       </partPkg>
     </processes>
     <processes xsi:type="graphic:GraphicProcess" resetAllowed="true">
-      <partPkg>
-        <parts xsi:type="process:Pipeline" name="Blit" stage="Transfer">
-          <taskPkg>
-            <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="TRANSFER_BIT" srcQueue="//@engines.0/@processes.0" dstQueue="//@engines.0/@processes.1">
-              <barriers xsi:type="resource:ImageBarrier" srcLayout="GENERAL" dstLayout="TRANSFER_SRC_OPTIMAL" image="//@engines.0/@resourcePkg/@resources.0">
-                <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
-                <dstAccessMask>TRANSFER_READ_BIT</dstAccessMask>
-              </barriers>
-            </tasks>
-            <tasks xsi:type="process:PipelineBarrier" dstStage="TRANSFER_BIT">
-              <barriers xsi:type="graphic:SwapImageBarrier" dstLayout="TRANSFER_DST_OPTIMAL">
-                <dstAccessMask>TRANSFER_WRITE_BIT</dstAccessMask>
-              </barriers>
-            </tasks>
-            <tasks xsi:type="graphic:BlitToSwapImage" image="//@engines.0/@resourcePkg/@resources.0"/>
-          </taskPkg>
-        </parts>
-        <parts xsi:type="graphic:GraphicsPipeline" name="GUI" shaders="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.3 //@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.4">
-          <resourcePkg>
-            <resources xsi:type="resource:SampledImage" name="NullTexture">
-              <sampler/>
-              <image xsi:type="resource:StaticImage" name="NullImage" width="1" height="1" format="R8G8B8A8_UNORM">
-                <initialLayout stage="FRAGMENT_SHADER_BIT">
-                  <accessMask>SHADER_READ_BIT</accessMask>
-                </initialLayout>
-                <usages>Sampled</usages>
-                <usages>TransferDst</usages>
-              </image>
-            </resources>
-            <resources xsi:type="nuklear:NuklearFont">
-              <fontSampledImage name="Font Sampled Image">
-                <sampler/>
-                <image xsi:type="resource:FontImage" name="Font">
-                  <initialLayout stage="FRAGMENT_SHADER_BIT">
-                    <accessMask>SHADER_READ_BIT</accessMask>
-                  </initialLayout>
-                  <file xsi:type="resource:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
-                </image>
-              </fontSampledImage>
-            </resources>
-            <resources xsi:type="nuklear:NuklearContext" font="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1" nullTexture="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0" layoutTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
-            <resources xsi:type="resource:Shader" name="NkVertex">
-              <file xsi:type="resource:StringModuleResource" name="Vertex" path="ui.vert.spv" moduleName="org.sheepy.lily.vulkan.extra.nuklear"/>
-            </resources>
-            <resources xsi:type="resource:Shader" name="NkFrag" stage="FRAGMENT_BIT">
-              <file xsi:type="resource:StringModuleResource" name="Frag" path="ui.frag.spv" moduleName="org.sheepy.lily.vulkan.extra.nuklear"/>
-            </resources>
-            <resources xsi:type="resource:TransferBuffer" name="NkPushBuffer" size="524288" instanceCount="2"/>
-            <resources xsi:type="resource:CompositeBuffer" name="NuklearVertexBuffer" transferBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.5">
-              <dataProviders xsi:type="nuklear:NuklearVertexProvider" usage="VERTEX_BUFFER_BIT" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2"/>
-              <dataProviders xsi:type="nuklear:NuklearIndexProvider" usage="INDEX_BUFFER_BIT" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2"/>
-            </resources>
-          </resourcePkg>
-          <descriptorPkg>
-            <descriptors xsi:type="resource:SampledImageDescriptor" name="NullTexture" type="COMBINED_IMAGE_SAMPLER" sampledImage="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.0">
-              <shaderStages>FRAGMENT_BIT</shaderStages>
-            </descriptors>
-            <descriptors xsi:type="resource:SampledImageDescriptor" name="NkFont" type="COMBINED_IMAGE_SAMPLER" sampledImage="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.1/@fontSampledImage">
-              <shaderStages>FRAGMENT_BIT</shaderStages>
-            </descriptors>
-          </descriptorPkg>
-          <pushConstantRanges size="68">
-            <stages>VERTEX_BIT</stages>
-            <stages>FRAGMENT_BIT</stages>
-          </pushConstantRanges>
-          <descriptorSetPkg>
-            <descriptorSets name="UI" descriptors="//@engines.0/@processes.1/@partPkg/@parts.1/@descriptorPkg/@descriptors.0 //@engines.0/@processes.1/@partPkg/@parts.1/@descriptorPkg/@descriptors.1"/>
-          </descriptorSetPkg>
-          <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.1/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0"/>
-            <tasks xsi:type="process:PrepareCompositeTransfer" compositeBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6" prepareDuringUpdate="true">
-              <parts/>
-              <parts part="1"/>
-            </tasks>
-            <tasks xsi:type="nuklear:NuklearLayoutTask" context="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.2" drawTask="//@engines.0/@processes.1/@partPkg/@parts.1/@taskPkg/@tasks.4" vertexBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.6"/>
-            <tasks xsi:type="process:FlushTransferBufferTask" transferBuffer="//@engines.0/@processes.1/@partPkg/@parts.1/@resourcePkg/@resources.5" flushDuringUpdate="true"/>
-            <tasks xsi:type="process:CompositeTask" name="Nk draw"/>
-          </taskPkg>
-          <viewportState xsi:type="graphicpipeline:DynamicViewportState" viewportCount="1" scissorCount="1"/>
-          <inputAssembly/>
-          <rasterizer cullMode="NONE" frontFace="COUNTER_CLOCKWISE"/>
-          <colorBlend>
-            <attachments blendEnable="true" srcColor="SRC_ALPHA" dstColor="ONE_MINUS_SRC_ALPHA"/>
-          </colorBlend>
-          <dynamicState>
-            <states>VIEWPORT</states>
-            <states>SCISSOR</states>
-          </dynamicState>
-          <vertexInputState>
-            <inputDescriptor strideLength="20">
-              <attributes name="Position" format="R32G32_SFLOAT"/>
-              <attributes name="UV" format="R32G32_SFLOAT" offset="8"/>
-              <attributes name="Color" format="R8G8B8A8_UNORM" offset="16"/>
-            </inputDescriptor>
-          </vertexInputState>
-        </parts>
-      </partPkg>
+      <partPkg/>
       <configuration acquireWaitStage="COMPUTE_SHADER_BIT">
         <swapchainConfiguration requiredSwapImageCount="2" allowingAccessFromCompute="true">
           <swapImageUsages>ColorAttachment</swapImageUsages>
@@ -338,19 +189,66 @@
         <colorDomain/>
       </configuration>
       <renderPassInfo>
-        <attachments xsi:type="graphic:SwapImageAttachmentDescription" name="Swapchain" stencilLoadOp="DONT_CARE" stencilStoreOp="DONT_CARE" initialLayout="TRANSFER_DST_OPTIMAL" finalLayout="PRESENT_SRC_KHR"/>
-        <subpasses name="UI">
-          <refs attachment="//@engines.0/@processes.1/@renderPassInfo/@attachments.0" layout="COLOR_ATTACHMENT_OPTIMAL"/>
-        </subpasses>
-        <dependencies dstSubpass="//@engines.0/@processes.1/@renderPassInfo/@subpasses.0">
-          <srcStageMask>ALL_COMMANDS_BIT</srcStageMask>
-          <dstStageMask>COLOR_ATTACHMENT_OUTPUT_BIT</dstStageMask>
-          <srcAccesses>TRANSFER_WRITE_BIT</srcAccesses>
-          <dstAccesses>COLOR_ATTACHMENT_WRITE_BIT</dstAccesses>
-        </dependencies>
+        <colorAttachment name="Swapchain" stencilLoadOp="DONT_CARE" stencilStoreOp="DONT_CARE" initialLayout="TRANSFER_DST_OPTIMAL" finalLayout="PRESENT_SRC_KHR"/>
       </renderPassInfo>
     </processes>
   </engines>
+  <scene resizeable="true" size="1248;704">
+    <parts xsi:type="application:BackgroundImage" resource="//@engines.0/@resourcePkg/@resources.0"/>
+    <parts xsi:type="presentation:UI" currentUIPage="//@scene/@parts.1/@uiPages.0">
+      <uiPages>
+        <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
+          <controls xsi:type="ui:DynamicRowLayout"/>
+          <controls xsi:type="ui:VariableLabel" text="Speed">
+            <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
+          </controls>
+          <controls xsi:type="ui:Slider" minValue="1" maxValue="16">
+            <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
+          </controls>
+          <controls xsi:type="ui:VariableLabel" text="Brush Size">
+            <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
+          </controls>
+          <controls xsi:type="ui:Slider" minValue="1" maxValue="8">
+            <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
+          </controls>
+        </panels>
+        <panels xsi:type="nuklear:SelectorPanel" name="Primary Material" position="34;0" verticalRelative="MIDDLE" horizontalRelative="RIGHT" buttonSizePx="28" selectionR="229" selectionG="57" selectionB="53" printLabels="true" autoHideLabels="false">
+          <variableResolver variableDefinition="org.sheepy.vsand.model#VSandApplication#mainMaterial" target="/"/>
+          <inputProvider xsi:type="model:InputMaterialProvider" materials="//@materials"/>
+        </panels>
+        <panels xsi:type="ui:Panel" name="Controls" width="300" height="265" showTitle="true" minimizable="true" minimized="true">
+          <controls xsi:type="ui:DynamicRowLayout" columnCount="2"/>
+          <controls xsi:type="ui:Label" text="Primary material"/>
+          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Scroll"/>
+          <controls xsi:type="ui:Label" text="Secondary material"/>
+          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Shift + Scroll"/>
+          <controls xsi:type="ui:Label" text="Speed"/>
+          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text=" /  *"/>
+          <controls xsi:type="ui:Label" text="Brush"/>
+          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text=" -  +"/>
+          <controls xsi:type="ui:Label" text="Pause"/>
+          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Space bar"/>
+          <controls xsi:type="ui:Label" text="Next Frame"/>
+          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="n"/>
+          <controls xsi:type="ui:Label" text="Fullscreen"/>
+          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="f"/>
+          <controls xsi:type="ui:Label" text="Quit"/>
+          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Echap"/>
+          <controls xsi:type="ui:Label"/>
+          <controls xsi:type="ui:Label"/>
+          <controls xsi:type="ui:DynamicRowLayout"/>
+          <controls xsi:type="ui:VariableLabel" text="Version">
+            <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#version" target="/"/>
+          </controls>
+          <controls xsi:type="ui:Label" text="https://github.com/ealrann/VSand"/>
+        </panels>
+        <panels xsi:type="nuklear:SelectorPanel" name="Secondary Material" position="0;0" verticalRelative="MIDDLE" horizontalRelative="RIGHT" buttonSizePx="28" selectionR="3" selectionG="155" selectionB="229">
+          <variableResolver variableDefinition="org.sheepy.vsand.model#VSandApplication#secondaryMaterial" target="/"/>
+          <inputProvider xsi:type="model:InputMaterialProvider" materials="//@materials"/>
+        </panels>
+      </uiPages>
+    </parts>
+  </scene>
   <materials>
     <materials name="Void" runoff="60"/>
     <materials name="Sand" density="5" runoff="1" r="244" g="244" b="67"/>

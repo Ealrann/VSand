@@ -30,14 +30,12 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.sheepy.lily.core.model.application.ApplicationPackage;
+import org.sheepy.lily.core.model.application.ResourcePkg;
+import org.sheepy.lily.core.model.application.util.ApplicationSwitch;
 import org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage;
 import org.sheepy.lily.vulkan.extra.model.nuklear.SelectorPanel;
 import org.sheepy.lily.vulkan.extra.model.nuklear.util.NuklearSwitch;
-import org.sheepy.lily.vulkan.model.ResourcePkg;
-import org.sheepy.lily.vulkan.model.VulkanPackage;
-
-import org.sheepy.lily.vulkan.model.util.VulkanSwitch;
-
 import org.sheepy.vsand.model.VSandFactory;
 
 import org.sheepy.vsand.model.util.VSandAdapterFactory;
@@ -673,12 +671,12 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 	}
 
 	/**
-	 * A child creation extender for the {@link VulkanPackage}.
+	 * A child creation extender for the {@link ApplicationPackage}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static class VulkanChildCreationExtender implements IChildCreationExtender
+	public static class ApplicationChildCreationExtender implements IChildCreationExtender
 	{
 		/**
 		 * The switch for creating child descriptors specific to each extended class.
@@ -686,7 +684,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		protected static class CreationSwitch extends VulkanSwitch<Object>
+		protected static class CreationSwitch extends ApplicationSwitch<Object>
 		{
 			/**
 			 * The child descriptors being populated.
@@ -710,7 +708,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 			 * <!-- end-user-doc -->
 			 * @generated
 			 */
-			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain)
+			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) 
 			{
 				this.newChildDescriptors = newChildDescriptors;
 				this.editingDomain = editingDomain;
@@ -725,22 +723,21 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 			{
 				newChildDescriptors.add
 					(createChildParameter
-						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						(ApplicationPackage.Literals.RESOURCE_PKG__RESOURCES,
 						 VSandFactory.eINSTANCE.createBoardConstantBuffer()));
 
 				newChildDescriptors.add
 					(createChildParameter
-						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						(ApplicationPackage.Literals.RESOURCE_PKG__RESOURCES,
 						 VSandFactory.eINSTANCE.createDrawConstantBuffer()));
 
 				newChildDescriptors.add
 					(createChildParameter
-						(VulkanPackage.Literals.RESOURCE_PKG__RESOURCES,
+						(ApplicationPackage.Literals.RESOURCE_PKG__RESOURCES,
 						 VSandFactory.eINSTANCE.createPixelConstantBuffer()));
 
 				return null;
 			}
-
 			/**
 			 * <!-- begin-user-doc -->
 			 * <!-- end-user-doc -->

@@ -6,9 +6,9 @@ import java.util.List;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.model.application.FileResource;
 import org.sheepy.lily.vulkan.extra.api.nuklear.ISelectorInputProviderAdapter;
 import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
-import org.sheepy.lily.vulkan.model.resource.PathResource;
 import org.sheepy.vsand.model.InputMaterialProvider;
 import org.sheepy.vsand.model.Material;
 
@@ -39,7 +39,7 @@ public class MaterialSelectorInputProviderAdapter implements ISelectorInputProvi
 	}
 
 	@Override
-	public PathResource getImage(Object element)
+	public FileResource getImage(Object element)
 	{
 		return null;
 	}

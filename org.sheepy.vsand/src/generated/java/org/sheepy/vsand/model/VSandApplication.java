@@ -3,6 +3,7 @@
 package org.sheepy.vsand.model;
 
 import org.eclipse.emf.common.util.EList;
+import org.joml.Vector2ic;
 import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.vulkan.model.process.CompositeTask;
 
@@ -28,6 +29,7 @@ import org.sheepy.lily.vulkan.model.process.CompositeTask;
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask <em>Board Update Task</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getVersion <em>Version</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getSize <em>Size</em>}</li>
  * </ul>
  *
  * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication()
@@ -343,4 +345,26 @@ public interface VSandApplication extends Application
 	 * @generated
 	 */
 	void setVersion(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Size</em>' attribute.
+	 * @see #setSize(Vector2ic)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_Size()
+	 * @model dataType="org.sheepy.lily.core.model.types.Vector2i" required="true"
+	 * @generated
+	 */
+	Vector2ic getSize();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getSize <em>Size</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Size</em>' attribute.
+	 * @see #getSize()
+	 * @generated
+	 */
+	void setSize(Vector2ic value);
 } // VSandApplication

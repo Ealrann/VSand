@@ -2,8 +2,6 @@ package org.sheepy.vsand.constants;
 
 import java.nio.ByteBuffer;
 
-import org.joml.Vector2fc;
-import org.joml.Vector2i;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
@@ -19,6 +17,7 @@ import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.PixelConstantBuffer;
 import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.util.BoardUtil;
 import org.sheepy.vsand.util.EShapeSize;
 
 @Statefull
@@ -30,7 +29,6 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 
 	private final PixelConstantBuffer constantBuffer;
 	private final VSandApplication application;
-	private final Vector2i boardSize;
 
 	private ByteBuffer buffer = null;
 
@@ -41,7 +39,6 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 		this.constantBuffer = constantBuffer;
 
 		application = (VSandApplication) ModelUtil.getApplication(constantBuffer);
-		boardSize = new Vector2i(application.getSize());
 	}
 
 	@Load
@@ -91,9 +88,11 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 
 		if (inputManager != null)
 		{
-			final var cursorPosition = convertToBoardPosition(inputManager.getCursorPosition());
-			buffer.putInt(cursorPosition.x);
-			buffer.putInt(cursorPosition.y);
+			final var cursorPosition = inputManager.getCursorPosition();
+			final var cursorPositionOnBoard = BoardUtil.toBoardPosition(cursorPosition,
+																		application);
+			buffer.putInt(cursorPositionOnBoard.x());
+			buffer.putInt(cursorPositionOnBoard.y());
 		}
 		else
 		{
@@ -106,23 +105,5 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 		buffer.flip();
 
 		constantBuffer.setData(buffer);
-	}
-
-	private Vector2i convertToBoardPosition(Vector2fc mousePos)
-	{
-		final Vector2i res = new Vector2i((int) mousePos.x(), (int) mousePos.y());
-
-		final int boardWidth = boardSize.x;
-		final int boardHeight = boardSize.y;
-
-		final int width = application.getSize().x();
-		final int height = application.getSize().y();
-		if (width != boardWidth || height != boardHeight)
-		{
-			res.x *= (float) boardWidth / width;
-			res.y *= (float) boardHeight / height;
-		}
-
-		return res;
 	}
 }

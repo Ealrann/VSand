@@ -9,6 +9,7 @@ import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
+import org.sheepy.vsand.model.VSandApplication;
 
 @Adapter(scope = Buffer.class, name = "Board Buffer 1", lazy = false)
 public final class Board1BufferLoader implements IAdapter
@@ -16,9 +17,10 @@ public final class Board1BufferLoader implements IAdapter
 	@Load
 	private static void load(Buffer buffer)
 	{
-		final var application = ModelUtil.getApplication(buffer);
-		final int width = application.getSize().x() / 2;
-		final int height = application.getSize().y() / 2;
+		final var application = (VSandApplication) ModelUtil.getApplication(buffer);
+		final var size = application.getSize();
+		final int width = size.x() / 2;
+		final int height = size.y() / 2;
 		final int sizeBoard = width * height;
 		final int sizeByte = sizeBoard * Integer.BYTES;
 

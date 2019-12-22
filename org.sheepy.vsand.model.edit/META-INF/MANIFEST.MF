@@ -10,7 +10,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.sheepy.vsand.model.provider
-Require-Bundle: org.eclipse.core.runtime;resolution:=optional;x-installation:=greedy,
+Require-Bundle: org.eclipse.core.runtime;x-installation:=greedy;resolution:=optional,
  org.sheepy.vsand.model;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
  org.sheepy.lily.vulkan.model;visibility:=reexport,

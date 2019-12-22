@@ -27,7 +27,7 @@ public class VSandBenchmarkLauncher
 		final var application = VSandApplicationLauncher.loadApplication();
 
 		// remove UI
-		EcoreUtil.delete(application.getViews().get(0));
+		EcoreUtil.delete(application.getScene().getParts().get(1));
 
 		final DemoDrawer drawer = new DemoDrawer(application);
 		drawer.drawLavaPot(200, 400);

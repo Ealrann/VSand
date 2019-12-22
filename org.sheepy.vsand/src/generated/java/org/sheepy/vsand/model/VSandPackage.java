@@ -71,15 +71,6 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION = 0;
 
 	/**
-	 * The feature id for the '<em><b>Views</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__VIEWS = ApplicationPackage.APPLICATION__VIEWS;
-
-	/**
 	 * The feature id for the '<em><b>Engines</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -98,33 +89,6 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__RUN = ApplicationPackage.APPLICATION__RUN;
 
 	/**
-	 * The feature id for the '<em><b>Fullscreen</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__FULLSCREEN = ApplicationPackage.APPLICATION__FULLSCREEN;
-
-	/**
-	 * The feature id for the '<em><b>Resizeable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__RESIZEABLE = ApplicationPackage.APPLICATION__RESIZEABLE;
-
-	/**
-	 * The feature id for the '<em><b>Headless</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__HEADLESS = ApplicationPackage.APPLICATION__HEADLESS;
-
-	/**
 	 * The feature id for the '<em><b>Title</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -134,31 +98,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__TITLE = ApplicationPackage.APPLICATION__TITLE;
 
 	/**
-	 * The feature id for the '<em><b>Size</b></em>' attribute.
+	 * The feature id for the '<em><b>Scene</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__SIZE = ApplicationPackage.APPLICATION__SIZE;
-
-	/**
-	 * The feature id for the '<em><b>Current View</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__CURRENT_VIEW = ApplicationPackage.APPLICATION__CURRENT_VIEW;
-
-	/**
-	 * The feature id for the '<em><b>Cadence</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__CADENCE = ApplicationPackage.APPLICATION__CADENCE;
+	int VSAND_APPLICATION__SCENE = ApplicationPackage.APPLICATION__SCENE;
 
 	/**
 	 * The feature id for the '<em><b>Time Configuration</b></em>' containment reference.
@@ -287,13 +233,22 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__VERSION = ApplicationPackage.APPLICATION_FEATURE_COUNT + 12;
 
 	/**
+	 * The feature id for the '<em><b>Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 13;
+
+	/**
 	 * The number of structural features of the '<em>Application</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 13;
+	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 14;
 
 	/**
 	 * The number of operations of the '<em>Application</em>' class.
@@ -1382,6 +1337,17 @@ public interface VSandPackage extends EPackage
 	EAttribute getVSandApplication_Version();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#getSize <em>Size</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Size</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#getSize()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EAttribute getVSandApplication_Size();
+
+	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.BoardConstantBuffer <em>Board Constant Buffer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2075,6 +2041,14 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EAttribute VSAND_APPLICATION__VERSION = eINSTANCE.getVSandApplication_Version();
+
+		/**
+		 * The meta object literal for the '<em><b>Size</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VSAND_APPLICATION__SIZE = eINSTANCE.getVSandApplication_Size();
 
 		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.BoardConstantBufferImpl <em>Board Constant Buffer</em>}' class.
