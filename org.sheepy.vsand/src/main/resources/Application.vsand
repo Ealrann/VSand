@@ -185,7 +185,7 @@
           <swapImageUsages>ColorAttachment</swapImageUsages>
           <swapImageUsages>TransferDst</swapImageUsages>
         </swapchainConfiguration>
-        <framebufferConfiguration/>
+        <framebufferConfiguration clearValue="0.0;0.0;0.0;0.0"/>
         <colorDomain/>
       </configuration>
       <renderPassInfo>
@@ -194,7 +194,7 @@
     </processes>
   </engines>
   <scene resizeable="true" size="1248;704">
-    <parts xsi:type="application:BackgroundImage" resource="//@engines.0/@resourcePkg/@resources.0"/>
+    <parts xsi:type="application:BackgroundImage" resource="//@engines.0/@resourcePkg/@resources.0" sampling="Nearest"/>
     <parts xsi:type="presentation:UI" currentUIPage="//@scene/@parts.1/@uiPages.0">
       <uiPages>
         <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">

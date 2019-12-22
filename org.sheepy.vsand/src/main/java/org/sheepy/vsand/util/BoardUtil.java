@@ -7,8 +7,7 @@ import org.sheepy.vsand.model.VSandApplication;
 
 public final class BoardUtil
 {
-	public static Vector2ic toBoardPosition(Vector2fc mousePos,
-													VSandApplication application)
+	public static Vector2ic toBoardPosition(Vector2fc mousePos, VSandApplication application)
 	{
 		final var boardSize = application.getSize();
 		final var sceneSize = application.getScene().getSize();
@@ -19,8 +18,22 @@ public final class BoardUtil
 
 		if (width != boardWidth || height != boardHeight)
 		{
-			final int x = (int) (mousePos.x() * (boardWidth / width));
-			final int y = (int) (mousePos.y() * (boardHeight / height));
+			final float scale = Math.min(width / boardWidth, height / boardHeight);
+			final int dstWidth = (int) Math.ceil(scale * boardWidth);
+			final int dstHeight = (int) Math.ceil(scale * boardHeight);
+
+			int xOffset = 0;
+			int yOffset = 0;
+			if (dstWidth < width)
+			{
+				xOffset = (int) ((width - dstWidth) / 2f);
+			}
+			if (dstHeight < height)
+			{
+				yOffset = (int) ((height - dstHeight) / 2f);
+			}
+			final int x = (int) ((mousePos.x() - xOffset) * (boardWidth / dstWidth));
+			final int y = (int) ((mousePos.y() - yOffset) * (boardHeight / dstHeight));
 			return new Vector2i(x, y);
 		}
 		else
