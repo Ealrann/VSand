@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:presentation="org.sheepy.lily.core.model.presentation" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2" size="1248;704">
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2" size="1248;704">
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
-      <resources xsi:type="resource:StaticImage" name="Board Image" width="1248" height="704" format="R8G8B8A8_UNORM" fillWithZero="true">
-        <initialLayout stage="COMPUTE_SHADER_BIT" layout="TRANSFER_SRC_OPTIMAL">
-          <accessMask>SHADER_WRITE_BIT</accessMask>
-        </initialLayout>
+      <resources xsi:type="resource:StaticImage" name="Board Image" fillWithZero="true" size="1248;704">
         <usages>TransferSrc</usages>
         <usages>Storage</usages>
         <usages>TransferDst</usages>
+        <initialLayout stage="COMPUTE_SHADER_BIT" layout="TRANSFER_SRC_OPTIMAL">
+          <accessMask>SHADER_WRITE_BIT</accessMask>
+        </initialLayout>
       </resources>
     </resourcePkg>
     <processes xsi:type="compute:ComputeProcess" name="Board Compute" waitingFenceDuringAcquire="true" resetAllowed="true">
@@ -195,7 +195,7 @@
   </engines>
   <scene resizeable="true" size="1248;704">
     <parts xsi:type="application:BackgroundImage" resource="//@engines.0/@resourcePkg/@resources.0" sampling="Nearest"/>
-    <parts xsi:type="presentation:UI" currentUIPage="//@scene/@parts.1/@uiPages.0">
+    <parts xsi:type="ui:UI" imageSupport="false" currentUIPage="//@scene/@parts.1/@uiPages.0">
       <uiPages>
         <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
           <controls xsi:type="ui:DynamicRowLayout"/>
@@ -247,6 +247,14 @@
           <inputProvider xsi:type="model:InputMaterialProvider" materials="//@materials"/>
         </panels>
       </uiPages>
+      <fontPkg>
+        <fonts name="Default">
+          <tables name="Fira">
+            <file xsi:type="application:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
+            <charTables>Base</charTables>
+          </tables>
+        </fonts>
+      </fontPkg>
     </parts>
   </scene>
   <materials>

@@ -117,6 +117,11 @@ public final class VSandMainLoop implements Runnable
 																	mainDrawManager,
 																	secondaryDrawManager);
 				inputManager.addListener(vsandInputManager);
+				
+				if(inputManager.isMouseOnUI() == false)
+				{
+					window.hideCursor(true);
+				}
 			}
 		}
 
