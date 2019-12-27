@@ -116,6 +116,15 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__TIME_CONFIGURATION = ApplicationPackage.APPLICATION__TIME_CONFIGURATION;
 
 	/**
+	 * The feature id for the '<em><b>Extension Pkg</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__EXTENSION_PKG = ApplicationPackage.APPLICATION__EXTENSION_PKG;
+
+	/**
 	 * The feature id for the '<em><b>Materials</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
