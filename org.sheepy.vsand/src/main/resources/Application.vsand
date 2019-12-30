@@ -194,7 +194,7 @@
     </processes>
   </engines>
   <scene resizeable="true" size="1248;704">
-    <parts xsi:type="application:BackgroundImage" resource="//@engines.0/@resourcePkg/@resources.0" sampling="Nearest"/>
+    <parts xsi:type="application:BackgroundImage" image="//@engines.0/@resourcePkg/@resources.0" sampling="Nearest"/>
     <parts xsi:type="ui:UI" imageSupport="false" currentUIPage="//@scene/@parts.1/@uiPages.0">
       <uiPages>
         <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
