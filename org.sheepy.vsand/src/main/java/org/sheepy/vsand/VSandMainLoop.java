@@ -117,8 +117,8 @@ public final class VSandMainLoop implements Runnable
 																	mainDrawManager,
 																	secondaryDrawManager);
 				inputManager.addListener(vsandInputManager);
-				
-				if(inputManager.isMouseOnUI() == false)
+
+				if (inputManager.isMouseOnUI() == false)
 				{
 					window.hideCursor(true);
 				}
@@ -144,8 +144,8 @@ public final class VSandMainLoop implements Runnable
 			if (process instanceof ComputeProcess)
 			{
 				boardProcessAdapter = process.adaptNotNull(IProcessAdapter.class);
-				final var boardToPixelPipeline = (ComputePipeline) ((ComputeProcess) process)	.getPartPkg()
-																								.getParts()
+				final var boardToPixelPipeline = (ComputePipeline) ((ComputeProcess) process)	.getPipelinePkg()
+																								.getPipelines()
 																								.get(2);
 				boardImageBarrier = boardToPixelPipeline.getTaskPkg().getTasks().get(2);
 			}

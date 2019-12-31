@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2" size="1248;704">
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@taskPkg/@tasks.2" size="1248;704">
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
       <resources xsi:type="resource:StaticImage" name="Board Image" fillWithZero="true" size="1248;704">
@@ -73,8 +73,8 @@
           <shaderStages>COMPUTE_BIT</shaderStages>
         </descriptors>
       </descriptorPkg>
-      <partPkg>
-        <parts xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5">
+      <pipelinePkg>
+        <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5">
           <resourcePkg>
             <resources xsi:type="model:DrawConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
@@ -85,8 +85,8 @@
             <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
           </descriptorSetPkg>
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.0/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
-            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@partPkg/@parts.0/@resourcePkg/@resources.0">
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
+            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
@@ -105,8 +105,8 @@
             </tasks>
             <tasks xsi:type="compute:DispatchTask" name="Draw" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
-        </parts>
-        <parts xsi:type="compute:ComputePipeline" name="Step" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6">
+        </pipelines>
+        <pipelines xsi:type="compute:ComputePipeline" name="Step" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6">
           <pushConstantRanges size="8">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
@@ -114,7 +114,7 @@
             <descriptorSets name="Update Board Common" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.4 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
           </descriptorSetPkg>
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.1/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
               <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
                 <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
@@ -136,8 +136,8 @@
               <tasks xsi:type="compute:DispatchTask" name="Board update" workgroupCountX="78" workgroupCountY="44"/>
             </tasks>
           </taskPkg>
-        </parts>
-        <parts xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7">
+        </pipelines>
+        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7">
           <resourcePkg>
             <resources xsi:type="model:PixelConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
@@ -149,8 +149,8 @@
             <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.5 //@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
           </descriptorSetPkg>
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@partPkg/@parts.2/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
-            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@partPkg/@parts.2/@resourcePkg/@resources.0">
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
+            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="COMPUTE_SHADER_BIT" srcQueue="//@engines.0/@processes.1" dstQueue="//@engines.0/@processes.0">
@@ -175,11 +175,10 @@
             </tasks>
             <tasks xsi:type="compute:DispatchTask" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
-        </parts>
-      </partPkg>
+        </pipelines>
+      </pipelinePkg>
     </processes>
     <processes xsi:type="graphic:GraphicProcess" resetAllowed="true">
-      <partPkg/>
       <configuration acquireWaitStage="COMPUTE_SHADER_BIT">
         <swapchainConfiguration requiredSwapImageCount="2" allowingAccessFromCompute="true">
           <swapImageUsages>ColorAttachment</swapImageUsages>
@@ -188,9 +187,9 @@
         <framebufferConfiguration clearValue="0.0;0.0;0.0;0.0"/>
         <colorDomain/>
       </configuration>
-      <renderPassInfo>
+      <attachmentPkg>
         <colorAttachment name="Swapchain" stencilLoadOp="DONT_CARE" stencilStoreOp="DONT_CARE" initialLayout="TRANSFER_DST_OPTIMAL" finalLayout="PRESENT_SRC_KHR"/>
-      </renderPassInfo>
+      </attachmentPkg>
     </processes>
   </engines>
   <scene resizeable="true" size="1248;704">
@@ -200,10 +199,10 @@
         <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
           <controls xsi:type="ui:DynamicRowLayout"/>
           <controls xsi:type="ui:VariableLabel" text="Speed">
-            <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
+            <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@taskPkg/@tasks.2"/>
           </controls>
           <controls xsi:type="ui:Slider" minValue="1" maxValue="16">
-            <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@partPkg/@parts.1/@taskPkg/@tasks.2"/>
+            <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.lily.vulkan.model.process#CompositeTask#repeatCount" target="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@taskPkg/@tasks.2"/>
           </controls>
           <controls xsi:type="ui:VariableLabel" text="Brush Size">
             <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
