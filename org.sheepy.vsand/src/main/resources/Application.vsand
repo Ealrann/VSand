@@ -49,25 +49,20 @@
         <resources xsi:type="resource:ConstantBuffer" name="MaterialCount"/>
       </resourcePkg>
       <descriptorPkg>
-        <descriptors xsi:type="resource:BufferDescriptor" name="Chunk" type="STORAGE_BUFFER">
+        <descriptors xsi:type="resource:BufferDescriptor" name="Chunk" type="STORAGE_BUFFER" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.2">
           <shaderStages>COMPUTE_BIT</shaderStages>
-          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.2"/>
         </descriptors>
-        <descriptors xsi:type="resource:BufferDescriptor" name="Board1" type="STORAGE_BUFFER">
+        <descriptors xsi:type="resource:BufferDescriptor" name="Board1" type="STORAGE_BUFFER" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
           <shaderStages>COMPUTE_BIT</shaderStages>
-          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0"/>
         </descriptors>
-        <descriptors xsi:type="resource:BufferDescriptor" name="Board2" type="STORAGE_BUFFER">
+        <descriptors xsi:type="resource:BufferDescriptor" name="Board2" type="STORAGE_BUFFER" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
           <shaderStages>COMPUTE_BIT</shaderStages>
-          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1"/>
         </descriptors>
-        <descriptors xsi:type="resource:BufferDescriptor" name="Config" type="UNIFORM_BUFFER">
+        <descriptors xsi:type="resource:BufferDescriptor" name="Config" type="UNIFORM_BUFFER" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.3">
           <shaderStages>COMPUTE_BIT</shaderStages>
-          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.3"/>
         </descriptors>
-        <descriptors xsi:type="resource:BufferDescriptor" name="Transfo" type="UNIFORM_BUFFER">
+        <descriptors xsi:type="resource:BufferDescriptor" name="Transfo" type="UNIFORM_BUFFER" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.4">
           <shaderStages>COMPUTE_BIT</shaderStages>
-          <bufferReference xsi:type="resource:BufferReference" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.4"/>
         </descriptors>
         <descriptors xsi:type="resource:ImageDescriptor" name="BoardImage" type="STORAGE_IMAGE" image="//@engines.0/@resourcePkg/@resources.0">
           <shaderStages>COMPUTE_BIT</shaderStages>
