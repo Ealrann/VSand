@@ -69,16 +69,10 @@
         </descriptors>
       </descriptorPkg>
       <pipelinePkg>
-        <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5">
+        <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorSetPkg/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5">
           <resourcePkg>
             <resources xsi:type="model:DrawConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
-          <pushConstantRanges size="72">
-            <stages>COMPUTE_BIT</stages>
-          </pushConstantRanges>
-          <descriptorSetPkg>
-            <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
-          </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@resourcePkg/@resources.0">
@@ -100,14 +94,14 @@
             </tasks>
             <tasks xsi:type="compute:DispatchTask" name="Draw" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
-        </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Step" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6">
-          <pushConstantRanges size="8">
+          <descriptorSetPkg>
+            <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
+          </descriptorSetPkg>
+          <pushConstantRanges size="72">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
-          <descriptorSetPkg>
-            <descriptorSets name="Update Board Common" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.4 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
-          </descriptorSetPkg>
+        </pipelines>
+        <pipelines xsi:type="compute:ComputePipeline" name="Step" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@descriptorSetPkg/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6">
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
@@ -131,18 +125,18 @@
               <tasks xsi:type="compute:DispatchTask" name="Board update" workgroupCountX="78" workgroupCountY="44"/>
             </tasks>
           </taskPkg>
+          <descriptorSetPkg>
+            <descriptorSets name="Update Board Common" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.4 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
+          </descriptorSetPkg>
+          <pushConstantRanges size="8">
+            <stages>COMPUTE_BIT</stages>
+          </pushConstantRanges>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7">
+        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@descriptorSetPkg/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7">
           <resourcePkg>
             <resources xsi:type="model:PixelConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
           <descriptorPkg/>
-          <pushConstantRanges size="28">
-            <stages>COMPUTE_BIT</stages>
-          </pushConstantRanges>
-          <descriptorSetPkg>
-            <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.5 //@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
-          </descriptorSetPkg>
           <taskPkg>
             <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@resourcePkg/@resources.0">
@@ -170,6 +164,12 @@
             </tasks>
             <tasks xsi:type="compute:DispatchTask" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
+          <descriptorSetPkg>
+            <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.5 //@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
+          </descriptorSetPkg>
+          <pushConstantRanges size="28">
+            <stages>COMPUTE_BIT</stages>
+          </pushConstantRanges>
         </pipelines>
       </pipelinePkg>
     </processes>
