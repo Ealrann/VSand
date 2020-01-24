@@ -20,7 +20,7 @@ switch ( OperatingSystem.current() ) {
 
 task jlink(type: Exec, dependsOn: ['installDist']) {
 	def javaHome = System.properties.'java.home'
-	workingDir 'build'
+	workingDir "$buildDir"
 	commandLine "$javaHome/bin/jlink",
 		'--strip-debug',
 		'--no-header-files',
@@ -32,20 +32,21 @@ task jlink(type: Exec, dependsOn: ['installDist']) {
 }
 
 task cleanJlink(type: Delete) {
-  delete 'build/image'
+	delete "$buildDir/image"
 }
 
 task copyReleng(type: Copy) {
 	from "releng/$project.ext.OS"
-	into 'build/image'
+	into "$buildDir/image"
 }
 
 task copyModules(type: Copy) {
-	from "build/install/org.sheepy.vsand/lib/"
-	into 'build/image/modules'
+	from "$buildDir/install/org.sheepy.vsand/lib/"
+	into "$buildDir/image/modules"
 }
 
 tasks.clean.dependsOn(cleanJlink)
+tasks.jlink.dependsOn(cleanJlink)
 tasks.jlink.finalizedBy(copyReleng)
 tasks.jlink.finalizedBy(copyModules)
 
