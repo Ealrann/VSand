@@ -13,7 +13,6 @@ import org.sheepy.vsand.draw.DrawManager;
 import org.sheepy.vsand.input.VSandInputManager;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.FPSCounter;
-import org.sheepy.vulkan.window.Window;
 
 public final class VSandMainLoop implements Runnable
 {
@@ -105,7 +104,7 @@ public final class VSandMainLoop implements Runnable
 		engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
 		if (application.getScene() != null)
 		{
-			final Window window = engineAdapter.getWindow();
+			final var window = engineAdapter.getWindow();
 			frameDurationNs = (long) ((1. / window.getRefreshRate()) * 1e9);
 			inputManager = engineAdapter.getInputManager();
 			if (benchmarkMode == false)

@@ -74,10 +74,12 @@ test {
 
 dependencies {
 
-	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.base'
-
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.api'
 	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.api'
-	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.nuklear'
+
+	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.base'
+	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.nuklear'
+
 
 	testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
 	testImplementation "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
