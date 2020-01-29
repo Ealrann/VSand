@@ -3,4 +3,4 @@ rootProject.name = "VSand"
 
 include ':org.sheepy.vsand'
 
-includeBuild 'Lily-Vulkan'
+includeBuild '../Lily-vulkan'
