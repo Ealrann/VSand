@@ -59,7 +59,7 @@ Feel free to add a new issues if you want to see new things in the game, or if y
 
 If you want to contribute to the code, you can clone the repo using:
 
-`git clone --recursive https://github.com/Ealrann/VSand.git`
+`git clone --recursive --single-branch --branch root https://github.com/Ealrann/VSand.git`
 
 To launch the game:
 
