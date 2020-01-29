@@ -1,0 +1,9 @@
+[submodule "Lily-core"]
+	path = Lily-core
+	url = https://github.com/Ealrann/Lily-core.git
+[submodule "Lily-vulkan"]
+	path = Lily-vulkan
+	url = https://github.com/Ealrann/Lily-vulkan.git
+[submodule "VSand"]
+	path = VSand
+	url = https://github.com/Ealrann/VSand.git

@@ -1,0 +1,14 @@
+.gradle/
+.metadata
+*.class
+bin/
+.project
+.classpath
+build/
+.settings/
+*.log
+jitdump.*
+javacore.*
+*.dmp
+*.trc
+

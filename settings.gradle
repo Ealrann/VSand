@@ -1,0 +1,6 @@
+rootProject.name = "org.sheepy.lily.vulkan.root"
+
+
+includeBuild 'Lily-core'
+includeBuild 'Lily-vulkan'
+includeBuild 'VSand'
