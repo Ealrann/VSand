@@ -18,7 +18,7 @@ import org.sheepy.vsand.model.BoardConstantBuffer;
 public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 {
 	private static final int BYTE_SIZE = 2 * Integer.BYTES;
-	private static final int BOARD_INDEX_POSITION = 1 * Integer.BYTES;
+	private static final int BOARD_INDEX_POSITION = Integer.BYTES;
 
 	private final Random random = ThreadLocalRandom.current();
 	private final BoardConstantBuffer boardConstantBuffer;

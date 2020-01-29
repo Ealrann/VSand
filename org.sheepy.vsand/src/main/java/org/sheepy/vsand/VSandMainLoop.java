@@ -1,6 +1,5 @@
 package org.sheepy.vsand;
 
-import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.util.DebugUtil;
 import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
@@ -21,24 +20,22 @@ public final class VSandMainLoop implements Runnable
 	private final boolean benchmarkMode;
 	private final int stopIteration;
 
-	private IVulkanEngineAdapter engineAdapter;
 	private IProcessAdapter boardProcessAdapter;
 	private IProcessAdapter renderProcessAdapter;
 	private IPipelineTask boardImageBarrier;
 	private boolean loaded = false;
-	private IInputManager inputManager;
 	private long currentIteration = 0;
 	private long startNs;
 	private long frameDurationNs;
 	private long nextRenderDate;
 
-	public static final VSandMainLoop create(VSandApplication application)
+	public static VSandMainLoop create(VSandApplication application)
 	{
 		return new VSandMainLoop(application, false, -1);
 	}
 
-	public static final VSandMainLoop createBenchmark(	VSandApplication application,
-														int iterationCount)
+	public static VSandMainLoop createBenchmark(VSandApplication application,
+												int iterationCount)
 	{
 		return new VSandMainLoop(application, true, iterationCount);
 	}
@@ -101,12 +98,12 @@ public final class VSandMainLoop implements Runnable
 	private void load()
 	{
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
-		engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
+		final var engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
 		if (application.getScene() != null)
 		{
 			final var window = engineAdapter.getWindow();
 			frameDurationNs = (long) ((1. / window.getRefreshRate()) * 1e9);
-			inputManager = engineAdapter.getInputManager();
+			final var inputManager = engineAdapter.getInputManager();
 			if (benchmarkMode == false)
 			{
 				final var mainDrawManager = new DrawManager(application, inputManager);
@@ -143,9 +140,9 @@ public final class VSandMainLoop implements Runnable
 			if (process instanceof ComputeProcess)
 			{
 				boardProcessAdapter = process.adaptNotNull(IProcessAdapter.class);
-				final var boardToPixelPipeline = (ComputePipeline) ((ComputeProcess) process)	.getPipelinePkg()
-																								.getPipelines()
-																								.get(2);
+				final var boardToPixelPipeline = (ComputePipeline) ((ComputeProcess) process).getPipelinePkg()
+																							 .getPipelines()
+																							 .get(2);
 				boardImageBarrier = boardToPixelPipeline.getTaskPkg().getTasks().get(2);
 			}
 			else if (process instanceof GraphicProcess)

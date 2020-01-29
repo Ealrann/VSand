@@ -23,7 +23,7 @@ public class DrawLineAdapter implements IDrawCommandAdapter<DrawLine>
 		final int dx = p2.x - p1.x;
 		final int dy = p2.y - p1.y;
 
-		// Vecteur normal
+		// Vector normal
 		float vx = 0;
 		float vy = -1;
 

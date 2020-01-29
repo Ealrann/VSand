@@ -1,7 +1,5 @@
 package org.sheepy.vsand;
 
-import java.util.List;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.sheepy.lily.core.api.LilyLauncher;
@@ -9,6 +7,8 @@ import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandFactory;
+
+import java.util.List;
 
 public class VSandBenchmarkLauncher
 {
@@ -27,7 +27,9 @@ public class VSandBenchmarkLauncher
 		final var application = VSandApplicationLauncher.loadApplication();
 
 		// remove UI
-		EcoreUtil.delete(application.getScene().getParts().get(1));
+		EcoreUtil.delete(application.getScene()
+									.getParts()
+									.get(1));
 
 		final DemoDrawer drawer = new DemoDrawer(application);
 		drawer.drawLavaPot(200, 400);
@@ -37,9 +39,7 @@ public class VSandBenchmarkLauncher
 
 	private static final class DemoDrawer
 	{
-
 		private final EList<DrawCommand> drawQueue;
-		private final EList<Material> materialList;
 		private final Material sand;
 		private final Material plant;
 		private final Material wall;
@@ -50,7 +50,7 @@ public class VSandBenchmarkLauncher
 		public DemoDrawer(VSandApplication application)
 		{
 			drawQueue = application.getDrawQueue();
-			materialList = application.getMaterials().getMaterials();
+			final var materialList = application.getMaterials().getMaterials();
 			sand = findMaterial(materialList, "Sand");
 			plant = findMaterial(materialList, "Plant");
 			wall = findMaterial(materialList, "Wall");
@@ -117,7 +117,11 @@ public class VSandBenchmarkLauncher
 
 		private static Material findMaterial(List<Material> materials, String name)
 		{
-			return materials.stream().filter(m -> m.getName().equals(name)).findFirst().get();
+			return materials.stream()
+							.filter(m -> m.getName()
+										  .equals(name))
+							.findFirst()
+							.orElse(null);
 		}
 	}
 }

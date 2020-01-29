@@ -46,7 +46,7 @@ public class DrawManager
 
 	private DrawCommand createDrawCommand(Material material, boolean firstDraw)
 	{
-		DrawCommand res = null;
+		DrawCommand res;
 
 		final var size = EShapeSize.values()[application.getBrushSize() - 1];
 		final var cursor = inputManager.getCursorPosition();

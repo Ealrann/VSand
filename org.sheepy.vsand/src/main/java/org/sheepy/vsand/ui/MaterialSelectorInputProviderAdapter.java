@@ -1,8 +1,5 @@
 package org.sheepy.vsand.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
@@ -12,11 +9,14 @@ import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
 import org.sheepy.vsand.model.InputMaterialProvider;
 import org.sheepy.vsand.model.Material;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Adapter(scope = InputMaterialProvider.class)
 public class MaterialSelectorInputProviderAdapter implements ISelectorInputProviderAdapter
 {
 	@Override
-	public List<? extends Object> getElements(IInputProvider inputProvider)
+	public List<?> getElements(IInputProvider inputProvider)
 	{
 		final var materialProvider = (InputMaterialProvider) inputProvider;
 

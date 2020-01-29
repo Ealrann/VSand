@@ -20,13 +20,13 @@ public class VSandInputManager implements IInputListener
 
 	private boolean shiftPressed = false;
 
-	private boolean leftClicPressed = false;
-	private boolean rightClicPressed = false;
+	private boolean leftClickPressed = false;
+	private boolean rightClickPressed = false;
 
-	public VSandInputManager(	IWindow window,
-								VSandApplication application,
-								DrawManager leftDrawManager,
-								DrawManager rightDrawManager)
+	public VSandInputManager(IWindow window,
+							 VSandApplication application,
+							 DrawManager leftDrawManager,
+							 DrawManager rightDrawManager)
 	{
 		this.window = window;
 		this.application = application;
@@ -43,8 +43,8 @@ public class VSandInputManager implements IInputListener
 	@Override
 	public void afterPollInputs()
 	{
-		leftDrawManager.manage(application.getMainMaterial(), leftClicPressed);
-		rightDrawManager.manage(application.getSecondaryMaterial(), rightClicPressed);
+		leftDrawManager.manage(application.getMainMaterial(), leftClickPressed);
+		rightDrawManager.manage(application.getSecondaryMaterial(), rightClickPressed);
 	}
 
 	@Override
@@ -52,17 +52,17 @@ public class VSandInputManager implements IInputListener
 	{
 		switch (event.key)
 		{
-		// Shift
-		case 340:
-			if (event.state == EKeyState.PRESSED)
-			{
-				shiftPressed = true;
-			}
-			else if (event.state == EKeyState.RELEASED)
-			{
-				shiftPressed = false;
-			}
-			break;
+			// Shift
+			case 340:
+				if (event.state == EKeyState.PRESSED)
+				{
+					shiftPressed = true;
+				}
+				else if (event.state == EKeyState.RELEASED)
+				{
+					shiftPressed = false;
+				}
+				break;
 		}
 
 		// Pressed specific
@@ -70,61 +70,61 @@ public class VSandInputManager implements IInputListener
 		{
 			switch (event.key)
 			{
-			// Space bar
-			case 32:
-				application.setPaused(!application.isPaused());
-				break;
-			// *
-			case 331:
-				int speedMinus = application.getSpeed();
-				speedMinus = Math.max(1, speedMinus / 2);
-				application.setSpeed(speedMinus);
-				break;
-			// /
-			case 332:
-				int speedPlus = application.getSpeed();
-				speedPlus = Math.min(16, speedPlus * 2);
-				application.setSpeed(speedPlus);
-				break;
-			// -
-			case 333:
-				int brushMinus = application.getBrushSize();
-				brushMinus = Math.max(1, brushMinus - 1);
-				application.setBrushSize(brushMinus);
-				break;
-			// +
-			case 334:
-				int brushPlus = application.getBrushSize();
-				brushPlus = Math.min(8, brushPlus + 1);
-				application.setBrushSize(brushPlus);
-				break;
-			// n
-			case 'n' - 32:
-				application.setNextMode(true);
-				break;
-			// f
-			case 'f' - 32:
-				application.getScene().setFullscreen(!application.getScene().isFullscreen());
-				break;
-			// Echap
-			case 256:
-				application.setRun(false);
-				break;
-			// s
-			case 's' - 32:
-				application.setForceClear(true);
-				application.setShowSleepZones(!application.isShowSleepZones());
-				break;
+				// Space bar
+				case 32:
+					application.setPaused(!application.isPaused());
+					break;
+				// *
+				case 331:
+					int speedMinus = application.getSpeed();
+					speedMinus = Math.max(1, speedMinus / 2);
+					application.setSpeed(speedMinus);
+					break;
+				// /
+				case 332:
+					int speedPlus = application.getSpeed();
+					speedPlus = Math.min(16, speedPlus * 2);
+					application.setSpeed(speedPlus);
+					break;
+				// -
+				case 333:
+					int brushMinus = application.getBrushSize();
+					brushMinus = Math.max(1, brushMinus - 1);
+					application.setBrushSize(brushMinus);
+					break;
+				// +
+				case 334:
+					int brushPlus = application.getBrushSize();
+					brushPlus = Math.min(8, brushPlus + 1);
+					application.setBrushSize(brushPlus);
+					break;
+				// n
+				case 'n' - 32:
+					application.setNextMode(true);
+					break;
+				// f
+				case 'f' - 32:
+					application.getScene().setFullscreen(!application.getScene().isFullscreen());
+					break;
+				// Escape
+				case 256:
+					application.setRun(false);
+					break;
+				// s
+				case 's' - 32:
+					application.setForceClear(true);
+					application.setShowSleepZones(!application.isShowSleepZones());
+					break;
 			}
 		}
 		else
 		{
 			switch (event.key)
 			{
-			// s
-			case 's' - 32:
-				application.setForceClear(false);
-				break;
+				// s
+				case 's' - 32:
+					application.setForceClear(false);
+					break;
 			}
 		}
 	}
@@ -132,21 +132,9 @@ public class VSandInputManager implements IInputListener
 	@Override
 	public void onScrollEvent(ScrollEvent event)
 	{
-		Material mainMaterial = null;
-		if (shiftPressed) mainMaterial = application.getSecondaryMaterial();
-		else mainMaterial = application.getMainMaterial();
-		final var materials = application.getMaterials().getMaterials();
-		final int index = materials.indexOf(mainMaterial);
-		Material next = null;
-
-		if (event.yOffset > 0f)
-		{
-			next = findNextUserFriendlyMaterial(materials, index, -1);
-		}
-		else if (event.yOffset < 0f)
-		{
-			next = findNextUserFriendlyMaterial(materials, index, 1);
-		}
+		final var mainMaterial = shiftPressed ? application.getSecondaryMaterial() : application.getMainMaterial();
+		final boolean goDown = event.yOffset > 0f;
+		final var next = findMaterial(mainMaterial, goDown);
 
 		if (next != null)
 		{
@@ -161,9 +149,23 @@ public class VSandInputManager implements IInputListener
 		}
 	}
 
-	private static Material findNextUserFriendlyMaterial(	EList<Material> materials,
-															int index,
-															int direction)
+	private Material findMaterial(Material mainMaterial, boolean needNext)
+	{
+		final var materials = application.getMaterials().getMaterials();
+		final int index = materials.indexOf(mainMaterial);
+		if (needNext)
+		{
+			return findNextUserFriendlyMaterial(materials, index, -1);
+		}
+		else
+		{
+			return findNextUserFriendlyMaterial(materials, index, 1);
+		}
+	}
+
+	private static Material findNextUserFriendlyMaterial(EList<Material> materials,
+														 int index,
+														 int direction)
 	{
 		Material next;
 		do
@@ -188,15 +190,15 @@ public class VSandInputManager implements IInputListener
 	{
 		switch (event.button)
 		{
-		case LEFT:
-			leftClicPressed = event.pressed;
-			rightClicPressed = false;
-			break;
-		case RIGHT:
-			rightClicPressed = event.pressed;
-			leftClicPressed = false;
-			break;
-		default:
+			case LEFT:
+				leftClickPressed = event.pressed;
+				rightClickPressed = false;
+				break;
+			case RIGHT:
+				rightClickPressed = event.pressed;
+				leftClickPressed = false;
+				break;
+			default:
 		}
 	}
 }

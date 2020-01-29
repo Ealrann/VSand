@@ -11,9 +11,9 @@ public enum EShapeSize
 	ES7(128),
 	ES8(256);
 	
-	private int size;
+	private final int size;
 	
-	private EShapeSize(int size)
+	EShapeSize(int size)
 	{
 		this.size = size;
 	}
