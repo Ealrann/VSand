@@ -206,7 +206,7 @@
             <variableResolver xsi:type="variable:DirectVariableResolver" variableDefinition="org.sheepy.vsand.model#VSandApplication#brushSize" target="/"/>
           </controls>
         </panels>
-        <panels xsi:type="nuklear:SelectorPanel" name="Primary Material" position="34;0" verticalRelative="MIDDLE" horizontalRelative="RIGHT" buttonSizePx="28" selectionR="229" selectionG="57" selectionB="53" printLabels="true" autoHideLabels="false">
+        <panels xsi:type="nuklear:SelectorPanel" name="Primary Material" position="34;0" verticalRelative="MIDDLE" horizontalRelative="RIGHT" buttonSizePx="28" selectionR="229" selectionG="57" selectionB="53" printLabels="true" autoHideLabels="true">
           <variableResolver variableDefinition="org.sheepy.vsand.model#VSandApplication#mainMaterial" target="/"/>
           <inputProvider xsi:type="model:InputMaterialProvider" materials="//@materials"/>
         </panels>
