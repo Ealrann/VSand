@@ -230,6 +230,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		EnumerationPackage.eINSTANCE.eClass();
 		ImagePackage.eINSTANCE.eClass();
 		PipelinePackage.eINSTANCE.eClass();
+		org.sheepy.lily.core.model.resource.ResourcePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theVSandPackage.createPackageContents();
@@ -779,6 +780,28 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
+	public EReference getMaterial_PaintSound()
+	{
+		return (EReference)materialEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getMaterial_Pitch()
+	{
+		return (EAttribute)materialEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getTransformations()
 	{
 		return transformationsEClass;
@@ -1070,6 +1093,8 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(materialEClass, MATERIAL__G);
 		createEAttribute(materialEClass, MATERIAL__B);
 		createEAttribute(materialEClass, MATERIAL__USER_FRIENDLY);
+		createEReference(materialEClass, MATERIAL__PAINT_SOUND);
+		createEAttribute(materialEClass, MATERIAL__PITCH);
 
 		transformationsEClass = createEClass(TRANSFORMATIONS);
 		createEReference(transformationsEClass, TRANSFORMATIONS__TRANSFORMATIONS);
@@ -1126,6 +1151,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
 		TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
 		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
+		org.sheepy.lily.core.model.resource.ResourcePackage theResourcePackage_1 = (org.sheepy.lily.core.model.resource.ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(org.sheepy.lily.core.model.resource.ResourcePackage.eNS_URI);
 		NuklearPackage theNuklearPackage = (NuklearPackage)EPackage.Registry.INSTANCE.getEPackage(NuklearPackage.eNS_URI);
 
 		// Create type parameters
@@ -1202,6 +1228,8 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getMaterial_G(), ecorePackage.getEInt(), "g", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterial_B(), ecorePackage.getEInt(), "b", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterial_UserFriendly(), ecorePackage.getEBoolean(), "userFriendly", "true", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMaterial_PaintSound(), theResourcePackage_1.getSound(), null, "paintSound", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_Pitch(), ecorePackage.getEFloat(), "pitch", "1", 1, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(transformationsEClass, Transformations.class, "Transformations", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTransformations_Transformations(), this.getITransformation(), null, "transformations", null, 0, -1, Transformations.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

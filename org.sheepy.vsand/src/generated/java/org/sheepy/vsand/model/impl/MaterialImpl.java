@@ -6,8 +6,11 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.sheepy.lily.core.api.adapter.LilyEObject;
+import org.sheepy.lily.core.model.resource.Sound;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandPackage;
 
@@ -27,6 +30,8 @@ import org.sheepy.vsand.model.VSandPackage;
  *   <li>{@link org.sheepy.vsand.model.impl.MaterialImpl#getG <em>G</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.MaterialImpl#getB <em>B</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.MaterialImpl#isUserFriendly <em>User Friendly</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialImpl#getPaintSound <em>Paint Sound</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialImpl#getPitch <em>Pitch</em>}</li>
  * </ul>
  *
  * @generated
@@ -192,6 +197,36 @@ public class MaterialImpl extends LilyEObject implements Material
 	 * @ordered
 	 */
 	protected boolean userFriendly = USER_FRIENDLY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getPaintSound() <em>Paint Sound</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPaintSound()
+	 * @generated
+	 * @ordered
+	 */
+	protected Sound paintSound;
+
+	/**
+	 * The default value of the '{@link #getPitch() <em>Pitch</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPitch()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final float PITCH_EDEFAULT = 1.0F;
+
+	/**
+	 * The cached value of the '{@link #getPitch() <em>Pitch</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPitch()
+	 * @generated
+	 * @ordered
+	 */
+	protected float pitch = PITCH_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -420,6 +455,76 @@ public class MaterialImpl extends LilyEObject implements Material
 	 * @generated
 	 */
 	@Override
+	public Sound getPaintSound()
+	{
+		if (paintSound != null && ((EObject)paintSound).eIsProxy())
+		{
+			InternalEObject oldPaintSound = paintSound;
+			paintSound = (Sound)eResolveProxy(oldPaintSound);
+			if (paintSound != oldPaintSound)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, VSandPackage.MATERIAL__PAINT_SOUND, oldPaintSound, paintSound));
+			}
+		}
+		return paintSound;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Sound basicGetPaintSound()
+	{
+		return paintSound;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setPaintSound(Sound newPaintSound)
+	{
+		Sound oldPaintSound = paintSound;
+		paintSound = newPaintSound;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.MATERIAL__PAINT_SOUND, oldPaintSound, paintSound));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public float getPitch()
+	{
+		return pitch;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setPitch(float newPitch)
+	{
+		float oldPitch = pitch;
+		pitch = newPitch;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.MATERIAL__PITCH, oldPitch, pitch));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType)
 	{
 		switch (featureID)
@@ -440,6 +545,11 @@ public class MaterialImpl extends LilyEObject implements Material
 				return getB();
 			case VSandPackage.MATERIAL__USER_FRIENDLY:
 				return isUserFriendly();
+			case VSandPackage.MATERIAL__PAINT_SOUND:
+				if (resolve) return getPaintSound();
+				return basicGetPaintSound();
+			case VSandPackage.MATERIAL__PITCH:
+				return getPitch();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -477,6 +587,12 @@ public class MaterialImpl extends LilyEObject implements Material
 				return;
 			case VSandPackage.MATERIAL__USER_FRIENDLY:
 				setUserFriendly((Boolean)newValue);
+				return;
+			case VSandPackage.MATERIAL__PAINT_SOUND:
+				setPaintSound((Sound)newValue);
+				return;
+			case VSandPackage.MATERIAL__PITCH:
+				setPitch((Float)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -516,6 +632,12 @@ public class MaterialImpl extends LilyEObject implements Material
 			case VSandPackage.MATERIAL__USER_FRIENDLY:
 				setUserFriendly(USER_FRIENDLY_EDEFAULT);
 				return;
+			case VSandPackage.MATERIAL__PAINT_SOUND:
+				setPaintSound((Sound)null);
+				return;
+			case VSandPackage.MATERIAL__PITCH:
+				setPitch(PITCH_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -546,6 +668,10 @@ public class MaterialImpl extends LilyEObject implements Material
 				return b != B_EDEFAULT;
 			case VSandPackage.MATERIAL__USER_FRIENDLY:
 				return userFriendly != USER_FRIENDLY_EDEFAULT;
+			case VSandPackage.MATERIAL__PAINT_SOUND:
+				return paintSound != null;
+			case VSandPackage.MATERIAL__PITCH:
+				return pitch != PITCH_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -577,6 +703,8 @@ public class MaterialImpl extends LilyEObject implements Material
 		result.append(b);
 		result.append(", userFriendly: ");
 		result.append(userFriendly);
+		result.append(", pitch: ");
+		result.append(pitch);
 		result.append(')');
 		return result.toString();
 	}

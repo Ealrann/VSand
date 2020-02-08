@@ -6,7 +6,7 @@ import org.sheepy.lily.core.api.input.event.KeyEvent;
 import org.sheepy.lily.core.api.input.event.MouseButtonEvent;
 import org.sheepy.lily.core.api.input.event.ScrollEvent;
 import org.sheepy.lily.core.model.types.EKeyState;
-import org.sheepy.lily.vulkan.api.window.IWindow;
+import org.sheepy.lily.game.api.window.IWindow;
 import org.sheepy.vsand.draw.DrawManager;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;

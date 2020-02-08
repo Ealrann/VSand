@@ -125,6 +125,15 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__EXTENSION_PKG = ApplicationPackage.APPLICATION__EXTENSION_PKG;
 
 	/**
+	 * The feature id for the '<em><b>Models</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__MODELS = ApplicationPackage.APPLICATION__MODELS;
+
+	/**
 	 * The feature id for the '<em><b>Materials</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -818,13 +827,31 @@ public interface VSandPackage extends EPackage
 	int MATERIAL__USER_FRIENDLY = 7;
 
 	/**
+	 * The feature id for the '<em><b>Paint Sound</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MATERIAL__PAINT_SOUND = 8;
+
+	/**
+	 * The feature id for the '<em><b>Pitch</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MATERIAL__PITCH = 9;
+
+	/**
 	 * The number of structural features of the '<em>Material</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MATERIAL_FEATURE_COUNT = 8;
+	int MATERIAL_FEATURE_COUNT = 10;
 
 	/**
 	 * The number of operations of the '<em>Material</em>' class.
@@ -1711,6 +1738,28 @@ public interface VSandPackage extends EPackage
 	EAttribute getMaterial_UserFriendly();
 
 	/**
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.Material#getPaintSound <em>Paint Sound</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Paint Sound</em>'.
+	 * @see org.sheepy.vsand.model.Material#getPaintSound()
+	 * @see #getMaterial()
+	 * @generated
+	 */
+	EReference getMaterial_PaintSound();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#getPitch <em>Pitch</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Pitch</em>'.
+	 * @see org.sheepy.vsand.model.Material#getPitch()
+	 * @see #getMaterial()
+	 * @generated
+	 */
+	EAttribute getMaterial_Pitch();
+
+	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.Transformations <em>Transformations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2340,6 +2389,22 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EAttribute MATERIAL__USER_FRIENDLY = eINSTANCE.getMaterial_UserFriendly();
+
+		/**
+		 * The meta object literal for the '<em><b>Paint Sound</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MATERIAL__PAINT_SOUND = eINSTANCE.getMaterial_PaintSound();
+
+		/**
+		 * The meta object literal for the '<em><b>Pitch</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MATERIAL__PITCH = eINSTANCE.getMaterial_Pitch();
 
 		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.TransformationsImpl <em>Transformations</em>}' class.

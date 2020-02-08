@@ -112,6 +112,9 @@
         <details key="propertyCategory" value="UI"/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="paintSound" eType="ecore:EClass ../../org.sheepy.lily.core.model/model/resource.ecore#//Sound"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pitch" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
+        defaultValueLiteral="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Transformations">
     <eStructuralFeatures xsi:type="ecore:EReference" name="transformations" upperBound="-1"

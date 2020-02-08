@@ -1,0 +1,5 @@
+sand : https://freesound.org/people/SteveMeli/sounds/215006/
+water : https://freesound.org/people/peridactyloptrix/sounds/197705/
+lava : mix of https://freesound.org/people/Audionautics/sounds/133901/ and https://freesound.org/people/InspectorJ/sounds/412843/
+fire : https://freesound.org/people/soundslikewillem/sounds/184519/
+steam : mix of https://freesound.org/people/sniperous/sounds/365071/ and https://freesound.org/people/knova/sounds/170280/

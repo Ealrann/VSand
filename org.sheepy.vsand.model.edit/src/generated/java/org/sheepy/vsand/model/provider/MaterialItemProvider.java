@@ -65,6 +65,8 @@ public class MaterialItemProvider extends ItemProviderAdapter implements IEditin
 			addGPropertyDescriptor(object);
 			addBPropertyDescriptor(object);
 			addUserFriendlyPropertyDescriptor(object);
+			addPaintSoundPropertyDescriptor(object);
+			addPitchPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -254,6 +256,52 @@ public class MaterialItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
+	 * This adds a property descriptor for the Paint Sound feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addPaintSoundPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Material_paintSound_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Material_paintSound_feature", "_UI_Material_type"),
+				 VSandPackage.Literals.MATERIAL__PAINT_SOUND,
+				 true,
+				 false,
+				 true,
+				 null,
+				 getString("_UI_SoundPropertyCategory"),
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Pitch feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addPitchPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Material_pitch_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Material_pitch_feature", "_UI_Material_type"),
+				 VSandPackage.Literals.MATERIAL__PITCH,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 getString("_UI_SoundPropertyCategory"),
+				 null));
+	}
+
+	/**
 	 * This returns Material.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -302,6 +350,7 @@ public class MaterialItemProvider extends ItemProviderAdapter implements IEditin
 			case VSandPackage.MATERIAL__G:
 			case VSandPackage.MATERIAL__B:
 			case VSandPackage.MATERIAL__USER_FRIENDLY:
+			case VSandPackage.MATERIAL__PITCH:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

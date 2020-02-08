@@ -79,6 +79,7 @@ dependencies {
 
 	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.base'
 	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.nuklear'
+	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.openal.core'
 
 
 	testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"

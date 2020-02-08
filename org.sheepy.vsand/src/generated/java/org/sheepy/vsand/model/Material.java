@@ -3,6 +3,7 @@
 package org.sheepy.vsand.model;
 
 import org.sheepy.lily.core.api.adapter.ILilyEObject;
+import org.sheepy.lily.core.model.resource.Sound;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,6 +22,8 @@ import org.sheepy.lily.core.api.adapter.ILilyEObject;
  *   <li>{@link org.sheepy.vsand.model.Material#getG <em>G</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.Material#getB <em>B</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.Material#isUserFriendly <em>User Friendly</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.Material#getPaintSound <em>Paint Sound</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.Material#getPitch <em>Pitch</em>}</li>
  * </ul>
  *
  * @see org.sheepy.vsand.model.VSandPackage#getMaterial()
@@ -241,5 +244,50 @@ public interface Material extends ILilyEObject
 	 * @generated
 	 */
 	void setUserFriendly(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Paint Sound</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Paint Sound</em>' reference.
+	 * @see #setPaintSound(Sound)
+	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_PaintSound()
+	 * @model
+	 * @generated
+	 */
+	Sound getPaintSound();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.Material#getPaintSound <em>Paint Sound</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Paint Sound</em>' reference.
+	 * @see #getPaintSound()
+	 * @generated
+	 */
+	void setPaintSound(Sound value);
+
+	/**
+	 * Returns the value of the '<em><b>Pitch</b></em>' attribute.
+	 * The default value is <code>"1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Pitch</em>' attribute.
+	 * @see #setPitch(float)
+	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_Pitch()
+	 * @model default="1" required="true"
+	 * @generated
+	 */
+	float getPitch();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.Material#getPitch <em>Pitch</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Pitch</em>' attribute.
+	 * @see #getPitch()
+	 * @generated
+	 */
+	void setPitch(float value);
 
 } // Material
