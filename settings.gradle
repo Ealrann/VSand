@@ -1,4 +1,4 @@
-rootProject.name = "org.sheepy.lily.vulkan.root"
+rootProject.name = "org.sheepy.lily.vsand.root"
 
 
 includeBuild 'Lily-core'
