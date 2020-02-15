@@ -13,13 +13,14 @@ import org.sheepy.lily.core.model.cadence.CadencePackage;
 import org.sheepy.lily.core.model.inference.InferencePackage;
 import org.sheepy.lily.core.model.maintainer.MaintainerPackage;
 import org.sheepy.lily.core.model.presentation.PresentationPackage;
+import org.sheepy.lily.core.model.resource.ResourcePackage;
 import org.sheepy.lily.core.model.types.TypesPackage;
 import org.sheepy.lily.core.model.ui.UiPackage;
 import org.sheepy.lily.core.model.variable.VariablePackage;
 import org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
-import org.sheepy.lily.vulkan.model.resource.ResourcePackage;
+import org.sheepy.lily.vulkan.model.resource.VulkanResourcePackage;
 import org.sheepy.vsand.model.BoardConstantBuffer;
 import org.sheepy.vsand.model.DrawCircle;
 import org.sheepy.vsand.model.DrawCommand;
@@ -224,13 +225,13 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		CadencePackage.eINSTANCE.eClass();
 		ActionPackage.eINSTANCE.eClass();
 		ProcessPackage.eINSTANCE.eClass();
-		ResourcePackage.eINSTANCE.eClass();
+		VulkanResourcePackage.eINSTANCE.eClass();
 		VulkanPackage.eINSTANCE.eClass();
 		BarrierPackage.eINSTANCE.eClass();
 		EnumerationPackage.eINSTANCE.eClass();
 		ImagePackage.eINSTANCE.eClass();
 		PipelinePackage.eINSTANCE.eClass();
-		org.sheepy.lily.core.model.resource.ResourcePackage.eINSTANCE.eClass();
+		ResourcePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theVSandPackage.createPackageContents();
@@ -1150,8 +1151,8 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		ApplicationPackage theApplicationPackage = (ApplicationPackage)EPackage.Registry.INSTANCE.getEPackage(ApplicationPackage.eNS_URI);
 		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
 		TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
+		VulkanResourcePackage theVulkanResourcePackage = (VulkanResourcePackage)EPackage.Registry.INSTANCE.getEPackage(VulkanResourcePackage.eNS_URI);
 		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
-		org.sheepy.lily.core.model.resource.ResourcePackage theResourcePackage_1 = (org.sheepy.lily.core.model.resource.ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(org.sheepy.lily.core.model.resource.ResourcePackage.eNS_URI);
 		NuklearPackage theNuklearPackage = (NuklearPackage)EPackage.Registry.INSTANCE.getEPackage(NuklearPackage.eNS_URI);
 
 		// Create type parameters
@@ -1160,7 +1161,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		// Add supertypes to classes
 		vSandApplicationEClass.getESuperTypes().add(theApplicationPackage.getApplication());
-		boardConstantBufferEClass.getESuperTypes().add(theResourcePackage.getConstantBuffer());
+		boardConstantBufferEClass.getESuperTypes().add(theVulkanResourcePackage.getConstantBuffer());
 		drawConstantBufferEClass.getESuperTypes().add(this.getBoardConstantBuffer());
 		pixelConstantBufferEClass.getESuperTypes().add(this.getBoardConstantBuffer());
 		drawCircleEClass.getESuperTypes().add(this.getDrawCommand());
@@ -1228,7 +1229,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getMaterial_G(), ecorePackage.getEInt(), "g", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterial_B(), ecorePackage.getEInt(), "b", "0", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterial_UserFriendly(), ecorePackage.getEBoolean(), "userFriendly", "true", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getMaterial_PaintSound(), theResourcePackage_1.getSound(), null, "paintSound", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMaterial_PaintSound(), theResourcePackage.getSound(), null, "paintSound", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterial_Pitch(), ecorePackage.getEFloat(), "pitch", "1", 1, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(transformationsEClass, Transformations.class, "Transformations", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

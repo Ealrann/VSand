@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.sheepy.lily.core.api.LilyLauncher;
 import org.sheepy.lily.core.api.resource.IResourceLoader;
+import org.sheepy.lily.core.api.util.DebugUtil;
 import org.sheepy.vsand.model.VSandApplication;
 
 public class VSandApplicationLauncher
@@ -15,6 +16,7 @@ public class VSandApplicationLauncher
 
 	public static void main(String[] args)
 	{
+		DebugUtil.parseMainArgs(args);
 		final var application = loadApplication();
 		final var mainLoop = VSandMainLoop.create(application);
 

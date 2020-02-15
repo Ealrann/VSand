@@ -34,15 +34,15 @@
           <usages>UNIFORM_BUFFER_BIT</usages>
         </resources>
         <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
-          <file xsi:type="application:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
+          <file xsi:type="resource_1:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
           <constants name="MaterialCount" size="4"/>
         </resources>
         <resources xsi:type="resource:Shader" name="boardUpdate" stage="COMPUTE_BIT">
-          <file xsi:type="application:StringModuleResource" name="" path="board_update.comp.spv" moduleName="org.sheepy.vsand"/>
+          <file xsi:type="resource_1:StringModuleResource" name="" path="board_update.comp.spv" moduleName="org.sheepy.vsand"/>
           <constants name="MaterialCount" size="4"/>
         </resources>
         <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
-          <file xsi:type="application:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
+          <file xsi:type="resource_1:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
           <constants name="MaterialCount" size="4"/>
         </resources>
         <resources xsi:type="model:BoardConstantBuffer"/>
@@ -190,24 +190,24 @@
   <engines xsi:type="openal:OpenALEngine">
     <resourcePkg>
       <resources xsi:type="resource_1:SoundContinuous" name="Sand" attackMs="500" decayMs="6000">
-        <file xsi:type="application:StringModuleResource" path="sand.ogg" moduleName="org.sheepy.vsand"/>
+        <file xsi:type="resource_1:StringModuleResource" path="sand.ogg" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="resource_1:SoundContinuous" name="Water" attackMs="700" decayMs="4700">
-        <file xsi:type="application:StringModuleResource" path="water.ogg" moduleName="org.sheepy.vsand"/>
+        <file xsi:type="resource_1:StringModuleResource" path="water.ogg" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="resource_1:SoundContinuous" name="Lava" attackMs="500" decayMs="2500">
-        <file xsi:type="application:StringModuleResource" path="lava.ogg" moduleName="org.sheepy.vsand"/>
+        <file xsi:type="resource_1:StringModuleResource" path="lava.ogg" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="resource_1:SoundContinuous" name="Fire" attackMs="500" decayMs="1780">
-        <file xsi:type="application:StringModuleResource" path="fire.ogg" moduleName="org.sheepy.vsand"/>
+        <file xsi:type="resource_1:StringModuleResource" path="fire.ogg" moduleName="org.sheepy.vsand"/>
       </resources>
       <resources xsi:type="resource_1:SoundContinuous" name="Steam" attackMs="1000" decayMs="2000">
-        <file xsi:type="application:StringModuleResource" path="steam.ogg" moduleName="org.sheepy.vsand"/>
+        <file xsi:type="resource_1:StringModuleResource" path="steam.ogg" moduleName="org.sheepy.vsand"/>
       </resources>
     </resourcePkg>
   </engines>
   <scene resizeable="true" size="1248;704">
-    <parts xsi:type="application:BackgroundImage" image="//@engines.0/@resourcePkg/@resources.0" sampling="Nearest"/>
+    <parts xsi:type="application:BackgroundImage" sampling="Nearest" srcImage="//@engines.0/@resourcePkg/@resources.0" dstImage="//@engines.0/@processes.1/@attachmentPkg/@colorAttachment"/>
     <parts xsi:type="ui:UI" imageSupport="false" currentUIPage="//@scene/@parts.1/@uiPages.0">
       <uiPages>
         <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
@@ -263,7 +263,7 @@
       <fontPkg>
         <fonts name="Default">
           <tables name="Fira">
-            <file xsi:type="application:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
+            <file xsi:type="resource_1:StringModuleResource" path="FiraSans-Regular.ttf" moduleName="org.sheepy.vsand"/>
             <charTables>Base</charTables>
           </tables>
         </fonts>

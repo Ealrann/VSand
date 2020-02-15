@@ -25,8 +25,8 @@
             uri="org.sheepy.lily.vulkan.extra.model.nuklear"
             class="org.sheepy.vsand.model.provider.VSandItemProviderAdapterFactory$NuklearChildCreationExtender"/>
       <extender
-            uri="org.sheepy.lily.core.model.application"
-            class="org.sheepy.vsand.model.provider.VSandItemProviderAdapterFactory$ApplicationChildCreationExtender"/>
+            uri="org.sheepy.lily.core.model.resource"
+            class="org.sheepy.vsand.model.provider.VSandItemProviderAdapterFactory$ResourceChildCreationExtender"/>
    </extension>
 
 </plugin>

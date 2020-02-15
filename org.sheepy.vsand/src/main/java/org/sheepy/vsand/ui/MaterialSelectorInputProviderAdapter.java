@@ -3,7 +3,7 @@ package org.sheepy.vsand.ui;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.model.application.IImage;
+import org.sheepy.lily.core.model.resource.IImage;
 import org.sheepy.lily.vulkan.extra.api.nuklear.ISelectorInputProviderAdapter;
 import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
 import org.sheepy.vsand.model.InputMaterialProvider;
