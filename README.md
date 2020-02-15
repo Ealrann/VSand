@@ -72,7 +72,7 @@ cd VSand/VSand/
 ```
 
 Note, due to a dependency to a github package, you need to set up a github credential into your gradle.properties. 
-1. Generate a token here: https://github.com/settings/tokens.
+1. Generate a token with `repo` and `read package` here: https://github.com/settings/tokens.
 2. Fill the file *~/.gradle/gradle.properties* :
 ```
 github.username=<your github usename>
