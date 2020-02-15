@@ -59,11 +59,25 @@ Feel free to add a new issues if you want to see new things in the game, or if y
 
 If you want to contribute to the code, you can clone the repo using:
 
-`git clone --recursive --single-branch --branch root https://github.com/Ealrann/VSand.git`
+```
+git clone --recursive --single-branch --branch root https://github.com/Ealrann/VSand.git
+```
 
 To launch the game:
+```shell script
+# Go to the VSand project directory
+cd VSand/VSand/
+# Use gradle to run it
+../.gradlew run
+```
 
-`./gradlew run`
+Note, due to a dependency to a github package, you need to set up a github credential into your gradle.properties. 
+1. Generate a token here: https://github.com/settings/tokens.
+2. Fill the file *~/.gradle/gradle.properties* :
+```
+github.username=<your github usename>
+github.token=<the generated token>
+```
 
 
 ### Frameworks/API used
@@ -79,4 +93,3 @@ To launch the game:
 - [**Gradle**](https://gradle.org/)
 - [**Java9-modularity**](https://github.com/java9-modularity/gradle-modules-plugin)
 - [**JLink**](https://docs.oracle.com/javase/9/tools/jlink.htm)
-- [**Badass-jlink-plugin**](https://github.com/beryx/badass-jlink-plugin)
