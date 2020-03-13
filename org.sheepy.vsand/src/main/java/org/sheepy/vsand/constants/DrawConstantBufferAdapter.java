@@ -1,21 +1,17 @@
 package org.sheepy.vsand.constants;
 
-import java.nio.ByteBuffer;
-
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.Dispose;
-import org.sheepy.lily.core.api.adapter.annotation.Load;
-import org.sheepy.lily.core.api.adapter.annotation.Statefull;
-import org.sheepy.lily.core.api.adapter.annotation.Tick;
+import org.sheepy.lily.core.api.adapter.annotation.*;
 import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.api.resource.buffer.IConstantBufferUpdater;
-import org.sheepy.lily.vulkan.model.process.IPipeline;
+import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.draw.IDrawCommandAdapter;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.DrawConstantBuffer;
 import org.sheepy.vsand.model.VSandApplication;
+
+import java.nio.ByteBuffer;
 
 @Statefull
 @Adapter(scope = DrawConstantBuffer.class, lazy = false)
@@ -26,14 +22,14 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 
 	private final DrawConstantBuffer drawConstantBuffer;
 	private final VSandApplication application;
-	private final IPipeline pipeline;
+	private final AbstractPipeline pipeline;
 
 	private ByteBuffer buffer = null;
 
 	private DrawConstantBufferAdapter(DrawConstantBuffer drawConstantBuffer)
 	{
 		this.drawConstantBuffer = drawConstantBuffer;
-		pipeline = ModelUtil.findParent(drawConstantBuffer, IPipeline.class);
+		pipeline = ModelUtil.findParent(drawConstantBuffer, AbstractPipeline.class);
 
 		application = (VSandApplication) ModelUtil.getApplication(drawConstantBuffer);
 	}

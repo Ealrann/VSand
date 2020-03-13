@@ -34,8 +34,7 @@ public final class VSandMainLoop implements Runnable
 		return new VSandMainLoop(application, false, -1);
 	}
 
-	public static VSandMainLoop createBenchmark(VSandApplication application,
-												int iterationCount)
+	public static VSandMainLoop createBenchmark(VSandApplication application, int iterationCount)
 	{
 		return new VSandMainLoop(application, true, iterationCount);
 	}
@@ -108,11 +107,7 @@ public final class VSandMainLoop implements Runnable
 			{
 				final var mainDrawManager = new DrawManager(application, inputManager);
 				final var secondaryDrawManager = new DrawManager(application, inputManager);
-				final var vsandInputManager = new VSandInputManager(window,
-																	application,
-																	mainDrawManager,
-																	secondaryDrawManager);
-				inputManager.addListener(vsandInputManager);
+				new VSandInputManager(inputManager, window, application, mainDrawManager, secondaryDrawManager);
 
 				if (inputManager.isMouseOnUI() == false)
 				{

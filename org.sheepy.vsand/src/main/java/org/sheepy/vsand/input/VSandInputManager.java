@@ -1,17 +1,18 @@
 package org.sheepy.vsand.input;
 
 import org.eclipse.emf.common.util.EList;
-import org.sheepy.lily.core.api.input.IInputManager.IInputListener;
+import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.input.event.KeyEvent;
-import org.sheepy.lily.core.api.input.event.MouseButtonEvent;
+import org.sheepy.lily.core.api.input.event.MouseClickEvent;
 import org.sheepy.lily.core.api.input.event.ScrollEvent;
 import org.sheepy.lily.core.model.types.EKeyState;
 import org.sheepy.lily.game.api.window.IWindow;
+import org.sheepy.lily.vulkan.api.input.IVulkanInputManager;
 import org.sheepy.vsand.draw.DrawManager;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 
-public class VSandInputManager implements IInputListener
+public class VSandInputManager
 {
 	private final VSandApplication application;
 	private final IWindow window;
@@ -23,7 +24,8 @@ public class VSandInputManager implements IInputListener
 	private boolean leftClickPressed = false;
 	private boolean rightClickPressed = false;
 
-	public VSandInputManager(IWindow window,
+	public VSandInputManager(final IVulkanInputManager inputManager,
+							 IWindow window,
 							 VSandApplication application,
 							 DrawManager leftDrawManager,
 							 DrawManager rightDrawManager)
@@ -32,23 +34,26 @@ public class VSandInputManager implements IInputListener
 		this.application = application;
 		this.leftDrawManager = leftDrawManager;
 		this.rightDrawManager = rightDrawManager;
+
+		inputManager.listen(this::onMouseOverUI, IInputManager.Features.MouseOverUIEvent);
+		inputManager.listen(this::afterPollInputs, IInputManager.Features.AfterPollInputs);
+		inputManager.listen(this::onKeyEvent, IInputManager.Features.KeyEvent);
+		inputManager.listen(this::onScrollEvent, IInputManager.Features.ScrollEvent);
+		inputManager.listen(this::onMouseClickEvent, IInputManager.Features.MouseClickEvent);
 	}
 
-	@Override
-	public void onMouseOverUI(boolean overUI)
+	private void onMouseOverUI(Boolean overUI)
 	{
 		window.hideCursor(!overUI);
 	}
 
-	@Override
-	public void afterPollInputs()
+	private void afterPollInputs()
 	{
 		leftDrawManager.manage(application.getMainMaterial(), leftClickPressed);
 		rightDrawManager.manage(application.getSecondaryMaterial(), rightClickPressed);
 	}
 
-	@Override
-	public void onKeyEvent(KeyEvent event)
+	private void onKeyEvent(KeyEvent event)
 	{
 		switch (event.key)
 		{
@@ -129,8 +134,7 @@ public class VSandInputManager implements IInputListener
 		}
 	}
 
-	@Override
-	public void onScrollEvent(ScrollEvent event)
+	private void onScrollEvent(ScrollEvent event)
 	{
 		final var mainMaterial = shiftPressed ? application.getSecondaryMaterial() : application.getMainMaterial();
 		final boolean goDown = event.yOffset > 0f;
@@ -163,9 +167,7 @@ public class VSandInputManager implements IInputListener
 		}
 	}
 
-	private static Material findNextUserFriendlyMaterial(EList<Material> materials,
-														 int index,
-														 int direction)
+	private static Material findNextUserFriendlyMaterial(EList<Material> materials, int index, int direction)
 	{
 		Material next;
 		do
@@ -185,8 +187,7 @@ public class VSandInputManager implements IInputListener
 		return next;
 	}
 
-	@Override
-	public void onMouseClickEvent(MouseButtonEvent event)
+	private void onMouseClickEvent(MouseClickEvent event)
 	{
 		switch (event.button)
 		{
