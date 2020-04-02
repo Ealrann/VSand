@@ -1,24 +1,19 @@
 package org.sheepy.vsand.constants;
 
-import java.nio.ByteBuffer;
-
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.Dispose;
-import org.sheepy.lily.core.api.adapter.annotation.Load;
-import org.sheepy.lily.core.api.adapter.annotation.Statefull;
-import org.sheepy.lily.core.api.adapter.annotation.Tick;
+import org.sheepy.lily.core.api.adapter.annotation.*;
 import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.input.IVulkanInputManager;
 import org.sheepy.lily.vulkan.api.resource.buffer.IConstantBufferUpdater;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
-import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.PixelConstantBuffer;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.BoardUtil;
 import org.sheepy.vsand.util.EShapeSize;
+
+import java.nio.ByteBuffer;
 
 @Statefull
 @Adapter(scope = PixelConstantBuffer.class, lazy = false)
@@ -62,35 +57,26 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 	@Override
 	public void beforePush(ConstantBuffer b)
 	{
-		buffer.putInt(	BOARD_INDEX_POSITION,
-						constantBuffer.getBoardConstantBuffer().getCurrentBoardBuffer());
+		buffer.putInt(BOARD_INDEX_POSITION, constantBuffer.getBoardConstantBuffer().getCurrentBoardBuffer());
 	}
 
 	@Tick
 	private void updateBuffer()
 	{
-		int forceClear = 0;
-		if (application.isForceClear())
-		{
-			forceClear = 1;
-		}
-
+		final boolean forceClear = application.isForceClear();
 		final var size = EShapeSize.values()[application.getBrushSize() - 1];
-
-		buffer.putInt(forceClear);
-		buffer.putInt(application.isShowSleepZones() ? 1 : 0);
-
-		final Material mainMaterial = application.getMainMaterial();
+		final var mainMaterial = application.getMainMaterial();
 		final int index = application.getMaterials().getMaterials().indexOf(mainMaterial);
-		buffer.putInt(index);
 
+		buffer.putInt(forceClear ? 1 : 0);
+		buffer.putInt(application.isShowSleepZones() ? 1 : 0);
+		buffer.putInt(index);
 		buffer.putInt(size.getSize() >> 1);
 
 		if (inputManager != null)
 		{
 			final var cursorPosition = inputManager.getCursorPosition();
-			final var cursorPositionOnBoard = BoardUtil.toBoardPosition(cursorPosition,
-																		application);
+			final var cursorPositionOnBoard = BoardUtil.toBoardPosition(cursorPosition, application);
 			buffer.putInt(cursorPositionOnBoard.x());
 			buffer.putInt(cursorPositionOnBoard.y());
 		}
@@ -99,11 +85,8 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 			buffer.putInt(0);
 			buffer.putInt(0);
 		}
-
 		buffer.putInt(0);
-
 		buffer.flip();
-
 		constantBuffer.setData(buffer);
 	}
 }

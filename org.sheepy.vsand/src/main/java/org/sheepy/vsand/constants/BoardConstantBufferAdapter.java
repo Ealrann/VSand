@@ -1,9 +1,5 @@
 package org.sheepy.vsand.constants;
 
-import java.nio.ByteBuffer;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
@@ -12,6 +8,10 @@ import org.sheepy.lily.core.api.adapter.annotation.Statefull;
 import org.sheepy.lily.vulkan.api.resource.buffer.IConstantBufferUpdater;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.BoardConstantBuffer;
+
+import java.nio.ByteBuffer;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Statefull
 @Adapter(scope = BoardConstantBuffer.class, lazy = false)
@@ -41,12 +41,16 @@ public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 	public void beforePush(ConstantBuffer constantBuffer)
 	{
 		final float rNumber = random.nextFloat();
-		int currentBoardBuffer = boardConstantBuffer.getCurrentBoardBuffer();
-		currentBoardBuffer = currentBoardBuffer == 1 ? 0 : 1;
-		boardConstantBuffer.setCurrentBoardBuffer(currentBoardBuffer);
+		final int nextIndex = nextBoardIndex(boardConstantBuffer.getCurrentBoardBuffer());
+		boardConstantBuffer.setCurrentBoardBuffer(nextIndex);
 
 		buffer.putFloat(0, rNumber);
-		buffer.putInt(BOARD_INDEX_POSITION, currentBoardBuffer);
+		buffer.putInt(BOARD_INDEX_POSITION, nextIndex);
+	}
+
+	private static int nextBoardIndex(int currentIndex)
+	{
+		return (currentIndex + 1) % 2;
 	}
 
 	@Dispose

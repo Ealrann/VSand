@@ -1,11 +1,11 @@
 package org.sheepy.vsand;
 
-import java.io.IOException;
-
 import org.sheepy.lily.core.api.LilyLauncher;
 import org.sheepy.lily.core.api.resource.IResourceLoader;
 import org.sheepy.lily.core.api.util.DebugUtil;
 import org.sheepy.vsand.model.VSandApplication;
+
+import java.io.IOException;
 
 public class VSandApplicationLauncher
 {
@@ -25,20 +25,19 @@ public class VSandApplicationLauncher
 
 	public static VSandApplication loadApplication()
 	{
-		VSandApplication res = null;
-
 		final var module = VSandApplicationLauncher.class.getModule();
 		try
 		{
 			final var inputStream = module.getResourceAsStream(APPLICATION_PATH);
 			final var resource = resourceLoader.loadResource(inputStream);
-			res = (VSandApplication) resource.getContents().get(0);
+			final var res = (VSandApplication) resource.getContents().get(0);
 			res.setVersion(APPLICATION_VERSION);
-		} catch (final IOException e)
+			return res;
+		}
+		catch (final IOException e)
 		{
 			e.printStackTrace();
+			return null;
 		}
-
-		return res;
 	}
 }

@@ -12,7 +12,7 @@ import org.sheepy.vsand.model.VSandFactory;
 import org.sheepy.vsand.util.BoardUtil;
 import org.sheepy.vsand.util.EShapeSize;
 
-public class DrawManager
+public final class DrawManager
 {
 	private static final AudioConfiguration audioConfig = new AudioConfiguration.Builder().gain(0.85f).build();
 

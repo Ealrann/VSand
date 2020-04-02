@@ -10,14 +10,14 @@ public enum EShapeSize
 	ES6(64),
 	ES7(128),
 	ES8(256);
-	
+
 	private final int size;
-	
+
 	EShapeSize(int size)
 	{
 		this.size = size;
 	}
-	
+
 	public int getSize()
 	{
 		return size;

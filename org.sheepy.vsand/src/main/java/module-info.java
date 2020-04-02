@@ -7,7 +7,7 @@ import org.sheepy.vsand.model.VSandModelExtension;
 
 module org.sheepy.vsand
 {
-	requires openj9.sharedclasses;
+	// requires openj9.sharedclasses;
 
 	requires org.sheepy.lily.vulkan.api;
 	requires org.sheepy.lily.vulkan.extra.api;

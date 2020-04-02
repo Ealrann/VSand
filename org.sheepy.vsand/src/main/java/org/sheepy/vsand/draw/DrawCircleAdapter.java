@@ -1,13 +1,13 @@
 package org.sheepy.vsand.draw;
 
-import java.nio.ByteBuffer;
-
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.vsand.model.DrawCircle;
 import org.sheepy.vsand.model.Materials;
 
+import java.nio.ByteBuffer;
+
 @Adapter(scope = DrawCircle.class)
-public class DrawCircleAdapter implements IDrawCommandAdapter<DrawCircle>
+public final class DrawCircleAdapter implements IDrawCommandAdapter<DrawCircle>
 {
 	@Override
 	public void fillBuffer(DrawCircle command, ByteBuffer shapeBuffer)

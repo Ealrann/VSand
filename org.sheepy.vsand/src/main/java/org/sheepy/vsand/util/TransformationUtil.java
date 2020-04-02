@@ -33,8 +33,7 @@ public final class TransformationUtil
 		return res;
 	}
 
-	private static List<Material> extractReactants(List<Material> materialList,
-												   ITransformation transformation)
+	private static List<Material> extractReactants(List<Material> materialList, ITransformation transformation)
 	{
 		if (transformation instanceof Transformation)
 		{
@@ -49,8 +48,7 @@ public final class TransformationUtil
 		throw new AssertionError();
 	}
 
-	private static List<Material> extractCatalysts(List<Material> materialList,
-												   ITransformation transformation)
+	private static List<Material> extractCatalysts(List<Material> materialList, ITransformation transformation)
 	{
 		if (transformation instanceof Transformation)
 		{
@@ -74,8 +72,7 @@ public final class TransformationUtil
 		throw new AssertionError();
 	}
 
-	private static List<Material> resolveMaterials(List<Material> materialList,
-												   final MaterialProvider catalysts)
+	private static List<Material> resolveMaterials(List<Material> materialList, final MaterialProvider catalysts)
 	{
 		final var materials = catalysts.getMaterials();
 		if (catalysts.isFilterMode())
@@ -108,10 +105,10 @@ public final class TransformationUtil
 					warnRecursiveTransformation(reactant, catalyst);
 				}
 
-				int value = materialList.indexOf(transformation.getTarget());
-				value |= transformation.getProbability() << PROBABILITY_LOCATION;
-				value |= transformation.isIsStaticTransformation() ? STATIC_FLAG : 0;
-				value |= transformation.getPropagation() << PROPAGATION_LOCATION;
+				final int value = materialList.indexOf(transformation.getTarget()) |
+						(transformation.getProbability() << PROBABILITY_LOCATION) |
+						(transformation.isIsStaticTransformation() ? STATIC_FLAG : 0) |
+						(transformation.getPropagation() << PROPAGATION_LOCATION);
 
 				if (transformation.isIsStaticTransformation())
 				{
@@ -119,9 +116,8 @@ public final class TransformationUtil
 					for (int i = 0; i < materialList.size(); i++)
 					{
 						final var potentialCatalyst = materialList.get(i);
-						if (potentialCatalyst != reactant
-								&& (potentialCatalyst.isIsStatic() == true
-								|| potentialCatalyst.getDensity() >= reactant.getDensity()))
+						if (potentialCatalyst != reactant && (potentialCatalyst.isIsStatic() == true ||
+								potentialCatalyst.getDensity() >= reactant.getDensity()))
 						{
 							res[i * materialCount + reactantIndex] = value;
 						}
@@ -136,8 +132,7 @@ public final class TransformationUtil
 		}
 	}
 
-	private static void warnRecursiveTransformation(final Material reactant,
-													final Material catalyst)
+	private static void warnRecursiveTransformation(final Material reactant, final Material catalyst)
 	{
 		System.err.println(String.format(
 				"[Warning] Recursive transformation: The material %s react with %s to create %s",

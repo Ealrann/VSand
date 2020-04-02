@@ -9,7 +9,7 @@ import org.sheepy.vsand.model.DrawLine;
 import org.sheepy.vsand.model.Materials;
 
 @Adapter(scope = DrawLine.class)
-public class DrawLineAdapter implements IDrawCommandAdapter<DrawLine>
+public final class DrawLineAdapter implements IDrawCommandAdapter<DrawLine>
 {
 	@Override
 	public void fillBuffer(DrawLine command, ByteBuffer shapeBuffer)

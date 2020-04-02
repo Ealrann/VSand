@@ -7,7 +7,7 @@ import org.sheepy.vsand.model.DrawSquare;
 import org.sheepy.vsand.model.Materials;
 
 @Adapter(scope = DrawSquare.class)
-public class DrawSquareAdapter implements IDrawCommandAdapter<DrawSquare>
+public final class DrawSquareAdapter implements IDrawCommandAdapter<DrawSquare>
 {
 	@Override
 	public void fillBuffer(DrawSquare command, ByteBuffer shapeBuffer)

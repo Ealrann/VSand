@@ -12,7 +12,7 @@ import org.sheepy.vsand.draw.DrawManager;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 
-public class VSandInputManager
+public final class VSandInputManager
 {
 	private final VSandApplication application;
 	private final IWindow window;
@@ -57,17 +57,7 @@ public class VSandInputManager
 	{
 		switch (event.key)
 		{
-			// Shift
-			case 340:
-				if (event.state == EKeyState.PRESSED)
-				{
-					shiftPressed = true;
-				}
-				else if (event.state == EKeyState.RELEASED)
-				{
-					shiftPressed = false;
-				}
-				break;
+			case 340 -> shiftKeyEvent(event.state); // Shift
 		}
 
 		// Pressed specific
@@ -75,63 +65,70 @@ public class VSandInputManager
 		{
 			switch (event.key)
 			{
-				// Space bar
-				case 32:
-					application.setPaused(!application.isPaused());
-					break;
-				// *
-				case 331:
-					int speedMinus = application.getSpeed();
-					speedMinus = Math.max(1, speedMinus / 2);
-					application.setSpeed(speedMinus);
-					break;
-				// /
-				case 332:
-					int speedPlus = application.getSpeed();
-					speedPlus = Math.min(16, speedPlus * 2);
-					application.setSpeed(speedPlus);
-					break;
-				// -
-				case 333:
-					int brushMinus = application.getBrushSize();
-					brushMinus = Math.max(1, brushMinus - 1);
-					application.setBrushSize(brushMinus);
-					break;
-				// +
-				case 334:
-					int brushPlus = application.getBrushSize();
-					brushPlus = Math.min(8, brushPlus + 1);
-					application.setBrushSize(brushPlus);
-					break;
-				// n
-				case 'n' - 32:
-					application.setNextMode(true);
-					break;
-				// f
-				case 'f' - 32:
-					application.getScene().setFullscreen(!application.getScene().isFullscreen());
-					break;
-				// Escape
-				case 256:
-					application.setRun(false);
-					break;
-				// s
-				case 's' - 32:
-					application.setForceClear(true);
-					application.setShowSleepZones(!application.isShowSleepZones());
-					break;
+				case 32 -> application.setPaused(!application.isPaused()); // space bar
+				case 331 -> doubleSpeed(); // *
+				case 332 -> halfSpeed(); // /
+				case 333 -> smallerBrush(); // -
+				case 334 -> biggerBrush(); // +
+				case 'n' - 32 -> application.setNextMode(true); // n
+				case 'f' - 32 -> application.getScene().setFullscreen(!application.getScene().isFullscreen());
+				case 256 -> application.setRun(false); // Escape
+				case 's' - 32 -> showDebug();
 			}
 		}
 		else
 		{
 			switch (event.key)
 			{
-				// s
-				case 's' - 32:
-					application.setForceClear(false);
-					break;
+				case 's' - 32 -> application.setForceClear(false);
 			}
 		}
+	}
+
+	private void shiftKeyEvent(final EKeyState state)
+	{
+		if (state == EKeyState.PRESSED)
+		{
+			shiftPressed = true;
+		}
+		else if (state == EKeyState.RELEASED)
+		{
+			shiftPressed = false;
+		}
+	}
+
+	private void showDebug()
+	{
+		application.setForceClear(true);
+		application.setShowSleepZones(!application.isShowSleepZones());
+	}
+
+	private void biggerBrush()
+	{
+		final int current = application.getBrushSize();
+		final int brushPlus = Math.min(8, current + 1);
+		application.setBrushSize(brushPlus);
+	}
+
+	private void smallerBrush()
+	{
+		final int current = application.getBrushSize();
+		final int brushMinus = Math.max(1, current - 1);
+		application.setBrushSize(brushMinus);
+	}
+
+	private void halfSpeed()
+	{
+		final int current = application.getSpeed();
+		final int speedPlus = Math.min(16, current * 2);
+		application.setSpeed(speedPlus);
+	}
+
+	private void doubleSpeed()
+	{
+		final int current = application.getSpeed();
+		final int speedMinus = Math.max(1, current / 2);
+		application.setSpeed(speedMinus);
 	}
 
 	private void onScrollEvent(ScrollEvent event)
