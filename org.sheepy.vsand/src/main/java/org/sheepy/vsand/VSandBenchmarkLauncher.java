@@ -28,7 +28,7 @@ public class VSandBenchmarkLauncher
 
 		// remove UI
 		EcoreUtil.delete(application.getScene()
-									.getParts()
+									.getCompositors()
 									.get(1));
 
 		final DemoDrawer drawer = new DemoDrawer(application);
