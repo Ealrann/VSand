@@ -57,7 +57,11 @@ Here some materials you can find in the game:
 
 Feel free to add a new issues if you want to see new things in the game, or if you find a bug.
 
-If you want to contribute to the code, you can clone the repo using:
+If you want to contribute to the project, or simply run the program from the source: 
+
+First, you need to setup a JDK 14 (Right now, I use [the OpenJ9 hotspot](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot)).
+
+You can clone the repo using:
 
 ```
 git clone --recursive --single-branch --branch root https://github.com/Ealrann/VSand.git
@@ -68,7 +72,12 @@ To launch the game:
 # Go to the VSand project directory
 cd VSand/VSand/
 # Use gradle to run it
-../.gradlew run
+./gradlew run
+```
+
+To update an existing repository, go back to the root directory (The one containing the submodules *Lily-core*, *Lily-vulkan*, and *VSand*), and use:
+```
+pull --rebase --recurse-submodules
 ```
 
 Note, due to a dependency to a github package, you need to set up a github credential into your gradle.properties. 
