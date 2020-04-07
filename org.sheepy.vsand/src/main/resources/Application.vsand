@@ -182,9 +182,7 @@
         <framebufferConfiguration clearValue="0.0;0.0;0.0;0.0"/>
         <colorDomain/>
       </configuration>
-      <attachmentPkg>
-        <colorAttachment name="Swapchain" stencilLoadOp="DONT_CARE" stencilStoreOp="DONT_CARE" initialLayout="TRANSFER_DST_OPTIMAL" finalLayout="PRESENT_SRC_KHR"/>
-      </attachmentPkg>
+      <colorAttachment name="Swapchain" stencilLoadOp="DONT_CARE" stencilStoreOp="DONT_CARE" initialLayout="TRANSFER_DST_OPTIMAL" finalLayout="PRESENT_SRC_KHR"/>
     </processes>
   </engines>
   <engines xsi:type="openal:OpenALEngine">
@@ -207,8 +205,8 @@
     </resourcePkg>
   </engines>
   <scene resizeable="true" size="1248;704">
-    <compositors xsi:type="application:BackgroundImage" sampling="Nearest" srcImage="//@engines.0/@resourcePkg/@resources.0" dstImage="//@engines.0/@processes.1/@attachmentPkg/@colorAttachment"/>
-    <compositors xsi:type="ui:UI" imageSupport="false" currentUIPage="//@scene/@compositors.1/@uiPages.0">
+    <compositors xsi:type="application:BackgroundImage" sampling="Nearest" srcImage="//@engines.0/@resourcePkg/@resources.0" dstImage="//@engines.0/@processes.1/@colorAttachment"/>
+    <compositors xsi:type="ui:UI" imageSupport="false" currentUIPage="//@scene/@compositors.1/@uiPages.0" dstImage="//@engines.0/@processes.1/@colorAttachment">
       <uiPages>
         <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
           <controls xsi:type="ui:DynamicRowLayout"/>

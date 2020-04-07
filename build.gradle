@@ -26,6 +26,7 @@ subprojects {
 		repositories {
 			jcenter()
 			maven {
+				maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 				url "https://maven.pkg.github.com/ealrann/emf-standalone"
 				credentials {
 					username = findProperty("github.username")
