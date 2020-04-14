@@ -9,8 +9,10 @@ module org.sheepy.vsand
 {
 	// requires openj9.sharedclasses;
 
-	requires org.sheepy.lily.vulkan.api;
+	requires transitive org.sheepy.lily.vulkan.api;
 	requires org.sheepy.lily.vulkan.extra.api;
+
+	exports org.sheepy.vsand;
 
 	opens org.sheepy.vsand;
 	opens org.sheepy.vsand.constants;

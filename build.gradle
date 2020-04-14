@@ -9,18 +9,18 @@ buildscript {
 	}
 }
 
-plugins {
-	id 'org.javamodularity.moduleplugin' version '1.5.0' apply false
-}
-
 subprojects {
 
-	apply plugin: "org.javamodularity.moduleplugin"
+	apply plugin: 'java-library'
 
 	version "1.3.6"
 
 	sourceCompatibility = 14
 	targetCompatibility = 14
+
+	java {
+		modularity.inferModulePath = true
+	}
 
 	afterEvaluate {
 		repositories {

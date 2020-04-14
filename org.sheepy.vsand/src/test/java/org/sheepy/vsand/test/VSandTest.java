@@ -1,7 +1,9 @@
-package org.sheepy.vsand;
+package org.sheepy.vsand.test;
 
 import org.junit.jupiter.api.Test;
 import org.sheepy.lily.core.api.LilyLauncher;
+import org.sheepy.vsand.VSandBenchmarkLauncher;
+import org.sheepy.vsand.VSandMainLoop;
 
 public class VSandTest
 {

@@ -66,11 +66,19 @@ butler {
 	}
 }
 
-mainClassName = 'org.sheepy.vsand/org.sheepy.vsand.VSandApplicationLauncher'
+application {
+	mainModule = 'org.sheepy.vsand'
+	mainClass = 'org.sheepy.vsand.VSandApplicationLauncher'
+}
 
 test {
 	useJUnitPlatform()
 }
+
+// Temporary: https://github.com/gradle/gradle/issues/890#issuecomment-613427968
+test { classpath = configurations[sourceSets.test.runtimeClasspathConfigurationName] + files(compileTestJava) }
+dependencies { testImplementation project(path) }
+// end Temporary ---------------------------------------------------------------
 
 dependencies {
 
@@ -81,7 +89,6 @@ dependencies {
 	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.nuklear'
 	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.openal.core'
 
-
 	testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
 	testImplementation "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
 
@@ -91,9 +98,7 @@ dependencies {
 
 sourceSets {
 	main {
-		java.srcDirs = ['src/generated/java',
-			'src/main/java',
-			'src/main/shader']
-		resources.srcDirs = ['src/main/resources']
+		java.srcDirs += ['src/generated/java',
+						 'src/main/shader']
 	}
 }
