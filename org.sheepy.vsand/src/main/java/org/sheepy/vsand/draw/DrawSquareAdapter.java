@@ -1,19 +1,21 @@
 package org.sheepy.vsand.draw;
 
-import java.nio.ByteBuffer;
-
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.vsand.model.DrawSquare;
 import org.sheepy.vsand.model.Materials;
 
-@Adapter(scope = DrawSquare.class)
+import java.nio.ByteBuffer;
+
+@ModelExtender(scope = DrawSquare.class)
+@Adapter(singleton = true)
 public final class DrawSquareAdapter implements IDrawCommandAdapter<DrawSquare>
 {
 	@Override
 	public void fillBuffer(DrawSquare command, ByteBuffer shapeBuffer)
 	{
 		final int size = command.getSize();
-		final int halfSize = size >> 1; // Divide by 2
+		final int halfSize = size >> 1; // Divide by 2 :)
 		final var material = command.getMaterial();
 		final var materials = (Materials) material.eContainer();
 		final int index = materials.getMaterials().indexOf(material);

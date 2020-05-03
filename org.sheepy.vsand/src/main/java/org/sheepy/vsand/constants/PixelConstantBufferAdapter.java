@@ -1,8 +1,11 @@
 package org.sheepy.vsand.constants;
 
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.core.api.adapter.annotation.*;
+import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.adapter.annotation.Dispose;
+import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.cadence.Tick;
+import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.input.IVulkanInputManager;
@@ -16,8 +19,8 @@ import org.sheepy.vsand.util.EShapeSize;
 
 import java.nio.ByteBuffer;
 
-@Statefull
-@Adapter(scope = PixelConstantBuffer.class, lazy = false)
+@ModelExtender(scope = PixelConstantBuffer.class)
+@Adapter(lazy = false)
 public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 {
 	private static final int BYTE_SIZE = 7 * Integer.BYTES;

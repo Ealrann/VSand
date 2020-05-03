@@ -66,6 +66,10 @@ butler {
 	}
 }
 
+run {
+	enableAssertions = true
+}
+
 application {
 	mainModule = 'org.sheepy.vsand'
 	mainClass = 'org.sheepy.vsand.VSandApplicationLauncher'

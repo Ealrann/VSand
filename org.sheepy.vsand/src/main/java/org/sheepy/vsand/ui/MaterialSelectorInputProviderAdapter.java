@@ -3,6 +3,7 @@ package org.sheepy.vsand.ui;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.model.resource.IImage;
 import org.sheepy.lily.vulkan.extra.api.nuklear.ISelectorInputProviderAdapter;
 import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Adapter(scope = InputMaterialProvider.class)
+@ModelExtender(scope = InputMaterialProvider.class)
+@Adapter(singleton = true)
 public class MaterialSelectorInputProviderAdapter implements ISelectorInputProviderAdapter
 {
 	@Override

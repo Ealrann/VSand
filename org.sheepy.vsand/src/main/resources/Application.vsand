@@ -68,13 +68,14 @@
           <shaderStages>COMPUTE_BIT</shaderStages>
         </descriptors>
       </descriptorPkg>
+      <descriptorPool/>
       <pipelinePkg>
-        <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorSetPkg/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5">
+        <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.5">
           <resourcePkg>
             <resources xsi:type="model:DrawConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorPool/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
@@ -94,16 +95,16 @@
             </tasks>
             <tasks xsi:type="compute:DispatchTask" name="Draw" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
-          <descriptorSetPkg>
+          <descriptorPool>
             <descriptorSets name="Draw" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
-          </descriptorSetPkg>
+          </descriptorPool>
           <pushConstantRanges size="72">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Step" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@descriptorSetPkg/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6">
+        <pipelines xsi:type="compute:ComputePipeline" name="Step" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.6">
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@descriptorPool/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PipelineBarrier" srcStage="COMPUTE_SHADER_BIT" dstStage="COMPUTE_SHADER_BIT">
               <barriers xsi:type="resource:BufferBarrier" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.1">
                 <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
@@ -125,20 +126,19 @@
               <tasks xsi:type="compute:DispatchTask" name="Board update" workgroupCountX="78" workgroupCountY="44"/>
             </tasks>
           </taskPkg>
-          <descriptorSetPkg>
+          <descriptorPool>
             <descriptorSets name="Update Board Common" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.4 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
-          </descriptorSetPkg>
+          </descriptorPool>
           <pushConstantRanges size="8">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@descriptorSetPkg/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7">
+        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" stage="Compute" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.9" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.7">
           <resourcePkg>
             <resources xsi:type="model:PixelConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.8"/>
           </resourcePkg>
-          <descriptorPkg/>
           <taskPkg>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@descriptorSetPkg/@descriptorSets.0" bindPoint="COMPUTE"/>
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@descriptorPool/@descriptorSets.0" bindPoint="COMPUTE"/>
             <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
@@ -164,9 +164,9 @@
             </tasks>
             <tasks xsi:type="compute:DispatchTask" workgroupCountX="78" workgroupCountY="44"/>
           </taskPkg>
-          <descriptorSetPkg>
+          <descriptorPool>
             <descriptorSets name="Board to Pixel" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.5 //@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
-          </descriptorSetPkg>
+          </descriptorPool>
           <pushConstantRanges size="28">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
@@ -313,7 +313,7 @@
       <reactants materials="//@materials/@materials.7"/>
       <catalysts materials="//@materials/@materials.7 //@materials/@materials.6" filterMode="true"/>
     </transformations>
-    <transformations xsi:type="model:Transformation" probability="100" target="//@materials/@materials.5" reactant="//@materials/@materials.8"/>
+    <transformations xsi:type="model:Transformation" probability="90" target="//@materials/@materials.5" reactant="//@materials/@materials.8"/>
     <transformations xsi:type="model:Transformation" probability="250" target="//@materials/@materials.5" reactant="//@materials/@materials.8" catalyst="//@materials/@materials.7"/>
     <transformations xsi:type="model:Transformation" probability="250" target="//@materials/@materials.9" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.5"/>
     <transformations xsi:type="model:Transformation" probability="60" isStaticTransformation="true" target="//@materials/@materials.2" reactant="//@materials/@materials.9"/>
@@ -396,6 +396,9 @@
     <transformations xsi:type="model:Transformation" probability="500" target="//@materials/@materials.18" reactant="//@materials/@materials.1" catalyst="//@materials/@materials.19"/>
     <transformations xsi:type="model:Transformation" probability="200" target="//@materials/@materials.18" reactant="//@materials/@materials.2" catalyst="//@materials/@materials.19"/>
     <transformations xsi:type="model:Transformation" probability="45" target="//@materials/@materials.11" reactant="//@materials/@materials.3" catalyst="//@materials/@materials.18"/>
+    <transformations xsi:type="model:Transformation" probability="350" target="//@materials/@materials.18" reactant="//@materials/@materials.19" catalyst="//@materials/@materials.4"/>
+    <transformations xsi:type="model:Transformation" probability="30" target="//@materials/@materials.3" reactant="//@materials/@materials.4" catalyst="//@materials/@materials.18"/>
+    <transformations xsi:type="model:Transformation" probability="50" target="//@materials/@materials.8" reactant="//@materials/@materials.4" catalyst="//@materials/@materials.19"/>
     <transformations xsi:type="model:Transformation" probability="260" target="//@materials/@materials.0" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.18"/>
     <transformations xsi:type="model:MultipleTransformation" probability="350" target="//@materials/@materials.8" name="[Snow] + [Lava] = [Steam]">
       <reactants materials="//@materials/@materials.6 //@materials/@materials.7"/>

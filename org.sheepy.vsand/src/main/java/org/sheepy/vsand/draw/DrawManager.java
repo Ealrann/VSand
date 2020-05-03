@@ -3,7 +3,7 @@ package org.sheepy.vsand.draw;
 import org.joml.Vector2ic;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.game.api.audio.AudioConfiguration;
-import org.sheepy.lily.game.api.audio.IAudioAdapter;
+import org.sheepy.lily.game.api.audio.IAudioAllocation;
 import org.sheepy.lily.game.api.audio.IAudioHandle;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.Material;
@@ -41,7 +41,7 @@ public final class DrawManager
 				if (paintSound != null)
 				{
 					final var pitch = material.getPitch();
-					final var soundAdapter = paintSound.adapt(IAudioAdapter.class);
+					final var soundAdapter = paintSound.allocationHandle(IAudioAllocation.class).get();
 					audioHandle = soundAdapter.play(audioConfig.builder().pitch(pitch).build());
 				}
 			}

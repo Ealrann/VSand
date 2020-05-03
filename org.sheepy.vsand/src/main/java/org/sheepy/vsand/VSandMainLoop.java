@@ -1,5 +1,7 @@
 package org.sheepy.vsand;
 
+import org.sheepy.lily.core.api.engine.IInputEngineAdapter;
+import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.util.DebugUtil;
 import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
@@ -96,15 +98,17 @@ public final class VSandMainLoop implements Runnable
 
 	private void load()
 	{
+
+
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		final var engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
 		if (application.getScene() != null)
 		{
 			final var window = engineAdapter.getWindow();
 			frameDurationNs = (long) ((1. / window.getRefreshRate()) * 1e9);
-			final var inputManager = engineAdapter.getInputManager();
 			if (benchmarkMode == false)
 			{
+				final var inputManager = IInputManager.get(application).orElseThrow();
 				final var mainDrawManager = new DrawManager(application, inputManager);
 				final var secondaryDrawManager = new DrawManager(application, inputManager);
 				new VSandInputManager(inputManager, window, application, mainDrawManager, secondaryDrawManager);

@@ -1,18 +1,20 @@
-import org.sheepy.lily.core.api.adapter.IAdapterProvider;
+import org.sheepy.lily.core.api.extender.IExtenderProvider;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.resource.IModelExtension;
-import org.sheepy.vsand.Adapters;
+import org.sheepy.vsand.Extenders;
 import org.sheepy.vsand.model.VSandModelExtension;
 
-
-module org.sheepy.vsand
-{
+module org.sheepy.vsand {
 	// requires openj9.sharedclasses;
 
 	requires transitive org.sheepy.lily.vulkan.api;
 	requires org.sheepy.lily.vulkan.extra.api;
 
 	exports org.sheepy.vsand;
+
+	exports org.sheepy.vsand.model;
+	exports org.sheepy.vsand.model.impl;
+	exports org.sheepy.vsand.model.util;
 
 	opens org.sheepy.vsand;
 	opens org.sheepy.vsand.constants;
@@ -24,5 +26,5 @@ module org.sheepy.vsand
 	uses IInputManager;
 
 	provides IModelExtension with VSandModelExtension;
-	provides IAdapterProvider with Adapters;
+	provides IExtenderProvider with Extenders;
 }
