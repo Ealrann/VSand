@@ -3,18 +3,20 @@ package org.sheepy.vsand;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.sheepy.lily.core.api.LilyLauncher;
+import org.sheepy.vsand.logic.VSandMainLoop;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandFactory;
 
+import java.io.IOException;
 import java.util.List;
 
 public class VSandBenchmarkLauncher
 {
 	public static final int DEFAULT_ITERATION_COUNT = 3000;
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
 		final var application = createTestApplication();
 		final var mainLoop = VSandMainLoop.createBenchmark(application, DEFAULT_ITERATION_COUNT);
@@ -22,14 +24,12 @@ public class VSandBenchmarkLauncher
 		LilyLauncher.launch(application, mainLoop);
 	}
 
-	public static VSandApplication createTestApplication()
+	public static VSandApplication createTestApplication() throws IOException
 	{
 		final var application = VSandApplicationLauncher.loadApplication();
 
 		// remove UI
-		EcoreUtil.delete(application.getScene()
-									.getCompositors()
-									.get(1));
+		EcoreUtil.delete(application.getScene().getCompositors().get(1));
 
 		final DemoDrawer drawer = new DemoDrawer(application);
 		drawer.drawLavaPot(200, 400);
@@ -98,12 +98,7 @@ public class VSandBenchmarkLauncher
 			return draw;
 		}
 
-		private static DrawCommand drawLine(final Material sand,
-											int x1,
-											int y1,
-											int x2,
-											int y2,
-											int size)
+		private static DrawCommand drawLine(final Material sand, int x1, int y1, int x2, int y2, int size)
 		{
 			final var draw = VSandFactory.eINSTANCE.createDrawLine();
 			draw.setMaterial(sand);
@@ -117,11 +112,7 @@ public class VSandBenchmarkLauncher
 
 		private static Material findMaterial(List<Material> materials, String name)
 		{
-			return materials.stream()
-							.filter(m -> m.getName()
-										  .equals(name))
-							.findFirst()
-							.orElse(null);
+			return materials.stream().filter(m -> m.getName().equals(name)).findFirst().orElse(null);
 		}
 	}
 }

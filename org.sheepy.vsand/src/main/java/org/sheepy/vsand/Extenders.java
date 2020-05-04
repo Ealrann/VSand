@@ -8,6 +8,9 @@ import org.sheepy.vsand.constants.PixelConstantBufferAdapter;
 import org.sheepy.vsand.draw.DrawCircleAdapter;
 import org.sheepy.vsand.draw.DrawLineAdapter;
 import org.sheepy.vsand.draw.DrawSquareAdapter;
+import org.sheepy.vsand.input.InputManager;
+import org.sheepy.vsand.input.PrimaryDrawer;
+import org.sheepy.vsand.input.SecondaryDrawer;
 import org.sheepy.vsand.loader.*;
 import org.sheepy.vsand.logic.ApplicationBehaviour;
 import org.sheepy.vsand.ui.MaterialSelectorInputProviderAdapter;
@@ -33,6 +36,9 @@ public class Extenders implements IExtenderProvider
 					   DrawLineAdapter.class,
 					   ApplicationBehaviour.class,
 					   MaterialSelectorInputProviderAdapter.class,
-					   MaterialCountAdapter.class);
+					   MaterialCountAdapter.class,
+					   InputManager.class,
+					   PrimaryDrawer.class,
+					   SecondaryDrawer.class);
 	}
 }

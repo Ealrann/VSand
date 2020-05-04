@@ -1,55 +1,39 @@
 package org.sheepy.vsand.input;
 
 import org.eclipse.emf.common.util.EList;
+import org.sheepy.lily.core.api.adapter.IAdapter;
+import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.input.event.KeyEvent;
-import org.sheepy.lily.core.api.input.event.MouseClickEvent;
 import org.sheepy.lily.core.api.input.event.ScrollEvent;
 import org.sheepy.lily.core.model.types.EKeyState;
-import org.sheepy.lily.game.api.window.IWindow;
-import org.sheepy.vsand.draw.DrawManager;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 
-public final class VSandInputManager
+@ModelExtender(scope = VSandApplication.class)
+@Adapter(lazy = false)
+public final class InputManager implements IAdapter
 {
 	private final VSandApplication application;
-	private final IWindow window;
-	private final DrawManager leftDrawManager;
-	private final DrawManager rightDrawManager;
+	private final IInputManager inputManager;
 
 	private boolean shiftPressed = false;
 
-	private boolean leftClickPressed = false;
-	private boolean rightClickPressed = false;
-
-	public VSandInputManager(final IInputManager inputManager,
-							 IWindow window,
-							 VSandApplication application,
-							 DrawManager leftDrawManager,
-							 DrawManager rightDrawManager)
+	public InputManager(VSandApplication application)
 	{
-		this.window = window;
 		this.application = application;
-		this.leftDrawManager = leftDrawManager;
-		this.rightDrawManager = rightDrawManager;
 
+		inputManager = IInputManager.get(application).orElseThrow();
+		inputManager.showCursor(inputManager.isMouseOnUI());
 		inputManager.listen(this::onMouseOverUI, IInputManager.Features.MouseOverUIEvent);
-		inputManager.listen(this::afterPollInputs, IInputManager.Features.AfterPollInputs);
 		inputManager.listen(this::onKeyEvent, IInputManager.Features.KeyEvent);
 		inputManager.listen(this::onScrollEvent, IInputManager.Features.ScrollEvent);
-		inputManager.listen(this::onMouseClickEvent, IInputManager.Features.MouseClickEvent);
 	}
 
 	private void onMouseOverUI(Boolean overUI)
 	{
-		window.hideCursor(!overUI);
-	}
-
-	private void afterPollInputs()
-	{
-		leftDrawManager.manage(application.getMainMaterial(), leftClickPressed);
-		rightDrawManager.manage(application.getSecondaryMaterial(), rightClickPressed);
+		inputManager.showCursor(overUI);
 	}
 
 	private void onKeyEvent(KeyEvent event)
@@ -181,21 +165,5 @@ public final class VSandInputManager
 		} while (next.isUserFriendly() == false);
 
 		return next;
-	}
-
-	private void onMouseClickEvent(MouseClickEvent event)
-	{
-		switch (event.button)
-		{
-			case LEFT:
-				leftClickPressed = event.pressed;
-				rightClickPressed = false;
-				break;
-			case RIGHT:
-				rightClickPressed = event.pressed;
-				leftClickPressed = false;
-				break;
-			default:
-		}
 	}
 }

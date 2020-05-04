@@ -1,7 +1,5 @@
-package org.sheepy.vsand;
+package org.sheepy.vsand.logic;
 
-import org.sheepy.lily.core.api.engine.IInputEngineAdapter;
-import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.util.DebugUtil;
 import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
@@ -9,9 +7,6 @@ import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.process.IPipelineTask;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
-import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
-import org.sheepy.vsand.draw.DrawManager;
-import org.sheepy.vsand.input.VSandInputManager;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.FPSCounter;
 
@@ -21,10 +16,10 @@ public final class VSandMainLoop implements Runnable
 	private final VSandApplication application;
 	private final boolean benchmarkMode;
 	private final int stopIteration;
+	private final IProcessAdapter boardProcessAdapter;
+	private final IProcessAdapter renderProcessAdapter;
+	private final IPipelineTask boardImageBarrier;
 
-	private IProcessAdapter boardProcessAdapter;
-	private IProcessAdapter renderProcessAdapter;
-	private IPipelineTask boardImageBarrier;
 	private boolean loaded = false;
 	private long currentIteration = 0;
 	private long startNs;
@@ -46,6 +41,14 @@ public final class VSandMainLoop implements Runnable
 		this.application = application;
 		this.benchmarkMode = benchmarkMode;
 		this.stopIteration = stopIteration;
+
+		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
+		final var processes = vulkanEngine.getProcesses();
+		final var boardProcess = (ComputeProcess) processes.get(0);
+		final var boardToPixelPipeline = (ComputePipeline) (boardProcess.getPipelinePkg().getPipelines().get(2));
+		boardProcessAdapter = boardProcess.adaptNotNull(IProcessAdapter.class);
+		boardImageBarrier = boardToPixelPipeline.getTaskPkg().getTasks().get(2);
+		renderProcessAdapter = processes.get(1).adaptNotNull(IProcessAdapter.class);
 	}
 
 	@Override
@@ -67,24 +70,21 @@ public final class VSandMainLoop implements Runnable
 			application.setPaused(true);
 		}
 
-		if (renderProcessAdapter != null)
+		if (benchmarkMode == false)
 		{
-			if (benchmarkMode == false)
+			renderProcessAdapter.run();
+		}
+		else if (renderProcessAdapter != null)
+		{
+			if (nextRenderDate < System.nanoTime())
 			{
 				renderProcessAdapter.run();
+				nextRenderDate = System.nanoTime() + frameDurationNs;
+				boardImageBarrier.setEnabled(true);
 			}
 			else
 			{
-				if (nextRenderDate < System.nanoTime())
-				{
-					renderProcessAdapter.run();
-					nextRenderDate = System.nanoTime() + frameDurationNs;
-					boardImageBarrier.setEnabled(true);
-				}
-				else
-				{
-					boardImageBarrier.setEnabled(false);
-				}
+				boardImageBarrier.setEnabled(false);
 			}
 		}
 
@@ -98,29 +98,13 @@ public final class VSandMainLoop implements Runnable
 
 	private void load()
 	{
-
-
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		final var engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
-		if (application.getScene() != null)
+		final var window = engineAdapter.getWindow();
+		if (window != null)
 		{
-			final var window = engineAdapter.getWindow();
 			frameDurationNs = (long) ((1. / window.getRefreshRate()) * 1e9);
-			if (benchmarkMode == false)
-			{
-				final var inputManager = IInputManager.get(application).orElseThrow();
-				final var mainDrawManager = new DrawManager(application, inputManager);
-				final var secondaryDrawManager = new DrawManager(application, inputManager);
-				new VSandInputManager(inputManager, window, application, mainDrawManager, secondaryDrawManager);
-
-				if (inputManager.isMouseOnUI() == false)
-				{
-					window.hideCursor(true);
-				}
-			}
 		}
-
-		gatherProcesses(vulkanEngine);
 
 		startNs = System.nanoTime();
 		nextRenderDate = System.nanoTime() + frameDurationNs;
@@ -128,26 +112,6 @@ public final class VSandMainLoop implements Runnable
 		if (benchmarkMode == true)
 		{
 			System.out.println("VSand benchmark is running...");
-		}
-	}
-
-	private void gatherProcesses(VulkanEngine vulkanEngine)
-	{
-		final var processes = vulkanEngine.getProcesses();
-		for (final var process : processes)
-		{
-			if (process instanceof ComputeProcess)
-			{
-				boardProcessAdapter = process.adaptNotNull(IProcessAdapter.class);
-				final var boardToPixelPipeline = (ComputePipeline) ((ComputeProcess) process).getPipelinePkg()
-																							 .getPipelines()
-																							 .get(2);
-				boardImageBarrier = boardToPixelPipeline.getTaskPkg().getTasks().get(2);
-			}
-			else if (process instanceof GraphicProcess)
-			{
-				renderProcessAdapter = process.adaptNotNull(IProcessAdapter.class);
-			}
 		}
 	}
 
