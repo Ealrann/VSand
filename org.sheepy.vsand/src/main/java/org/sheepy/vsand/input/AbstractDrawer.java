@@ -1,6 +1,6 @@
 package org.sheepy.vsand.input;
 
-import org.sheepy.lily.core.api.adapter.IAdapter;
+import org.sheepy.lily.core.api.extender.IExtender;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.vsand.audio.MaterialSoundManager;
 import org.sheepy.vsand.draw.DrawManager;
@@ -8,7 +8,7 @@ import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.BoardUtil;
 
-abstract class AbstractDrawer implements IAdapter
+abstract class AbstractDrawer implements IExtender
 {
 	private final MaterialSoundManager soundManager = new MaterialSoundManager();
 	private final DrawManager drawManager = new DrawManager();
@@ -21,7 +21,7 @@ abstract class AbstractDrawer implements IAdapter
 	public AbstractDrawer(VSandApplication application)
 	{
 		this.application = application;
-		inputManager = IInputManager.get(application).orElseThrow();
+		inputManager = IInputManager.get(application);
 		inputManager.listen(this::afterPollInputs, IInputManager.Features.AfterPollInputs);
 	}
 

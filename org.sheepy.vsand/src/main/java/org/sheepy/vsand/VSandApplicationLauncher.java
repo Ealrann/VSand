@@ -11,7 +11,7 @@ import java.io.IOException;
 public class VSandApplicationLauncher
 {
 	private static final String APPLICATION_PATH = "Application.vsand";
-	private static final String APPLICATION_VERSION = "1.3.6";
+	private static final String APPLICATION_VERSION = "1.4.0";
 
 	private static final IResourceLoader resourceLoader = IResourceLoader.INSTANCE;
 

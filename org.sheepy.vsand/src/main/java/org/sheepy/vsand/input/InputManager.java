@@ -1,8 +1,8 @@
 package org.sheepy.vsand.input;
 
 import org.eclipse.emf.common.util.EList;
-import org.sheepy.lily.core.api.adapter.IAdapter;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.sheepy.lily.core.api.extender.IExtender;
 import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.input.event.KeyEvent;
@@ -13,7 +13,7 @@ import org.sheepy.vsand.model.VSandApplication;
 
 @ModelExtender(scope = VSandApplication.class)
 @Adapter(lazy = false)
-public final class InputManager implements IAdapter
+public final class InputManager implements IExtender
 {
 	private final VSandApplication application;
 	private final IInputManager inputManager;
@@ -24,7 +24,7 @@ public final class InputManager implements IAdapter
 	{
 		this.application = application;
 
-		inputManager = IInputManager.get(application).orElseThrow();
+		inputManager = IInputManager.get(application);
 		inputManager.showCursor(inputManager.isMouseOnUI());
 		inputManager.listen(this::onMouseOverUI, IInputManager.Features.MouseOverUIEvent);
 		inputManager.listen(this::onKeyEvent, IInputManager.Features.KeyEvent);

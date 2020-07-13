@@ -16,10 +16,10 @@ public final class VSandMainLoop implements Runnable
 	private final VSandApplication application;
 	private final boolean benchmarkMode;
 	private final int stopIteration;
-	private final IProcessAdapter boardProcessAdapter;
-	private final IProcessAdapter renderProcessAdapter;
-	private final IPipelineTask boardImageBarrier;
 
+	private IProcessAdapter boardProcessAdapter;
+	private IProcessAdapter renderProcessAdapter;
+	private IPipelineTask boardImageBarrier;
 	private boolean loaded = false;
 	private long currentIteration = 0;
 	private long startNs;
@@ -41,14 +41,6 @@ public final class VSandMainLoop implements Runnable
 		this.application = application;
 		this.benchmarkMode = benchmarkMode;
 		this.stopIteration = stopIteration;
-
-		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
-		final var processes = vulkanEngine.getProcesses();
-		final var boardProcess = (ComputeProcess) processes.get(0);
-		final var boardToPixelPipeline = (ComputePipeline) (boardProcess.getPipelinePkg().getPipelines().get(2));
-		boardProcessAdapter = boardProcess.adaptNotNull(IProcessAdapter.class);
-		boardImageBarrier = boardToPixelPipeline.getTaskPkg().getTasks().get(2);
-		renderProcessAdapter = processes.get(1).adaptNotNull(IProcessAdapter.class);
 	}
 
 	@Override
@@ -99,6 +91,13 @@ public final class VSandMainLoop implements Runnable
 	private void load()
 	{
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
+		final var processes = vulkanEngine.getProcesses();
+		final var boardProcess = (ComputeProcess) processes.get(0);
+		final var boardToPixelPipeline = (ComputePipeline) (boardProcess.getPipelinePkg().getPipelines().get(2));
+		boardProcessAdapter = boardProcess.adaptNotNull(IProcessAdapter.class);
+		boardImageBarrier = boardToPixelPipeline.getTaskPkgs().get(0).getTasks().get(2);
+		renderProcessAdapter = processes.get(1).adaptNotNull(IProcessAdapter.class);
+
 		final var engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
 		final var window = engineAdapter.getWindow();
 		if (window != null)

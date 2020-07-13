@@ -2,7 +2,7 @@
  */
 package org.sheepy.vsand.model;
 
-import org.sheepy.lily.core.api.adapter.ILilyEObject;
+import org.sheepy.lily.core.api.model.ILilyEObject;
 import org.sheepy.lily.core.model.resource.Sound;
 
 /**

@@ -3,14 +3,11 @@ package org.sheepy.vsand.constants;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
-import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.cadence.Tick;
 import org.sheepy.lily.core.api.extender.ModelExtender;
+import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.util.ModelUtil;
-import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
-import org.sheepy.lily.vulkan.api.input.IVulkanInputManager;
 import org.sheepy.lily.vulkan.api.resource.buffer.IConstantBufferUpdater;
-import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.PixelConstantBuffer;
 import org.sheepy.vsand.model.VSandApplication;
@@ -28,27 +25,16 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 
 	private final PixelConstantBuffer constantBuffer;
 	private final VSandApplication application;
-
-	private ByteBuffer buffer = null;
-
-	private IVulkanInputManager inputManager;
+	private final ByteBuffer buffer;
+	private final IInputManager inputManager;
 
 	private PixelConstantBufferAdapter(PixelConstantBuffer constantBuffer)
 	{
 		this.constantBuffer = constantBuffer;
 
 		application = (VSandApplication) ModelUtil.getApplication(constantBuffer);
-	}
-
-	@Load
-	private void load()
-	{
+		inputManager = application.adapt(IInputManager.class);
 		buffer = MemoryUtil.memAlloc(BYTE_SIZE);
-
-		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
-		final var engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
-		inputManager = engineAdapter.getInputManager();
-
 		updateBuffer();
 	}
 

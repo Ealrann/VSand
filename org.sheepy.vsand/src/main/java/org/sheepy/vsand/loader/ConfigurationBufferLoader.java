@@ -2,10 +2,10 @@ package org.sheepy.vsand.loader;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.core.api.adapter.IAdapter;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Load;
+import org.sheepy.lily.core.api.extender.IExtender;
 import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.vulkan.model.resource.Buffer;
 import org.sheepy.vsand.model.Material;
@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 
 @ModelExtender(scope = Buffer.class, name = "Configuration")
 @Adapter(singleton = true, lazy = false)
-public final class ConfigurationBufferLoader implements IAdapter
+public final class ConfigurationBufferLoader implements IExtender
 {
 	private static final int UNIT_BYTES = 8 * Integer.BYTES;
 

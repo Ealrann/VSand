@@ -3,7 +3,7 @@
 package org.sheepy.vsand.model;
 
 import org.eclipse.emf.common.util.EList;
-import org.sheepy.lily.core.api.adapter.ILilyEObject;
+import org.sheepy.lily.core.api.model.ILilyEObject;
 
 /**
  * <!-- begin-user-doc -->

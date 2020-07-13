@@ -15,7 +15,7 @@ public final class SecondaryDrawer extends AbstractDrawer
 	{
 		super(application);
 
-		final var inputManager = IInputManager.get(application).orElseThrow();
+		final var inputManager = IInputManager.get(application);
 		inputManager.listen(this::onMouseClickEvent, IInputManager.Features.MouseClickEvent);
 	}
 

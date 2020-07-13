@@ -17,7 +17,7 @@ public final class MaterialSoundManager
 		if (paintSound != null)
 		{
 			final var pitch = material.getPitch();
-			final var soundAdapter = paintSound.allocationHandle(IAudioAllocation.class).get();
+			final var soundAdapter = paintSound.adapt(IAudioAllocation.class);
 			audioHandle = soundAdapter.play(audioConfig.builder().pitch(pitch).build());
 		}
 	}
