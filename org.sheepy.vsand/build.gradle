@@ -27,7 +27,7 @@ task jlink(type: Exec, dependsOn: ['installDist']) {
 		'--no-man-pages',
 		'--exclude-files', '**java_*.properties',
 		'--compress', '2',
-		'--add-modules', "java.base,java.xml,jdk.unsupported,openj9.sharedclasses",
+		'--add-modules', "java.base,java.xml,jdk.unsupported",
 		'--output', 'image'
 }
 

@@ -1,3 +1,5 @@
 #!/bin/sh
 DIR=${0%/*}/bin
-(cd $DIR && ./java -Xms32M -Xmx64M -p ../modules -Xscmx32M -Xshareclasses:cacheDir=sharedClasses,name=VSand,nonfatal -m org.sheepy.vsand/org.sheepy.vsand.VSandApplicationLauncher  $@)
+ARGS="-Xms32M -Xmx64M --enable-preview"
+#ARGS="-Xms32M -Xmx64M -Xscmx32M -Xshareclasses:cacheDir=sharedClasses,name=VSand,nonfatal" #OpenJ9
+(cd $DIR && ./java $ARGS -p ../modules -m org.sheepy.vsand/org.sheepy.vsand.VSandApplicationLauncher $@)
