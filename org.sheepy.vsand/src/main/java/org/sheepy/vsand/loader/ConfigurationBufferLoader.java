@@ -7,20 +7,20 @@ import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.extender.IExtender;
 import org.sheepy.lily.core.api.extender.ModelExtender;
-import org.sheepy.lily.vulkan.model.resource.Buffer;
+import org.sheepy.lily.vulkan.model.resource.DataBuffer;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 
 import java.nio.ByteBuffer;
 
-@ModelExtender(scope = Buffer.class, name = "Configuration")
+@ModelExtender(scope = DataBuffer.class, name = "Configuration")
 @Adapter(singleton = true, lazy = false)
 public final class ConfigurationBufferLoader implements IExtender
 {
 	private static final int UNIT_BYTES = 8 * Integer.BYTES;
 
 	@Load
-	private static void load(Buffer buffer)
+	private static void load(DataBuffer buffer)
 	{
 		final var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);
 		final var materials = application.getMaterials().getMaterials();
@@ -45,12 +45,11 @@ public final class ConfigurationBufferLoader implements IExtender
 		}
 		bBuffer.flip();
 
-		buffer.setSize(size);
 		buffer.setData(bBuffer);
 	}
 
 	@Dispose
-	private static void dispose(Buffer buffer)
+	private static void dispose(DataBuffer buffer)
 	{
 		MemoryUtil.memFree(buffer.getData());
 		buffer.setData(null);

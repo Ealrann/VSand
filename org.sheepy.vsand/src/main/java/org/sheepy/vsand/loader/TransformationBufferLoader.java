@@ -7,16 +7,16 @@ import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.extender.IExtender;
 import org.sheepy.lily.core.api.extender.ModelExtender;
-import org.sheepy.lily.vulkan.model.resource.Buffer;
+import org.sheepy.lily.vulkan.model.resource.DataBuffer;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.TransformationUtil;
 
-@ModelExtender(scope = Buffer.class, name = "Transformation")
+@ModelExtender(scope = DataBuffer.class, name = "Transformation")
 @Adapter(singleton = true, lazy = false)
 public final class TransformationBufferLoader implements IExtender
 {
 	@Load
-	private static void load(Buffer buffer)
+	private static void load(DataBuffer buffer)
 	{
 		final var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);
 		final int[] transfoArray = TransformationUtil.toArray(application);
@@ -29,12 +29,11 @@ public final class TransformationBufferLoader implements IExtender
 		byteBuffer.position(size);
 		byteBuffer.flip();
 
-		buffer.setSize(size);
 		buffer.setData(byteBuffer);
 	}
 
 	@Dispose
-	private static void dispose(Buffer buffer)
+	private static void dispose(DataBuffer buffer)
 	{
 		MemoryUtil.memFree(buffer.getData());
 		buffer.setData(null);
