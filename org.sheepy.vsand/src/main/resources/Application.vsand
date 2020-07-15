@@ -11,7 +11,7 @@
         </initialLayout>
       </resources>
     </resourcePkg>
-    <processes xsi:type="compute:ComputeProcess" name="Board Compute" waitingFenceDuringAcquire="true" resetAllowed="true">
+    <processes xsi:type="compute:ComputeProcess" name="Board Compute" resetAllowed="true">
       <resourcePkg>
         <resources xsi:type="resource:Shader" name="draw" stage="COMPUTE_BIT">
           <file xsi:type="resource_1:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
@@ -75,6 +75,7 @@
         </descriptors>
       </descriptorPkg>
       <descriptorPool/>
+      <executionManager xsi:type="compute:ComputeExecutionManager" waitForExecution="//@engines.0/@processes.0/@executionManager" waitedBy="//@engines.0/@processes.1/@executionManager //@engines.0/@processes.0/@executionManager"/>
       <pipelinePkg>
         <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.4" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.0">
           <resourcePkg>
@@ -154,7 +155,7 @@
             <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="COMPUTE_SHADER_BIT" srcQueue="//@engines.0/@processes.1" dstQueue="//@engines.0/@processes.0">
+            <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="COMPUTE_SHADER_BIT">
               <barriers xsi:type="resource:ImageBarrier" srcLayout="TRANSFER_SRC_OPTIMAL" dstLayout="GENERAL" image="//@engines.0/@resourcePkg/@resources.0">
                 <srcAccessMask>TRANSFER_READ_BIT</srcAccessMask>
                 <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
@@ -188,10 +189,10 @@
         </pipelines>
       </pipelinePkg>
       <configuration/>
-      <executionManager/>
     </processes>
     <processes xsi:type="graphic:GraphicProcess" resetAllowed="true">
       <descriptorPool/>
+      <executionManager xsi:type="graphic:GraphicExecutionManager" waitForExecution="//@engines.0/@processes.0/@executionManager"/>
       <configuration acquireWaitStage="COMPUTE_SHADER_BIT">
         <swapchainConfiguration requiredSwapImageCount="2" allowingAccessFromCompute="true">
           <swapImageUsages>ColorAttachment</swapImageUsages>
@@ -205,7 +206,6 @@
         <renderPass/>
         <imageViews/>
       </configuration>
-      <executionManager/>
       <attachmentPkg/>
     </processes>
   </engines>

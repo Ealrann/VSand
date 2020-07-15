@@ -3,6 +3,9 @@ package org.sheepy.vsand;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.sheepy.lily.core.api.LilyLauncher;
+import org.sheepy.lily.core.api.util.DebugUtil;
+import org.sheepy.lily.vulkan.model.VulkanEngine;
+import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
 import org.sheepy.vsand.logic.VSandMainLoop;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.Material;
@@ -18,9 +21,15 @@ public class VSandBenchmarkLauncher
 
 	public static void main(String[] args) throws IOException
 	{
-		final var application = createTestApplication();
-		final var mainLoop = VSandMainLoop.createBenchmark(application, DEFAULT_ITERATION_COUNT);
+		DebugUtil.parseMainArgs(args);
 
+		final var application = createTestApplication();
+
+		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
+		final var graphicProcess = (GraphicProcess) vulkanEngine.getProcesses().get(1);
+		graphicProcess.getExecutionManager().getWaitForExecution().clear();
+
+		final var mainLoop = VSandMainLoop.createBenchmark(application, DEFAULT_ITERATION_COUNT);
 		LilyLauncher.launch(application, mainLoop);
 	}
 

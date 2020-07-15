@@ -7,6 +7,7 @@ import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.process.IPipelineTask;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
+import org.sheepy.lily.vulkan.model.process.graphic.GraphicProcess;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.FPSCounter;
 
@@ -66,9 +67,9 @@ public final class VSandMainLoop implements Runnable
 		{
 			renderProcessAdapter.run();
 		}
-		else if (renderProcessAdapter != null)
+		else
 		{
-			if (nextRenderDate < System.nanoTime())
+			if (renderProcessAdapter != null && nextRenderDate < System.nanoTime())
 			{
 				renderProcessAdapter.run();
 				nextRenderDate = System.nanoTime() + frameDurationNs;
@@ -96,7 +97,8 @@ public final class VSandMainLoop implements Runnable
 		final var boardToPixelPipeline = (ComputePipeline) (boardProcess.getPipelinePkg().getPipelines().get(2));
 		boardProcessAdapter = boardProcess.adaptNotNull(IProcessAdapter.class);
 		boardImageBarrier = boardToPixelPipeline.getTaskPkgs().get(0).getTasks().get(2);
-		renderProcessAdapter = processes.get(1).adaptNotNull(IProcessAdapter.class);
+		final var graphicProcess = processes.size() > 1 ? (GraphicProcess) processes.get(1) : null;
+		renderProcessAdapter = graphicProcess != null ? graphicProcess.adaptNotNull(IProcessAdapter.class) : null;
 
 		final var engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
 		final var window = engineAdapter.getWindow();
