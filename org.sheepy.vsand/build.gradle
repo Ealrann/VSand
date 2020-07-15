@@ -72,8 +72,8 @@ run {
 
 application {
 	mainModule = 'org.sheepy.vsand'
-	// mainClass = 'org.sheepy.vsand.VSandApplicationLauncher'
-	mainClass = 'org.sheepy.vsand.VSandBenchmarkLauncher'
+	mainClass = 'org.sheepy.vsand.VSandApplicationLauncher'
+	// mainClass = 'org.sheepy.vsand.VSandBenchmarkLauncher'
 }
 
 test {
