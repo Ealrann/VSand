@@ -84,6 +84,7 @@ public final class VSandMainLoop implements Runnable
 		currentIteration++;
 		if (currentIteration == stopIteration)
 		{
+			boardProcessAdapter.waitIdle();
 			application.setRun(false);
 			printBenchmarkResult();
 		}
