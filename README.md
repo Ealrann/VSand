@@ -80,15 +80,6 @@ To update an existing repository, go back to the root directory (The one contain
 pull --rebase --recurse-submodules
 ```
 
-Note, due to a dependency to a github package, you need to set up a github credential into your gradle.properties. 
-1. Generate a token with `repo` and `read package` here: https://github.com/settings/tokens.
-2. Fill the file *~/.gradle/gradle.properties* :
-```
-github.username=<your github usename>
-github.token=<the generated token>
-```
-
-
 ### Frameworks/API used
 #### Graphic
 - [**LWJGL 3**](https://www.lwjgl.org/)
