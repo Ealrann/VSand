@@ -3,8 +3,7 @@
 #define CHUNK_WIDTH 78
 #define CHUNK_HEIGHT 44
 
-#define WORKGROUP_SIZE_X 16
-#define WORKGROUP_SIZE_Y 16
+#define WORKGROUP_SIZE 8
 
 #define SQUARE		0
 #define CIRCLE		1
@@ -17,7 +16,7 @@ layout (constant_id = 0) const int MATERIAL_COUNT = 1;
 layout (constant_id = 1) const int WIDTH = 1;
 layout (constant_id = 2) const int HEIGHT = 1;
 
-layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
 // The chunk state board.
 layout(binding = 0) buffer SChunks
