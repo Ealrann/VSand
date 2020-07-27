@@ -1,4 +1,4 @@
-package org.sheepy.vsand.loader;
+package org.sheepy.vsand.load.buffer;
 
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Load;

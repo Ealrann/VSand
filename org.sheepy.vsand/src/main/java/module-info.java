@@ -21,7 +21,9 @@ module org.sheepy.vsand {
 	opens org.sheepy.vsand.constants;
 	opens org.sheepy.vsand.draw;
 	opens org.sheepy.vsand.input;
-	opens org.sheepy.vsand.loader;
+	opens org.sheepy.vsand.load.buffer;
+	opens org.sheepy.vsand.load.constant;
+	opens org.sheepy.vsand.load.dispatch;
 	opens org.sheepy.vsand.logic;
 	opens org.sheepy.vsand.ui;
 

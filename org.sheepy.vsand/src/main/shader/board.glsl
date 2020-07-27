@@ -1,6 +1,3 @@
-#define WIDTH 1248
-#define HEIGHT 704
-
 #define EDGE_SIZE 1
 #define DEFAULT_PRESSURE 1.
 #define PRESSURE_DELTA 0.002
@@ -11,6 +8,8 @@
 #define SPECIAL 3
 
 layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
 
 // Random number, change each frame.
 layout (push_constant) uniform PushConstants {
@@ -32,13 +31,13 @@ layout(binding = 1) restrict buffer SChunks
 // The game board, with all the values.
 layout(binding = 2) readonly buffer SBoard1
 {
-    uint data[WIDTH][HEIGHT];
+    uint data[WIDTH * HEIGHT];
 }board1;
 
 // The next game board, with all the values.
 layout(binding = 3) buffer SBoard2
 {
-    uint data[WIDTH][HEIGHT];
+    uint data[WIDTH * HEIGHT];
 }board2;
 
 
@@ -63,8 +62,8 @@ void buildCrops(const uvec2 startLocation, const bool vertical)
     cropPush(voidValue.materialId, material.density, EDGE_SIZE, EDGE_SIZE * DEFAULT_PRESSURE, material.isStatic == 1, material.type == LIQUID, material.type == GAZ);
     for (int i = 0; i < (vertical ? HEIGHT : WIDTH); i++)
     {
-        const uint boardValue = vertical ? board1.data[startLocation.x][startLocation.y + i]
-                                            : board2.data[startLocation.x + i][startLocation.y];
+        const uint boardValue = vertical ? board1.data[startLocation.x + ((startLocation.y + i) * WIDTH)]
+                                            : board2.data[startLocation.x + i + (startLocation.y * WIDTH)];
         const Value value = readValue(boardValue);
         if(value.materialId != currentMaterialId)
         {
@@ -153,7 +152,7 @@ void writeCrop(const uint cropAddress, const uint x, const uint y, const bool ve
         for (int i = 0; i < cropQueue.queue[cropAddress].size && y + i < HEIGHT; i++)
         {
             const uint packedValue = materialId | (packHalf2x16(vec2(0., pressure)) & 0xFFFF0000u);
-            board2.data[x][y + i] = packedValue;
+            board2.data[x + (y + i) * WIDTH] = packedValue;
             pressure += pressureDelta;
         }
     }
@@ -163,7 +162,7 @@ void writeCrop(const uint cropAddress, const uint x, const uint y, const bool ve
         const uint packedValue = materialId | (packHalf2x16(vec2(0., pressure)) & 0xFFFF0000u);
         for(int i = 0 ; i < cropQueue.queue[cropAddress].size && x + i < WIDTH; i++)
         {
-            board2.data[x + i][y] = packedValue;
+            board2.data[x + i + y * WIDTH] = packedValue;
         }
     }
 }

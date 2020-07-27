@@ -17,6 +17,11 @@ const uvec2 horizontalDir = uvec2(1, 0);
 
 void main()
 {
+    if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
+    {
+        return;
+    }
+
     uint x = gl_GlobalInvocationID.x;
     initQueue();
 
