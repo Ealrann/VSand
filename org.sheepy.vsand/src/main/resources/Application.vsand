@@ -13,7 +13,7 @@
     <processes xsi:type="compute:ComputeProcess" name="Board Compute" resetAllowed="true">
       <resourcePkg>
         <resources xsi:type="model:BoardConstantBuffer"/>
-        <resources xsi:type="vulkanresource:ConstantBuffer" name="MaterialCount"/>
+        <resources xsi:type="vulkanresource:ConstantBuffer" name="BoardSpecializationConstants"/>
         <resources xsi:type="vulkanresource:MemoryChunk">
           <parts xsi:type="vulkanresource:BufferMemory" name="Board">
             <buffers xsi:type="vulkanresource:StaticBuffer" name="Board Buffer 1" initWithZero="true">
@@ -75,6 +75,8 @@
             <resources xsi:type="vulkanresource:Shader" name="draw" stage="COMPUTE_BIT">
               <file xsi:type="resource:StringModuleResource" name="" path="draw.comp.spv" moduleName="org.sheepy.vsand"/>
               <constants name="MaterialCount" size="4"/>
+              <constants name="Width" constantId="1" size="4"/>
+              <constants name="Height" constantId="2" size="4"/>
             </resources>
           </resourcePkg>
           <taskPkgs>
@@ -82,7 +84,7 @@
             <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="compute:DispatchTask" name="Draw" workgroupCountX="78" workgroupCountY="44"/>
+            <tasks xsi:type="compute:DispatchTask" name="Draw"/>
           </taskPkgs>
           <descriptorPool>
             <descriptorSets name="Draw1" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1"/>
@@ -117,6 +119,8 @@
             <resources xsi:type="vulkanresource:Shader" name="vertical" stage="COMPUTE_BIT">
               <file xsi:type="resource:StringModuleResource" name="" path="vertical.comp.spv" moduleName="org.sheepy.vsand"/>
               <constants name="MaterialCount" size="4"/>
+              <constants name="Width" constantId="1" size="4"/>
+              <constants name="Height" constantId="2" size="4"/>
             </resources>
           </resourcePkg>
           <taskPkgs>
@@ -136,7 +140,7 @@
             <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="compute:DispatchTask" name="Board update" workgroupCountX="78"/>
+            <tasks xsi:type="compute:DispatchTask" name="Board Vertical"/>
           </taskPkgs>
           <pushConstantRanges size="4">
             <stages>COMPUTE_BIT</stages>
@@ -147,6 +151,8 @@
             <resources xsi:type="vulkanresource:Shader" name="Horizontal" stage="COMPUTE_BIT">
               <file xsi:type="resource:StringModuleResource" name="" path="horizontal.comp.spv" moduleName="org.sheepy.vsand"/>
               <constants name="MaterialCount" size="4"/>
+              <constants name="Width" constantId="1" size="4"/>
+              <constants name="Height" constantId="2" size="4"/>
             </resources>
           </resourcePkg>
           <taskPkgs>
@@ -154,7 +160,7 @@
             <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="compute:DispatchTask" name="Board update" workgroupCountY="44"/>
+            <tasks xsi:type="compute:DispatchTask" name="Board Horizontal"/>
           </taskPkgs>
           <pushConstantRanges size="4">
             <stages>COMPUTE_BIT</stages>
@@ -166,6 +172,8 @@
             <resources xsi:type="vulkanresource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
               <file xsi:type="resource:StringModuleResource" name="" path="board_to_pixel.comp.spv" moduleName="org.sheepy.vsand"/>
               <constants name="MaterialCount" size="4"/>
+              <constants name="Width" constantId="1" size="4"/>
+              <constants name="Height" constantId="2" size="4"/>
             </resources>
           </resourcePkg>
           <taskPkgs>
@@ -186,7 +194,7 @@
                 <buffers buffers="//@engines.0/@processes.0/@resourcePkg/@resources.2/@parts.0/@buffers.1 //@engines.0/@processes.0/@resourcePkg/@resources.2/@parts.0/@buffers.0" stride="1"/>
               </barriers>
             </tasks>
-            <tasks xsi:type="compute:DispatchTask" workgroupCountX="78" workgroupCountY="44"/>
+            <tasks xsi:type="compute:DispatchTask" name="Board To Pixel"/>
           </taskPkgs>
           <descriptorPool>
             <descriptorSets name="Board to Pixel1" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.5 //@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>

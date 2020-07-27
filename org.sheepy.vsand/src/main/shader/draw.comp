@@ -1,8 +1,5 @@
 #version 450
 
-#define WIDTH 1248
-#define HEIGHT 704
-
 #define CHUNK_WIDTH 78
 #define CHUNK_HEIGHT 44
 
@@ -17,6 +14,8 @@
 #define PRESSURE_DELTA_LIQUID 0.01
 
 layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
 
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
@@ -29,7 +28,7 @@ layout(binding = 0) buffer SChunks
 // The game board, with all the values.
 layout(binding = 1) buffer SBoard
 {
-	uint data[WIDTH][HEIGHT];
+	uint data[WIDTH * HEIGHT];
 }board;
 
 layout (push_constant) uniform PushConstants
@@ -66,7 +65,7 @@ int computeSide(int x, int y, int x1, int y1, int x2, int y2);
 
 void main()
 {
-	if (gl_GlobalInvocationID.y < HEIGHT)
+	if (gl_GlobalInvocationID.x < WIDTH && gl_GlobalInvocationID.y < HEIGHT)
 	{
 		int x = int(gl_GlobalInvocationID.x);
 		int y = int(gl_GlobalInvocationID.y);
@@ -90,14 +89,14 @@ void main()
 
 			if (isInShape)
 			{
-                uint value = board.data[x][y];
+                uint value = board.data[x + y * WIDTH];
                 uint currentMaterial = value & 0xFFu;
                 uint targetMaterial = attributes.value & 0xFFu;
 
                 if(currentMaterial != targetMaterial)
                 {
                     uint packedPressure = packHalf2x16(vec2(0., DEFAULT_PRESSURE));
-                    board.data[x][y] = targetMaterial | (packedPressure & 0xFFFF0000u);
+                    board.data[x + (y * WIDTH)] = targetMaterial | (packedPressure & 0xFFFF0000u);
                 }
 				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = 3;
 			}

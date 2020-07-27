@@ -11,7 +11,12 @@ import org.sheepy.vsand.draw.DrawSquareAdapter;
 import org.sheepy.vsand.input.InputManager;
 import org.sheepy.vsand.input.PrimaryDrawer;
 import org.sheepy.vsand.input.SecondaryDrawer;
-import org.sheepy.vsand.loader.*;
+import org.sheepy.vsand.load.buffer.*;
+import org.sheepy.vsand.load.constant.MaterialCountAdapter;
+import org.sheepy.vsand.load.dispatch.BoardToPixelDispatchLoader;
+import org.sheepy.vsand.load.dispatch.DrawDispatchLoader;
+import org.sheepy.vsand.load.dispatch.HorizontalDispatchLoader;
+import org.sheepy.vsand.load.dispatch.VerticalDispatchLoader;
 import org.sheepy.vsand.logic.ApplicationBehaviour;
 import org.sheepy.vsand.ui.MaterialSelectorInputProviderAdapter;
 
@@ -29,6 +34,10 @@ public final class Extenders implements IAdapterProvider
 					   ChunkBufferLoader.class,
 					   BoardImageLoader.class,
 					   TransformationBufferLoader.class,
+					   DrawDispatchLoader.class,
+					   VerticalDispatchLoader.class,
+					   HorizontalDispatchLoader.class,
+					   BoardToPixelDispatchLoader.class,
 					   BoardConstantBufferAdapter.class,
 					   DrawConstantBufferAdapter.class,
 					   PixelConstantBufferAdapter.class,

@@ -1,4 +1,4 @@
-package org.sheepy.vsand.loader;
+package org.sheepy.vsand.load.buffer;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
