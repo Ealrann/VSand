@@ -1,4 +1,4 @@
-#define CROP_QUEUE_SIZE 400
+#define CROP_QUEUE_SIZE 50
 
 struct Value
 {
