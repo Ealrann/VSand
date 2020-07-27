@@ -12,7 +12,7 @@ import org.sheepy.vsand.model.VSandApplication;
 @Adapter(singleton = true, lazy = false)
 public final class DrawDispatchLoader implements IExtender
 {
-	private static final int WORKGROUP_SIZE = 16;
+	private static final int WORKGROUP_SIZE = 8;
 
 	@Load
 	private static void load(DispatchTask task)

@@ -3,7 +3,7 @@
 #define CHUNK_WIDTH 78
 #define CHUNK_HEIGHT 44
 
-#define WORKGROUP_SIZE 16
+#define WORKGROUP_SIZE 8
 
 
 #define FLAG_FORCE_CLEAR            1
