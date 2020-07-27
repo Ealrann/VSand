@@ -22,8 +22,11 @@ import java.nio.ByteBuffer;
 @AutoLoad
 public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 {
-	private static final int BYTE_SIZE = 7 * Integer.BYTES;
-	private static final int BOARD_INDEX_POSITION = 6 * Integer.BYTES;
+	private static final int BYTE_SIZE = 6 * Integer.BYTES;
+
+	private static final int FLAG_FORCE_CLEAR = 1;
+	private static final int FLAG_SHOW_SLEEPING_CHUNKS = 2;
+	private static final int FLAG_SHOW_PRESSURE = 4;
 
 	private final PixelConstantBuffer constantBuffer;
 	private final VSandApplication application;
@@ -49,7 +52,6 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 	@Override
 	public void beforePush(ConstantBuffer b)
 	{
-		buffer.putInt(BOARD_INDEX_POSITION, constantBuffer.getBoardConstantBuffer().getCurrentBoardBuffer());
 	}
 
 	@Tick
@@ -59,9 +61,13 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 		final var size = EShapeSize.values()[application.getBrushSize() - 1];
 		final var mainMaterial = application.getMainMaterial();
 		final int index = application.getMaterials().getMaterials().indexOf(mainMaterial);
+		final int clearFlag = forceClear ? FLAG_FORCE_CLEAR : 0;
+		final int sleepFlag = application.isShowSleepZones() ? FLAG_SHOW_SLEEPING_CHUNKS : 0;
+		final int pressureFlag = application.isShowPressure() ? FLAG_SHOW_PRESSURE : 0;
+		final int flags = clearFlag + sleepFlag + pressureFlag;
 
-		buffer.putInt(forceClear ? 1 : 0);
-		buffer.putInt(application.isShowSleepZones() ? 1 : 0);
+		buffer.putInt(flags);
+		buffer.putInt(0);
 		buffer.putInt(index);
 		buffer.putInt(size.getSize() >> 1);
 
@@ -77,7 +83,6 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 			buffer.putInt(0);
 			buffer.putInt(0);
 		}
-		buffer.putInt(0);
 		buffer.flip();
 		constantBuffer.setData(buffer);
 	}

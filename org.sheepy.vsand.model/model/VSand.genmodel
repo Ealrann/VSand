@@ -5,7 +5,7 @@
     modelPluginID="org.sheepy.vsand.model" modelName="VSand" rootExtendsInterface="org.sheepy.lily.core.api.model.ILilyEObject"
     rootExtendsClass="org.sheepy.lily.core.api.model.LilyEObject" testsDirectory=""
     booleanFlagsField="" importerID="org.eclipse.emf.importer.ecore" complianceLevel="11.0"
-    language="en" usedGenPackages="../../org.sheepy.lily.vulkan.extra.model/model/Extra.genmodel#//nuklear ../../org.sheepy.lily.core.model/model/Lily.genmodel#//ui ../../org.sheepy.lily.core.model/model/Lily.genmodel#//presentation ../../org.sheepy.lily.core.model/model/Lily.genmodel#//application ../../org.sheepy.lily.core.model/model/Lily.genmodel#//variable ../../org.sheepy.lily.core.model/model/Lily.genmodel#//types ../../org.sheepy.lily.core.model/model/Lily.genmodel#//inference ../../org.sheepy.lily.core.model/model/Lily.genmodel#//maintainer ../../org.sheepy.lily.core.model/model/Lily.genmodel#//cadence ../../org.sheepy.lily.core.model/model/Lily.genmodel#//action ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//process ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//model ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//barrier ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//enumeration ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//image ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//pipeline ../../org.sheepy.lily.core.model/model/Lily.genmodel#//resource ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//vulkanresource"
+    language="en" usedGenPackages="../../org.sheepy.lily.vulkan.extra.model/model/Extra.genmodel#//nuklear ../../org.sheepy.lily.core.model/model/Lily.genmodel#//ui ../../org.sheepy.lily.core.model/model/Lily.genmodel#//presentation ../../org.sheepy.lily.core.model/model/Lily.genmodel#//application ../../org.sheepy.lily.core.model/model/Lily.genmodel#//variable ../../org.sheepy.lily.core.model/model/Lily.genmodel#//types ../../org.sheepy.lily.core.model/model/Lily.genmodel#//inference ../../org.sheepy.lily.core.model/model/Lily.genmodel#//maintainer ../../org.sheepy.lily.core.model/model/Lily.genmodel#//cadence ../../org.sheepy.lily.core.model/model/Lily.genmodel#//action ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//process ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//model ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//barrier ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//enumeration ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//image ../../org.sheepy.vulkan.model/model/Vulkan.genmodel#//pipeline ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//compute ../../org.sheepy.lily.vulkan.model/model/LilyVulkan.genmodel#//vulkanresource ../../org.sheepy.lily.core.model/model/Lily.genmodel#//resource"
     operationReflection="true" importOrganizing="true" decoration="Live" cleanup="true"
     eclipsePlatformVersion="2019-06" autoResizeProperties="true" autoExpandProperties="10"
     findAction="true" expandAllAction="true" collapseAllAction="true" revertAction="true">
@@ -24,6 +24,12 @@
   <foreignModel>VSand.ecore</foreignModel>
   <genPackages prefix="VSand" basePackage="org.sheepy.vsand" resource="XMI" disposableProviderFactory="true"
       multipleEditorPages="false" childCreationExtenders="true" ecorePackage="VSand.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="VSand.ecore#//EMaterialType">
+      <genEnumLiterals ecoreEnumLiteral="VSand.ecore#//EMaterialType/Solid"/>
+      <genEnumLiterals ecoreEnumLiteral="VSand.ecore#//EMaterialType/Liquid"/>
+      <genEnumLiterals ecoreEnumLiteral="VSand.ecore#//EMaterialType/Gaz"/>
+      <genEnumLiterals ecoreEnumLiteral="VSand.ecore#//EMaterialType/Special"/>
+    </genEnums>
     <genClasses ecoreClass="VSand.ecore#//VSandApplication" labelFeature="../../org.sheepy.lily.core.model/model/Lily.genmodel#//application/Application/title">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VSand.ecore#//VSandApplication/materials"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VSand.ecore#//VSandApplication/transformations"/>
@@ -35,14 +41,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/speed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/forceClear"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/showSleepZones"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/showPressure"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/brushSize"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//VSandApplication/boardUpdateTask"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/version"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//VSandApplication/size"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//VSandApplication/stepPipelines"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//VSandApplication/pausePipeline"/>
     </genClasses>
-    <genClasses ecoreClass="VSand.ecore#//BoardConstantBuffer">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VSand.ecore#//BoardConstantBuffer/currentBoardBuffer"/>
-    </genClasses>
+    <genClasses ecoreClass="VSand.ecore#//BoardConstantBuffer"/>
     <genClasses ecoreClass="VSand.ecore#//DrawConstantBuffer">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VSand.ecore#//DrawConstantBuffer/boardConstantBuffer"/>
     </genClasses>
@@ -84,6 +90,7 @@
       <genFeatures notify="false" createChild="false" propertyCategory="Sound" propertySortChoices="true"
           ecoreFeature="ecore:EReference VSand.ecore#//Material/paintSound"/>
       <genFeatures createChild="false" propertyCategory="Sound" ecoreFeature="ecore:EAttribute VSand.ecore#//Material/pitch"/>
+      <genFeatures createChild="false" propertyCategory="Basic" ecoreFeature="ecore:EAttribute VSand.ecore#//Material/type"/>
     </genClasses>
     <genClasses ecoreClass="VSand.ecore#//Transformations">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VSand.ecore#//Transformations/transformations"/>

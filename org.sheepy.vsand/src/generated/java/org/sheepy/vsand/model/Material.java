@@ -24,6 +24,7 @@ import org.sheepy.lily.core.model.resource.Sound;
  *   <li>{@link org.sheepy.vsand.model.Material#isUserFriendly <em>User Friendly</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.Material#getPaintSound <em>Paint Sound</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.Material#getPitch <em>Pitch</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.Material#getType <em>Type</em>}</li>
  * </ul>
  *
  * @see org.sheepy.vsand.model.VSandPackage#getMaterial()
@@ -289,5 +290,31 @@ public interface Material extends ILilyEObject
 	 * @generated
 	 */
 	void setPitch(float value);
+
+	/**
+	 * Returns the value of the '<em><b>Type</b></em>' attribute.
+	 * The default value is <code>"Solid"</code>.
+	 * The literals are from the enumeration {@link org.sheepy.vsand.model.EMaterialType}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Type</em>' attribute.
+	 * @see org.sheepy.vsand.model.EMaterialType
+	 * @see #setType(EMaterialType)
+	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_Type()
+	 * @model default="Solid"
+	 * @generated
+	 */
+	EMaterialType getType();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.Material#getType <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Type</em>' attribute.
+	 * @see org.sheepy.vsand.model.EMaterialType
+	 * @see #getType()
+	 * @generated
+	 */
+	void setType(EMaterialType value);
 
 } // Material

@@ -6,14 +6,13 @@
 #define CHUNK_WIDTH 78
 #define CHUNK_HEIGHT 44
 
-#define WORKGROUP_SIZE 16
+#define WORKGROUP_SIZE 8
+#define EFFECTIVE_SIZE 16
 
+layout (constant_id = 0) const int MATERIAL_COUNT = 1;
 
-#define FLAG_FORCE_CLEAR            1
-#define FLAG_SHOW_SLEEPING_CHUNKS   2
-#define FLAG_SHOW_PRESSURE          4
-
-layout (constant_id = 0) const int MATERIAL_COUNT = 2;
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
@@ -28,11 +27,12 @@ struct Entry
 
 // Random number, change each frame.
 layout (push_constant) uniform PushConstants {
-	int flags;
-    int padding;
+	int forceClear;
+	int showSleepChunks;
 	int drawMaterialId;
 	int drawRadius;
 	ivec2 mousePos;
+	uint boardToWrite;
 } pushConstants;
 
 layout(rgba8, binding = 0) uniform image2D outImage;
@@ -48,30 +48,39 @@ layout(binding = 2) buffer SChunks
 	int data[CHUNK_WIDTH][CHUNK_HEIGHT];
 }chunks;
 
-layout(binding = 3) buffer readonly SBoard
+layout(binding = 3) buffer readonly SBoard1
 {
-	uint data[WIDTH][HEIGHT];
-}board;
+	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+}board1;
+
+layout(binding = 4) buffer readonly SBoard2
+{
+	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+}board2;
 
 const uint G_MASK = 255 << 8;
 const uint B_MASK = 255;
 const vec4 DEBUG_COLOR = vec4(1.0, 0.5, 0.5, 0.0);
+const uvec4 unswizzleVec = uvec4(0xFF, 0xFF00, 0xFF0000, 0xFF000000);
+const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
+const uvec2 xDir = uvec2(1, 0);
+const uvec2 yDir = uvec2(0, 1);
 
 shared bool colorTweakPreTest;
 shared bool sleeping;
 
 bool testSquare(ivec2 upLeftCorner1, ivec2 downRightCorner1, ivec2 upLeftCorner2, ivec2 downRightCorner2);
 bool testCircle(ivec2 loc, ivec2 circleLoc, int radius);
-vec4 computeColor(ivec2 loc);
+vec4 computeColor(ivec2 loc, vec4 color);
 
 void main()
 {
 	if(gl_LocalInvocationIndex == 0)
 	{
-//		int chunkState = chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y];
-//
-		ivec2 workgroupUpLeftCorner    = ivec2(gl_WorkGroupID.xy)     * WORKGROUP_SIZE;
-		ivec2 workgroupDownRightCorner = ivec2(gl_WorkGroupID.xy + 1) * WORKGROUP_SIZE - 1;
+		int chunkState = chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y];
+
+		ivec2 workgroupUpLeftCorner    = ivec2(gl_WorkGroupID.xy)     * EFFECTIVE_SIZE;
+		ivec2 workgroupDownRightCorner = ivec2(gl_WorkGroupID.xy + 1) * EFFECTIVE_SIZE - 1;
 		ivec2 cercleUpLeftCorner    = pushConstants.mousePos - pushConstants.drawRadius;
 		ivec2 cercleDownRightCorner = pushConstants.mousePos + pushConstants.drawRadius;
 
@@ -79,19 +88,19 @@ void main()
 										workgroupDownRightCorner,
 										cercleUpLeftCorner,
 										cercleDownRightCorner);
-//
-//		if((chunkState & 2) != 0)
-//		{
+
+		if((chunkState & 2) != 0)
+		{
 			sleeping = false;
-//			if(colorTweakPreTest == false)
-//			{
-//				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = chunkState ^ 2;
-//			}
-//		}
-//		else
-//		{
-//			sleeping = true;
-//		}
+			if(colorTweakPreTest == false)
+			{
+				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = chunkState ^ 2;
+			}
+		}
+		else
+		{
+			sleeping = true;
+		}
 	}
 
 
@@ -102,62 +111,64 @@ void main()
 		chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 2;
 	}
 
-	ivec2 loc = ivec2(gl_GlobalInvocationID.xy);
+	ivec2 loc = ivec2(gl_GlobalInvocationID.xy) * 2;
 
 	if(  loc.x >= WIDTH
 		|| loc.y >= HEIGHT
-		|| (   pushConstants.flags == 0
+		|| (   pushConstants.forceClear == 0
 			&& colorTweakPreTest == false
-			&& sleeping == true))
+			&& sleeping == true
+			&& pushConstants.showSleepChunks == 0))
 	{
 		return;
 	}
 
-	vec4 finalColor = computeColor(loc);
+	uvec2 swizzled = loc >> 1;
+	uint value = pushConstants.boardToWrite == 0 ? board1.data[swizzled.x][swizzled.y] : board2.data[swizzled.x][swizzled.y];
+	uvec4 unswizzledValue = (unswizzleVec & value) >> unswizzleOffset;
 
-	imageStore(outImage, loc, finalColor);
+	vec4 color1 = configuration.materials[unswizzledValue.x].color;
+	vec4 color2 = configuration.materials[unswizzledValue.y].color;
+	vec4 color3 = configuration.materials[unswizzledValue.z].color;
+	vec4 color4 = configuration.materials[unswizzledValue.w].color;
+
+	ivec2 loc1 = loc;
+	ivec2 loc2 = loc + ivec2(1, 0);
+	ivec2 loc3 = loc + ivec2(0, 1);
+	ivec2 loc4 = loc + 1;
+
+	vec4 finalColor1 = computeColor(loc1, color1);
+	vec4 finalColor2 = computeColor(loc2, color2);
+	vec4 finalColor3 = computeColor(loc3, color3);
+	vec4 finalColor4 = computeColor(loc4, color4);
+
+	imageStore(outImage, loc1, finalColor1);
+	imageStore(outImage, loc2, finalColor2);
+	imageStore(outImage, loc3, finalColor3);
+	imageStore(outImage, loc4, finalColor4);
 }
 
-vec4 computeColor(ivec2 loc)
+vec4 computeColor(ivec2 loc, vec4 color)
 {
 	bool colorTweak = false;
 	vec4 addColor = vec4(0, 0, 0, 0);
-    uint value = board.data[loc.x][loc.y];
-    uint materialId = value & 0xFFu;
-    vec4 color = configuration.materials[materialId].color;
-
-
 	if(colorTweakPreTest && testCircle(loc, pushConstants.mousePos, pushConstants.drawRadius))
 	{
 		Entry material = configuration.materials[pushConstants.drawMaterialId];
-        addColor += vec4(material.color.xyz + 0.2, 0);
+		addColor += vec4(material.color.xyz + 0.2, 0);
 
 		colorTweak = true;
 	}
 
-	if(sleeping == true	&& (pushConstants.flags & FLAG_SHOW_SLEEPING_CHUNKS) != 0)
+	if(sleeping == true	&& pushConstants.showSleepChunks == 1)
 	{
 		addColor += vec4(1, 0.5, 0.5, 0);
 		colorTweak = true;
 	}
 
-    if((pushConstants.flags & FLAG_SHOW_PRESSURE) != 0)
-    {
-        float pressure = unpackHalf2x16(value).y - 1.;
-        if(pressure >= 0.)
-        {
-            addColor += vec4(clamp(sqrt(pressure)*2, 0., 1.), 0, 0, 0);
-        }
-        else
-        {
-            addColor += vec4(0, 0, clamp(-pressure*2, 0., 1.), 0);
-        }
-        colorTweak = true;
-    }
-
 	if(colorTweak)
 	{
-		return clamp(color + (addColor / 2.), 0., 1.);
+		return (color * 3 + addColor) / 4;
 	}
 	else
 	{

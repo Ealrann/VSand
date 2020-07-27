@@ -4,6 +4,7 @@ package org.sheepy.vsand.model;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
@@ -233,22 +234,22 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__SHOW_SLEEP_ZONES = ApplicationPackage.APPLICATION_FEATURE_COUNT + 9;
 
 	/**
+	 * The feature id for the '<em><b>Show Pressure</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__SHOW_PRESSURE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 10;
+
+	/**
 	 * The feature id for the '<em><b>Brush Size</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 10;
-
-	/**
-	 * The feature id for the '<em><b>Board Update Task</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__BOARD_UPDATE_TASK = ApplicationPackage.APPLICATION_FEATURE_COUNT + 11;
+	int VSAND_APPLICATION__BRUSH_SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Version</b></em>' attribute.
@@ -269,13 +270,31 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 13;
 
 	/**
+	 * The feature id for the '<em><b>Step Pipelines</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__STEP_PIPELINES = ApplicationPackage.APPLICATION_FEATURE_COUNT + 14;
+
+	/**
+	 * The feature id for the '<em><b>Pause Pipeline</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__PAUSE_PIPELINE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 15;
+
+	/**
 	 * The number of structural features of the '<em>Application</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 14;
+	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 16;
 
 	/**
 	 * The number of operations of the '<em>Application</em>' class.
@@ -315,22 +334,13 @@ public interface VSandPackage extends EPackage
 	int BOARD_CONSTANT_BUFFER__DATA = VulkanResourcePackage.CONSTANT_BUFFER__DATA;
 
 	/**
-	 * The feature id for the '<em><b>Current Board Buffer</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = VulkanResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Board Constant Buffer</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BOARD_CONSTANT_BUFFER_FEATURE_COUNT = VulkanResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 1;
+	int BOARD_CONSTANT_BUFFER_FEATURE_COUNT = VulkanResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Board Constant Buffer</em>' class.
@@ -368,15 +378,6 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int DRAW_CONSTANT_BUFFER__DATA = BOARD_CONSTANT_BUFFER__DATA;
-
-	/**
-	 * The feature id for the '<em><b>Current Board Buffer</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DRAW_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER;
 
 	/**
 	 * The feature id for the '<em><b>Board Constant Buffer</b></em>' reference.
@@ -432,15 +433,6 @@ public interface VSandPackage extends EPackage
 	 * @ordered
 	 */
 	int PIXEL_CONSTANT_BUFFER__DATA = BOARD_CONSTANT_BUFFER__DATA;
-
-	/**
-	 * The feature id for the '<em><b>Current Board Buffer</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PIXEL_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER;
 
 	/**
 	 * The feature id for the '<em><b>Board Constant Buffer</b></em>' reference.
@@ -854,13 +846,22 @@ public interface VSandPackage extends EPackage
 	int MATERIAL__PITCH = 9;
 
 	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MATERIAL__TYPE = 10;
+
+	/**
 	 * The number of structural features of the '<em>Material</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MATERIAL_FEATURE_COUNT = 10;
+	int MATERIAL_FEATURE_COUNT = 11;
 
 	/**
 	 * The number of operations of the '<em>Material</em>' class.
@@ -1229,6 +1230,16 @@ public interface VSandPackage extends EPackage
 	int INPUT_MATERIAL_PROVIDER_OPERATION_COUNT = NuklearPackage.IINPUT_PROVIDER_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.sheepy.vsand.model.EMaterialType <em>EMaterial Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.sheepy.vsand.model.EMaterialType
+	 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getEMaterialType()
+	 * @generated
+	 */
+	int EMATERIAL_TYPE = 16;
+
+	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.VSandApplication <em>Application</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1349,6 +1360,17 @@ public interface VSandPackage extends EPackage
 	EAttribute getVSandApplication_ShowSleepZones();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#isShowPressure <em>Show Pressure</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Show Pressure</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#isShowPressure()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EAttribute getVSandApplication_ShowPressure();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1358,17 +1380,6 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 */
 	EAttribute getVSandApplication_BrushSize();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask <em>Board Update Task</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Board Update Task</em>'.
-	 * @see org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask()
-	 * @see #getVSandApplication()
-	 * @generated
-	 */
-	EReference getVSandApplication_BoardUpdateTask();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#getVersion <em>Version</em>}'.
@@ -1393,6 +1404,28 @@ public interface VSandPackage extends EPackage
 	EAttribute getVSandApplication_Size();
 
 	/**
+	 * Returns the meta object for the reference list '{@link org.sheepy.vsand.model.VSandApplication#getStepPipelines <em>Step Pipelines</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Step Pipelines</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#getStepPipelines()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EReference getVSandApplication_StepPipelines();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.sheepy.vsand.model.VSandApplication#getPausePipeline <em>Pause Pipeline</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Pause Pipeline</em>'.
+	 * @see org.sheepy.vsand.model.VSandApplication#getPausePipeline()
+	 * @see #getVSandApplication()
+	 * @generated
+	 */
+	EReference getVSandApplication_PausePipeline();
+
+	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.BoardConstantBuffer <em>Board Constant Buffer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1401,17 +1434,6 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 */
 	EClass getBoardConstantBuffer();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.BoardConstantBuffer#getCurrentBoardBuffer <em>Current Board Buffer</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Current Board Buffer</em>'.
-	 * @see org.sheepy.vsand.model.BoardConstantBuffer#getCurrentBoardBuffer()
-	 * @see #getBoardConstantBuffer()
-	 * @generated
-	 */
-	EAttribute getBoardConstantBuffer_CurrentBoardBuffer();
 
 	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.DrawConstantBuffer <em>Draw Constant Buffer</em>}'.
@@ -1769,6 +1791,17 @@ public interface VSandPackage extends EPackage
 	EAttribute getMaterial_Pitch();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.Material#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see org.sheepy.vsand.model.Material#getType()
+	 * @see #getMaterial()
+	 * @generated
+	 */
+	EAttribute getMaterial_Type();
+
+	/**
 	 * Returns the meta object for class '{@link org.sheepy.vsand.model.Transformations <em>Transformations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1972,6 +2005,16 @@ public interface VSandPackage extends EPackage
 	EReference getInputMaterialProvider_Materials();
 
 	/**
+	 * Returns the meta object for enum '{@link org.sheepy.vsand.model.EMaterialType <em>EMaterial Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>EMaterial Type</em>'.
+	 * @see org.sheepy.vsand.model.EMaterialType
+	 * @generated
+	 */
+	EEnum getEMaterialType();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2086,20 +2129,20 @@ public interface VSandPackage extends EPackage
 		EAttribute VSAND_APPLICATION__SHOW_SLEEP_ZONES = eINSTANCE.getVSandApplication_ShowSleepZones();
 
 		/**
+		 * The meta object literal for the '<em><b>Show Pressure</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VSAND_APPLICATION__SHOW_PRESSURE = eINSTANCE.getVSandApplication_ShowPressure();
+
+		/**
 		 * The meta object literal for the '<em><b>Brush Size</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute VSAND_APPLICATION__BRUSH_SIZE = eINSTANCE.getVSandApplication_BrushSize();
-
-		/**
-		 * The meta object literal for the '<em><b>Board Update Task</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference VSAND_APPLICATION__BOARD_UPDATE_TASK = eINSTANCE.getVSandApplication_BoardUpdateTask();
 
 		/**
 		 * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
@@ -2118,6 +2161,22 @@ public interface VSandPackage extends EPackage
 		EAttribute VSAND_APPLICATION__SIZE = eINSTANCE.getVSandApplication_Size();
 
 		/**
+		 * The meta object literal for the '<em><b>Step Pipelines</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference VSAND_APPLICATION__STEP_PIPELINES = eINSTANCE.getVSandApplication_StepPipelines();
+
+		/**
+		 * The meta object literal for the '<em><b>Pause Pipeline</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference VSAND_APPLICATION__PAUSE_PIPELINE = eINSTANCE.getVSandApplication_PausePipeline();
+
+		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.BoardConstantBufferImpl <em>Board Constant Buffer</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2126,14 +2185,6 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EClass BOARD_CONSTANT_BUFFER = eINSTANCE.getBoardConstantBuffer();
-
-		/**
-		 * The meta object literal for the '<em><b>Current Board Buffer</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = eINSTANCE.getBoardConstantBuffer_CurrentBoardBuffer();
 
 		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.DrawConstantBufferImpl <em>Draw Constant Buffer</em>}' class.
@@ -2416,6 +2467,14 @@ public interface VSandPackage extends EPackage
 		EAttribute MATERIAL__PITCH = eINSTANCE.getMaterial_Pitch();
 
 		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MATERIAL__TYPE = eINSTANCE.getMaterial_Type();
+
+		/**
 		 * The meta object literal for the '{@link org.sheepy.vsand.model.impl.TransformationsImpl <em>Transformations</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2578,6 +2637,16 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EReference INPUT_MATERIAL_PROVIDER__MATERIALS = eINSTANCE.getInputMaterialProvider_Materials();
+
+		/**
+		 * The meta object literal for the '{@link org.sheepy.vsand.model.EMaterialType <em>EMaterial Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.sheepy.vsand.model.EMaterialType
+		 * @see org.sheepy.vsand.model.impl.VSandPackageImpl#getEMaterialType()
+		 * @generated
+		 */
+		EEnum EMATERIAL_TYPE = eINSTANCE.getEMaterialType();
 
 	}
 

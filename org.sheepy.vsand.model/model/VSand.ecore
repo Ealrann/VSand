@@ -23,17 +23,18 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showSleepZones" unique="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="showPressure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="brushSize" unique="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="4"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="boardUpdateTask" eType="ecore:EClass ../../org.sheepy.lily.vulkan.model/model/process.ecore#//CompositeTask"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="0.0.0"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" lowerBound="1" eType="ecore:EDataType ../../org.sheepy.lily.core.model/model/types.ecore#//Vector2i"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stepPipelines" upperBound="-1"
+        eType="ecore:EClass ../../org.sheepy.lily.vulkan.model/model/compute.ecore#//ComputePipeline"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pausePipeline" eType="ecore:EClass ../../org.sheepy.lily.vulkan.model/model/process.ecore#//Pipeline"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BoardConstantBuffer" eSuperTypes="../../org.sheepy.lily.vulkan.model/model/vulkanresource.ecore#//ConstantBuffer">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentBoardBuffer" unique="false"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BoardConstantBuffer" eSuperTypes="../../org.sheepy.lily.vulkan.model/model/vulkanresource.ecore#//ConstantBuffer"/>
   <eClassifiers xsi:type="ecore:EClass" name="DrawConstantBuffer" eSuperTypes="#//BoardConstantBuffer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="boardConstantBuffer" eType="#//BoardConstantBuffer"/>
   </eClassifiers>
@@ -115,6 +116,18 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="paintSound" eType="ecore:EClass ../../org.sheepy.lily.core.model/model/resource.ecore#//Sound"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pitch" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
         defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//EMaterialType"
+        defaultValueLiteral="Solid">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="propertyCategory" value="Basic"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="EMaterialType">
+    <eLiterals name="Solid"/>
+    <eLiterals name="Liquid" value="1"/>
+    <eLiterals name="Gaz" value="2"/>
+    <eLiterals name="Special" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Transformations">
     <eStructuralFeatures xsi:type="ecore:EReference" name="transformations" upperBound="-1"

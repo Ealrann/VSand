@@ -35,9 +35,7 @@ public final class ConfigurationBufferLoader implements IAdapter
 			bBuffer.putInt(material.isIsStatic() ? 1 : 0);
 			bBuffer.putInt(material.getDensity());
 			bBuffer.putInt(material.getRunoff());
-
-			// Alignment
-			bBuffer.putInt(0);
+			bBuffer.putInt(material.getType().getValue());
 
 			// Color
 			bBuffer.putFloat(material.getR() / 255f);

@@ -13,10 +13,10 @@
 #define CIRCLE		1
 #define LINE		2
 
-#define DEFAULT_PRESSURE 1.
-#define PRESSURE_DELTA_LIQUID 0.01
-
 layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
 
 layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
 
@@ -27,10 +27,14 @@ layout(binding = 0) buffer SChunks
 }chunks;
 
 // The game board, with all the values.
-layout(binding = 1) buffer SBoard
+layout(binding = 1) buffer SBoard1
 {
-	uint data[WIDTH][HEIGHT];
-}board;
+	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+}board1;
+layout(binding = 2) buffer SBoard2
+{
+	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+}board2;
 
 layout (push_constant) uniform PushConstants
 {
@@ -58,11 +62,14 @@ layout (push_constant) uniform PushConstants
 
 	uint value;
 
+	uint boardToWrite;
+
 }attributes;
 
 bool testCircle(int x, int y);
 bool testLine(int x, int y);
 int computeSide(int x, int y, int x1, int y1, int x2, int y2);
+void setValue(int x, int y, uint value);
 
 void main()
 {
@@ -90,17 +97,30 @@ void main()
 
 			if (isInShape)
 			{
-                uint value = board.data[x][y];
-                uint currentMaterial = value & 0xFFu;
-                uint targetMaterial = attributes.value & 0xFFu;
-
-                if(currentMaterial != targetMaterial)
-                {
-                    uint packedPressure = packHalf2x16(vec2(0., DEFAULT_PRESSURE));
-                    board.data[x][y] = targetMaterial | (packedPressure & 0xFFFF0000u);
-                }
+				setValue(x, y, attributes.value);
 				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = 3;
 			}
+		}
+	}
+}
+
+void setValue(int x, int y, uint value)
+{
+	if(x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+	{
+		uint swizzledX = x >> 1;
+		uint swizzledY = y >> 1;
+		uint offset = ((x & 1)	| ((y & 1) << 1)) << 3;
+
+		if(attributes.boardToWrite == 0)
+		{
+			atomicAnd(board1.data[swizzledX][swizzledY], 0xFFFFFFFF ^ (0xFF << offset));
+			atomicOr(board1.data[swizzledX][swizzledY], value << offset);
+		}
+		else
+		{
+			atomicAnd(board2.data[swizzledX][swizzledY], 0xFFFFFFFF ^ (0xFF << offset));
+			atomicOr(board2.data[swizzledX][swizzledY], value << offset);
 		}
 	}
 }

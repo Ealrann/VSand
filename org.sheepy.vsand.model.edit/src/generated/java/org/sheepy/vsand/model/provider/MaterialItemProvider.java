@@ -67,6 +67,7 @@ public class MaterialItemProvider extends ItemProviderAdapter implements IEditin
 			addUserFriendlyPropertyDescriptor(object);
 			addPaintSoundPropertyDescriptor(object);
 			addPitchPropertyDescriptor(object);
+			addTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -302,6 +303,29 @@ public class MaterialItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
+	 * This adds a property descriptor for the Type feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTypePropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Material_type_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Material_type_feature", "_UI_Material_type"),
+				 VSandPackage.Literals.MATERIAL__TYPE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 getString("_UI_BasicPropertyCategory"),
+				 null));
+	}
+
+	/**
 	 * This returns Material.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -351,6 +375,7 @@ public class MaterialItemProvider extends ItemProviderAdapter implements IEditin
 			case VSandPackage.MATERIAL__B:
 			case VSandPackage.MATERIAL__USER_FRIENDLY:
 			case VSandPackage.MATERIAL__PITCH:
+			case VSandPackage.MATERIAL__TYPE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
