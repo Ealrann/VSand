@@ -30,13 +30,13 @@ layout(binding = 1) restrict buffer SChunks
 }chunks;
 
 // The game board, with all the values.
-layout(binding = 2) restrict readonly buffer SBoard1
+layout(binding = 2) readonly buffer SBoard1
 {
     uint data[WIDTH][HEIGHT];
 }board1;
 
 // The next game board, with all the values.
-layout(binding = 3) restrict buffer SBoard2
+layout(binding = 3) buffer SBoard2
 {
     uint data[WIDTH][HEIGHT];
 }board2;
