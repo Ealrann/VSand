@@ -4,6 +4,7 @@ package org.sheepy.vsand.model.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
@@ -20,6 +21,7 @@ import org.sheepy.lily.core.model.variable.VariablePackage;
 import org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
+import org.sheepy.lily.vulkan.model.process.compute.ComputePackage;
 import org.sheepy.lily.vulkan.model.resource.VulkanResourcePackage;
 import org.sheepy.vsand.model.BoardConstantBuffer;
 import org.sheepy.vsand.model.DrawCircle;
@@ -27,6 +29,7 @@ import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.DrawConstantBuffer;
 import org.sheepy.vsand.model.DrawLine;
 import org.sheepy.vsand.model.DrawSquare;
+import org.sheepy.vsand.model.EMaterialType;
 import org.sheepy.vsand.model.ITransformation;
 import org.sheepy.vsand.model.InputMaterialProvider;
 import org.sheepy.vsand.model.Material;
@@ -165,6 +168,13 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	private EClass inputMaterialProviderEClass = null;
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum eMaterialTypeEEnum = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -232,6 +242,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		ImagePackage.eINSTANCE.eClass();
 		PipelinePackage.eINSTANCE.eClass();
 		ResourcePackage.eINSTANCE.eClass();
+		ComputePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theVSandPackage.createPackageContents();
@@ -374,7 +385,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_BrushSize()
+	public EAttribute getVSandApplication_ShowPressure()
 	{
 		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(10);
 	}
@@ -385,9 +396,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EReference getVSandApplication_BoardUpdateTask()
+	public EAttribute getVSandApplication_BrushSize()
 	{
-		return (EReference)vSandApplicationEClass.getEStructuralFeatures().get(11);
+		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -418,9 +429,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EClass getBoardConstantBuffer()
+	public EReference getVSandApplication_StepPipelines()
 	{
-		return boardConstantBufferEClass;
+		return (EReference)vSandApplicationEClass.getEStructuralFeatures().get(14);
 	}
 
 	/**
@@ -429,9 +440,20 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getBoardConstantBuffer_CurrentBoardBuffer()
+	public EReference getVSandApplication_PausePipeline()
 	{
-		return (EAttribute)boardConstantBufferEClass.getEStructuralFeatures().get(0);
+		return (EReference)vSandApplicationEClass.getEStructuralFeatures().get(15);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getBoardConstantBuffer()
+	{
+		return boardConstantBufferEClass;
 	}
 
 	/**
@@ -803,6 +825,17 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
+	public EAttribute getMaterial_Type()
+	{
+		return (EAttribute)materialEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getTransformations()
 	{
 		return transformationsEClass;
@@ -1012,6 +1045,17 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
+	public EEnum getEMaterialType()
+	{
+		return eMaterialTypeEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public VSandFactory getVSandFactory()
 	{
 		return (VSandFactory)getEFactoryInstance();
@@ -1048,13 +1092,14 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SPEED);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__FORCE_CLEAR);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SHOW_SLEEP_ZONES);
+		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SHOW_PRESSURE);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__BRUSH_SIZE);
-		createEReference(vSandApplicationEClass, VSAND_APPLICATION__BOARD_UPDATE_TASK);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__VERSION);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SIZE);
+		createEReference(vSandApplicationEClass, VSAND_APPLICATION__STEP_PIPELINES);
+		createEReference(vSandApplicationEClass, VSAND_APPLICATION__PAUSE_PIPELINE);
 
 		boardConstantBufferEClass = createEClass(BOARD_CONSTANT_BUFFER);
-		createEAttribute(boardConstantBufferEClass, BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER);
 
 		drawConstantBufferEClass = createEClass(DRAW_CONSTANT_BUFFER);
 		createEReference(drawConstantBufferEClass, DRAW_CONSTANT_BUFFER__BOARD_CONSTANT_BUFFER);
@@ -1096,6 +1141,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(materialEClass, MATERIAL__USER_FRIENDLY);
 		createEReference(materialEClass, MATERIAL__PAINT_SOUND);
 		createEAttribute(materialEClass, MATERIAL__PITCH);
+		createEAttribute(materialEClass, MATERIAL__TYPE);
 
 		transformationsEClass = createEClass(TRANSFORMATIONS);
 		createEReference(transformationsEClass, TRANSFORMATIONS__TRANSFORMATIONS);
@@ -1121,6 +1167,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		inputMaterialProviderEClass = createEClass(INPUT_MATERIAL_PROVIDER);
 		createEReference(inputMaterialProviderEClass, INPUT_MATERIAL_PROVIDER__MATERIALS);
+
+		// Create enums
+		eMaterialTypeEEnum = createEEnum(EMATERIAL_TYPE);
 	}
 
 	/**
@@ -1149,8 +1198,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		// Obtain other dependent packages
 		ApplicationPackage theApplicationPackage = (ApplicationPackage)EPackage.Registry.INSTANCE.getEPackage(ApplicationPackage.eNS_URI);
-		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
 		TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
+		ComputePackage theComputePackage = (ComputePackage)EPackage.Registry.INSTANCE.getEPackage(ComputePackage.eNS_URI);
+		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
 		VulkanResourcePackage theVulkanResourcePackage = (VulkanResourcePackage)EPackage.Registry.INSTANCE.getEPackage(VulkanResourcePackage.eNS_URI);
 		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
 		NuklearPackage theNuklearPackage = (NuklearPackage)EPackage.Registry.INSTANCE.getEPackage(NuklearPackage.eNS_URI);
@@ -1183,13 +1233,14 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getVSandApplication_Speed(), ecorePackage.getEInt(), "speed", "1", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_ForceClear(), ecorePackage.getEBoolean(), "forceClear", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_ShowSleepZones(), ecorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVSandApplication_ShowPressure(), ecorePackage.getEBoolean(), "showPressure", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_BrushSize(), ecorePackage.getEInt(), "brushSize", "4", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVSandApplication_BoardUpdateTask(), theProcessPackage.getCompositeTask(), null, "boardUpdateTask", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_Version(), ecorePackage.getEString(), "version", "0.0.0", 1, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_Size(), theTypesPackage.getVector2i(), "size", null, 1, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVSandApplication_StepPipelines(), theComputePackage.getComputePipeline(), null, "stepPipelines", null, 0, -1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVSandApplication_PausePipeline(), theProcessPackage.getPipeline(), null, "pausePipeline", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(boardConstantBufferEClass, BoardConstantBuffer.class, "BoardConstantBuffer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBoardConstantBuffer_CurrentBoardBuffer(), ecorePackage.getEInt(), "currentBoardBuffer", "0", 0, 1, BoardConstantBuffer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(drawConstantBufferEClass, DrawConstantBuffer.class, "DrawConstantBuffer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDrawConstantBuffer_BoardConstantBuffer(), this.getBoardConstantBuffer(), null, "boardConstantBuffer", null, 0, 1, DrawConstantBuffer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1231,6 +1282,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getMaterial_UserFriendly(), ecorePackage.getEBoolean(), "userFriendly", "true", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMaterial_PaintSound(), theResourcePackage.getSound(), null, "paintSound", null, 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMaterial_Pitch(), ecorePackage.getEFloat(), "pitch", "1", 1, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMaterial_Type(), this.getEMaterialType(), "type", "Solid", 0, 1, Material.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(transformationsEClass, Transformations.class, "Transformations", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTransformations_Transformations(), this.getITransformation(), null, "transformations", null, 0, -1, Transformations.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1256,6 +1308,13 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 
 		initEClass(inputMaterialProviderEClass, InputMaterialProvider.class, "InputMaterialProvider", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getInputMaterialProvider_Materials(), this.getMaterials(), null, "materials", null, 1, 1, InputMaterialProvider.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(eMaterialTypeEEnum, EMaterialType.class, "EMaterialType");
+		addEEnumLiteral(eMaterialTypeEEnum, EMaterialType.SOLID);
+		addEEnumLiteral(eMaterialTypeEEnum, EMaterialType.LIQUID);
+		addEEnumLiteral(eMaterialTypeEEnum, EMaterialType.GAZ);
+		addEEnumLiteral(eMaterialTypeEEnum, EMaterialType.SPECIAL);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -21,8 +21,7 @@ import java.nio.ByteBuffer;
 @Adapter(lazy = false)
 public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 {
-	private static final int BYTE_SIZE = 18 * Integer.BYTES;
-	private static final int BOARD_INDEX_POSITION = 17 * Integer.BYTES;
+	private static final int BYTE_SIZE = 17 * Integer.BYTES;
 
 	private final DrawConstantBuffer drawConstantBuffer;
 	private final VSandApplication application;
@@ -51,12 +50,8 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 	}
 
 	@Override
-	public void beforePush(ConstantBuffer constantBuffer)
+	public void beforePush(final ConstantBuffer buffer)
 	{
-		final var boardConstantBuffer = drawConstantBuffer.getBoardConstantBuffer();
-		final int currentBoardBuffer = boardConstantBuffer.getCurrentBoardBuffer();
-
-		buffer.putInt(BOARD_INDEX_POSITION, currentBoardBuffer);
 	}
 
 	@Tick
@@ -87,7 +82,6 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 	{
 		final var adapter = command.adaptNotNull(IDrawCommandAdapter.class);
 		adapter.fillBuffer(command, buffer);
-		buffer.putInt(0);
 		buffer.flip();
 	}
 }

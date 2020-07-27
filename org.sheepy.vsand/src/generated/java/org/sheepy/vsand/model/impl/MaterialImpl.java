@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.sheepy.lily.core.api.model.LilyEObject;
 import org.sheepy.lily.core.model.resource.Sound;
+import org.sheepy.vsand.model.EMaterialType;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandPackage;
 
@@ -32,6 +33,7 @@ import org.sheepy.vsand.model.VSandPackage;
  *   <li>{@link org.sheepy.vsand.model.impl.MaterialImpl#isUserFriendly <em>User Friendly</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.MaterialImpl#getPaintSound <em>Paint Sound</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.MaterialImpl#getPitch <em>Pitch</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.MaterialImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -227,6 +229,26 @@ public class MaterialImpl extends LilyEObject implements Material
 	 * @ordered
 	 */
 	protected float pitch = PITCH_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final EMaterialType TYPE_EDEFAULT = EMaterialType.SOLID;
+
+	/**
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected EMaterialType type = TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -525,6 +547,31 @@ public class MaterialImpl extends LilyEObject implements Material
 	 * @generated
 	 */
 	@Override
+	public EMaterialType getType()
+	{
+		return type;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setType(EMaterialType newType)
+	{
+		EMaterialType oldType = type;
+		type = newType == null ? TYPE_EDEFAULT : newType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.MATERIAL__TYPE, oldType, type));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType)
 	{
 		switch (featureID)
@@ -550,6 +597,8 @@ public class MaterialImpl extends LilyEObject implements Material
 				return basicGetPaintSound();
 			case VSandPackage.MATERIAL__PITCH:
 				return getPitch();
+			case VSandPackage.MATERIAL__TYPE:
+				return getType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -593,6 +642,9 @@ public class MaterialImpl extends LilyEObject implements Material
 				return;
 			case VSandPackage.MATERIAL__PITCH:
 				setPitch((Float)newValue);
+				return;
+			case VSandPackage.MATERIAL__TYPE:
+				setType((EMaterialType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -638,6 +690,9 @@ public class MaterialImpl extends LilyEObject implements Material
 			case VSandPackage.MATERIAL__PITCH:
 				setPitch(PITCH_EDEFAULT);
 				return;
+			case VSandPackage.MATERIAL__TYPE:
+				setType(TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -672,6 +727,8 @@ public class MaterialImpl extends LilyEObject implements Material
 				return paintSound != null;
 			case VSandPackage.MATERIAL__PITCH:
 				return pitch != PITCH_EDEFAULT;
+			case VSandPackage.MATERIAL__TYPE:
+				return type != TYPE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -705,6 +762,8 @@ public class MaterialImpl extends LilyEObject implements Material
 		result.append(userFriendly);
 		result.append(", pitch: ");
 		result.append(pitch);
+		result.append(", type: ");
+		result.append(type);
 		result.append(')');
 		return result.toString();
 	}

@@ -59,10 +59,12 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			addSpeedPropertyDescriptor(object);
 			addForceClearPropertyDescriptor(object);
 			addShowSleepZonesPropertyDescriptor(object);
+			addShowPressurePropertyDescriptor(object);
 			addBrushSizePropertyDescriptor(object);
-			addBoardUpdateTaskPropertyDescriptor(object);
 			addVersionPropertyDescriptor(object);
 			addSizePropertyDescriptor(object);
+			addStepPipelinesPropertyDescriptor(object);
+			addPausePipelinePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -229,6 +231,29 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Show Pressure feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addShowPressurePropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandApplication_showPressure_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_showPressure_feature", "_UI_VSandApplication_type"),
+				 VSandPackage.Literals.VSAND_APPLICATION__SHOW_PRESSURE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This adds a property descriptor for the Brush Size feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -247,29 +272,6 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Board Update Task feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addBoardUpdateTaskPropertyDescriptor(Object object)
-	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_boardUpdateTask_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_boardUpdateTask_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__BOARD_UPDATE_TASK,
-				 true,
-				 false,
-				 true,
-				 null,
 				 null,
 				 null));
 	}
@@ -316,6 +318,52 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Step Pipelines feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addStepPipelinesPropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandApplication_stepPipelines_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_stepPipelines_feature", "_UI_VSandApplication_type"),
+				 VSandPackage.Literals.VSAND_APPLICATION__STEP_PIPELINES,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Pause Pipeline feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addPausePipelinePropertyDescriptor(Object object)
+	{
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_VSandApplication_pausePipeline_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_pausePipeline_feature", "_UI_VSandApplication_type"),
+				 VSandPackage.Literals.VSAND_APPLICATION__PAUSE_PIPELINE,
+				 true,
+				 false,
+				 true,
+				 null,
 				 null,
 				 null));
 	}
@@ -401,6 +449,7 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			case VSandPackage.VSAND_APPLICATION__SPEED:
 			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
 			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
+			case VSandPackage.VSAND_APPLICATION__SHOW_PRESSURE:
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 			case VSandPackage.VSAND_APPLICATION__VERSION:
 			case VSandPackage.VSAND_APPLICATION__SIZE:

@@ -95,7 +95,7 @@ public final class VSandMainLoop implements Runnable
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		final var processes = vulkanEngine.getProcesses();
 		final var boardProcess = (ComputeProcess) processes.get(0);
-		final var boardToPixelPipeline = (ComputePipeline) (boardProcess.getPipelinePkg().getPipelines().get(2));
+		final var boardToPixelPipeline = (ComputePipeline) (boardProcess.getPipelinePkg().getPipelines().get(3));
 		boardProcessAdapter = boardProcess.adaptNotNull(IProcessAdapter.class);
 		boardImageBarrier = boardToPixelPipeline.getTaskPkgs().get(0).getTasks().get(2);
 		final var graphicProcess = processes.size() > 1 ? (GraphicProcess) processes.get(1) : null;

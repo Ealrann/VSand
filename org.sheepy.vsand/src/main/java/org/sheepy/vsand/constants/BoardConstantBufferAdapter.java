@@ -17,8 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Adapter(lazy = false)
 public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 {
-	private static final int BYTE_SIZE = 2 * Integer.BYTES;
-	private static final int BOARD_INDEX_POSITION = Integer.BYTES;
+	private static final int BYTE_SIZE = Integer.BYTES;
 
 	private final Random random = ThreadLocalRandom.current();
 	private final BoardConstantBuffer boardConstantBuffer;
@@ -41,16 +40,7 @@ public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 	public void beforePush(ConstantBuffer constantBuffer)
 	{
 		final float rNumber = random.nextFloat();
-		final int nextIndex = nextBoardIndex(boardConstantBuffer.getCurrentBoardBuffer());
-		boardConstantBuffer.setCurrentBoardBuffer(nextIndex);
-
 		buffer.putFloat(0, rNumber);
-		buffer.putInt(BOARD_INDEX_POSITION, nextIndex);
-	}
-
-	private static int nextBoardIndex(int currentIndex)
-	{
-		return (currentIndex + 1) % 2;
 	}
 
 	@Dispose

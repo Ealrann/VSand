@@ -56,14 +56,8 @@ public final class InputManager implements IExtender
 				case 'n' - 32 -> application.setNextMode(true); // n
 				case 'f' - 32 -> application.getScene().setFullscreen(!application.getScene().isFullscreen());
 				case 256 -> application.setRun(false); // Escape
-				case 's' - 32 -> showDebug();
-			}
-		}
-		else
-		{
-			switch (event.key)
-			{
-				case 's' - 32 -> application.setForceClear(false);
+				case 's' - 32 -> application.setShowSleepZones(!application.isShowSleepZones());
+				case 'p' - 32 -> application.setShowPressure(!application.isShowPressure());
 			}
 		}
 	}
@@ -78,12 +72,6 @@ public final class InputManager implements IExtender
 		{
 			shiftPressed = false;
 		}
-	}
-
-	private void showDebug()
-	{
-		application.setForceClear(true);
-		application.setShowSleepZones(!application.isShowSleepZones());
 	}
 
 	private void biggerBrush()

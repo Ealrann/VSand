@@ -17,8 +17,8 @@ public final class Board1BufferLoader implements IExtender
 	{
 		final var application = (VSandApplication) ModelUtil.getApplication(buffer);
 		final var size = application.getSize();
-		final int width = size.x() / 2;
-		final int height = size.y() / 2;
+		final int width = size.x();
+		final int height = size.y();
 		final int sizeBoard = width * height;
 		final int sizeByte = sizeBoard * Integer.BYTES;
 

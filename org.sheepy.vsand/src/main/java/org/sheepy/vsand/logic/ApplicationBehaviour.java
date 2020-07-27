@@ -16,12 +16,11 @@ public final class ApplicationBehaviour implements IExtender
 	private static void nextModeChanged(Notification notification)
 	{
 		final var application = (VSandApplication) notification.getNotifier();
-		final var upateTask = application.getBoardUpdateTask();
+		final var nextModeEnabled = application.isNextMode();
 
-		if (notification.getNewBooleanValue() == true)
+		if (nextModeEnabled)
 		{
-			upateTask.setEnabled(true);
-			upateTask.setRepeatCount(1);
+			pauseApplication(application, false);
 		}
 	}
 
@@ -29,17 +28,25 @@ public final class ApplicationBehaviour implements IExtender
 	private static void pausedChanged(Notification notification)
 	{
 		final var application = (VSandApplication) notification.getNotifier();
-		final var upateTask = application.getBoardUpdateTask();
+		final boolean pause = notification.getNewBooleanValue();
 
-		upateTask.setEnabled(!notification.getNewBooleanValue());
+		pauseApplication(application, pause);
 	}
+//
+//	@NotifyChanged(featureIds = VSandPackage.VSAND_APPLICATION__SPEED)
+//	private static void speedChanged(Notification notification)
+//	{
+//		final var application = (VSandApplication) notification.getNotifier();
+//		final var upateTask = application.getBoardUpdateTask();
+//
+//		upateTask.setRepeatCount(notification.getNewIntValue());
+//	}
 
-	@NotifyChanged(featureIds = VSandPackage.VSAND_APPLICATION__SPEED)
-	private static void speedChanged(Notification notification)
+	private static void pauseApplication(final VSandApplication application, final boolean pause)
 	{
-		final var application = (VSandApplication) notification.getNotifier();
-		final var upateTask = application.getBoardUpdateTask();
-
-		upateTask.setRepeatCount(notification.getNewIntValue());
+		final var stepPipelines = application.getStepPipelines();
+		final var pausePipeline = application.getPausePipeline();
+		pausePipeline.setEnabled(pause);
+		stepPipelines.forEach(p -> p.setEnabled(!pause));
 	}
 }

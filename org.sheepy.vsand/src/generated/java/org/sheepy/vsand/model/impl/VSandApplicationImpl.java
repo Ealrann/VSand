@@ -11,10 +11,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.joml.Vector2ic;
 import org.sheepy.lily.core.model.application.impl.ApplicationImpl;
-import org.sheepy.lily.vulkan.model.process.CompositeTask;
+import org.sheepy.lily.vulkan.model.process.Pipeline;
+import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.Materials;
@@ -40,10 +42,12 @@ import org.sheepy.vsand.model.VSandPackage;
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getSpeed <em>Speed</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isForceClear <em>Force Clear</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isShowSleepZones <em>Show Sleep Zones</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isShowPressure <em>Show Pressure</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBrushSize <em>Brush Size</em>}</li>
- *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBoardUpdateTask <em>Board Update Task</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getVersion <em>Version</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getSize <em>Size</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getStepPipelines <em>Step Pipelines</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getPausePipeline <em>Pause Pipeline</em>}</li>
  * </ul>
  *
  * @generated
@@ -201,6 +205,26 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	protected boolean showSleepZones = SHOW_SLEEP_ZONES_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #isShowPressure() <em>Show Pressure</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isShowPressure()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean SHOW_PRESSURE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isShowPressure() <em>Show Pressure</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isShowPressure()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean showPressure = SHOW_PRESSURE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getBrushSize() <em>Brush Size</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -219,16 +243,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @ordered
 	 */
 	protected int brushSize = BRUSH_SIZE_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getBoardUpdateTask() <em>Board Update Task</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getBoardUpdateTask()
-	 * @generated
-	 * @ordered
-	 */
-	protected CompositeTask boardUpdateTask;
 
 	/**
 	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
@@ -269,6 +283,26 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @ordered
 	 */
 	protected Vector2ic size = SIZE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getStepPipelines() <em>Step Pipelines</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStepPipelines()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ComputePipeline> stepPipelines;
+
+	/**
+	 * The cached value of the '{@link #getPausePipeline() <em>Pause Pipeline</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPausePipeline()
+	 * @generated
+	 * @ordered
+	 */
+	protected Pipeline pausePipeline;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -416,7 +450,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	{
 		if (mainMaterial != null && ((EObject)mainMaterial).eIsProxy())
 		{
-			InternalEObject oldMainMaterial = (InternalEObject)mainMaterial;
+			InternalEObject oldMainMaterial = mainMaterial;
 			mainMaterial = (Material)eResolveProxy(oldMainMaterial);
 			if (mainMaterial != oldMainMaterial)
 			{
@@ -461,7 +495,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	{
 		if (secondaryMaterial != null && ((EObject)secondaryMaterial).eIsProxy())
 		{
-			InternalEObject oldSecondaryMaterial = (InternalEObject)secondaryMaterial;
+			InternalEObject oldSecondaryMaterial = secondaryMaterial;
 			secondaryMaterial = (Material)eResolveProxy(oldSecondaryMaterial);
 			if (secondaryMaterial != oldSecondaryMaterial)
 			{
@@ -627,6 +661,31 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @generated
 	 */
 	@Override
+	public boolean isShowPressure()
+	{
+		return showPressure;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setShowPressure(boolean newShowPressure)
+	{
+		boolean oldShowPressure = showPressure;
+		showPressure = newShowPressure;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__SHOW_PRESSURE, oldShowPressure, showPressure));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public int getBrushSize()
 	{
 		return brushSize;
@@ -644,51 +703,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 		brushSize = newBrushSize;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__BRUSH_SIZE, oldBrushSize, brushSize));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public CompositeTask getBoardUpdateTask()
-	{
-		if (boardUpdateTask != null && ((EObject)boardUpdateTask).eIsProxy())
-		{
-			InternalEObject oldBoardUpdateTask = (InternalEObject)boardUpdateTask;
-			boardUpdateTask = (CompositeTask)eResolveProxy(oldBoardUpdateTask);
-			if (boardUpdateTask != oldBoardUpdateTask)
-			{
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK, oldBoardUpdateTask, boardUpdateTask));
-			}
-		}
-		return boardUpdateTask;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public CompositeTask basicGetBoardUpdateTask()
-	{
-		return boardUpdateTask;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setBoardUpdateTask(CompositeTask newBoardUpdateTask)
-	{
-		CompositeTask oldBoardUpdateTask = boardUpdateTask;
-		boardUpdateTask = newBoardUpdateTask;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK, oldBoardUpdateTask, boardUpdateTask));
 	}
 
 	/**
@@ -747,6 +761,66 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @generated
 	 */
 	@Override
+	public EList<ComputePipeline> getStepPipelines()
+	{
+		if (stepPipelines == null)
+		{
+			stepPipelines = new EObjectResolvingEList<ComputePipeline>(ComputePipeline.class, this, VSandPackage.VSAND_APPLICATION__STEP_PIPELINES);
+		}
+		return stepPipelines;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Pipeline getPausePipeline()
+	{
+		if (pausePipeline != null && ((EObject)pausePipeline).eIsProxy())
+		{
+			InternalEObject oldPausePipeline = pausePipeline;
+			pausePipeline = (Pipeline)eResolveProxy(oldPausePipeline);
+			if (pausePipeline != oldPausePipeline)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, VSandPackage.VSAND_APPLICATION__PAUSE_PIPELINE, oldPausePipeline, pausePipeline));
+			}
+		}
+		return pausePipeline;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Pipeline basicGetPausePipeline()
+	{
+		return pausePipeline;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setPausePipeline(Pipeline newPausePipeline)
+	{
+		Pipeline oldPausePipeline = pausePipeline;
+		pausePipeline = newPausePipeline;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__PAUSE_PIPELINE, oldPausePipeline, pausePipeline));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
 	{
 		switch (featureID)
@@ -793,15 +867,19 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return isForceClear();
 			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
 				return isShowSleepZones();
+			case VSandPackage.VSAND_APPLICATION__SHOW_PRESSURE:
+				return isShowPressure();
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				return getBrushSize();
-			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
-				if (resolve) return getBoardUpdateTask();
-				return basicGetBoardUpdateTask();
 			case VSandPackage.VSAND_APPLICATION__VERSION:
 				return getVersion();
 			case VSandPackage.VSAND_APPLICATION__SIZE:
 				return getSize();
+			case VSandPackage.VSAND_APPLICATION__STEP_PIPELINES:
+				return getStepPipelines();
+			case VSandPackage.VSAND_APPLICATION__PAUSE_PIPELINE:
+				if (resolve) return getPausePipeline();
+				return basicGetPausePipeline();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -848,17 +926,24 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
 				setShowSleepZones((Boolean)newValue);
 				return;
+			case VSandPackage.VSAND_APPLICATION__SHOW_PRESSURE:
+				setShowPressure((Boolean)newValue);
+				return;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				setBrushSize((Integer)newValue);
-				return;
-			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
-				setBoardUpdateTask((CompositeTask)newValue);
 				return;
 			case VSandPackage.VSAND_APPLICATION__VERSION:
 				setVersion((String)newValue);
 				return;
 			case VSandPackage.VSAND_APPLICATION__SIZE:
 				setSize((Vector2ic)newValue);
+				return;
+			case VSandPackage.VSAND_APPLICATION__STEP_PIPELINES:
+				getStepPipelines().clear();
+				getStepPipelines().addAll((Collection<? extends ComputePipeline>)newValue);
+				return;
+			case VSandPackage.VSAND_APPLICATION__PAUSE_PIPELINE:
+				setPausePipeline((Pipeline)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -904,17 +989,23 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
 				setShowSleepZones(SHOW_SLEEP_ZONES_EDEFAULT);
 				return;
+			case VSandPackage.VSAND_APPLICATION__SHOW_PRESSURE:
+				setShowPressure(SHOW_PRESSURE_EDEFAULT);
+				return;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				setBrushSize(BRUSH_SIZE_EDEFAULT);
-				return;
-			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
-				setBoardUpdateTask((CompositeTask)null);
 				return;
 			case VSandPackage.VSAND_APPLICATION__VERSION:
 				setVersion(VERSION_EDEFAULT);
 				return;
 			case VSandPackage.VSAND_APPLICATION__SIZE:
 				setSize(SIZE_EDEFAULT);
+				return;
+			case VSandPackage.VSAND_APPLICATION__STEP_PIPELINES:
+				getStepPipelines().clear();
+				return;
+			case VSandPackage.VSAND_APPLICATION__PAUSE_PIPELINE:
+				setPausePipeline((Pipeline)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -950,14 +1041,18 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return forceClear != FORCE_CLEAR_EDEFAULT;
 			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
 				return showSleepZones != SHOW_SLEEP_ZONES_EDEFAULT;
+			case VSandPackage.VSAND_APPLICATION__SHOW_PRESSURE:
+				return showPressure != SHOW_PRESSURE_EDEFAULT;
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
 				return brushSize != BRUSH_SIZE_EDEFAULT;
-			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
-				return boardUpdateTask != null;
 			case VSandPackage.VSAND_APPLICATION__VERSION:
 				return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
 			case VSandPackage.VSAND_APPLICATION__SIZE:
 				return SIZE_EDEFAULT == null ? size != null : !SIZE_EDEFAULT.equals(size);
+			case VSandPackage.VSAND_APPLICATION__STEP_PIPELINES:
+				return stepPipelines != null && !stepPipelines.isEmpty();
+			case VSandPackage.VSAND_APPLICATION__PAUSE_PIPELINE:
+				return pausePipeline != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -983,6 +1078,8 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 		result.append(forceClear);
 		result.append(", showSleepZones: ");
 		result.append(showSleepZones);
+		result.append(", showPressure: ");
+		result.append(showPressure);
 		result.append(", brushSize: ");
 		result.append(brushSize);
 		result.append(", version: ");

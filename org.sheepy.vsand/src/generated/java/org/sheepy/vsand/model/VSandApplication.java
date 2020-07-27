@@ -5,7 +5,8 @@ package org.sheepy.vsand.model;
 import org.eclipse.emf.common.util.EList;
 import org.joml.Vector2ic;
 import org.sheepy.lily.core.model.application.Application;
-import org.sheepy.lily.vulkan.model.process.CompositeTask;
+import org.sheepy.lily.vulkan.model.process.Pipeline;
+import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,10 +27,12 @@ import org.sheepy.lily.vulkan.model.process.CompositeTask;
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getSpeed <em>Speed</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#isForceClear <em>Force Clear</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#isShowSleepZones <em>Show Sleep Zones</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#isShowPressure <em>Show Pressure</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBrushSize <em>Brush Size</em>}</li>
- *   <li>{@link org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask <em>Board Update Task</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getVersion <em>Version</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.VSandApplication#getSize <em>Size</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getStepPipelines <em>Step Pipelines</em>}</li>
+ *   <li>{@link org.sheepy.vsand.model.VSandApplication#getPausePipeline <em>Pause Pipeline</em>}</li>
  * </ul>
  *
  * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication()
@@ -275,6 +278,29 @@ public interface VSandApplication extends Application
 	void setShowSleepZones(boolean value);
 
 	/**
+	 * Returns the value of the '<em><b>Show Pressure</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Show Pressure</em>' attribute.
+	 * @see #setShowPressure(boolean)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_ShowPressure()
+	 * @model default="false"
+	 * @generated
+	 */
+	boolean isShowPressure();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#isShowPressure <em>Show Pressure</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Show Pressure</em>' attribute.
+	 * @see #isShowPressure()
+	 * @generated
+	 */
+	void setShowPressure(boolean value);
+
+	/**
 	 * Returns the value of the '<em><b>Brush Size</b></em>' attribute.
 	 * The default value is <code>"4"</code>.
 	 * <!-- begin-user-doc -->
@@ -300,28 +326,6 @@ public interface VSandApplication extends Application
 	 * @generated
 	 */
 	void setBrushSize(int value);
-
-	/**
-	 * Returns the value of the '<em><b>Board Update Task</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Board Update Task</em>' reference.
-	 * @see #setBoardUpdateTask(CompositeTask)
-	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_BoardUpdateTask()
-	 * @model
-	 * @generated
-	 */
-	CompositeTask getBoardUpdateTask();
-
-	/**
-	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getBoardUpdateTask <em>Board Update Task</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Board Update Task</em>' reference.
-	 * @see #getBoardUpdateTask()
-	 * @generated
-	 */
-	void setBoardUpdateTask(CompositeTask value);
 
 	/**
 	 * Returns the value of the '<em><b>Version</b></em>' attribute.
@@ -367,4 +371,38 @@ public interface VSandApplication extends Application
 	 * @generated
 	 */
 	void setSize(Vector2ic value);
+
+	/**
+	 * Returns the value of the '<em><b>Step Pipelines</b></em>' reference list.
+	 * The list contents are of type {@link org.sheepy.lily.vulkan.model.process.compute.ComputePipeline}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Step Pipelines</em>' reference list.
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_StepPipelines()
+	 * @model
+	 * @generated
+	 */
+	EList<ComputePipeline> getStepPipelines();
+
+	/**
+	 * Returns the value of the '<em><b>Pause Pipeline</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Pause Pipeline</em>' reference.
+	 * @see #setPausePipeline(Pipeline)
+	 * @see org.sheepy.vsand.model.VSandPackage#getVSandApplication_PausePipeline()
+	 * @model
+	 * @generated
+	 */
+	Pipeline getPausePipeline();
+
+	/**
+	 * Sets the value of the '{@link org.sheepy.vsand.model.VSandApplication#getPausePipeline <em>Pause Pipeline</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Pause Pipeline</em>' reference.
+	 * @see #getPausePipeline()
+	 * @generated
+	 */
+	void setPausePipeline(Pipeline value);
 } // VSandApplication
