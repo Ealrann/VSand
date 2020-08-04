@@ -67,8 +67,8 @@
         </descriptors>
       </descriptorPkg>
       <descriptorPool>
-        <descriptorSets name="Board Common1" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
-        <descriptorSets name="Board Common2" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1"/>
+        <descriptorSets name="Board Common1" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2 //@engines.0/@processes.0/@descriptorPkg/@descriptors.4"/>
+        <descriptorSets name="Board Common2" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.4"/>
       </descriptorPool>
       <executionManager xsi:type="compute:ComputeExecutionManager" waitForExecution="//@engines.0/@processes.0/@executionManager" waitedBy="//@engines.0/@processes.1/@executionManager //@engines.0/@processes.0/@executionManager" indexCount="2"/>
       <pipelinePkg>
@@ -145,7 +145,7 @@
             </tasks>
             <tasks xsi:type="compute:DispatchTask" name="Board Vertical"/>
           </taskPkgs>
-          <pushConstantRanges size="4">
+          <pushConstantRanges size="12">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
         </pipelines>
@@ -165,11 +165,31 @@
             </tasks>
             <tasks xsi:type="compute:DispatchTask" name="Board Horizontal"/>
           </taskPkgs>
-          <pushConstantRanges size="4">
+          <pushConstantRanges size="12">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@resourcePkg/@resources.1">
+        <pipelines xsi:type="compute:ComputePipeline" name="Transfo" enabled="false" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@resourcePkg/@resources.0">
+          <resourcePkg>
+            <resources xsi:type="resource:Shader" name="Transformation" stage="COMPUTE_BIT">
+              <file xsi:type="resource_1:StringModuleResource" name="" path="transformation.comp.spv" moduleName="org.sheepy.vsand"/>
+              <constants name="MaterialCount" size="4"/>
+              <constants name="Width" constantId="1" size="4"/>
+              <constants name="Height" constantId="2" size="4"/>
+            </resources>
+          </resourcePkg>
+          <taskPkgs>
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0 //@engines.0/@processes.0/@descriptorPool/@descriptorSets.1" bindPoint="COMPUTE" stride="1"/>
+            <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
+              <stages>COMPUTE_BIT</stages>
+            </tasks>
+            <tasks xsi:type="compute:DispatchTask" name="Board Transformation"/>
+          </taskPkgs>
+          <pushConstantRanges size="12">
+            <stages>COMPUTE_BIT</stages>
+          </pushConstantRanges>
+        </pipelines>
+        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@resourcePkg/@resources.1">
           <resourcePkg>
             <resources xsi:type="model:PixelConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.0"/>
             <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
@@ -180,8 +200,8 @@
             </resources>
           </resourcePkg>
           <taskPkgs>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@descriptorPool/@descriptorSets.0 //@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@descriptorPool/@descriptorSets.1" bindPoint="COMPUTE" stride="1"/>
-            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@resourcePkg/@resources.0">
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@descriptorPool/@descriptorSets.0 //@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@descriptorPool/@descriptorSets.1" bindPoint="COMPUTE" stride="1"/>
+            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="COMPUTE_SHADER_BIT">

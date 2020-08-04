@@ -7,6 +7,7 @@ import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.vulkan.api.resource.buffer.IConstantBufferUpdater;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
+import org.sheepy.vsand.load.dispatch.VerticalDispatchLoader;
 import org.sheepy.vsand.model.BoardConstantBuffer;
 
 import java.nio.ByteBuffer;
@@ -17,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Adapter(lazy = false)
 public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 {
-	private static final int BYTE_SIZE = Integer.BYTES;
+	private static final int BYTE_SIZE = 3 * Integer.BYTES;
 
 	private final Random random = ThreadLocalRandom.current();
 	private final BoardConstantBuffer boardConstantBuffer;
@@ -40,7 +41,13 @@ public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 	public void beforePush(ConstantBuffer constantBuffer)
 	{
 		final float rNumber = random.nextFloat();
-		buffer.putFloat(0, rNumber);
+		final int xOffset = (int) (random.nextFloat() * (VerticalDispatchLoader.WORKGROUP_SIZE / -2f));
+		final int yOffset = (int) (random.nextFloat() * (VerticalDispatchLoader.WORKGROUP_SIZE / -2f));
+
+		buffer.putFloat(rNumber);
+		buffer.putInt(xOffset);
+		buffer.putInt(yOffset);
+		buffer.flip();
 	}
 
 	@Dispose

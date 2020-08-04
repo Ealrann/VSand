@@ -147,16 +147,24 @@ vec4 computeColor(ivec2 loc)
 
     if((pushConstants.flags & FLAG_SHOW_PRESSURE) != 0)
     {
-        float pressure = unpackHalf2x16(value).y - 1.;
-        if(pressure >= 0.)
+        bool moving = (value & (1u << 8)) != 0;
+        if(moving)
         {
-            addColor += vec4(clamp(sqrt(pressure)*2, 0., 1.), 0, 0, 0);
+            addColor = vec4(0., 0., 0.8, 0);
         }
         else
         {
-            addColor += vec4(0, 0, clamp(-pressure*2, 0., 1.), 0);
+            float pressure = unpackHalf2x16(value).y - 1.;
+            if (pressure >= 0.)
+            {
+                addColor += vec4(clamp(pressure, 0., 1.), 0, 0, 0);
+            }
+            else
+            {
+                addColor += vec4(0, clamp(-pressure, 0., 1.), 0, 0);
+            }
         }
-        colorTweak = true;
+        return clamp(color/4. + addColor, 0., 1.);
     }
 
 	if(colorTweak)

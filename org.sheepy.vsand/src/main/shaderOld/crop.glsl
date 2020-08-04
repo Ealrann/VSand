@@ -1,10 +1,10 @@
-#define CROP_QUEUE_SIZE 80
+#define CROP_QUEUE_SIZE 64
 
 struct Value
 {
     uint materialId;
     float pressure;
-    bool falling;
+    bool moving;
 };
 struct Crop
 {
@@ -12,12 +12,11 @@ struct Crop
     int nextCrop;
     uint data; // materialId (8 bits), density (8 bits), address (16 bits);
     uint size;
-    float firstTheoreticalPressure;
     float pressure;
     bool isStatic;
     bool isLiquid;
     bool isGaz;
-    bool falling;
+    bool moving;
 };
 struct CropQueue
 {
@@ -30,7 +29,7 @@ struct CropQueue
 CropQueue cropQueue;
 
 void initQueue();
-int cropPush(const uint materialId, const uint density, const uint size, const float pressure, const bool isStatic, const bool falling, const bool isLiquid, const bool isGaz);
+int cropPush(const uint materialId, const uint density, const uint size, const float pressure, const bool isStatic, const bool moving, const bool isLiquid, const bool isGaz);
 int insertCropBefore(const uint address, in Crop newCrop);
 int insertCropAfter(const uint address, in Crop newCrop);
 void removeCrop(const uint address);
@@ -45,7 +44,7 @@ void initQueue()
     cropQueue.lastIndex = -1;
 }
 
-int cropPush(const uint materialId, const int density, const uint size, const float firstTheoreticalPressure, const float pressure, const bool isStatic, const bool falling, const bool isLiquid, const bool isGaz)
+int cropPush(const uint materialId, const int density, const uint size, const float pressure, const bool isStatic, const bool moving, const bool isLiquid, const bool isGaz)
 {
     if(cropQueue.size < CROP_QUEUE_SIZE)
     {
@@ -55,12 +54,11 @@ int cropPush(const uint materialId, const int density, const uint size, const fl
         cropQueue.queue[address].nextCrop = -1;
         cropQueue.queue[address].data = (materialId << 24) | (uint(density + 128) << 16) | address;
         cropQueue.queue[address].size = size;
-        cropQueue.queue[address].firstTheoreticalPressure = firstTheoreticalPressure;
         cropQueue.queue[address].pressure = pressure;
         cropQueue.queue[address].isStatic = isStatic;
         cropQueue.queue[address].isLiquid = isLiquid;
         cropQueue.queue[address].isGaz = isGaz;
-        cropQueue.queue[address].falling = falling;
+        cropQueue.queue[address].moving = moving;
 
         if (cropQueue.lastIndex != -1) cropQueue.queue[cropQueue.lastIndex].nextCrop = int(address);
         if (cropQueue.firstIndex == - 1) cropQueue.firstIndex = int(address);

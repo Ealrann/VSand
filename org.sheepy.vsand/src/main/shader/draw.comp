@@ -9,8 +9,7 @@
 #define CIRCLE		1
 #define LINE		2
 
-#define DEFAULT_PRESSURE 1.
-#define PRESSURE_DELTA_LIQUID 0.01
+const uint MOVE_TAG = 1u << 8;
 
 layout (constant_id = 0) const int MATERIAL_COUNT = 1;
 layout (constant_id = 1) const int WIDTH = 1;
@@ -94,8 +93,8 @@ void main()
 
                 if(currentMaterial != targetMaterial)
                 {
-                    uint packedPressure = packHalf2x16(vec2(0., DEFAULT_PRESSURE));
-                    board.data[x + (y * WIDTH)] = targetMaterial | (packedPressure & 0xFFFF0000u);
+                    uint packedPressure = packHalf2x16(vec2(0., 1.));
+                    board.data[x + (y * WIDTH)] = targetMaterial | (packedPressure & 0xFFFF0000u) | MOVE_TAG;
                 }
 				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = 3;
 			}

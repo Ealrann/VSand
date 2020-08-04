@@ -1,0 +1,223 @@
+#version 450
+
+#define CHUNK_WIDTH 78
+#define CHUNK_HEIGHT 44
+
+#define WORKGROUP_SIZE 16
+
+#include "rand_utils.glsl"
+#include "material.glsl"
+#include "crop.glsl"
+#include "board.glsl"
+
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = 1, local_size_z = 1) in;
+
+void main()
+{
+    if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
+    {
+        return;
+    }
+
+    uint x = gl_GlobalInvocationID.x;
+    initQueue();
+
+    buildCrops(uvec2(x, 0), true);
+
+    int upIndex = -1;
+    int middleIndex = cropQueue.firstIndex;
+    int downIndex = cropQueue.queue[middleIndex].nextCrop;
+    bool pushedDown = false;
+    while(downIndex != -1)
+    {
+        if(cropQueue.queue[middleIndex].isStatic == false && cropQueue.queue[downIndex].isStatic == false)
+        {
+            const bool liquidOrGaz = (cropQueue.queue[middleIndex].isLiquid || cropQueue.queue[middleIndex].isGaz)
+                                      && (cropQueue.queue[downIndex].isLiquid || cropQueue.queue[downIndex].isGaz);
+            const float downFirstPressure = firstPressure(downIndex);
+
+            if(pushedDown == false && getMaterialId(middleIndex) == getMaterialId(downIndex))
+            {
+                float middleLastPressure = lastPressure(middleIndex);
+                if (liquidOrGaz
+                        && cropQueue.queue[middleIndex].pressure >= 0.01 && firstPressure(downIndex) < 2.
+                        && upIndex != -1
+                        && (cropQueue.queue[upIndex].isLiquid || cropQueue.queue[upIndex].isGaz))
+                {
+                    // PUSH DOWN
+                    if (cropQueue.queue[middleIndex].size > 1)
+                    {
+                        cropQueue.queue[middleIndex].size --;
+                        cropQueue.queue[middleIndex].pressure -= middleLastPressure;
+                    }
+                    else
+                    {
+                        removeCrop(middleIndex);
+                        middleIndex = cropQueue.queue[downIndex].previousCrop;
+                    }
+                    cropQueue.queue[upIndex].size++;
+                    cropQueue.queue[downIndex].pressure += middleLastPressure;
+                    pushedDown = true;
+                }
+                else
+                {
+                    cropQueue.queue[downIndex].pressure += middleLastPressure;
+                    cropQueue.queue[middleIndex].pressure -= middleLastPressure;
+                }
+            }
+            else if(pushedDown == false && getDensity(middleIndex) > getDensity(downIndex))
+            {
+                // Heavier material above
+                if (liquidOrGaz
+                        && upIndex != -1
+                        && (cropQueue.queue[upIndex].isLiquid || cropQueue.queue[upIndex].isGaz)
+                        && cropQueue.queue[downIndex].size > 1
+                        && firstPressure(downIndex, -1) < 2.
+                        && lastPressure(upIndex, 1) >= 0.)
+                {
+                    // PUSH DOWN
+                    cropQueue.queue[downIndex].size --;
+                    cropQueue.queue[upIndex].size++;
+                    pushedDown = true;
+                }
+                else
+                {
+                    // SWAP
+
+                    const float middleLastPressure = lastPressure(middleIndex);
+
+                    if(cropQueue.size < CROP_QUEUE_SIZE - 2)
+                    {
+                        const uint downSize = cropQueue.queue[downIndex].size;
+                        const uint middleSize = cropQueue.queue[middleIndex].size;
+
+                        if(downSize == 1 && middleSize == 1)
+                        {
+                            insertCropBefore(middleIndex, cropQueue.queue[downIndex]);
+                            removeCrop(downIndex);
+
+                            downIndex = cropQueue.queue[middleIndex].nextCrop;
+                        }
+                        else if (downSize == 1)
+                        {
+                            cropQueue.queue[middleIndex].size --;
+                            cropQueue.queue[middleIndex].pressure -= middleLastPressure;
+
+                            Crop splitMiddleCrop = cropQueue.queue[middleIndex];
+                            splitMiddleCrop.size = 1;
+                            splitMiddleCrop.pressure = middleLastPressure;
+                            const int newDownIndex = insertCropAfter(downIndex, splitMiddleCrop);
+
+                            middleIndex = downIndex;
+                            downIndex = newDownIndex;
+                        }
+                        else if (middleSize == 1)
+                        {
+                            cropQueue.queue[downIndex].size --;
+                            cropQueue.queue[downIndex].pressure -= downFirstPressure;
+
+                            Crop splitDownCrop = cropQueue.queue[downIndex];
+                            splitDownCrop.size = 1;
+                            splitDownCrop.pressure = downFirstPressure;
+                            insertCropBefore(middleIndex, splitDownCrop);
+                        }
+                        else
+                        {
+                            cropQueue.queue[downIndex].size --;
+                            cropQueue.queue[downIndex].pressure -= downFirstPressure;
+                            cropQueue.queue[middleIndex].size --;
+                            cropQueue.queue[middleIndex].pressure -= middleLastPressure;
+
+                            Crop splitMiddleCrop = cropQueue.queue[middleIndex];
+                            splitMiddleCrop.size = 1;
+                            splitMiddleCrop.pressure = middleLastPressure;
+                            const int newMiddleIndex = insertCropBefore(downIndex, splitMiddleCrop);
+
+                            Crop splitDownCrop = cropQueue.queue[downIndex];
+                            splitDownCrop.size = 1;
+                            splitDownCrop.pressure = downFirstPressure;
+                            insertCropAfter(middleIndex, splitDownCrop);
+
+                            middleIndex = newMiddleIndex;
+                        }
+                        pushedDown = true;
+                    }
+
+//                    bool success = true;
+//                    if (upIndex != -1 && getMaterialId(upIndex) == getMaterialId(downIndex))
+//                    {
+//                        cropQueue.queue[upIndex].size ++;
+//                        cropQueue.queue[upIndex].pressure += downFirstPressure;
+//                    }
+//                    else
+//                    {
+//                        Crop newCrop = cropQueue.queue[downIndex];
+//                        newCrop.size = 1;
+//                        newCrop.pressure = downFirstPressure;
+//                        if(insertCropBefore(middleIndex, newCrop) == -1)
+//                        {
+//                            // no space on queue, we do nothing here
+//                            success = false;
+//                        }
+//                    }
+//
+//                    if(success == true)
+//                    {
+//                        if (cropQueue.queue[downIndex].size > 1)
+//                        {
+//                            cropQueue.queue[downIndex].size --;
+//                            cropQueue.queue[downIndex].pressure -= downFirstPressure;
+//                        }
+//                        else
+//                        {
+//                            removeCrop(downIndex);
+//                            if(cropQueue.queue[middleIndex].nextCrop != -1) downIndex = cropQueue.queue[middleIndex].nextCrop;
+//                        }
+//                    }
+                }
+            }
+            // PRESSURE
+            else if (liquidOrGaz)//  && cropQueue.queue[middleIndex].moving == false
+            // && cropQueue.queue[downIndex].moving == false)
+            {
+                const float pressureDiff = firstPressure(downIndex) - lastPressure(middleIndex);
+
+                if (pressureDiff > 0.0 && cropQueue.queue[middleIndex].size > 1)
+                {
+                    // LOW PRESSURE
+                    const float updatedFirstPressure = firstPressure(downIndex, 1);
+                    const float updatedLastPressure = lastPressure(middleIndex, -1);
+                    const float pressureDiffAfterMove = updatedFirstPressure - updatedLastPressure;
+                    if(updatedFirstPressure < 2. && updatedLastPressure > 0. && pressureDiffAfterMove >= 0.)
+                    {
+                        cropQueue.queue[middleIndex].size--;
+                        cropQueue.queue[downIndex].size++;
+                    }
+                }
+                else if (pushedDown == false && pressureDiff < -0.0 && cropQueue.queue[downIndex].size > 1)
+                {
+                    // HIGH PRESSURE
+                    const float updatedFirstPressure = firstPressure(downIndex, -1);
+                    const float updatedLastPressure = lastPressure(middleIndex, 1);
+//                    float pressureDiffAfterMove = firstPressure(downIndex, -1) - lastPressure(middleIndex, 1);
+                    if(updatedFirstPressure > 0. && updatedLastPressure < 2.) // pressureDiffAfterMove <= 0.)
+                    {
+                        cropQueue.queue[middleIndex].size++;
+                        cropQueue.queue[downIndex].size--;
+                    }
+                }
+                pushedDown = false;
+            }
+            else
+            {
+                pushedDown = false;
+            }
+        }
+
+        upIndex = middleIndex;
+        middleIndex = downIndex;
+        downIndex = cropQueue.queue[middleIndex].nextCrop;
+    }
+
+    writeCrops(uvec2(x, 0), true);
+}

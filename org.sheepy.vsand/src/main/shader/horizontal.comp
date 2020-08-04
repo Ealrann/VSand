@@ -14,66 +14,91 @@ layout (local_size_x = 1, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
 void main()
 {
-    if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
-    {
-        return;
-    }
-
-    uint y = gl_GlobalInvocationID.y;
-    initQueue();
-
-    buildCrops(uvec2(0, y), false);
-
-    int leftIndex = cropQueue.firstIndex;
-    int rightIndex = cropQueue.queue[leftIndex].nextCrop;
-    bool pushed = false;
-    while(rightIndex != -1)
-    {
-        bool liquidOrGaz = (cropQueue.queue[leftIndex].isLiquid || cropQueue.queue[leftIndex].isGaz)
-                            && (cropQueue.queue[rightIndex].isLiquid || cropQueue.queue[rightIndex].isGaz);
-        if(liquidOrGaz)
-        {
-            uint leftDensity = getDensity(leftIndex);
-            uint rightDensity = getDensity(rightIndex);
-            float leftForce = leftDensity > rightDensity ? 0.1 : 0;
-            float rightForce = leftDensity < rightDensity ? 0.1 : 0;
-            float leftPressureForce = cropQueue.queue[leftIndex].pressure;
-            float rightPressureForce = cropQueue.queue[rightIndex].pressure;
-            uint leftSize = cropQueue.queue[leftIndex].size;
-            uint rightSize = cropQueue.queue[rightIndex].size;
-            float pressureDiff = (rightPressureForce / rightSize) - (leftPressureForce / leftSize);
-
-            if (pushed == false && pressureDiff > 0.0 && leftSize > 2)
-            {
-                // Right to Left
-                float pressureDiffAfterMove = (rightPressureForce / (rightSize+1)) - (leftPressureForce / (leftSize-1));
-                if(leftDensity < rightDensity || pressureDiffAfterMove >= 0.)
-                {
-                    cropQueue.queue[leftIndex].size--;
-                    cropQueue.queue[rightIndex].size++;
-                    pushed = true;
-                }
-            }
-            else if (pushed == false && pressureDiff < -0.0 && rightSize > 2)
-            {
-                // Left to Right
-                float pressureDiffAfterMove = (rightPressureForce / (rightSize-1)) - (leftPressureForce / (leftSize+1));
-                if(rightDensity < leftDensity || pressureDiffAfterMove <= 0.)
-                {
-                    cropQueue.queue[leftIndex].size++;
-                    cropQueue.queue[rightIndex].size--;
-                    pushed = true;
-                }
-            }
-            else
-            {
-                pushed = false;
-            }
-        }
-
-        leftIndex = rightIndex;
-        rightIndex = cropQueue.queue[rightIndex].nextCrop;
-    }
-
-    writeCrops(uvec2(0, y), false);
+//    if (gl_GlobalInvocationID.x >= WIDTH || gl_GlobalInvocationID.y >= HEIGHT)
+//    {
+//        return;
+//    }
+//
+//    uint y = gl_GlobalInvocationID.y;
+//    initQueue();
+//
+//    buildCrops(uvec2(0, y), false);
+//
+//    int leftIndex = cropQueue.firstIndex;
+//    int rightIndex = cropQueue.queue[leftIndex].nextCrop;
+//    bool pushed = false;
+//    while(rightIndex != -1)
+//    {
+//        bool liquidOrGaz = (cropQueue.queue[leftIndex].isLiquid || cropQueue.queue[leftIndex].isGaz)
+//                            && (cropQueue.queue[rightIndex].isLiquid || cropQueue.queue[rightIndex].isGaz);
+//        if(liquidOrGaz && cropQueue.queue[leftIndex].moving == false && cropQueue.queue[rightIndex].moving == false)
+//        {
+//            const uint leftDensity = getDensity(leftIndex);
+//            const uint rightDensity = getDensity(rightIndex);
+//            const float leftPressure = cropQueue.queue[leftIndex].pressure;
+//            const float rightPressure = cropQueue.queue[rightIndex].pressure;
+//            const uint leftSize = cropQueue.queue[leftIndex].size;
+//            const uint rightSize = cropQueue.queue[rightIndex].size;
+//
+//            if(leftPressure < 0.01)
+//            {
+//                if(leftSize > 1)
+//                {
+//                    cropQueue.queue[leftIndex].size--;
+//                }
+//                else
+//                {
+//                    removeCrop(leftIndex);
+//                    leftIndex = cropQueue.queue[rightIndex].previousCrop;
+//                }
+//                cropQueue.queue[rightIndex].size++;
+//            }
+//            else if (rightPressure < 0.01)
+//            {
+//                if(rightSize > 1)
+//                {
+//                    cropQueue.queue[rightIndex].size--;
+//                }
+//                else
+//                {
+//                    removeCrop(rightIndex);
+//                    rightIndex = cropQueue.queue[leftIndex].nextCrop;
+//                }
+//                cropQueue.queue[leftIndex].size++;
+//            }
+//            else if (rightDensity > leftDensity && leftSize > 1)
+//            {
+//                // Right to Left
+//                const float updatedRightPressure = rightPressure / (rightSize + 1);
+//                const float updatedLeftPressure = leftPressure / (leftSize - 1);
+//                if(updatedLeftPressure < 2. && updatedRightPressure > 0.05)
+//                {
+//                    cropQueue.queue[leftIndex].size--;
+//                    cropQueue.queue[rightIndex].size++;
+//                    pushed = true;
+//                }
+//            }
+//            else if (leftDensity > rightDensity && rightSize > 1)
+//            {
+//                // Left to Right
+//                const float updatedRightPressure = rightPressure / (rightSize - 1);
+//                const float updatedLeftPressure = leftPressure / (leftSize + 1);
+//                if(updatedRightPressure < 2. && updatedLeftPressure > 0.05)
+//                {
+//                    cropQueue.queue[leftIndex].size++;
+//                    cropQueue.queue[rightIndex].size--;
+//                    pushed = true;
+//                }
+//            }
+//            else
+//            {
+//                pushed = false;
+//            }
+//        }
+//
+//        leftIndex = rightIndex;
+//        rightIndex = cropQueue.queue[rightIndex].nextCrop;
+//    }
+//
+//    writeCrops(uvec2(0, y), false);
 }
