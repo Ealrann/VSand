@@ -1,8 +1,8 @@
 
-struct Entry
+struct Material
 {
     int isStatic;
-    uint density;
+    float density;
     int runoff;
     uint type;
     vec4 color;

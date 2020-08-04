@@ -88,7 +88,7 @@ public class MaterialImpl extends LilyEObject implements Material
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int DENSITY_EDEFAULT = 0;
+	protected static final float DENSITY_EDEFAULT = 0.0F;
 
 	/**
 	 * The cached value of the '{@link #getDensity() <em>Density</em>}' attribute.
@@ -98,7 +98,7 @@ public class MaterialImpl extends LilyEObject implements Material
 	 * @generated
 	 * @ordered
 	 */
-	protected int density = DENSITY_EDEFAULT;
+	protected float density = DENSITY_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getRunoff() <em>Runoff</em>}' attribute.
@@ -327,7 +327,7 @@ public class MaterialImpl extends LilyEObject implements Material
 	 * @generated
 	 */
 	@Override
-	public int getDensity()
+	public float getDensity()
 	{
 		return density;
 	}
@@ -338,9 +338,9 @@ public class MaterialImpl extends LilyEObject implements Material
 	 * @generated
 	 */
 	@Override
-	public void setDensity(int newDensity)
+	public void setDensity(float newDensity)
 	{
-		int oldDensity = density;
+		float oldDensity = density;
 		density = newDensity;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.MATERIAL__DENSITY, oldDensity, density));
@@ -620,7 +620,7 @@ public class MaterialImpl extends LilyEObject implements Material
 				setIsStatic((Boolean)newValue);
 				return;
 			case VSandPackage.MATERIAL__DENSITY:
-				setDensity((Integer)newValue);
+				setDensity((Float)newValue);
 				return;
 			case VSandPackage.MATERIAL__RUNOFF:
 				setRunoff((Integer)newValue);

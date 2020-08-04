@@ -4,13 +4,15 @@
 #define CHUNK_HEIGHT 44
 
 #define WORKGROUP_SIZE 8
+#define DEFAULT_PRESSURE 1.
 
 #define SQUARE		0
 #define CIRCLE		1
 #define LINE		2
 
-#define DEFAULT_PRESSURE 1.
-#define PRESSURE_DELTA_LIQUID 0.01
+#include "util/material.glsl"
+
+const uint MOVE_TAG = 1u << 8;
 
 layout (constant_id = 0) const int MATERIAL_COUNT = 1;
 layout (constant_id = 1) const int WIDTH = 1;
@@ -18,14 +20,20 @@ layout (constant_id = 2) const int HEIGHT = 1;
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
+// The definition of materials.
+layout(binding = 0) uniform SConfiguration
+{
+    Material materials[MATERIAL_COUNT];
+} configuration;
+
 // The chunk state board.
-layout(binding = 0) buffer SChunks
+layout(binding = 1) buffer SChunks
 {
 	int data[CHUNK_WIDTH][CHUNK_HEIGHT];
 }chunks;
 
 // The game board, with all the values.
-layout(binding = 1) buffer SBoard
+layout(binding = 2) buffer SBoard
 {
 	uint data[WIDTH * HEIGHT];
 }board;
@@ -94,8 +102,8 @@ void main()
 
                 if(currentMaterial != targetMaterial)
                 {
-                    uint packedPressure = packHalf2x16(vec2(0., DEFAULT_PRESSURE));
-                    board.data[x + (y * WIDTH)] = targetMaterial | (packedPressure & 0xFFFF0000u);
+                    uint packedMass = packHalf2x16(vec2(0., configuration.materials[targetMaterial].density));
+                    board.data[x + (y * WIDTH)] = targetMaterial | (packedMass & 0xFFFF0000u) | MOVE_TAG;
                 }
 				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = 3;
 			}

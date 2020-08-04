@@ -33,7 +33,7 @@ public final class ConfigurationBufferLoader implements IAdapter
 		for (final Material material : materials)
 		{
 			bBuffer.putInt(material.isIsStatic() ? 1 : 0);
-			bBuffer.putInt(material.getDensity());
+			bBuffer.putFloat(material.getDensity());
 			bBuffer.putInt(material.getRunoff());
 			bBuffer.putInt(material.getType().getValue());
 

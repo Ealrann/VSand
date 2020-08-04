@@ -556,123 +556,123 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 
 bool transformation(ivec2 loc, ivec2 localLoc, bool moved)
 {
-	bool res = false;
-	uint currentValue = decision[localLoc.x][localLoc.y] >> 24;
+    bool res = false;
+    uint currentValue = decision[localLoc.x][localLoc.y] >> 24;
 
-	// UP, DOWN, RIGHT, LEFT
-	uvec4 neighborValue = uvec4(decision[localLoc.x][localLoc.y - 1],
-														decision[localLoc.x][localLoc.y + 1],
-														decision[localLoc.x + 1][localLoc.y],
-														decision[localLoc.x - 1][localLoc.y])  >> 24;
-	bvec4 differentValue = notEqual(neighborValue, uvec4(currentValue));
+    // UP, DOWN, RIGHT, LEFT
+    uvec4 neighborValue = uvec4(decision[localLoc.x][localLoc.y - 1],
+    decision[localLoc.x][localLoc.y + 1],
+    decision[localLoc.x + 1][localLoc.y],
+    decision[localLoc.x - 1][localLoc.y])  >> 24;
+    bvec4 differentValue = notEqual(neighborValue, uvec4(currentValue));
 
-	if(any(differentValue))
-	{
-		uvec4 transfoIndex = neighborValue * MATERIAL_COUNT + currentValue;
-		uvec4 transfoIndexX = transfoIndex >> 2;
-		uvec4 transfoIndexY = transfoIndex & 3u;
-		uint rand = -1;
-		uint transfoToApply = -1;
+    if(any(differentValue))
+    {
+        uvec4 transfoIndex = neighborValue * MATERIAL_COUNT + currentValue;
+        uvec4 transfoIndexX = transfoIndex >> 2;
+        uvec4 transfoIndexY = transfoIndex & 3u;
+        uint rand = -1;
+        uint transfoToApply = -1;
 
-		for(int i = 0; i < 4; i++)
-		{
-			uint transfo = transformations.data[transfoIndexX[i]][transfoIndexY[i]];
-			bool staticTransfo = (transfo & STATIC_TRANSFO_FLAG) != 0;
-			if(transfo != -1 && (differentValue[i] || (staticTransfo && !moved)))
-			{
-				if(rand == -1)
-				{
-					float genRand = sqrt(random(uvec4(loc, floatBitsToUint(pushConstants.random), 3)));
-					rand = uint(round(genRand * 1000.));
-				}
+        for(int i = 0; i < 4; i++)
+        {
+            uint transfo = transformations.data[transfoIndexX[i]][transfoIndexY[i]];
+            bool staticTransfo = (transfo & STATIC_TRANSFO_FLAG) != 0;
+            if(transfo != -1 && (differentValue[i] || (staticTransfo && !moved)))
+            {
+                if(rand == -1)
+                {
+                    float genRand = sqrt(random(vec4(loc, pushConstants.random, 3)));
+                    rand = uint(round(genRand * 1000.));
+                }
 
-				uint probability = (transfo << 2) >> 18;
-				if (rand < probability)
-				{
-					transfoToApply = transfo;
-					break;
-				}
-			}
-		}
+                uint probability = (transfo << 2) >> 18;
+                if (rand < probability)
+                {
+                    transfoToApply = transfo;
+                    break;
+                }
+            }
+        }
 
-		if(transfoToApply != -1)
-		{
-			uint targetValue = transfoToApply & 255u;
-			board[localLoc.x][localLoc.y] = targetValue;
-			uint propagation = (transfoToApply & 65280u) >> 8;
-			if(propagation > 1)
-			{
-				transformPropagate(localLoc, currentValue, targetValue, propagation);
-			}
-			res = true;
-		}
-	}
+        if(transfoToApply != -1)
+        {
+            uint targetValue = transfoToApply & 255u;
+            board[localLoc.x][localLoc.y] = targetValue;
+            uint propagation = (transfoToApply & 65280u) >> 8;
+            if(propagation > 1)
+            {
+                transformPropagate(localLoc, currentValue, targetValue, propagation);
+            }
+            res = true;
+        }
+    }
 
-	return res;
+    return res;
 }
 
 void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uint propagation)
 {
-	int offset = 1;
-	bool up = true;
-	bool down = true;
-	bool right = true;
-	bool left = true;
+    int offset = 1;
+    bool up = true;
+    bool down = true;
+    bool right = true;
+    bool left = true;
 
-	while(propagation > 1)
-	{
-		if (up)
-		{
-			uint valueUp = localLoc.y - offset > 1 ? decision[localLoc.x][localLoc.y - offset] >> 24 : 0;
-			if (valueUp == currentValue)
-			{
-				board[localLoc.x][localLoc.y - offset] = targetValue;
-			}
-			else
-			{
-				up = false;
-			}
-		}
-		if (down)
-		{
-			uint valueDown = localLoc.y + offset < (HEIGHT - 2) ? decision[localLoc.x][localLoc.y + offset] >> 24 : 0;
-			if (valueDown == currentValue)
-			{
-				board[localLoc.x][localLoc.y + offset] = targetValue;
-			}
-			else
-			{
-				down = false;
-			}
-		}
-		if (right)
-		{
-			uint valueRight = localLoc.x + offset < (WIDTH - 2) ? decision[localLoc.x + offset][localLoc.y] >> 24 : 0;
-			if (valueRight == currentValue)
-			{
-				board[localLoc.x + offset][localLoc.y] = targetValue;
-			}
-			else
-			{
-				right = false;
-			}
-		}
-		if (left)
-		{
-			uint valueLeft = localLoc.x - offset > 1 ? decision[localLoc.x - offset][localLoc.y] >> 24 : 0;
-			if (valueLeft == currentValue)
-			{
-				board[localLoc.x - offset][localLoc.y] = targetValue;
-			}
-			else
-			{
-				left = false;
-			}
-		}
+    while(propagation > 1)
+    {
+        if (up)
+        {
+            uint valueUp = localLoc.y - offset > 1 ? decision[localLoc.x][localLoc.y - offset] >> 24 : 0;
+            if (valueUp == currentValue)
+            {
+                board[localLoc.x][localLoc.y - offset] = targetValue;
+            }
+            else
+            {
+                up = false;
+            }
+        }
+        if (down)
+        {
+            uint valueDown = localLoc.y + offset < (HEIGHT - 2) ? decision[localLoc.x][localLoc.y + offset] >> 24 : 0;
+            if (valueDown == currentValue)
+            {
+                board[localLoc.x][localLoc.y + offset] = targetValue;
+            }
+            else
+            {
+                down = false;
+            }
+        }
+        if (right)
+        {
+            uint valueRight = localLoc.x + offset < (WIDTH - 2) ? decision[localLoc.x + offset][localLoc.y] >> 24 : 0;
+            if (valueRight == currentValue)
+            {
+                board[localLoc.x + offset][localLoc.y] = targetValue;
+            }
+            else
+            {
+                right = false;
+            }
+        }
+        if (left)
+        {
+            uint valueLeft = localLoc.x - offset > 1 ? decision[localLoc.x - offset][localLoc.y] >> 24 : 0;
+            if (valueLeft == currentValue)
+            {
+                board[localLoc.x - offset][localLoc.y] = targetValue;
+            }
+            else
+            {
+                left = false;
+            }
+        }
 
-		propagation --;
-		offset ++;
-	}
+        propagation --;
+        offset ++;
+    }
 }
 
 int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity)

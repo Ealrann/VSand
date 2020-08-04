@@ -95,12 +95,12 @@ public interface Material extends ILilyEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Density</em>' attribute.
-	 * @see #setDensity(int)
+	 * @see #setDensity(float)
 	 * @see org.sheepy.vsand.model.VSandPackage#getMaterial_Density()
 	 * @model unique="false"
 	 * @generated
 	 */
-	int getDensity();
+	float getDensity();
 
 	/**
 	 * Sets the value of the '{@link org.sheepy.vsand.model.Material#getDensity <em>Density</em>}' attribute.
@@ -110,7 +110,7 @@ public interface Material extends ILilyEObject
 	 * @see #getDensity()
 	 * @generated
 	 */
-	void setDensity(int value);
+	void setDensity(float value);
 
 	/**
 	 * Returns the value of the '<em><b>Runoff</b></em>' attribute.

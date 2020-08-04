@@ -136,7 +136,7 @@ public class MaterialItemProvider extends ItemProviderAdapter implements IEditin
 				 true,
 				 false,
 				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
 				 getString("_UI_BasicPropertyCategory"),
 				 null));
 	}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:openal="org.sheepy.lily.openal" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:vulkanresource="org.sheepy.lily.vulkan.model.resource" xmlns:resource="org.sheepy.lily.core.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" title="VSand" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" size="1248;704" stepPipelines="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2 //@engines.0/@processes.0/@pipelinePkg/@pipelines.3" pausePipeline="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1">
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:openal="org.sheepy.lily.openal" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:vulkanresource="org.sheepy.lily.vulkan.model.resource" xmlns:resource="org.sheepy.lily.core.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" title="VSand" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" size="1248;704" stepPipelines="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2" pausePipeline="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1">
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
       <resources xsi:type="vulkanresource:MemoryChunk">
@@ -64,8 +64,8 @@
         </descriptors>
       </descriptorPkg>
       <descriptorPool>
-        <descriptorSets name="Board Common1" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
-        <descriptorSets name="Board Common2" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1"/>
+        <descriptorSets name="Board Common1" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2 //@engines.0/@processes.0/@descriptorPkg/@descriptors.4"/>
+        <descriptorSets name="Board Common2" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1 //@engines.0/@processes.0/@descriptorPkg/@descriptors.4"/>
       </descriptorPool>
       <executionManager xsi:type="compute:ComputeExecutionManager" waitForExecution="//@engines.0/@processes.0/@executionManager" waitedBy="//@engines.0/@processes.1/@executionManager //@engines.0/@processes.0/@executionManager" indexCount="2"/>
       <pipelinePkg>
@@ -87,8 +87,8 @@
             <tasks xsi:type="compute:DispatchTask" name="Draw"/>
           </taskPkgs>
           <descriptorPool>
-            <descriptorSets name="Draw1" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1"/>
-            <descriptorSets name="Draw2" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
+            <descriptorSets name="Draw1" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.1"/>
+            <descriptorSets name="Draw2" descriptors="//@engines.0/@processes.0/@descriptorPkg/@descriptors.3 //@engines.0/@processes.0/@descriptorPkg/@descriptors.0 //@engines.0/@processes.0/@descriptorPkg/@descriptors.2"/>
           </descriptorPool>
           <pushConstantRanges size="68">
             <stages>COMPUTE_BIT</stages>
@@ -114,10 +114,10 @@
             </tasks>
           </taskPkgs>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Vertical" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@resourcePkg/@resources.0">
+        <pipelines xsi:type="compute:ComputePipeline" name="Move" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@resourcePkg/@resources.0">
           <resourcePkg>
-            <resources xsi:type="vulkanresource:Shader" name="vertical" stage="COMPUTE_BIT">
-              <file xsi:type="resource:StringModuleResource" name="" path="vertical.comp.spv" moduleName="org.sheepy.vsand"/>
+            <resources xsi:type="vulkanresource:Shader" name="Move" stage="COMPUTE_BIT">
+              <file xsi:type="resource:StringModuleResource" name="" path="board_move.comp.spv" moduleName="org.sheepy.vsand"/>
               <constants name="MaterialCount" size="4"/>
               <constants name="Width" constantId="1" size="4"/>
               <constants name="Height" constantId="2" size="4"/>
@@ -140,16 +140,16 @@
             <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="compute:DispatchTask" name="Board Vertical"/>
+            <tasks xsi:type="compute:DispatchTask" name="Board Move"/>
           </taskPkgs>
-          <pushConstantRanges size="4">
+          <pushConstantRanges size="12">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Horizontal" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.3/@resourcePkg/@resources.0">
+        <pipelines xsi:type="compute:ComputePipeline" name="Transfo" record="false" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.3/@resourcePkg/@resources.0">
           <resourcePkg>
-            <resources xsi:type="vulkanresource:Shader" name="Horizontal" stage="COMPUTE_BIT">
-              <file xsi:type="resource:StringModuleResource" name="" path="horizontal.comp.spv" moduleName="org.sheepy.vsand"/>
+            <resources xsi:type="vulkanresource:Shader" name="Transformation" stage="COMPUTE_BIT">
+              <file xsi:type="resource:StringModuleResource" name="" path="transformation.comp.spv" moduleName="org.sheepy.vsand"/>
               <constants name="MaterialCount" size="4"/>
               <constants name="Width" constantId="1" size="4"/>
               <constants name="Height" constantId="2" size="4"/>
@@ -160,9 +160,9 @@
             <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="compute:DispatchTask" name="Board Horizontal"/>
+            <tasks xsi:type="compute:DispatchTask" name="Board Transformation"/>
           </taskPkgs>
-          <pushConstantRanges size="4">
+          <pushConstantRanges size="12">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
         </pipelines>
@@ -304,33 +304,33 @@
     </compositors>
   </scene>
   <materials>
-    <materials name="Void" runoff="60" type="Gaz"/>
-    <materials name="Sand" density="5" runoff="1" r="244" g="244" b="67" paintSound="//@engines.1/@resourcePkg/@resources.0"/>
-    <materials name="Dirt" isStatic="true" density="5" runoff="1" r="72" g="38" b="4"/>
-    <materials name="Wall" isStatic="true" density="20" r="153" g="153" b="143"/>
-    <materials name="Concrete" density="4" runoff="12" r="94" g="94" b="85" paintSound="//@engines.1/@resourcePkg/@resources.1" pitch="0.25" type="Liquid"/>
-    <materials name="Water" density="3" runoff="64" r="67" g="67" b="244" paintSound="//@engines.1/@resourcePkg/@resources.1" type="Liquid"/>
-    <materials name="Snow" density="1" runoff="1" r="245" g="245" b="255"/>
-    <materials name="SnowHard" isStatic="true" density="3" r="245" g="245" b="255" userFriendly="false"/>
-    <materials name="Steam" density="-2" runoff="1" r="159" g="159" b="249" paintSound="//@engines.1/@resourcePkg/@resources.4" type="Gaz"/>
-    <materials name="WetDirt" density="5" runoff="1" r="48" g="26" b="3" userFriendly="false"/>
-    <materials name="Grass" isStatic="true" density="1" r="11" g="193" b="11" userFriendly="false"/>
-    <materials name="Fire" density="-1" r="244" g="67" b="67" paintSound="//@engines.1/@resourcePkg/@resources.3" type="Special"/>
-    <materials name="FireStatic" isStatic="true" r="244" g="38" b="38" userFriendly="false" type="Special"/>
-    <materials name="FireFinal" isStatic="true" r="255" userFriendly="false" type="Special"/>
-    <materials name="Plant" isStatic="true" density="15" r="67" g="244" b="67"/>
-    <materials name="Wax" isStatic="true" density="20" r="254" g="254" b="231"/>
-    <materials name="LiquidWax" density="2" runoff="3" r="231" g="254" b="254" userFriendly="false" type="Liquid"/>
-    <materials name="BurningWax" isStatic="true" r="244" g="38" b="38" userFriendly="false" type="Liquid"/>
-    <materials name="Lava" density="4" runoff="5" r="244" g="111" b="67" paintSound="//@engines.1/@resourcePkg/@resources.2" type="Liquid"/>
-    <materials name="LavaBoiling" density="2" runoff="6" r="244" g="244" b="67" userFriendly="false" type="Liquid"/>
-    <materials name="Powder" density="1" runoff="1" r="50" g="50" b="50"/>
-    <materials name="Petrol" density="2" runoff="30" r="30" g="30" b="95" paintSound="//@engines.1/@resourcePkg/@resources.1" pitch="0.7" type="Liquid"/>
-    <materials name="PetrolFire" density="1" runoff="30" r="50" g="15" b="106" userFriendly="false" type="Liquid"/>
-    <materials name="Sparkle" r="255" g="251" b="224" userFriendly="false"/>
-    <materials name="HotWax" density="1" runoff="3" r="231" g="254" b="254" userFriendly="false" type="Liquid"/>
-    <materials name="Acid" density="4" runoff="30" r="35" g="245" b="130" type="Liquid"/>
-    <materials name="AcidVapor" density="-2" runoff="30" g="255" b="200" userFriendly="false" type="Gaz"/>
+    <materials name="Void" density="1.0" runoff="60" type="Gaz"/>
+    <materials name="Sand" density="6.0" runoff="1" r="244" g="244" b="67" paintSound="//@engines.1/@resourcePkg/@resources.0"/>
+    <materials name="Dirt" isStatic="true" density="6.0" runoff="1" r="72" g="38" b="4"/>
+    <materials name="Wall" isStatic="true" density="20.0" r="153" g="153" b="143"/>
+    <materials name="Concrete" density="5.0" runoff="12" r="94" g="94" b="85" paintSound="//@engines.1/@resourcePkg/@resources.1" pitch="0.25" type="Liquid"/>
+    <materials name="Water" density="4.0" runoff="64" r="67" g="67" b="244" paintSound="//@engines.1/@resourcePkg/@resources.1" type="Liquid"/>
+    <materials name="Snow" density="2.0" runoff="1" r="245" g="245" b="255"/>
+    <materials name="SnowHard" isStatic="true" density="4.0" r="245" g="245" b="255" userFriendly="false"/>
+    <materials name="Steam" density="0.6" runoff="1" r="159" g="159" b="249" paintSound="//@engines.1/@resourcePkg/@resources.4" type="Gaz"/>
+    <materials name="WetDirt" density="6.0" runoff="1" r="48" g="26" b="3" userFriendly="false"/>
+    <materials name="Grass" isStatic="true" density="2.0" r="11" g="193" b="11" userFriendly="false"/>
+    <materials name="Fire" density="0.8" r="244" g="67" b="67" paintSound="//@engines.1/@resourcePkg/@resources.3" type="Special"/>
+    <materials name="FireStatic" isStatic="true" density="1.0" r="244" g="38" b="38" userFriendly="false" type="Special"/>
+    <materials name="FireFinal" isStatic="true" density="1.0" r="255" userFriendly="false" type="Special"/>
+    <materials name="Plant" isStatic="true" density="16.0" r="67" g="244" b="67"/>
+    <materials name="Wax" isStatic="true" density="20.0" r="254" g="254" b="231"/>
+    <materials name="LiquidWax" density="3.0" runoff="3" r="231" g="254" b="254" userFriendly="false" type="Liquid"/>
+    <materials name="BurningWax" isStatic="true" density="1.0" r="244" g="38" b="38" userFriendly="false" type="Liquid"/>
+    <materials name="Lava" density="5.0" runoff="5" r="244" g="111" b="67" paintSound="//@engines.1/@resourcePkg/@resources.2" type="Liquid"/>
+    <materials name="LavaBoiling" density="3.0" runoff="6" r="244" g="244" b="67" userFriendly="false" type="Liquid"/>
+    <materials name="Powder" density="2.0" runoff="1" r="50" g="50" b="50"/>
+    <materials name="Petrol" density="3.0" runoff="30" r="30" g="30" b="95" paintSound="//@engines.1/@resourcePkg/@resources.1" pitch="0.7" type="Liquid"/>
+    <materials name="PetrolFire" density="2.0" runoff="30" r="50" g="15" b="106" userFriendly="false" type="Liquid"/>
+    <materials name="Sparkle" density="1.0" r="255" g="251" b="224" userFriendly="false"/>
+    <materials name="HotWax" density="2.0" runoff="3" r="231" g="254" b="254" userFriendly="false" type="Liquid"/>
+    <materials name="Acid" density="5.0" runoff="30" r="35" g="245" b="130" type="Liquid"/>
+    <materials name="AcidVapor" density="0.8" runoff="30" g="255" b="200" userFriendly="false" type="Gaz"/>
   </materials>
   <transformations>
     <transformations xsi:type="model:Transformation" probability="950" target="//@materials/@materials.14" reactant="//@materials/@materials.5" catalyst="//@materials/@materials.14"/>
