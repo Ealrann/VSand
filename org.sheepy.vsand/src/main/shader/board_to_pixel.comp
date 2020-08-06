@@ -154,7 +154,7 @@ vec4 computeColor(ivec2 loc)
         }
         else
         {
-            float pressure = unpackHalf2x16(value).y - 1.;
+            float pressure = sqrt(unpackHalf2x16(value).y) - 1.;
             if (pressure >= 0.)
             {
                 addColor += vec4(clamp(pressure, 0., 1.), 0, 0, 0);

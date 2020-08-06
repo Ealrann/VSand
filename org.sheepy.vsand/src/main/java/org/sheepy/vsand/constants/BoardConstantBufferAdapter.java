@@ -41,8 +41,8 @@ public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 	public void beforePush(ConstantBuffer constantBuffer)
 	{
 		final float rNumber = random.nextFloat();
-		final int xOffset = (int) (random.nextFloat() * (VerticalDispatchLoader.WORKGROUP_SIZE / -2f));
-		final int yOffset = (int) (random.nextFloat() * (VerticalDispatchLoader.WORKGROUP_SIZE / -2f));
+		final int xOffset = (int) (random.nextFloat() * -VerticalDispatchLoader.WORKGROUP_SIZE);
+		final int yOffset = (int) (random.nextFloat() * -VerticalDispatchLoader.WORKGROUP_SIZE);
 
 		buffer.putFloat(rNumber);
 		buffer.putInt(xOffset);

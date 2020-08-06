@@ -109,7 +109,7 @@ void loadCrops(const uvec2 startLocation, const uint cropSize, const bool vertic
 
             if (first == false)
             {
-                const float firstPressure = pressureNewCrop(currentMaterial.type, nextIdealPressure, pressure, size);
+                const float firstPressure = currentMaterial.isStatic == 1 ? DEFAULT_PRESSURE : pressureNewCrop(currentMaterial.type, nextIdealPressure, pressure, size);
                 cropPush(currentMaterialId, currentMaterial.density, size, firstPressure, pressure, currentMaterial.isStatic == 1, currentWasFalling, currentMaterial.type == LIQUID, currentMaterial.type == GAZ);
                 nextIdealPressure = firstPressure != -1. ? firstPressure + (size * PRESSURE_DELTA) : -1.;
             }
@@ -126,7 +126,7 @@ void loadCrops(const uvec2 startLocation, const uint cropSize, const bool vertic
         size ++;
         pressure += value.pressure;
     }
-    const float firstPressure = pressureNewCrop(currentMaterial.type, nextIdealPressure, pressure, size);
+    const float firstPressure = currentMaterial.isStatic == 1 ? DEFAULT_PRESSURE : pressureNewCrop(currentMaterial.type, nextIdealPressure, pressure, size);
     cropPush(currentMaterialId, currentMaterial.density, size, firstPressure, pressure, currentMaterial.isStatic == 1, currentWasFalling, currentMaterial.type == LIQUID, currentMaterial.type == GAZ);
 
     if (vertical)
@@ -169,6 +169,10 @@ void loadCrops(const uvec2 startLocation, const uint cropSize, const bool vertic
                     }
                 }
             }
+            else
+            {
+                cropQueue.queue[upCrop].falling = false;
+            }
 
             downCrop = upCrop;
             upCrop = cropQueue.queue[upCrop].previousCrop;
@@ -176,20 +180,20 @@ void loadCrops(const uvec2 startLocation, const uint cropSize, const bool vertic
     }
 }
 
-float pressureNewCrop(const uint type, const float theoricalFirstPressure, const float pressure, const uint size)
+float pressureNewCrop(const uint type, const float inheritedFirstPressure, const float pressure, const uint size)
 {
-    switch(type)
-    {
-        case LIQUID:
-        case GAZ:
-        {
-            return (theoricalFirstPressure != -1.) ? theoricalFirstPressure : firstIdealPressure(pressure, size);
-        }
-        default:
-        {
-            return DEFAULT_PRESSURE;
-        }
-    }
+//    switch(type)
+//    {
+//        case LIQUID:
+//        case GAZ:
+//        {
+            return (inheritedFirstPressure != -1.) ? inheritedFirstPressure : firstIdealPressure(pressure, size);
+//        }
+//        default:
+//        {
+//            return DEFAULT_PRESSURE;
+//        }
+//    }
 }
 
 void saveCrops(const uvec2 startLocation, const uint size, const bool vertical)
@@ -234,20 +238,13 @@ void writeCrop(const uint cropAddress, const uint x, const uint y, const bool ve
     const bool falling = cropQueue.queue[cropAddress].falling;
     if (vertical)
     {
-        const bool pressurized = cropQueue.queue[cropAddress].isLiquid || cropQueue.queue[cropAddress].isGaz; // && falling == false;
-        const float pressureDelta = pressurized ? PRESSURE_DELTA : 0.;
-        const float firstEffectivePressure = firstEffectivePressure(cropAddress);
+        const bool liquidOrGaz = cropQueue.queue[cropAddress].isLiquid || cropQueue.queue[cropAddress].isGaz; // && falling == false;
+        const float currentPressure = firstIdealPressure(cropQueue.queue[cropAddress].pressure, cropQueue.queue[cropAddress].size);
 
-        float remainingPressure = cropQueue.queue[cropAddress].pressure;
-        float currentIdealPressure = firstEffectivePressure <= cropQueue.queue[cropAddress].firstTheoreticalPressure ? lastTheoreticalPressure(cropAddress) : lastIdealPressure(cropAddress);
-        for (int i = int(cropQueue.queue[cropAddress].size) - 1; i >= 0; i--)
+        for (int i = 0; i < cropQueue.queue[cropAddress].size; i++)
         {
-            const float localPressure = clamp(currentIdealPressure, 0., remainingPressure);
-            const uint packedValue = materialId | (packHalf2x16(vec2(0., localPressure)) & 0xFFFF0000u) | (falling ? MOVE_TAG : 0);
+            const uint packedValue = materialId | (packHalf2x16(vec2(0., currentPressure + i * PRESSURE_DELTA)) & 0xFFFF0000u) | (falling ? MOVE_TAG : 0);
             board2.data[x + (y + i) * WIDTH] = packedValue;
-
-            remainingPressure -= localPressure;
-            currentIdealPressure -= pressureDelta;
         }
     }
     else
@@ -295,16 +292,34 @@ float lastTheoreticalPressure(const uint cropAddress)
 
 float firstEffectivePressure(uint cropAddress)
 {
-    const uint sizeMinusFirst = cropQueue.queue[cropAddress].size - 1;
-    const float totalIdealPressureMinusFirst = sizeMinusFirst * cropQueue.queue[cropAddress].firstTheoreticalPressure + ((sizeMinusFirst * (sizeMinusFirst - 1)) / 2.) * PRESSURE_DELTA;
+    if(cropQueue.queue[cropAddress].isLiquid)
+    {
+        const uint sizeMinusFirst = cropQueue.queue[cropAddress].size - 1;
+        const float totalIdealPressureMinusFirst = sizeMinusFirst * cropQueue.queue[cropAddress].firstTheoreticalPressure + ((sizeMinusFirst * (sizeMinusFirst - 1)) / 2.) * PRESSURE_DELTA;
 
-    return max(0., cropQueue.queue[cropAddress].pressure - totalIdealPressureMinusFirst);
+        return max(0., cropQueue.queue[cropAddress].pressure - totalIdealPressureMinusFirst);
+    }
+    else if (cropQueue.queue[cropAddress].isGaz)
+    {
+        return firstIdealPressure(cropQueue.queue[cropAddress].pressure, cropQueue.queue[cropAddress].size);
+    }
+    else
+    {
+        return cropQueue.queue[cropAddress].firstTheoreticalPressure;
+    }
 }
 
 float lastEffectivePressure(uint cropAddress)
 {
-    const float lastTheoreticalPressure = lastTheoreticalPressure(cropAddress);
-    return min(lastTheoreticalPressure, cropQueue.queue[cropAddress].pressure);
+    if(cropQueue.queue[cropAddress].isLiquid)
+    {
+        const float lastTheoreticalPressure = lastTheoreticalPressure(cropAddress);
+        return min(lastTheoreticalPressure, cropQueue.queue[cropAddress].pressure);
+    }
+    else
+    {
+        return firstEffectivePressure(cropAddress) + ((cropQueue.queue[cropAddress].size - 1) * PRESSURE_DELTA);
+    }
 }
 
 void growCropTop(const uint cropAddress)
@@ -440,52 +455,3 @@ void swapCropWithNext(const uint cropAddress)
     if(previousAddress != -1) cropQueue.queue[previousAddress].nextCrop = swapAddress;
     else cropQueue.firstIndex = swapAddress;
 }
-
-//float firstPressure(const uint cropAddress)
-//{
-//    return firstPressure(cropAddress, 0);
-//}
-//
-//float firstPressure(const uint cropAddress, const int sizeOffset)
-//{
-//    const float pressure = cropQueue.queue[cropAddress].pressure;
-//    const int size = int(cropQueue.queue[cropAddress].size) + sizeOffset;
-//    const bool liquidOrGaz = cropQueue.queue[cropAddress].isLiquid || cropQueue.queue[cropAddress].isGaz;
-//    if (liquidOrGaz) // && cropQueue.queue[cropAddress].falling == false)
-//    {
-//        if(cropQueue.queue[cropAddress].firstTheoricalPressure == -1.)
-//        {
-//            uint density = getDensity(cropAddress);
-//            return (pressure / size) - (((size - 1) * PRESSURE_DELTA) / 2.);
-//        }
-//        else
-//        {
-//
-//        }
-//    }
-//    else
-//    {
-//        return pressure / size;
-//    }
-//}
-//
-//float lastPressure(const uint cropAddress)
-//{
-//    return lastPressure(cropAddress, 0);
-//}
-//
-//float lastPressure(const uint cropAddress, const int sizeOffset)
-//{
-//    const float pressure = cropQueue.queue[cropAddress].pressure;
-//    const int size = int(cropQueue.queue[cropAddress].size) + sizeOffset;
-//    const bool liquidOrGaz = cropQueue.queue[cropAddress].isLiquid || cropQueue.queue[cropAddress].isGaz;
-//    if (liquidOrGaz) // && cropQueue.queue[cropAddress].falling == false)
-//    {
-//        const uint density = getDensity(cropAddress);
-//        return firstPressure(cropAddress) + (PRESSURE_DELTA * (size - 1));
-//    }
-//    else
-//    {
-//        return pressure / size;
-//    }
-//}

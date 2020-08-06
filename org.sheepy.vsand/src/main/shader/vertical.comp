@@ -117,44 +117,31 @@ void computeVertical()
                         splitCropTop(downIndex);
                         swapCropWithNext(uint(middleIndex));
                     }
-//                        pushedDown = true;
+//                  pushedDown = true;
                 }
             }
             // PRESSURE
-//            else if (liquidOrGaz)//  && cropQueue.queue[middleIndex].falling == false
-//            // && cropQueue.queue[downIndex].falling == false)
-//            {
-////                const float middleFirstPressure = firstEffectivePressure(middleIndex);
-//                const float downFirstPressure = firstEffectivePressure(downIndex);
-////                const bool middleOverpressure = middleFirstPressure > cropQueue.queue[middleIndex].firstTheoreticalPressure;
-////                const bool middleUnderpressure = middleFirstPressure <= 0.;
-//                const bool downOverpressure = downFirstPressure > cropQueue.queue[downIndex].firstTheoreticalPressure;
-//                const bool downUnderpressure = downFirstPressure <= 0.;
-//
-//                if (downOverpressure && cropQueue.queue[middleIndex].size > 1)
-//                {
-//                    // DOWN HIGH PRESSURE
-////                    const float updatedFirstPressure = firstPressure(downIndex, 1);
-////                    const float updatedLastPressure = lastPressure(middleIndex, -1);
-////                    const float pressureDiffAfterMove = updatedFirstPressure - updatedLastPressure;
-////                    if(updatedFirstPressure < 2. && updatedLastPressure > 0. && pressureDiffAfterMove >= 0.)
-//                    {
-//                        pushCropUp(downIndex);
-//                    }
-//                }
-//                else if (pushedDown == false && downUnderpressure && cropQueue.queue[downIndex].size > 1)
-//                {
-//                    // DOWN LOW PRESSURE
-////                    const float updatedFirstPressure = firstPressure(downIndex, -1);
-////                    const float updatedLastPressure = lastPressure(middleIndex, 1);
-//                    //                    float pressureDiffAfterMove = firstPressure(downIndex, -1) - lastPressure(middleIndex, 1);
-////                    if(updatedFirstPressure > 0. && updatedLastPressure < 2.) // pressureDiffAfterMove <= 0.)
-//                    {
-//                        pushCropDown(middleIndex);
-//                    }
-//                }
-//                pushedDown = false;
-//            }
+            else if (liquidOrGaz)// && cropQueue.queue[middleIndex].falling == false
+                                 // && cropQueue.queue[downIndex].falling == false)
+            {
+                const bool downLiquid = cropQueue.queue[downIndex].isLiquid;
+                const float downFirstPressure = firstEffectivePressure(downIndex);
+                const float middleLastPressure = lastEffectivePressure(middleIndex);
+                const float pressureDiff = downFirstPressure - middleLastPressure + PRESSURE_DELTA;
+                const bool downOverpressure = downLiquid ? downFirstPressure > cropQueue.queue[downIndex].firstTheoreticalPressure : pressureDiff > PRESSURE_DELTA;
+                const bool downUnderpressure = downLiquid ? downFirstPressure <= 0. : pressureDiff < -PRESSURE_DELTA;
+
+                if (downOverpressure && cropQueue.queue[middleIndex].size > 1)
+                {
+                    pushCropUp(downIndex);
+                }
+                else if (downUnderpressure && pushedDown == false && cropQueue.queue[downIndex].size > 1)
+                {
+                    pushCropDown(middleIndex);
+                }
+
+                pushedDown = false;
+            }
             else
             {
                 pushedDown = false;
