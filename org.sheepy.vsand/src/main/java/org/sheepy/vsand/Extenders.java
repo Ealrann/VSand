@@ -31,7 +31,7 @@ public class Extenders implements IExtenderProvider
 					   BoardImageLoader.class,
 					   TransformationBufferLoader.class,
 					   DrawDispatchLoader.class,
-					   VerticalDispatchLoader.class,
+					   BoardMoveDispatchLoader.class,
 					   HorizontalDispatchLoader.class,
 					   TransformationDispatchLoader.class,
 					   BoardToPixelDispatchLoader.class,

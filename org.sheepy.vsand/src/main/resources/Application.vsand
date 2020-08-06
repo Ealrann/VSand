@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:openal="org.sheepy.lily.openal" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:resource_1="org.sheepy.lily.core.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" title="VSand" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" size="1248;704" stepPipelines="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2 //@engines.0/@processes.0/@pipelinePkg/@pipelines.3" pausePipeline="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1">
+<model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:openal="org.sheepy.lily.openal" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:resource_1="org.sheepy.lily.core.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" title="VSand" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" size="1248;704" stepPipelines="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2" pausePipeline="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1">
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
       <resources xsi:type="resource:MemoryChunk">
@@ -117,10 +117,10 @@
             </tasks>
           </taskPkgs>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Vertical" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@resourcePkg/@resources.0">
+        <pipelines xsi:type="compute:ComputePipeline" name="Move" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.2/@resourcePkg/@resources.0">
           <resourcePkg>
-            <resources xsi:type="resource:Shader" name="vertical" stage="COMPUTE_BIT">
-              <file xsi:type="resource_1:StringModuleResource" name="" path="vertical.comp.spv" moduleName="org.sheepy.vsand"/>
+            <resources xsi:type="resource:Shader" name="Move" stage="COMPUTE_BIT">
+              <file xsi:type="resource_1:StringModuleResource" name="" path="board_move.comp.spv" moduleName="org.sheepy.vsand"/>
               <constants name="MaterialCount" size="4"/>
               <constants name="Width" constantId="1" size="4"/>
               <constants name="Height" constantId="2" size="4"/>
@@ -143,33 +143,13 @@
             <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
-            <tasks xsi:type="compute:DispatchTask" name="Board Vertical"/>
+            <tasks xsi:type="compute:DispatchTask" name="Board Move"/>
           </taskPkgs>
           <pushConstantRanges size="12">
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Horizontal" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.3/@resourcePkg/@resources.0">
-          <resourcePkg>
-            <resources xsi:type="resource:Shader" name="Horizontal" stage="COMPUTE_BIT">
-              <file xsi:type="resource_1:StringModuleResource" name="" path="horizontal.comp.spv" moduleName="org.sheepy.vsand"/>
-              <constants name="MaterialCount" size="4"/>
-              <constants name="Width" constantId="1" size="4"/>
-              <constants name="Height" constantId="2" size="4"/>
-            </resources>
-          </resourcePkg>
-          <taskPkgs>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0 //@engines.0/@processes.0/@descriptorPool/@descriptorSets.1" bindPoint="COMPUTE" stride="1"/>
-            <tasks xsi:type="process:PushConstantBuffer" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.0">
-              <stages>COMPUTE_BIT</stages>
-            </tasks>
-            <tasks xsi:type="compute:DispatchTask" name="Board Horizontal"/>
-          </taskPkgs>
-          <pushConstantRanges size="12">
-            <stages>COMPUTE_BIT</stages>
-          </pushConstantRanges>
-        </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Transfo" enabled="false" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@resourcePkg/@resources.0">
+        <pipelines xsi:type="compute:ComputePipeline" name="Transfo" enabled="false" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.3/@resourcePkg/@resources.0">
           <resourcePkg>
             <resources xsi:type="resource:Shader" name="Transformation" stage="COMPUTE_BIT">
               <file xsi:type="resource_1:StringModuleResource" name="" path="transformation.comp.spv" moduleName="org.sheepy.vsand"/>
@@ -189,7 +169,7 @@
             <stages>COMPUTE_BIT</stages>
           </pushConstantRanges>
         </pipelines>
-        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@resourcePkg/@resources.1">
+        <pipelines xsi:type="compute:ComputePipeline" name="Board to Pixel" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.1" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@resourcePkg/@resources.1">
           <resourcePkg>
             <resources xsi:type="model:PixelConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.0"/>
             <resources xsi:type="resource:Shader" name="boardToPixel" stage="COMPUTE_BIT">
@@ -200,8 +180,8 @@
             </resources>
           </resourcePkg>
           <taskPkgs>
-            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@descriptorPool/@descriptorSets.0 //@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@descriptorPool/@descriptorSets.1" bindPoint="COMPUTE" stride="1"/>
-            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.5/@resourcePkg/@resources.0">
+            <tasks xsi:type="process:BindDescriptorSets" descriptorSets="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@descriptorPool/@descriptorSets.0 //@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@descriptorPool/@descriptorSets.1" bindPoint="COMPUTE" stride="1"/>
+            <tasks xsi:type="process:PushConstantBuffer" name="" buffer="//@engines.0/@processes.0/@pipelinePkg/@pipelines.4/@resourcePkg/@resources.0">
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="COMPUTE_SHADER_BIT">

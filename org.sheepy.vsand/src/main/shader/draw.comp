@@ -4,6 +4,7 @@
 #define CHUNK_HEIGHT 44
 
 #define WORKGROUP_SIZE 8
+#define DEFAULT_PRESSURE 1.
 
 #define SQUARE		0
 #define CIRCLE		1
@@ -93,7 +94,7 @@ void main()
 
                 if(currentMaterial != targetMaterial)
                 {
-                    uint packedPressure = packHalf2x16(vec2(0., 1.));
+                    uint packedPressure = packHalf2x16(vec2(0., DEFAULT_PRESSURE));
                     board.data[x + (y * WIDTH)] = targetMaterial | (packedPressure & 0xFFFF0000u) | MOVE_TAG;
                 }
 				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = 3;

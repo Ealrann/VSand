@@ -10,20 +10,14 @@
 #define FLAG_SHOW_SLEEPING_CHUNKS   2
 #define FLAG_SHOW_PRESSURE          4
 
+
+#include "util/material.glsl"
+
 layout (constant_id = 0) const int MATERIAL_COUNT = 2;
 layout (constant_id = 1) const int WIDTH = 1;
 layout (constant_id = 2) const int HEIGHT = 1;
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
-
-struct Entry
-{
-	int isStatic;
-	int density;
-	int runoff;
-	int padding;
-	vec4 color;
-};
 
 // Random number, change each frame.
 layout (push_constant) uniform PushConstants {
@@ -38,7 +32,7 @@ layout(rgba8, binding = 0) uniform image2D outImage;
 
 layout(binding = 1) uniform SConfiguration
 {
-	Entry materials[MATERIAL_COUNT];
+    Material materials[MATERIAL_COUNT];
 }configuration;
 
 // The chunk state board.
@@ -133,7 +127,7 @@ vec4 computeColor(ivec2 loc)
 
 	if(colorTweakPreTest && testCircle(loc, pushConstants.mousePos, pushConstants.drawRadius))
 	{
-		Entry material = configuration.materials[pushConstants.drawMaterialId];
+        Material material = configuration.materials[pushConstants.drawMaterialId];
         addColor += vec4(material.color.xyz + 0.2, 0);
 
 		colorTweak = true;

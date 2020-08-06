@@ -8,9 +8,9 @@ import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.model.process.compute.DispatchTask;
 import org.sheepy.vsand.model.VSandApplication;
 
-@ModelExtender(scope = DispatchTask.class, name = "Board Vertical")
+@ModelExtender(scope = DispatchTask.class, name = "Board Move")
 @Adapter(singleton = true, lazy = false)
-public final class VerticalDispatchLoader implements IExtender
+public final class BoardMoveDispatchLoader implements IExtender
 {
 	public static final int WORKGROUP_SIZE = 64;
 

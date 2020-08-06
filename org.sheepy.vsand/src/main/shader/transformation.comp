@@ -5,10 +5,10 @@
 
 #define WORKGROUP_SIZE 16
 
-#include "rand_utils.glsl"
-#include "material.glsl"
-#include "crop.glsl"
-#include "board.glsl"
+#include "util/rand_utils.glsl"
+#include "util/material.glsl"
+#include "util/crop.glsl"
+#include "util/board.glsl"
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 

@@ -1,5 +1,5 @@
 
-struct Entry
+struct Material
 {
     int isStatic;
     int density;

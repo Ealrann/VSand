@@ -1,5 +1,5 @@
 #define DEFAULT_PRESSURE 1.
-#define PRESSURE_DELTA 0.001
+#define PRESSURE_DELTA 0.0004
 
 #define SOLID   0
 #define LIQUID  1
@@ -24,7 +24,7 @@ layout (push_constant) uniform PushConstants {
 // The definition of materials.
 layout(binding = 0) uniform SConfiguration
 {
-    Entry materials[MATERIAL_COUNT];
+    Material materials[MATERIAL_COUNT];
 } configuration;
 
 // The chunk state board.
@@ -62,14 +62,15 @@ const Value voidValue = Value(0, DEFAULT_PRESSURE, false);
 
 
 Value readValue(const uint value);
-float pressureNewCrop(const uint type, const float theoricalFirstPressure, const float pressure, const uint size);
+float pressureNewCrop(const uint type, const float inheritedFirstPressure, const float pressure, const uint size, const int density);
 uint writeValue(Value value);
 void writeCrop(const uint cropAddress, const uint x, const uint y, const bool vertical);
-float firstIdealPressure(const float pressure, const uint size);
+float firstIdealPressure(const float pressure, const uint size, const int density);
+float firstIdealPressure(const uint cropAddress);
 float lastIdealPressure(const uint cropAddress);
-float lastTheoreticalPressure(const uint cropAddress);
-float firstEffectivePressure(uint cropAddress);
-float lastEffectivePressure(uint cropAddress);
+//float lastTheoreticalPressure(const uint cropAddress);
+//float firstEffectivePressure(uint cropAddress);
+//float lastEffectivePressure(uint cropAddress);
 void growCropTop(const uint cropAddress);
 void growCropBottom(const uint cropAddress);
 void shrinkCropTop(const uint cropAddress);
@@ -97,21 +98,24 @@ void loadCrops(const uvec2 startLocation, const uint cropSize, const bool vertic
     bool first = true;
     bool currentWasFalling = false;
     uint currentMaterialId = voidValue.materialId;
-    Entry currentMaterial = configuration.materials[currentMaterialId];
+    Material currentMaterial = configuration.materials[currentMaterialId];
     for (int i = 0; i < cropSize; i++)
     {
-        const uint boardValue = vertical ? board1.data[startLocation.x + (i + startLocation.y) * WIDTH]
-                                         : board2.data[startLocation.x + i + (startLocation.y * WIDTH)];
+        const uint boardValue = vertical ? board2.data[startLocation.x + (i + startLocation.y) * WIDTH]
+                                         : board1.data[startLocation.x + i + (startLocation.y * WIDTH)];
         const Value value = readValue(boardValue);
-        if (first || value.materialId != currentMaterialId || (vertical && value.falling == false && currentWasFalling == true))
+        if (first
+                || value.materialId != currentMaterialId
+                || (vertical && value.falling == false && currentWasFalling == true)
+                || (!vertical && (value.falling != currentWasFalling)))
         {
-            Entry newMaterial = configuration.materials[value.materialId];
+            Material newMaterial = configuration.materials[value.materialId];
 
             if (first == false)
             {
-                const float firstPressure = currentMaterial.isStatic == 1 ? DEFAULT_PRESSURE : pressureNewCrop(currentMaterial.type, nextIdealPressure, pressure, size);
+                const float firstPressure = currentMaterial.isStatic == 1 ? DEFAULT_PRESSURE : pressureNewCrop(currentMaterial.type, nextIdealPressure, pressure, size, currentMaterial.density);
                 cropPush(currentMaterialId, currentMaterial.density, size, firstPressure, pressure, currentMaterial.isStatic == 1, currentWasFalling, currentMaterial.type == LIQUID, currentMaterial.type == GAZ);
-                nextIdealPressure = firstPressure != -1. ? firstPressure + (size * PRESSURE_DELTA) : -1.;
+                nextIdealPressure = firstPressure != -1. ? firstPressure + (size * PRESSURE_DELTA * (currentMaterial.density + 3)) : -1.;
             }
             size = 0;
             pressure = 0;
@@ -126,18 +130,18 @@ void loadCrops(const uvec2 startLocation, const uint cropSize, const bool vertic
         size ++;
         pressure += value.pressure;
     }
-    const float firstPressure = currentMaterial.isStatic == 1 ? DEFAULT_PRESSURE : pressureNewCrop(currentMaterial.type, nextIdealPressure, pressure, size);
+    const float firstPressure = currentMaterial.isStatic == 1 ? DEFAULT_PRESSURE : pressureNewCrop(currentMaterial.type, nextIdealPressure, pressure, size, currentMaterial.density);
     cropPush(currentMaterialId, currentMaterial.density, size, firstPressure, pressure, currentMaterial.isStatic == 1, currentWasFalling, currentMaterial.type == LIQUID, currentMaterial.type == GAZ);
 
     if (vertical)
     {
-        int downCrop = cropQueue.lastIndex;
-        int upCrop = cropQueue.queue[downCrop].previousCrop;
+        int downCrop = -1;
+        int upCrop = cropQueue.lastIndex;
         while (upCrop != -1)
         {
             const bool upNotStatic = cropQueue.queue[upCrop].isStatic == false;
-            const bool downNotStatic = cropQueue.queue[downCrop].isStatic == false;
-            const bool heavier = getDensity(upCrop) > getDensity(downCrop);
+            const bool downNotStatic = downCrop == -1 ? false : cropQueue.queue[downCrop].isStatic == false;
+            const bool heavier = downCrop == -1 ? false : getDensity(upCrop) > getDensity(downCrop);
             const bool wasFalling = cropQueue.queue[upCrop].falling;
 
             if(upNotStatic)
@@ -150,7 +154,7 @@ void loadCrops(const uvec2 startLocation, const uint cropSize, const bool vertic
                 {
                     if(cropQueue.queue[upCrop].isLiquid)
                     {
-                        if(getDensity(upCrop) != getDensity(downCrop))
+                        if(downCrop == -1 || getMaterialId(upCrop) != getMaterialId(downCrop))
                         {
                             if (cropQueue.queue[upCrop].size == 1)
                             {
@@ -180,14 +184,14 @@ void loadCrops(const uvec2 startLocation, const uint cropSize, const bool vertic
     }
 }
 
-float pressureNewCrop(const uint type, const float inheritedFirstPressure, const float pressure, const uint size)
+float pressureNewCrop(const uint type, const float inheritedFirstPressure, const float pressure, const uint size, const int density)
 {
 //    switch(type)
 //    {
 //        case LIQUID:
 //        case GAZ:
 //        {
-            return (inheritedFirstPressure != -1.) ? inheritedFirstPressure : firstIdealPressure(pressure, size);
+            return (inheritedFirstPressure != -1.) ? inheritedFirstPressure : firstIdealPressure(pressure, size, density);
 //        }
 //        default:
 //        {
@@ -239,11 +243,12 @@ void writeCrop(const uint cropAddress, const uint x, const uint y, const bool ve
     if (vertical)
     {
         const bool liquidOrGaz = cropQueue.queue[cropAddress].isLiquid || cropQueue.queue[cropAddress].isGaz; // && falling == false;
-        const float currentPressure = firstIdealPressure(cropQueue.queue[cropAddress].pressure, cropQueue.queue[cropAddress].size);
+        const float currentPressure = firstIdealPressure(cropAddress);
+        const float pressureDelta = cropQueue.queue[cropAddress].isStatic ? 0. : PRESSURE_DELTA * (getDensity(cropAddress) + 3);
 
         for (int i = 0; i < cropQueue.queue[cropAddress].size; i++)
         {
-            const uint packedValue = materialId | (packHalf2x16(vec2(0., currentPressure + i * PRESSURE_DELTA)) & 0xFFFF0000u) | (falling ? MOVE_TAG : 0);
+            const uint packedValue = materialId | (packHalf2x16(vec2(0., currentPressure + i * pressureDelta)) & 0xFFFF0000u) | (falling ? MOVE_TAG : 0);
             board2.data[x + (y + i) * WIDTH] = packedValue;
         }
     }
@@ -258,18 +263,31 @@ void writeCrop(const uint cropAddress, const uint x, const uint y, const bool ve
     }
 }
 
-float firstIdealPressure(const float pressure, const uint size)
+float firstIdealPressure(const uint cropAddress)
 {
-    // Han formula
-    return (pressure / size) - (((size - 1) * PRESSURE_DELTA) / 2.);
+    return firstIdealPressure(cropQueue.queue[cropAddress].pressure, cropQueue.queue[cropAddress].size, getDensity(cropAddress));
 }
 
-float lastIdealPressure(const uint cropAddress)
+float firstIdealPressure(const uint cropAddress, const int offset)
+{
+    return firstIdealPressure(cropQueue.queue[cropAddress].pressure, cropQueue.queue[cropAddress].size + offset, getDensity(cropAddress));
+}
+
+float firstIdealPressure(const float pressure, const uint size, const int density)
+{
+    // Han formula
+    const float pressureDelta = PRESSURE_DELTA * (density + 3);
+    return (pressure / size) - (((size - 1) * pressureDelta) / 2.);
+}
+
+float lastIdealPressure(const uint cropAddress, const int offset)
 {
     if(cropQueue.queue[cropAddress].isStatic == false &&
     (cropQueue.queue[cropAddress].isLiquid || cropQueue.queue[cropAddress].isGaz))
     {
-        return firstIdealPressure(cropQueue.queue[cropAddress].pressure, cropQueue.queue[cropAddress].size) + ((cropQueue.queue[cropAddress].size - 1) * PRESSURE_DELTA);
+        const int density = getDensity(cropAddress);
+        const float pressureDelta = PRESSURE_DELTA * (density + 3);
+        return firstIdealPressure(cropQueue.queue[cropAddress].pressure, cropQueue.queue[cropAddress].size + offset, density) + ((cropQueue.queue[cropAddress].size - 1) * pressureDelta);
     }
     else
     {
@@ -277,75 +295,86 @@ float lastIdealPressure(const uint cropAddress)
     }
 }
 
-float lastTheoreticalPressure(const uint cropAddress)
+float lastIdealPressure(const uint cropAddress)
 {
-    if(cropQueue.queue[cropAddress].isStatic == false &&
-        (cropQueue.queue[cropAddress].isLiquid || cropQueue.queue[cropAddress].isGaz))
-    {
-        return cropQueue.queue[cropAddress].firstTheoreticalPressure + ((cropQueue.queue[cropAddress].size - 1) * PRESSURE_DELTA);
-    }
-    else
-    {
-        return DEFAULT_PRESSURE;
-    }
+    return lastIdealPressure(cropAddress, 0);
 }
 
-float firstEffectivePressure(uint cropAddress)
-{
-    if(cropQueue.queue[cropAddress].isLiquid)
-    {
-        const uint sizeMinusFirst = cropQueue.queue[cropAddress].size - 1;
-        const float totalIdealPressureMinusFirst = sizeMinusFirst * cropQueue.queue[cropAddress].firstTheoreticalPressure + ((sizeMinusFirst * (sizeMinusFirst - 1)) / 2.) * PRESSURE_DELTA;
-
-        return max(0., cropQueue.queue[cropAddress].pressure - totalIdealPressureMinusFirst);
-    }
-    else if (cropQueue.queue[cropAddress].isGaz)
-    {
-        return firstIdealPressure(cropQueue.queue[cropAddress].pressure, cropQueue.queue[cropAddress].size);
-    }
-    else
-    {
-        return cropQueue.queue[cropAddress].firstTheoreticalPressure;
-    }
-}
-
-float lastEffectivePressure(uint cropAddress)
-{
-    if(cropQueue.queue[cropAddress].isLiquid)
-    {
-        const float lastTheoreticalPressure = lastTheoreticalPressure(cropAddress);
-        return min(lastTheoreticalPressure, cropQueue.queue[cropAddress].pressure);
-    }
-    else
-    {
-        return firstEffectivePressure(cropAddress) + ((cropQueue.queue[cropAddress].size - 1) * PRESSURE_DELTA);
-    }
-}
+//float lastTheoreticalPressure(const uint cropAddress)
+//{
+//    if(cropQueue.queue[cropAddress].isStatic == false &&
+//        (cropQueue.queue[cropAddress].isLiquid || cropQueue.queue[cropAddress].isGaz))
+//    {
+//        const float pressureDelta = PRESSURE_DELTA * (getDensity(cropAddress) + 3);
+//        return cropQueue.queue[cropAddress].firstTheoreticalPressure + ((cropQueue.queue[cropAddress].size - 1) * pressureDelta);
+//    }
+//    else
+//    {
+//        return DEFAULT_PRESSURE;
+//    }
+//}
+//
+//float firstEffectivePressure(uint cropAddress)
+//{
+//    if(cropQueue.queue[cropAddress].isLiquid)
+//    {
+//        const uint sizeMinusFirst = cropQueue.queue[cropAddress].size - 1;
+//        const float totalIdealPressureMinusFirst = sizeMinusFirst * cropQueue.queue[cropAddress].firstTheoreticalPressure + ((sizeMinusFirst * (sizeMinusFirst - 1)) / 2.) * PRESSURE_DELTA;
+//
+//        return max(0., cropQueue.queue[cropAddress].pressure - totalIdealPressureMinusFirst);
+//    }
+//    else if (cropQueue.queue[cropAddress].isGaz)
+//    {
+//        return firstIdealPressure(cropQueue.queue[cropAddress].pressure, cropQueue.queue[cropAddress].size, getDensity(cropAddress));
+//    }
+//    else
+//    {
+//        return cropQueue.queue[cropAddress].firstTheoreticalPressure;
+//    }
+//}
+//
+//float lastEffectivePressure(uint cropAddress)
+//{
+//    if(cropQueue.queue[cropAddress].isLiquid)
+//    {
+//        const float lastTheoreticalPressure = lastTheoreticalPressure(cropAddress);
+//        return min(lastTheoreticalPressure, cropQueue.queue[cropAddress].pressure);
+//    }
+//    else
+//    {
+//        const float pressureDelta = PRESSURE_DELTA * (getDensity(cropAddress) + 3);
+//        return firstEffectivePressure(cropAddress) + ((cropQueue.queue[cropAddress].size - 1) * pressureDelta);
+//    }
+//}
 
 void growCropTop(const uint cropAddress)
 {
+    const float pressureDelta = PRESSURE_DELTA * (getDensity(cropAddress) + 3);
     cropQueue.queue[cropAddress].size ++;
-    cropQueue.queue[cropAddress].firstTheoreticalPressure -= PRESSURE_DELTA;
+    cropQueue.queue[cropAddress].firstTheoreticalPressure -= pressureDelta;
 }
 
 void growCropBottom(const uint cropAddress)
 {
     cropQueue.queue[cropAddress].size ++;
     const int nextCrop = cropQueue.queue[cropAddress].nextCrop;
-    if(nextCrop != -1) cropQueue.queue[nextCrop].firstTheoreticalPressure += PRESSURE_DELTA;
+    const float pressureDelta = PRESSURE_DELTA * (getDensity(nextCrop) + 3);
+    if(nextCrop != -1) cropQueue.queue[nextCrop].firstTheoreticalPressure += pressureDelta;
 }
 
 void shrinkCropTop(const uint cropAddress)
 {
+    const float pressureDelta = PRESSURE_DELTA * (getDensity(cropAddress) + 3);
     cropQueue.queue[cropAddress].size --;
-    cropQueue.queue[cropAddress].firstTheoreticalPressure += PRESSURE_DELTA;
+    cropQueue.queue[cropAddress].firstTheoreticalPressure += pressureDelta;
 }
 
 void shrinkCropBottom(const uint cropAddress)
 {
     cropQueue.queue[cropAddress].size --;
     const int nextCrop = cropQueue.queue[cropAddress].nextCrop;
-    if(nextCrop != -1) cropQueue.queue[nextCrop].firstTheoreticalPressure -= PRESSURE_DELTA;
+    const float pressureDelta = PRESSURE_DELTA * (getDensity(nextCrop) + 3);
+    if(nextCrop != -1) cropQueue.queue[nextCrop].firstTheoreticalPressure -= pressureDelta;
 }
 
 void pushCropUp(const uint cropAddress)
@@ -370,7 +399,7 @@ float removeCropTop(const uint cropAddress)
     }
     else
     {
-        const float removedPressure = firstEffectivePressure(cropAddress);
+        const float removedPressure = firstIdealPressure(cropAddress);
         cropQueue.queue[cropAddress].pressure -= removedPressure;
         shrinkCropTop(cropAddress);
         return removedPressure;
@@ -387,7 +416,7 @@ float removeCropBottom(const uint cropAddress)
     }
     else
     {
-        float removedPressure = lastEffectivePressure(cropAddress);
+        float removedPressure = lastIdealPressure(cropAddress);
         cropQueue.queue[cropAddress].pressure -= removedPressure;
         shrinkCropBottom(cropAddress);
         return removedPressure;
@@ -410,7 +439,7 @@ int splitCropBottom(const uint cropAddress)
 {
     Crop newCrop = cropQueue.queue[cropAddress];
     newCrop.size = 1;
-    newCrop.firstTheoreticalPressure = lastTheoreticalPressure(cropAddress);
+    newCrop.firstTheoreticalPressure = lastIdealPressure(cropAddress);
     const int newCropAddress = insertCropAfter(cropAddress, newCrop);
     if(newCropAddress != -1)
     {
