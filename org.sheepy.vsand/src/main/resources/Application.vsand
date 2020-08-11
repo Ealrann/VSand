@@ -2,13 +2,15 @@
 <model:VSandApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="org.sheepy.lily.core.model.application" xmlns:compute="org.sheepy.lily.vulkan.model.process.compute" xmlns:graphic="org.sheepy.lily.vulkan.model.process.graphic" xmlns:model="org.sheepy.vsand.model" xmlns:model_1="org.sheepy.lily.vulkan.model" xmlns:nuklear="org.sheepy.lily.vulkan.extra.model.nuklear" xmlns:openal="org.sheepy.lily.openal" xmlns:process="org.sheepy.lily.vulkan.model.process" xmlns:resource="org.sheepy.lily.vulkan.model.resource" xmlns:resource_1="org.sheepy.lily.core.model.resource" xmlns:ui="org.sheepy.lily.core.model.ui" xmlns:variable="org.sheepy.lily.core.model.variable" title="VSand" mainMaterial="//@materials/@materials.1" secondaryMaterial="//@materials/@materials.3" boardUpdateTask="//@engines.0/@processes.0/@pipelinePkg/@pipelines.1/@taskPkgs.0/@tasks.2" size="1248;704">
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
-      <resources xsi:type="resource:StaticImage" name="Board Image" fillWithZero="true" size="1248;704">
-        <usages>TransferSrc</usages>
-        <usages>Storage</usages>
-        <usages>TransferDst</usages>
-        <initialLayout stage="COMPUTE_SHADER_BIT" layout="TRANSFER_SRC_OPTIMAL">
-          <accessMask>SHADER_WRITE_BIT</accessMask>
-        </initialLayout>
+      <resources xsi:type="resource:MemoryChunk">
+        <parts xsi:type="resource:StaticImage" name="Board Image" fillWithZero="true" size="1248;704">
+          <usages>TransferSrc</usages>
+          <usages>Storage</usages>
+          <usages>TransferDst</usages>
+          <initialLayout stage="COMPUTE_SHADER_BIT" layout="TRANSFER_SRC_OPTIMAL">
+            <accessMask>SHADER_WRITE_BIT</accessMask>
+          </initialLayout>
+        </parts>
       </resources>
     </resourcePkg>
     <processes xsi:type="compute:ComputeProcess" name="Board Compute" resetAllowed="true">
@@ -70,7 +72,7 @@
         <descriptors xsi:type="resource:BufferDescriptor" name="Transfo" type="UNIFORM_BUFFER" buffer="//@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.1/@buffers.1">
           <shaderStages>COMPUTE_BIT</shaderStages>
         </descriptors>
-        <descriptors xsi:type="resource:ImageDescriptor" name="BoardImage" type="STORAGE_IMAGE" image="//@engines.0/@resourcePkg/@resources.0">
+        <descriptors xsi:type="resource:ImageDescriptor" name="BoardImage" type="STORAGE_IMAGE" image="//@engines.0/@resourcePkg/@resources.0/@parts.0">
           <shaderStages>COMPUTE_BIT</shaderStages>
         </descriptors>
       </descriptorPkg>
@@ -90,17 +92,7 @@
               <barriers xsi:type="resource:BufferBarrier">
                 <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
                 <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-                <buffers xsi:type="resource:FixedBufferReference"/>
-              </barriers>
-              <barriers xsi:type="resource:BufferBarrier">
-                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
-                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-                <buffers xsi:type="resource:FixedBufferReference"/>
-              </barriers>
-              <barriers xsi:type="resource:BufferBarrier">
-                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
-                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-                <buffers xsi:type="resource:FixedBufferReference"/>
+                <buffers buffers="//@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.0/@buffers.0 //@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.0/@buffers.1 //@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.0/@buffers.2"/>
               </barriers>
             </tasks>
             <tasks xsi:type="compute:DispatchTask" name="Draw" workgroupCountX="78" workgroupCountY="44"/>
@@ -119,17 +111,7 @@
               <barriers xsi:type="resource:BufferBarrier">
                 <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
                 <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-                <buffers xsi:type="resource:FixedBufferReference"/>
-              </barriers>
-              <barriers xsi:type="resource:BufferBarrier">
-                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
-                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-                <buffers xsi:type="resource:FixedBufferReference"/>
-              </barriers>
-              <barriers xsi:type="resource:BufferBarrier">
-                <srcAccessMask>SHADER_READ_BIT</srcAccessMask>
-                <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
-                <buffers xsi:type="resource:FixedBufferReference"/>
+                <buffers buffers="//@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.0/@buffers.0 //@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.0/@buffers.1 //@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.0/@buffers.2"/>
               </barriers>
             </tasks>
             <tasks xsi:type="process:CompositeTask" name="Update Board">
@@ -156,7 +138,7 @@
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="COMPUTE_SHADER_BIT">
-              <barriers xsi:type="resource:ImageBarrier" srcLayout="TRANSFER_SRC_OPTIMAL" dstLayout="GENERAL" image="//@engines.0/@resourcePkg/@resources.0">
+              <barriers xsi:type="resource:ImageBarrier" srcLayout="TRANSFER_SRC_OPTIMAL" dstLayout="GENERAL" image="//@engines.0/@resourcePkg/@resources.0/@parts.0">
                 <srcAccessMask>TRANSFER_READ_BIT</srcAccessMask>
                 <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
               </barriers>
@@ -165,17 +147,7 @@
               <barriers xsi:type="resource:BufferBarrier">
                 <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
                 <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
-                <buffers xsi:type="resource:FixedBufferReference"/>
-              </barriers>
-              <barriers xsi:type="resource:BufferBarrier">
-                <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
-                <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
-                <buffers xsi:type="resource:FixedBufferReference"/>
-              </barriers>
-              <barriers xsi:type="resource:BufferBarrier">
-                <srcAccessMask>SHADER_WRITE_BIT</srcAccessMask>
-                <dstAccessMask>SHADER_READ_BIT</dstAccessMask>
-                <buffers xsi:type="resource:FixedBufferReference"/>
+                <buffers buffers="//@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.0/@buffers.0 //@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.0/@buffers.1 //@engines.0/@processes.0/@resourcePkg/@resources.5/@parts.0/@buffers.2"/>
               </barriers>
             </tasks>
             <tasks xsi:type="compute:DispatchTask" workgroupCountX="78" workgroupCountY="44"/>
@@ -229,7 +201,7 @@
     </resourcePkg>
   </engines>
   <scene resizeable="true" size="1248;704">
-    <compositors xsi:type="application:BackgroundImage" sampling="Nearest" srcImage="//@engines.0/@resourcePkg/@resources.0" dstImage="//@engines.0/@processes.1/@configuration/@swapchainConfiguration/@colorAttachment"/>
+    <compositors xsi:type="application:BackgroundImage" sampling="Nearest" srcImage="//@engines.0/@resourcePkg/@resources.0/@parts.0" dstImage="//@engines.0/@processes.1/@configuration/@swapchainConfiguration/@colorAttachment"/>
     <compositors xsi:type="ui:UI" imageSupport="false" currentUIPage="//@scene/@compositors.1/@uiPages.0" dstImage="//@engines.0/@processes.1/@configuration/@swapchainConfiguration/@colorAttachment">
       <uiPages>
         <panels xsi:type="ui:Panel" name="Config" horizontalRelative="RIGHT" width="220" height="90">
