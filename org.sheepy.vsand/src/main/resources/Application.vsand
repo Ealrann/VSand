@@ -3,13 +3,10 @@
   <engines xsi:type="model_1:VulkanEngine">
     <resourcePkg>
       <resources xsi:type="resource:MemoryChunk">
-        <parts xsi:type="resource:StaticImage" name="Board Image" fillWithZero="true" size="1248;704">
+        <parts xsi:type="resource:StaticImage" name="Board Image" fillWithZero="true" size="1248;704" initialLayout="TRANSFER_SRC_OPTIMAL">
           <usages>TransferSrc</usages>
           <usages>Storage</usages>
           <usages>TransferDst</usages>
-          <initialLayout stage="COMPUTE_SHADER_BIT" layout="TRANSFER_SRC_OPTIMAL">
-            <accessMask>SHADER_WRITE_BIT</accessMask>
-          </initialLayout>
         </parts>
       </resources>
     </resourcePkg>

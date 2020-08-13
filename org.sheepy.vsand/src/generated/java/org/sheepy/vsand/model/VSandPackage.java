@@ -134,6 +134,15 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__MODELS = ApplicationPackage.APPLICATION__MODELS;
 
 	/**
+	 * The feature id for the '<em><b>Resource Pkg</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__RESOURCE_PKG = ApplicationPackage.APPLICATION__RESOURCE_PKG;
+
+	/**
 	 * The feature id for the '<em><b>Materials</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
