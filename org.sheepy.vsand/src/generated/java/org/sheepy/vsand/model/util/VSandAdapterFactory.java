@@ -9,9 +9,9 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 import org.sheepy.lily.core.model.application.Application;
-import org.sheepy.lily.core.model.resource.IResource;
 import org.sheepy.lily.core.model.types.LNamedElement;
 import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
+import org.sheepy.lily.vulkan.model.IVulkanResource;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.*;
 
@@ -168,9 +168,9 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createLNamedElementAdapter();
 			}
 			@Override
-			public Adapter caseIResource(IResource object)
+			public Adapter caseIVulkanResource(IVulkanResource object)
 			{
-				return createIResourceAdapter();
+				return createIVulkanResourceAdapter();
 			}
 			@Override
 			public Adapter caseConstantBuffer(ConstantBuffer object)
@@ -474,16 +474,16 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.core.model.resource.IResource <em>IResource</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.IVulkanResource <em>IVulkan Resource</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.lily.core.model.resource.IResource
+	 * @see org.sheepy.lily.vulkan.model.IVulkanResource
 	 * @generated
 	 */
-	public Adapter createIResourceAdapter()
+	public Adapter createIVulkanResourceAdapter()
 	{
 		return null;
 	}

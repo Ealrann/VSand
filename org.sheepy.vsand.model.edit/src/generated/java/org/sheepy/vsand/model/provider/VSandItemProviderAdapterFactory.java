@@ -30,12 +30,12 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.sheepy.lily.core.model.resource.ResourcePackage;
-import org.sheepy.lily.core.model.resource.ResourcePkg;
-import org.sheepy.lily.core.model.resource.util.ResourceSwitch;
 import org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage;
 import org.sheepy.lily.vulkan.extra.model.nuklear.SelectorPanel;
 import org.sheepy.lily.vulkan.extra.model.nuklear.util.NuklearSwitch;
+import org.sheepy.lily.vulkan.model.VulkanPackage;
+import org.sheepy.lily.vulkan.model.VulkanResourcePkg;
+import org.sheepy.lily.vulkan.model.util.VulkanSwitch;
 import org.sheepy.vsand.model.VSandFactory;
 
 import org.sheepy.vsand.model.util.VSandAdapterFactory;
@@ -671,12 +671,12 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 	}
 
 	/**
-	 * A child creation extender for the {@link ResourcePackage}.
+	 * A child creation extender for the {@link VulkanPackage}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static class ResourceChildCreationExtender implements IChildCreationExtender
+	public static class VulkanChildCreationExtender implements IChildCreationExtender
 	{
 		/**
 		 * The switch for creating child descriptors specific to each extended class.
@@ -684,7 +684,7 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		protected static class CreationSwitch extends ResourceSwitch<Object>
+		protected static class CreationSwitch extends VulkanSwitch<Object>
 		{
 			/**
 			 * The child descriptors being populated.
@@ -719,25 +719,26 @@ public class VSandItemProviderAdapterFactory extends VSandAdapterFactory
 			 * @generated
 			 */
 			@Override
-			public Object caseResourcePkg(ResourcePkg object)
+			public Object caseVulkanResourcePkg(VulkanResourcePkg object)
 			{
 				newChildDescriptors.add
 					(createChildParameter
-						(ResourcePackage.Literals.RESOURCE_PKG__RESOURCES,
+						(VulkanPackage.Literals.VULKAN_RESOURCE_PKG__RESOURCES,
 						 VSandFactory.eINSTANCE.createBoardConstantBuffer()));
 
 				newChildDescriptors.add
 					(createChildParameter
-						(ResourcePackage.Literals.RESOURCE_PKG__RESOURCES,
+						(VulkanPackage.Literals.VULKAN_RESOURCE_PKG__RESOURCES,
 						 VSandFactory.eINSTANCE.createDrawConstantBuffer()));
 
 				newChildDescriptors.add
 					(createChildParameter
-						(ResourcePackage.Literals.RESOURCE_PKG__RESOURCES,
+						(VulkanPackage.Literals.VULKAN_RESOURCE_PKG__RESOURCES,
 						 VSandFactory.eINSTANCE.createPixelConstantBuffer()));
 
 				return null;
 			}
+ 
 			/**
 			 * <!-- begin-user-doc -->
 			 * <!-- end-user-doc -->

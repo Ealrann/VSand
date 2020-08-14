@@ -7,9 +7,9 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 import org.sheepy.lily.core.model.application.Application;
-import org.sheepy.lily.core.model.resource.IResource;
 import org.sheepy.lily.core.model.types.LNamedElement;
 import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
+import org.sheepy.lily.vulkan.model.IVulkanResource;
 import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.*;
 
@@ -89,7 +89,7 @@ public class VSandSwitch<T> extends Switch<T>
 				BoardConstantBuffer boardConstantBuffer = (BoardConstantBuffer)theEObject;
 				T result = caseBoardConstantBuffer(boardConstantBuffer);
 				if (result == null) result = caseConstantBuffer(boardConstantBuffer);
-				if (result == null) result = caseIResource(boardConstantBuffer);
+				if (result == null) result = caseIVulkanResource(boardConstantBuffer);
 				if (result == null) result = caseLNamedElement(boardConstantBuffer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -100,7 +100,7 @@ public class VSandSwitch<T> extends Switch<T>
 				T result = caseDrawConstantBuffer(drawConstantBuffer);
 				if (result == null) result = caseBoardConstantBuffer(drawConstantBuffer);
 				if (result == null) result = caseConstantBuffer(drawConstantBuffer);
-				if (result == null) result = caseIResource(drawConstantBuffer);
+				if (result == null) result = caseIVulkanResource(drawConstantBuffer);
 				if (result == null) result = caseLNamedElement(drawConstantBuffer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -111,7 +111,7 @@ public class VSandSwitch<T> extends Switch<T>
 				T result = casePixelConstantBuffer(pixelConstantBuffer);
 				if (result == null) result = caseBoardConstantBuffer(pixelConstantBuffer);
 				if (result == null) result = caseConstantBuffer(pixelConstantBuffer);
-				if (result == null) result = caseIResource(pixelConstantBuffer);
+				if (result == null) result = caseIVulkanResource(pixelConstantBuffer);
 				if (result == null) result = caseLNamedElement(pixelConstantBuffer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -499,17 +499,17 @@ public class VSandSwitch<T> extends Switch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IResource</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IVulkan Resource</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IResource</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IVulkan Resource</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseIResource(IResource object)
+	public T caseIVulkanResource(IVulkanResource object)
 	{
 		return null;
 	}
