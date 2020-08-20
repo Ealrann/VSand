@@ -10,7 +10,6 @@ import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.core.model.types.LNamedElement;
 import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
 import org.sheepy.lily.vulkan.model.IVulkanResource;
-import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.*;
 
 /**
@@ -525,7 +524,7 @@ public class VSandSwitch<T> extends Switch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseConstantBuffer(ConstantBuffer object)
+	public T caseConstantBuffer(org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer object)
 	{
 		return null;
 	}

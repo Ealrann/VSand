@@ -9,7 +9,7 @@ import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.api.resource.buffer.IConstantBufferUpdater;
 import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
-import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
+import org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer;
 import org.sheepy.vsand.draw.IDrawCommandAdapter;
 import org.sheepy.vsand.model.DrawCommand;
 import org.sheepy.vsand.model.DrawConstantBuffer;

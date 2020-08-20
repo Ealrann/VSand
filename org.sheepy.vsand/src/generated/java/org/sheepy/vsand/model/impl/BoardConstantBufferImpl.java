@@ -7,7 +7,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.sheepy.lily.vulkan.model.resource.impl.ConstantBufferImpl;
 import org.sheepy.vsand.model.BoardConstantBuffer;
 import org.sheepy.vsand.model.VSandPackage;
 
@@ -24,7 +23,7 @@ import org.sheepy.vsand.model.VSandPackage;
  *
  * @generated
  */
-public class BoardConstantBufferImpl extends ConstantBufferImpl implements BoardConstantBuffer
+public class BoardConstantBufferImpl extends org.sheepy.lily.vulkan.model.vulkanresource.impl.ConstantBufferImpl implements BoardConstantBuffer
 {
 	/**
 	 * The default value of the '{@link #getCurrentBoardBuffer() <em>Current Board Buffer</em>}' attribute.

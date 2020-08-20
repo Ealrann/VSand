@@ -1,7 +1,7 @@
 package org.sheepy.vsand.logic;
 
 import org.sheepy.lily.core.api.util.DebugUtil;
-import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAdapter;
+import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAllocation;
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
 import org.sheepy.lily.vulkan.model.process.IPipelineTask;
@@ -101,7 +101,7 @@ public final class VSandMainLoop implements Runnable
 		final var graphicProcess = processes.size() > 1 ? (GraphicProcess) processes.get(1) : null;
 		renderProcessAdapter = graphicProcess != null ? graphicProcess.adaptNotNull(IProcessAdapter.class) : null;
 
-		final var engineAdapter = vulkanEngine.adapt(IVulkanEngineAdapter.class);
+		final var engineAdapter = vulkanEngine.adapt(IVulkanEngineAllocation.class);
 		final var window = engineAdapter.getWindow();
 		if (window != null)
 		{

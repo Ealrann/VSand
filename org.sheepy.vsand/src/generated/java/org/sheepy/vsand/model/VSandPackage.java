@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.sheepy.lily.core.model.application.ApplicationPackage;
 import org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage;
-import org.sheepy.lily.vulkan.model.resource.VulkanResourcePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -303,7 +302,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int BOARD_CONSTANT_BUFFER__NAME = VulkanResourcePackage.CONSTANT_BUFFER__NAME;
+	int BOARD_CONSTANT_BUFFER__NAME = org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage.CONSTANT_BUFFER__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Data</b></em>' attribute.
@@ -312,7 +311,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int BOARD_CONSTANT_BUFFER__DATA = VulkanResourcePackage.CONSTANT_BUFFER__DATA;
+	int BOARD_CONSTANT_BUFFER__DATA = org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage.CONSTANT_BUFFER__DATA;
 
 	/**
 	 * The feature id for the '<em><b>Current Board Buffer</b></em>' attribute.
@@ -321,7 +320,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = VulkanResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 0;
+	int BOARD_CONSTANT_BUFFER__CURRENT_BOARD_BUFFER = org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Board Constant Buffer</em>' class.
@@ -330,7 +329,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int BOARD_CONSTANT_BUFFER_FEATURE_COUNT = VulkanResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 1;
+	int BOARD_CONSTANT_BUFFER_FEATURE_COUNT = org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage.CONSTANT_BUFFER_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Board Constant Buffer</em>' class.
@@ -339,7 +338,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int BOARD_CONSTANT_BUFFER_OPERATION_COUNT = VulkanResourcePackage.CONSTANT_BUFFER_OPERATION_COUNT + 0;
+	int BOARD_CONSTANT_BUFFER_OPERATION_COUNT = org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage.CONSTANT_BUFFER_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.sheepy.vsand.model.impl.DrawConstantBufferImpl <em>Draw Constant Buffer</em>}' class.

@@ -25,11 +25,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/generated/java</name>
-			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/org.sheepy.vsand/src/generated/java</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

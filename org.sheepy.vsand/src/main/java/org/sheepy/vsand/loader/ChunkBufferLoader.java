@@ -5,7 +5,7 @@ import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.extender.IExtender;
 import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.util.ModelUtil;
-import org.sheepy.lily.vulkan.model.resource.StaticBuffer;
+import org.sheepy.lily.vulkan.model.vulkanresource.StaticBuffer;
 import org.sheepy.vsand.model.VSandApplication;
 
 @ModelExtender(scope = StaticBuffer.class, name = "Chunk Buffer")

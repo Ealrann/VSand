@@ -12,7 +12,6 @@ import org.sheepy.lily.core.model.application.Application;
 import org.sheepy.lily.core.model.types.LNamedElement;
 import org.sheepy.lily.vulkan.extra.model.nuklear.IInputProvider;
 import org.sheepy.lily.vulkan.model.IVulkanResource;
-import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
 import org.sheepy.vsand.model.*;
 
 /**
@@ -173,7 +172,7 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 				return createIVulkanResourceAdapter();
 			}
 			@Override
-			public Adapter caseConstantBuffer(ConstantBuffer object)
+			public Adapter caseConstantBuffer(org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer object)
 			{
 				return createConstantBufferAdapter();
 			}
@@ -489,13 +488,13 @@ public class VSandAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.resource.ConstantBuffer <em>Constant Buffer</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer <em>Constant Buffer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.sheepy.lily.vulkan.model.resource.ConstantBuffer
+	 * @see org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer
 	 * @generated
 	 */
 	public Adapter createConstantBufferAdapter()

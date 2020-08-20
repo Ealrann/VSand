@@ -8,7 +8,7 @@ import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.api.resource.buffer.IConstantBufferUpdater;
-import org.sheepy.lily.vulkan.model.resource.ConstantBuffer;
+import org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer;
 import org.sheepy.vsand.model.PixelConstantBuffer;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.BoardUtil;

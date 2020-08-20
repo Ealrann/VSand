@@ -14,7 +14,6 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.sheepy.lily.vulkan.model.resource.provider.ConstantBufferItemProvider;
 import org.sheepy.vsand.model.BoardConstantBuffer;
 import org.sheepy.vsand.model.VSandPackage;
 
@@ -24,7 +23,7 @@ import org.sheepy.vsand.model.VSandPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class BoardConstantBufferItemProvider extends ConstantBufferItemProvider
+public class BoardConstantBufferItemProvider extends org.sheepy.lily.vulkan.model.vulkanresource.provider.ConstantBufferItemProvider
 {
 	/**
 	 * This constructs an instance from a factory and a notifier.
