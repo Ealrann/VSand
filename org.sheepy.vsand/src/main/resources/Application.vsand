@@ -135,7 +135,7 @@
               <stages>COMPUTE_BIT</stages>
             </tasks>
             <tasks xsi:type="process:PipelineBarrier" srcStage="TRANSFER_BIT" dstStage="COMPUTE_SHADER_BIT">
-              <barriers xsi:type="vulkanresource:ImageBarrier" srcLayout="TRANSFER_SRC_OPTIMAL" dstLayout="GENERAL" image="//@engines.0/@resourcePkg/@resources.0/@parts.0">
+              <barriers xsi:type="vulkanresource:ImageBarrier" dstLayout="GENERAL" image="//@engines.0/@resourcePkg/@resources.0/@parts.0">
                 <srcAccessMask>TRANSFER_READ_BIT</srcAccessMask>
                 <dstAccessMask>SHADER_WRITE_BIT</dstAccessMask>
               </barriers>
