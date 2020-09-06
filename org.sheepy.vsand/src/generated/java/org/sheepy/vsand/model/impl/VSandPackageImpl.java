@@ -20,6 +20,7 @@ import org.sheepy.lily.core.model.variable.VariablePackage;
 import org.sheepy.lily.vulkan.extra.model.nuklear.NuklearPackage;
 import org.sheepy.lily.vulkan.model.VulkanPackage;
 import org.sheepy.lily.vulkan.model.process.ProcessPackage;
+import org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage;
 import org.sheepy.vsand.model.BoardConstantBuffer;
 import org.sheepy.vsand.model.DrawCircle;
 import org.sheepy.vsand.model.DrawCommand;
@@ -230,7 +231,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		ImagePackage.eINSTANCE.eClass();
 		PipelinePackage.eINSTANCE.eClass();
 		ResourcePackage.eINSTANCE.eClass();
-		org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage.eINSTANCE.eClass();
+		VulkanResourcePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theVSandPackage.createPackageContents();
@@ -1150,7 +1151,7 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		ApplicationPackage theApplicationPackage = (ApplicationPackage)EPackage.Registry.INSTANCE.getEPackage(ApplicationPackage.eNS_URI);
 		ProcessPackage theProcessPackage = (ProcessPackage)EPackage.Registry.INSTANCE.getEPackage(ProcessPackage.eNS_URI);
 		TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
-		org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage theVulkanResourcePackage = (org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage)EPackage.Registry.INSTANCE.getEPackage(org.sheepy.lily.vulkan.model.vulkanresource.VulkanResourcePackage.eNS_URI);
+		VulkanResourcePackage theVulkanResourcePackage = (VulkanResourcePackage)EPackage.Registry.INSTANCE.getEPackage(VulkanResourcePackage.eNS_URI);
 		ResourcePackage theResourcePackage = (ResourcePackage)EPackage.Registry.INSTANCE.getEPackage(ResourcePackage.eNS_URI);
 		NuklearPackage theNuklearPackage = (NuklearPackage)EPackage.Registry.INSTANCE.getEPackage(NuklearPackage.eNS_URI);
 
