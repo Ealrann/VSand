@@ -71,14 +71,14 @@ public final class DrawConstantBufferAdapter implements IConstantBufferUpdater
 
 			drawConstantBuffer.setData(buffer);
 
-			if (pipeline.isEnabled() == false)
+			if (pipeline.isRecord() == false)
 			{
-				pipeline.setEnabled(true);
+				pipeline.setRecord(true);
 			}
 		}
-		else if (pipeline.isEnabled())
+		else if (pipeline.isRecord())
 		{
-			pipeline.setEnabled(false);
+			pipeline.setRecord(false);
 		}
 	}
 

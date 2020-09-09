@@ -76,7 +76,7 @@
       <descriptorPool/>
       <executionManager xsi:type="compute:ComputeExecutionManager" waitForExecution="//@engines.0/@processes.0/@executionManager" waitedBy="//@engines.0/@processes.1/@executionManager //@engines.0/@processes.0/@executionManager"/>
       <pipelinePkg>
-        <pipelines xsi:type="compute:ComputePipeline" name="Draw" enabled="false" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.4" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.0">
+        <pipelines xsi:type="compute:ComputePipeline" name="Draw" record="false" specializationData="//@engines.0/@processes.0/@resourcePkg/@resources.4" layout="//@engines.0/@processes.0/@pipelinePkg/@pipelines.0/@descriptorPool/@descriptorSets.0" shader="//@engines.0/@processes.0/@resourcePkg/@resources.0">
           <resourcePkg>
             <resources xsi:type="model:DrawConstantBuffer" boardConstantBuffer="//@engines.0/@processes.0/@resourcePkg/@resources.3"/>
           </resourcePkg>
