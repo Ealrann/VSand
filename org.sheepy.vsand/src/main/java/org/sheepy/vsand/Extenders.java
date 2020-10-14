@@ -15,6 +15,7 @@ import org.sheepy.vsand.loader.*;
 import org.sheepy.vsand.logic.ApplicationBehaviour;
 import org.sheepy.vsand.ui.MaterialSelectorInputProviderAdapter;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 public class Extenders implements IExtenderProvider
@@ -40,5 +41,11 @@ public class Extenders implements IExtenderProvider
 					   InputManager.class,
 					   PrimaryDrawer.class,
 					   SecondaryDrawer.class);
+	}
+
+	@Override
+	public MethodHandles.Lookup lookup()
+	{
+		return MethodHandles.lookup();
 	}
 }

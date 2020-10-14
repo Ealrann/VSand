@@ -1,7 +1,7 @@
 package org.sheepy.vsand;
 
 import org.sheepy.lily.core.api.LilyLauncher;
-import org.sheepy.lily.core.api.resource.IResourceLoader;
+import org.sheepy.lily.core.api.resource.IResourceService;
 import org.sheepy.lily.core.api.util.DebugUtil;
 import org.sheepy.vsand.logic.VSandMainLoop;
 import org.sheepy.vsand.model.VSandApplication;
@@ -13,7 +13,7 @@ public class VSandApplicationLauncher
 	private static final String APPLICATION_PATH = "Application.vsand";
 	private static final String APPLICATION_VERSION = "1.4.0";
 
-	private static final IResourceLoader resourceLoader = IResourceLoader.INSTANCE;
+	private static final IResourceService resourceLoader = IResourceService.INSTANCE;
 
 	public static void main(String[] args) throws IOException
 	{
