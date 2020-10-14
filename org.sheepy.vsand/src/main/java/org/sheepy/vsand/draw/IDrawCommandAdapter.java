@@ -1,11 +1,13 @@
 package org.sheepy.vsand.draw;
 
-import java.nio.ByteBuffer;
-
 import org.sheepy.lily.core.api.extender.IExtender;
 import org.sheepy.vsand.model.DrawCommand;
 
-public interface IDrawCommandAdapter<T extends DrawCommand> extends IExtender
+import java.nio.ByteBuffer;
+
+public sealed interface IDrawCommandAdapter<T extends DrawCommand> extends IExtender permits DrawCircleAdapter,
+																							 DrawLineAdapter,
+																							 DrawSquareAdapter
 {
 	void fillBuffer(T command, ByteBuffer buffer);
 }
