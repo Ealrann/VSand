@@ -315,7 +315,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 	bool luck = false;
 	if (wantToFallDown)
 	{
-		luck = random(vec4(loc, pushConstants.random, 0)) < 0.92;
+        luck = random(uvec4(loc, floatBitsToUint(pushConstants.random), 0)) < 0.92;
 		if (luck)
 		{
 			decision[localLoc.x][localLoc.y] |= uint(TO_DOWN) | (valueDown << TARGET_VALUE_POSITION);
@@ -380,7 +380,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 				}
 				else // if (distLeft == distRight)
 				{
-					if (random(vec4(loc, pushConstants.random, 1)) < 0.50)
+					if (random(uvec4(loc, floatBitsToUint(pushConstants.random), 1)) < 0.50)
 					{
 						tag = TO_RIGHT;
 						targetValue = valueRight;
@@ -440,7 +440,7 @@ bool acceptFrom(ivec2 loc, ivec2 localLoc)
 				iDir = UP;
 				break;
 			case 1 :
-				rand = random(vec4(loc, pushConstants.random, 2));
+				rand = random(uvec4(loc, floatBitsToUint(pushConstants.random), 2));
 				iDir = rand < 0.50 ? RIGHT : LEFT;
 				break;
 			case 2 :
@@ -582,7 +582,7 @@ bool transformation(ivec2 loc, ivec2 localLoc, bool moved)
 			{
 				if(rand == -1)
 				{
-					float genRand = sqrt(random(vec4(loc, pushConstants.random, 3)));
+					float genRand = sqrt(random(uvec4(loc, floatBitsToUint(pushConstants.random), 3)));
 					rand = uint(round(genRand * 1000.));
 				}
 
