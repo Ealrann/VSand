@@ -8,7 +8,7 @@ import org.sheepy.vsand.logic.VSandMainLoop;
 
 import java.io.IOException;
 
-public class VSandHeadlessBenchmarkLauncher
+public final class VSandHeadlessBenchmarkLauncher
 {
 	public static void main(String[] args) throws IOException
 	{

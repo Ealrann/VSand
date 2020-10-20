@@ -7,6 +7,7 @@ import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.input.event.KeyEvent;
 import org.sheepy.lily.core.api.input.event.ScrollEvent;
+import org.sheepy.lily.core.api.notification.observatory.IObservatoryBuilder;
 import org.sheepy.lily.core.model.types.EKeyState;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
@@ -20,15 +21,17 @@ public final class InputManager implements IExtender
 
 	private boolean shiftPressed = false;
 
-	public InputManager(VSandApplication application)
+	private InputManager(final VSandApplication application, final IObservatoryBuilder observatory)
 	{
 		this.application = application;
 
 		inputManager = IInputManager.get(application);
 		inputManager.showCursor(inputManager.isMouseOnUI());
-		inputManager.listen(this::onMouseOverUI, IInputManager.Features.MouseOverUIEvent);
-		inputManager.listen(this::onKeyEvent, IInputManager.Features.KeyEvent);
-		inputManager.listen(this::onScrollEvent, IInputManager.Features.ScrollEvent);
+
+		observatory.focus(inputManager)
+				   .listen(this::onMouseOverUI, IInputManager.Features.MouseOverUIEvent)
+				   .listen(this::onKeyEvent, IInputManager.Features.KeyEvent)
+				   .listen(this::onScrollEvent, IInputManager.Features.ScrollEvent);
 	}
 
 	private void onMouseOverUI(Boolean overUI)

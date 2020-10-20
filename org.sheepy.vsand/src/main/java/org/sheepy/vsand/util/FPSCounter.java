@@ -1,10 +1,9 @@
 package org.sheepy.vsand.util;
 
-public class FPSCounter
+public final class FPSCounter
 {
 	private static final double NS = 1000000000;
-
-	public static final int COUNT_DURATION_NS = 2 * 1000000000;
+	private static final int COUNT_DURATION_NS = 2 * 1000000000;
 
 	private int count = 0;
 	private long lastTime = -1;

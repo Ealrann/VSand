@@ -18,7 +18,7 @@ import org.sheepy.vsand.ui.MaterialSelectorInputProviderAdapter;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
-public class Extenders implements IExtenderProvider
+public final class Extenders implements IExtenderProvider
 {
 	@Override
 	public List<Class<? extends IExtender>> classifiers()

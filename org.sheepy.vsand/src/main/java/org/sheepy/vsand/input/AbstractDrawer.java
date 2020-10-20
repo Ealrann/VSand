@@ -8,7 +8,7 @@ import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.BoardUtil;
 
-abstract class AbstractDrawer implements IExtender
+abstract sealed class AbstractDrawer implements IExtender permits PrimaryDrawer, SecondaryDrawer
 {
 	private final MaterialSoundManager soundManager = new MaterialSoundManager();
 	private final DrawManager drawManager = new DrawManager();
@@ -68,5 +68,4 @@ abstract class AbstractDrawer implements IExtender
 	}
 
 	protected abstract Material getMaterial(VSandApplication application);
-
 }

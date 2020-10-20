@@ -4,6 +4,7 @@ import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.input.event.MouseClickEvent;
+import org.sheepy.lily.core.api.notification.observatory.IObservatoryBuilder;
 import org.sheepy.vsand.model.Material;
 import org.sheepy.vsand.model.VSandApplication;
 
@@ -11,12 +12,12 @@ import org.sheepy.vsand.model.VSandApplication;
 @Adapter(lazy = false)
 public final class SecondaryDrawer extends AbstractDrawer
 {
-	public SecondaryDrawer(final VSandApplication application)
+	private SecondaryDrawer(final VSandApplication application, final IObservatoryBuilder observatory)
 	{
 		super(application);
 
-		final var inputManager = IInputManager.get(application);
-		inputManager.listen(this::onMouseClickEvent, IInputManager.Features.MouseClickEvent);
+		observatory.focus(IInputManager.get(application))
+				   .listen(this::onMouseClickEvent, IInputManager.Features.MouseClickEvent);
 	}
 
 	@Override

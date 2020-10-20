@@ -15,7 +15,7 @@ import org.sheepy.vsand.model.VSandFactory;
 import java.io.IOException;
 import java.util.List;
 
-public class VSandBenchmarkLauncher
+public final class VSandBenchmarkLauncher
 {
 	public static final int DEFAULT_ITERATION_COUNT = 3000;
 

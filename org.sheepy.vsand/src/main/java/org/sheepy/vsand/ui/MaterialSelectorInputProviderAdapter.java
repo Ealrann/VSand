@@ -16,7 +16,7 @@ import java.util.List;
 
 @ModelExtender(scope = InputMaterialProvider.class)
 @Adapter(singleton = true)
-public class MaterialSelectorInputProviderAdapter implements ISelectorInputProviderAdapter
+public final class MaterialSelectorInputProviderAdapter implements ISelectorInputProviderAdapter
 {
 	@Override
 	public List<?> getElements(IInputProvider inputProvider)

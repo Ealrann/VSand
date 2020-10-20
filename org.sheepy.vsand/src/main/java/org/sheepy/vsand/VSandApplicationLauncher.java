@@ -9,7 +9,7 @@ import org.sheepy.vsand.model.VSandApplication;
 import java.io.IOException;
 import java.util.Properties;
 
-public class VSandApplicationLauncher
+public final class VSandApplicationLauncher
 {
 	private static final String APPLICATION_PATH = "Application.vsand";
 	private static final String PROPERTIES_FILE = "version.properties";
