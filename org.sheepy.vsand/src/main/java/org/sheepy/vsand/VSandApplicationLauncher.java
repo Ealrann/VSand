@@ -11,8 +11,7 @@ import java.io.IOException;
 public class VSandApplicationLauncher
 {
 	private static final String APPLICATION_PATH = "Application.vsand";
-	private static final String APPLICATION_VERSION = "1.4.0";
-
+	private static final String PROPERTIES_FILE = "version.properties";
 	private static final IResourceService resourceLoader = IResourceService.INSTANCE;
 
 	public static void main(String[] args) throws IOException
@@ -30,7 +29,9 @@ public class VSandApplicationLauncher
 		final var inputStream = module.getResourceAsStream(APPLICATION_PATH);
 		final var resource = resourceLoader.loadResource(inputStream);
 		final var res = (VSandApplication) resource.getContents().get(0);
-		res.setVersion(APPLICATION_VERSION);
+		final var properties = new Properties();
+		properties.load(module.getResourceAsStream(PROPERTIES_FILE));
+		res.setVersion(properties.getProperty("version").replaceAll("'", ""));
 		return res;
 	}
 }

@@ -13,8 +13,6 @@ subprojects {
 
 	apply plugin: 'java-library'
 
-	version "1.4.0"
-
 	sourceCompatibility = 15
 	targetCompatibility = 15
 

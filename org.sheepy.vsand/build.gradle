@@ -6,6 +6,9 @@ plugins {
 	id 'org.mini2Dx.butler'
 }
 
+def conf = new ConfigSlurper().parse(file("src/main/resources/version.properties").toURI().toURL())
+version = conf.version
+
 switch ( OperatingSystem.current() ) {
 	case OperatingSystem.WINDOWS:
 		project.ext.OS = "windows"
