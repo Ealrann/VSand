@@ -11,7 +11,6 @@ import org.sheepy.vsand.model.InputMaterialProvider;
 import org.sheepy.vsand.model.Material;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @ModelExtender(scope = InputMaterialProvider.class)
@@ -52,11 +51,5 @@ public final class MaterialSelectorInputProviderAdapter implements ISelectorInpu
 	{
 		final var material = (Material) element;
 		return new Vector3f(material.getR(), material.getG(), material.getB());
-	}
-
-	@Override
-	public Collection<? extends IImage> getUsedImages()
-	{
-		return List.of();
 	}
 }
