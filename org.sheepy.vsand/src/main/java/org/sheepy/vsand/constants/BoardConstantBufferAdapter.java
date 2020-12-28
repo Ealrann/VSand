@@ -4,6 +4,7 @@ import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Load;
+import org.sheepy.lily.core.api.cadence.AutoLoad;
 import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.vulkan.api.resource.buffer.IConstantBufferUpdater;
 import org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer;
@@ -14,7 +15,8 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @ModelExtender(scope = BoardConstantBuffer.class)
-@Adapter(lazy = false)
+@Adapter
+@AutoLoad
 public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 {
 	private static final int BYTE_SIZE = 2 * Integer.BYTES;

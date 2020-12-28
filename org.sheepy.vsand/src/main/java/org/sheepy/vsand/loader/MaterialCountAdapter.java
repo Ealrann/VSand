@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Load;
+import org.sheepy.lily.core.api.cadence.AutoLoad;
 import org.sheepy.lily.core.api.extender.IExtender;
 import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer;
@@ -12,7 +13,8 @@ import org.sheepy.vsand.model.VSandApplication;
 import java.nio.ByteBuffer;
 
 @ModelExtender(scope = ConstantBuffer.class, name = "MaterialCount")
-@Adapter(singleton = true, lazy = false)
+@Adapter(singleton = true)
+@AutoLoad
 public final class MaterialCountAdapter implements IExtender
 {
 	@Load
