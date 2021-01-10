@@ -1,7 +1,7 @@
 package org.sheepy.vsand;
 
-import org.sheepy.lily.core.api.extender.IExtender;
-import org.sheepy.lily.core.api.extender.IExtenderProvider;
+import org.sheepy.lily.core.api.extender.IAdapter;
+import org.sheepy.lily.core.api.extender.IAdapterProvider;
 import org.sheepy.vsand.constants.BoardConstantBufferAdapter;
 import org.sheepy.vsand.constants.DrawConstantBufferAdapter;
 import org.sheepy.vsand.constants.PixelConstantBufferAdapter;
@@ -18,10 +18,10 @@ import org.sheepy.vsand.ui.MaterialSelectorInputProviderAdapter;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
-public final class Extenders implements IExtenderProvider
+public final class Extenders implements IAdapterProvider
 {
 	@Override
-	public List<Class<? extends IExtender>> classifiers()
+	public List<Class<? extends IAdapter>> classifiers()
 	{
 		return List.of(ConfigurationBufferLoader.class,
 					   Board1BufferLoader.class,

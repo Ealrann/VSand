@@ -1,4 +1,4 @@
-import org.sheepy.lily.core.api.extender.IExtenderProvider;
+import org.sheepy.lily.core.api.extender.IAdapterProvider;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.resource.IModelExtension;
 import org.sheepy.vsand.Extenders;
@@ -28,5 +28,5 @@ module org.sheepy.vsand {
 	uses IInputManager;
 
 	provides IModelExtension with VSandModelExtension;
-	provides IExtenderProvider with Extenders;
+	provides IAdapterProvider with Extenders;
 }

@@ -6,7 +6,7 @@ import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.adapter.annotation.Dispose;
 import org.sheepy.lily.core.api.adapter.annotation.Load;
 import org.sheepy.lily.core.api.cadence.AutoLoad;
-import org.sheepy.lily.core.api.extender.IExtender;
+import org.sheepy.lily.core.api.extender.IAdapter;
 import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.vulkan.model.vulkanresource.DataBuffer;
 import org.sheepy.vsand.model.Material;
@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
 @ModelExtender(scope = DataBuffer.class, name = "Configuration")
 @Adapter(singleton = true)
 @AutoLoad
-public final class ConfigurationBufferLoader implements IExtender
+public final class ConfigurationBufferLoader implements IAdapter
 {
 	private static final int UNIT_BYTES = 8 * Integer.BYTES;
 

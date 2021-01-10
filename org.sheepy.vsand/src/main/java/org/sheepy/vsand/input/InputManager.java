@@ -3,7 +3,7 @@ package org.sheepy.vsand.input;
 import org.eclipse.emf.common.util.EList;
 import org.sheepy.lily.core.api.adapter.annotation.Adapter;
 import org.sheepy.lily.core.api.cadence.AutoLoad;
-import org.sheepy.lily.core.api.extender.IExtender;
+import org.sheepy.lily.core.api.extender.IAdapter;
 import org.sheepy.lily.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.input.event.KeyEvent;
@@ -16,7 +16,7 @@ import org.sheepy.vsand.model.VSandApplication;
 @ModelExtender(scope = VSandApplication.class)
 @Adapter
 @AutoLoad
-public final class InputManager implements IExtender
+public final class InputManager implements IAdapter
 {
 	private final VSandApplication application;
 	private final IInputManager inputManager;
