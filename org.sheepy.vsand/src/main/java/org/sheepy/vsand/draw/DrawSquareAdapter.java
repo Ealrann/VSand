@@ -1,7 +1,7 @@
 package org.sheepy.vsand.draw;
 
-import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.extender.ModelExtender;
+import org.logoce.adapter.api.Adapter;
+import org.logoce.extender.api.ModelExtender;
 import org.sheepy.vsand.model.DrawSquare;
 import org.sheepy.vsand.model.Materials;
 

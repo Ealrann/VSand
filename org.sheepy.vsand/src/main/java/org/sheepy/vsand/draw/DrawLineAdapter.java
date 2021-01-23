@@ -2,8 +2,8 @@ package org.sheepy.vsand.draw;
 
 import org.joml.Vector2f;
 import org.joml.Vector2i;
-import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.extender.ModelExtender;
+import org.logoce.adapter.api.Adapter;
+import org.logoce.extender.api.ModelExtender;
 import org.sheepy.vsand.model.DrawLine;
 import org.sheepy.vsand.model.Materials;
 

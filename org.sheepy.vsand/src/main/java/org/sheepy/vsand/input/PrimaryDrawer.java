@@ -1,8 +1,8 @@
 package org.sheepy.vsand.input;
 
-import org.sheepy.lily.core.api.adapter.annotation.Adapter;
+import org.logoce.adapter.api.Adapter;
 import org.sheepy.lily.core.api.cadence.AutoLoad;
-import org.sheepy.lily.core.api.extender.ModelExtender;
+import org.logoce.extender.api.ModelExtender;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.input.event.MouseClickEvent;
 import org.sheepy.lily.core.api.notification.observatory.IObservatoryBuilder;

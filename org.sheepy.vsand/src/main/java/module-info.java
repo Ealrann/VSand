@@ -1,4 +1,4 @@
-import org.sheepy.lily.core.api.extender.IAdapterProvider;
+import org.logoce.extender.api.IAdapterProvider;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.lily.core.api.resource.IModelExtension;
 import org.sheepy.vsand.Extenders;

@@ -2,12 +2,12 @@ package org.sheepy.vsand.loader;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.lwjgl.system.MemoryUtil;
-import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.Dispose;
-import org.sheepy.lily.core.api.adapter.annotation.Load;
+import org.logoce.adapter.api.Adapter;
+import org.sheepy.lily.core.api.adapter.Dispose;
+import org.sheepy.lily.core.api.adapter.Load;
 import org.sheepy.lily.core.api.cadence.AutoLoad;
-import org.sheepy.lily.core.api.extender.IAdapter;
-import org.sheepy.lily.core.api.extender.ModelExtender;
+import org.logoce.extender.api.IAdapter;
+import org.logoce.extender.api.ModelExtender;
 import org.sheepy.lily.vulkan.model.vulkanresource.DataBuffer;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.util.TransformationUtil;

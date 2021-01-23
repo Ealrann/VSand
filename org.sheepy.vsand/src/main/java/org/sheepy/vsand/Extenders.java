@@ -1,7 +1,7 @@
 package org.sheepy.vsand;
 
-import org.sheepy.lily.core.api.extender.IAdapter;
-import org.sheepy.lily.core.api.extender.IAdapterProvider;
+import org.logoce.extender.api.IAdapter;
+import org.logoce.extender.api.IAdapterProvider;
 import org.sheepy.vsand.constants.BoardConstantBufferAdapter;
 import org.sheepy.vsand.constants.DrawConstantBufferAdapter;
 import org.sheepy.vsand.constants.PixelConstantBufferAdapter;

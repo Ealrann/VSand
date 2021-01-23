@@ -1,6 +1,6 @@
 package org.sheepy.vsand.input;
 
-import org.sheepy.lily.core.api.extender.IAdapter;
+import org.logoce.extender.api.IAdapter;
 import org.sheepy.lily.core.api.input.IInputManager;
 import org.sheepy.vsand.audio.MaterialSoundManager;
 import org.sheepy.vsand.draw.DrawManager;

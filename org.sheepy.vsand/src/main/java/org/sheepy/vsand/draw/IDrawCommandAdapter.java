@@ -1,6 +1,6 @@
 package org.sheepy.vsand.draw;
 
-import org.sheepy.lily.core.api.extender.IAdapter;
+import org.logoce.extender.api.IAdapter;
 import org.sheepy.vsand.model.DrawCommand;
 
 import java.nio.ByteBuffer;

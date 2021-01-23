@@ -1,11 +1,11 @@
 package org.sheepy.vsand.logic;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.NotifyChanged;
+import org.logoce.adapter.api.Adapter;
+import org.sheepy.lily.core.api.adapter.NotifyChanged;
 import org.sheepy.lily.core.api.cadence.AutoLoad;
-import org.sheepy.lily.core.api.extender.IAdapter;
-import org.sheepy.lily.core.api.extender.ModelExtender;
+import org.logoce.extender.api.IAdapter;
+import org.logoce.extender.api.ModelExtender;
 import org.sheepy.vsand.model.VSandApplication;
 import org.sheepy.vsand.model.VSandPackage;
 
