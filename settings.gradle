@@ -6,4 +6,5 @@ include ':org.sheepy.vsand'
 if (gradle.parent == null) {
 	includeBuild '../Lily-vulkan'
 	includeBuild '../Lily-core'
+	includeBuild '../Logoce'
 }
