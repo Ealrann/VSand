@@ -1,16 +1,18 @@
 package org.sheepy.vsand.load.dispatch;
 
-import org.sheepy.lily.core.api.adapter.annotation.Adapter;
-import org.sheepy.lily.core.api.adapter.annotation.Load;
-import org.sheepy.lily.core.api.extender.IExtender;
-import org.sheepy.lily.core.api.extender.ModelExtender;
+import org.logoce.adapter.api.Adapter;
+import org.logoce.extender.api.IAdapter;
+import org.logoce.extender.api.ModelExtender;
+import org.sheepy.lily.core.api.adapter.Load;
+import org.sheepy.lily.core.api.cadence.AutoLoad;
 import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.model.process.compute.DispatchTask;
 import org.sheepy.vsand.model.VSandApplication;
 
 @ModelExtender(scope = DispatchTask.class, name = "Draw")
-@Adapter(singleton = true, lazy = false)
-public final class DrawDispatchLoader implements IExtender
+@Adapter(singleton = true)
+@AutoLoad
+public final class DrawDispatchLoader implements IAdapter
 {
 	private static final int WORKGROUP_SIZE = 8;
 
