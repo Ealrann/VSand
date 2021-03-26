@@ -37,7 +37,7 @@ bool transformation(ivec2 loc)
     bool res = false;
     uint val = board2.data[loc.x + loc.y * WIDTH];
     uint currentValue = val & 0xFFu;
-    bool moved = (val & FALLING_FLAG) != 0;
+    bool moved = false; // TODO // (val & FALLING_FLAG) != 0;
 
     // UP, DOWN, RIGHT, LEFT
     uvec4 neighborValue = uvec4(loc.y > 0 ? board2.data[loc.x + (loc.y - 1) * WIDTH] : 0,

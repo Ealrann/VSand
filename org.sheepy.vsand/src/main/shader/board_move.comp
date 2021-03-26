@@ -25,16 +25,18 @@ ivec2 globalStartHLocation = clamp(globalHLocation, ivec2(0, 0), BOARD_SIZE);
 ivec2 localStartHLocation = globalStartHLocation - workgroupLoc;
 uint localWidth = min(globalHLocation.x + WORKGROUP_SIZE, WIDTH) - globalStartHLocation.x;
 
-shared uint board[WORKGROUP_SIZE][WORKGROUP_SIZE];
+shared Cell board[WORKGROUP_SIZE][WORKGROUP_SIZE];
 shared bool friction[WORKGROUP_SIZE][WORKGROUP_SIZE];
-
 
 void loadBoard();
 void saveBoard();
 
-void balanceMass(const bool vertical);
-void writeCrop(const uint offset, const Value value, const uint size, const bool vertical);
-void computeFriction(const bool vertical);
+void fall();
+bool isCourseInsideBoard(const bool vertical);
+void swapCells(const ivec2 location1, const ivec2 location2);
+void initCourse(const bool vertical);
+bool courseHasNext();
+ivec2 courseNext();
 
 void main()
 {
@@ -43,35 +45,97 @@ void main()
     barrier();
     memoryBarrierShared();
 
-    balanceMass(false);
-//    computeFriction(false);
+    fall();
 
     barrier();
     memoryBarrierShared();
-
-    balanceMass(true);
-//    computeFriction(true);
-//    pushFriction(true);
-
-    barrier();
-    memoryBarrierShared();
-
-//    pushFriction(false);
-//    moveH();
-
-    barrier();
-    memoryBarrierShared();
-
-//    moveV();
 
     saveBoard();
+}
+
+void loadBoard()
+{
+    if(globalVLocation.x < 0 || globalVLocation.x >= WIDTH) return;
+
+    for (int y = 0; y < localHeight; y++)
+    {
+        board[localStartVLocation.x][localStartVLocation.y + y] = unpackCell(board1.data[globalStartVLocation.x + (globalStartVLocation.y + y) * WIDTH]);
+    }
+}
+
+void saveBoard()
+{
+    if(globalVLocation.x < 0 || globalVLocation.x >= WIDTH) return;
+
+    for (int y = 0; y < localHeight; y++)
+    {
+        board2.data[globalStartVLocation.x + (globalStartVLocation.y + y) * WIDTH] = packCell(board[localStartVLocation.x][localStartVLocation.y + y]);
+    }
+}
+
+void fall()
+{
+    if(!isCourseInsideBoard(true)) return;
+
+    initCourse(true);
+
+    bool discardMove = false;
+    ivec2 location = courseNext();
+    uint previousMaterialId = board[location.x][location.y].materialId;
+    Material previousMaterial = configuration.materials[previousMaterialId];
+    ivec2 previousLocation = location;
+    ivec2 topLocation = location;
+
+    while(courseHasNext())
+    {
+        location = courseNext();
+        uint materialId = board[location.x][location.y].materialId;
+        
+        if(materialId != previousMaterialId)
+        {
+            const Material material = configuration.materials[materialId];
+            bool isStatic = previousMaterial.isStatic != 0 || material.isStatic != 0;
+
+            if(!isStatic && !discardMove && previousMaterial.density > material.density)
+            {
+                bool solidToGaz = previousMaterial.type == SOLID && material.type == GAZ;
+                if(solidToGaz)
+                {
+                    swapCells(topLocation, location);
+                }
+                else
+                {
+                    swapCells(previousLocation, location);
+                }
+                materialId = previousMaterialId;
+                discardMove = true;
+            }
+            else
+            {
+                discardMove = false;
+            }
+            
+            topLocation = location;
+            previousMaterialId = materialId;
+            previousMaterial = material;
+        }
+
+        previousLocation = location;
+    }
+}
+
+void swapCells(const ivec2 location1, const ivec2 location2)
+{
+    Cell tmp = board[location1.x][location1.y];
+    board[location1.x][location1.y] = board[location2.x][location2.y];
+    board[location2.x][location2.y] = tmp;
 }
 
 bool courseVertical;
 int courseOffset;
 int courseSize;
 
-bool isLocationInsideBoard(const bool vertical)
+bool isCourseInsideBoard(const bool vertical)
 {
     if(vertical) return globalVLocation.x >= 0 && globalVLocation.x < WIDTH;
     else return globalHLocation.y >= 0 && globalHLocation.y < HEIGHT;
@@ -94,325 +158,3 @@ ivec2 courseNext()
     courseOffset++;
     return courseVertical ? ivec2(localStartVLocation.x, localStartVLocation.y + courseOffset) : ivec2(localStartHLocation.x + courseOffset, localStartHLocation.y);
 }
-
-
-void balanceMass(const bool vertical)
-{
-    if(!isLocationInsideBoard(vertical)) return;
-
-    initCourse(vertical);
-    ivec2 location = courseNext();
-    Value currentValue = unpackValue(board[location.x][location.y]);
-    uint size = 1;
-    uint offset = 0;
-    while(courseHasNext())
-    {
-        location = courseNext();
-        const Value headValue = unpackValue(board[location.x][location.y]);
-
-        if(currentValue.materialId != headValue.materialId || currentValue.falling != headValue.falling)
-        {
-            writeCrop(offset, currentValue, size, vertical);
-            currentValue = headValue;
-            offset += size;
-            size = 1;
-        }
-        else
-        {
-            size ++;
-            currentValue.mass += headValue.mass;
-        }
-    }
-    writeCrop(offset, currentValue, size, vertical);
-}
-
-void computeFriction(const bool vertical)
-{
-    if(!isLocationInsideBoard(vertical)) return;
-
-    initCourse(vertical);
-    ivec2 location = courseNext();
-    const ivec2 previousOffset = vertical ? ivec2(0, -1) : ivec2(-1, 0);
-    Value previousValue = unpackValue(board[location.x][location.y]);
-    friction[location.x][location.y] = false;
-    while(courseHasNext())
-    {
-        location = courseNext();
-        friction[location.x][location.y] = false;
-
-        Value currentValue = unpackValue(board[location.x][location.y]);
-        if(currentValue.materialId != previousValue.materialId || currentValue.falling != previousValue.falling)
-        {
-            const float previousPressure = previousValue.mass / configuration.materials[previousValue.materialId].density;
-            const float currentPressure = currentValue.mass / configuration.materials[currentValue.materialId].density;
-            const float pressureDiff = currentPressure - previousPressure;
-            if(pressureDiff > 0.01)
-            {
-                friction[location.x + previousOffset.x][location.y + previousOffset.y] = true;
-            }
-            else if (pressureDiff < -0.01)
-            {
-                friction[location.x][location.y] = true;
-            }
-        }
-
-        previousValue = currentValue;
-    }
-}
-
-void writeCrop(const uint offset, const Value value, const uint size, const bool vertical)
-{
-    if(vertical)
-    {
-        const Material material = configuration.materials[value.materialId];
-        const float massDelta = massDelta(material.density);
-        const float firstMass = firstIdealMass(value.mass, size, material.density);
-        for (uint i = 0; i < size; i++)
-        {
-            board[localStartVLocation.x][localStartVLocation.y + offset + i] = packValue(value.materialId, firstMass + (massDelta * i), value.falling);
-        }
-    }
-    else
-    {
-        const uint cellValue = packValue(value.materialId, value.mass / size, value.falling);
-        for(uint i = 0; i < size; i++)
-        {
-            board[localStartHLocation.x + offset + i][localStartHLocation.y] = cellValue;
-        }
-    }
-}
-
-void loadBoard()
-{
-    if(globalVLocation.x < 0 && globalVLocation.x >= WIDTH) return;
-
-    for (int y = 0; y < localHeight; y++)
-    {
-        board[localStartVLocation.x][localStartVLocation.y + y] = board1.data[globalStartVLocation.x + (globalStartVLocation.y + y) * WIDTH];
-    }
-}
-
-void saveBoard()
-{
-    if(globalVLocation.x < 0 && globalVLocation.x >= WIDTH) return;
-
-    for (int y = 0; y < localHeight; y++)
-    {
-        board2.data[globalStartVLocation.x + (globalStartVLocation.y + y) * WIDTH] = board[localStartVLocation.x][localStartVLocation.y + y];
-    }
-}
-
-//void computeHorizontal()
-//{
-//    int leftIndex = cropQueue.firstIndex;
-//    int rightIndex = cropQueue.queue[leftIndex].nextCrop;
-//    bool pushed = false;
-//    while(rightIndex != -1)
-//    {
-//        bool liquidOrGaz = (cropQueue.queue[leftIndex].isLiquid || cropQueue.queue[leftIndex].isGaz)
-//                            && (cropQueue.queue[rightIndex].isLiquid || cropQueue.queue[rightIndex].isGaz);
-//        if(liquidOrGaz && cropQueue.queue[leftIndex].falling == false && cropQueue.queue[rightIndex].falling == false)
-//        {
-//            const uint leftDensity = getDensity(leftIndex);
-//            const uint rightDensity = getDensity(rightIndex);
-//            const float leftPressure = cropQueue.queue[leftIndex].pressure;
-//            const float rightPressure = cropQueue.queue[rightIndex].pressure;
-//            const uint leftSize = cropQueue.queue[leftIndex].size;
-//            const uint rightSize = cropQueue.queue[rightIndex].size;
-//
-//            if(leftPressure < 0.005)
-//            {
-//                if(leftSize > 1)
-//                {
-//                    cropQueue.queue[leftIndex].size--;
-//                }
-//                else
-//                {
-//                    removeCrop(leftIndex);
-//                    leftIndex = cropQueue.queue[rightIndex].previousCrop;
-//                }
-//                cropQueue.queue[rightIndex].size++;
-//            }
-//            else if (rightPressure < 0.005)
-//            {
-//                if(rightSize > 1)
-//                {
-//                    cropQueue.queue[rightIndex].size--;
-//                }
-//                else
-//                {
-//                    removeCrop(rightIndex);
-//                    rightIndex = cropQueue.queue[leftIndex].nextCrop;
-//                }
-//                cropQueue.queue[leftIndex].size++;
-//            }
-//            else if (rightDensity > leftDensity && leftSize > 1)
-//            {
-//                // Right to Left
-//                const float updatedRightPressure = rightPressure / (rightSize + 1);
-//                const float updatedLeftPressure = leftPressure / (leftSize - 1);
-//                if(updatedRightPressure > 0.05) // && updatedLeftPressure < 2.
-//                {
-//                    cropQueue.queue[leftIndex].size--;
-//                    cropQueue.queue[rightIndex].size++;
-//                    pushed = true;
-//                }
-//            }
-//            else if (leftDensity > rightDensity && rightSize > 1)
-//            {
-//                // Left to Right
-//                const float updatedRightPressure = rightPressure / (rightSize - 1);
-//                const float updatedLeftPressure = leftPressure / (leftSize + 1);
-//                if(updatedLeftPressure > 0.05) // && updatedRightPressure < 2.
-//                {
-//                    cropQueue.queue[leftIndex].size++;
-//                    cropQueue.queue[rightIndex].size--;
-//                    pushed = true;
-//                }
-//            }
-//            else
-//            {
-//                pushed = false;
-//            }
-//        }
-//
-//        leftIndex = rightIndex;
-//        rightIndex = cropQueue.queue[rightIndex].nextCrop;
-//    }
-//}
-//
-//void computeVertical()
-//{
-//    int upIndex = -1;
-//    int middleIndex = cropQueue.firstIndex;
-//    int downIndex = cropQueue.queue[middleIndex].nextCrop;
-//    bool pushedDown = false;
-//    while(downIndex != -1)
-//    {
-//        if(cropQueue.queue[middleIndex].isStatic == false && cropQueue.queue[downIndex].isStatic == false)
-//        {
-//            const bool middleLiquidOrGaz = cropQueue.queue[middleIndex].isLiquid || cropQueue.queue[middleIndex].isGaz;
-//            const bool downLiquidOrGaz = cropQueue.queue[downIndex].isLiquid || cropQueue.queue[downIndex].isGaz;
-//            const bool liquidOrGaz = middleLiquidOrGaz && downLiquidOrGaz;
-//
-//            if(pushedDown == false
-//                && liquidOrGaz
-//                && getMaterialId(middleIndex) == getMaterialId(downIndex))
-//            {
-//                if (upIndex != -1 && (cropQueue.queue[upIndex].isLiquid || cropQueue.queue[upIndex].isGaz))
-//                {
-//                    // Push down from up and transfer pressure down
-//                    growCropBottom(upIndex);
-//                    const float pressureToMoveDown = removeCropBottom(middleIndex);
-//                    cropQueue.queue[downIndex].pressure += pressureToMoveDown;
-//                    middleIndex = cropQueue.queue[downIndex].previousCrop;
-//                    pushedDown = true;
-//                }
-//                else
-//                {
-//                    // transfer pressure down
-//                    const float middleLastPressure = lastIdealPressure(middleIndex);
-//                    cropQueue.queue[middleIndex].pressure -= middleLastPressure;
-//                    cropQueue.queue[downIndex].pressure += middleLastPressure;
-//                }
-//            }
-//            else if(getDensity(middleIndex) > getDensity(downIndex))
-//            {
-//                // Heavier material above
-//                if (downLiquidOrGaz
-//                        && pushedDown == false
-//                        && upIndex != -1
-//                        && (cropQueue.queue[upIndex].isLiquid || cropQueue.queue[upIndex].isGaz)
-//                        && cropQueue.queue[downIndex].size > 1
-//                        && cropQueue.queue[downIndex].pressure < (1.5 * cropQueue.queue[downIndex].size))
-////                        && lastPressure(upIndex, 1) >= 0.)
-//                {
-//                    // PUSH DOWN
-//                    growCropBottom(upIndex);
-//                    shrinkCropTop(downIndex);
-//                    pushedDown = true;
-//                }
-//                else
-//                {
-//                    // SWAP
-//                    const uint downSize = cropQueue.queue[downIndex].size;
-//                    const uint middleSize = cropQueue.queue[middleIndex].size;
-//
-//                    if(downSize == 1 && middleSize == 1)
-//                    {
-//                        swapCropWithNext(middleIndex);
-//                        downIndex = cropQueue.queue[middleIndex].nextCrop;
-//                    }
-//                    else if (downSize == 1)
-//                    {
-//                        const int newMiddleAddress = splitCropBottom(middleIndex);
-//                        if(newMiddleAddress != -1)
-//                        {
-//                            swapCropWithNext(newMiddleAddress);
-//                            middleIndex = newMiddleAddress;
-//                            downIndex = cropQueue.queue[newMiddleAddress].nextCrop;
-//                        }
-//                    }
-//                    else if (middleSize == 1)
-//                    {
-//                        const int splitDownAddress = splitCropTop(downIndex);
-//                        if(splitDownAddress != -1) swapCropWithNext(middleIndex);
-//                    }
-//                    else if(cropQueue.size < CROP_QUEUE_SIZE - 2)
-//                    {
-//                        middleIndex = splitCropBottom(middleIndex);
-//                        splitCropTop(downIndex);
-//                        swapCropWithNext(uint(middleIndex));
-//                    }
-//                    pushedDown = true;
-//                }
-//            }
-//            // PRESSURE
-//            else if (liquidOrGaz)// && cropQueue.queue[middleIndex].falling == false
-//                                 // && cropQueue.queue[downIndex].falling == false)
-//            {
-////                const bool downLiquid = false; //cropQueue.queue[downIndex].isLiquid;
-////                const float downFirstPressure = firstEffectivePressure(downIndex);
-//                const float downFirstIdealPressure = firstIdealPressure(downIndex);
-//                const float middleLastPressure = lastIdealPressure(middleIndex);
-//                const int middleDensity = getDensity(middleIndex);
-//                const float pressureDelta = PRESSURE_DELTA * (middleDensity + 3);
-//                const float middlePressure = middleLastPressure + pressureDelta;
-//                const float pressureDiff = downFirstIdealPressure - middlePressure;
-////                const bool downOverpressure = downLiquid ? downFirstPressure > cropQueue.queue[downIndex].firstTheoreticalPressure : pressureDiff > pressureDelta;
-////                const bool downUnderpressure = downLiquid ? downFirstPressure <= 0. : pressureDiff < -pressureDelta;
-//                const bool downOverpressure = pressureDiff > 0.;
-//                const bool downUnderpressure = pressureDiff < 0.;
-//
-//                if (downOverpressure && cropQueue.queue[middleIndex].size > 1)
-//                {
-//                    const float downPushedPressure = firstIdealPressure(downIndex, 1);
-//                    const float middlePushedPressure = lastIdealPressure(middleIndex, -1) + pressureDelta;
-//                    if((downPushedPressure - middlePushedPressure) >= 0.)
-//                    {
-//                        pushCropUp(downIndex);
-//                        pushedDown = false;
-//                    }
-//                }
-//                else if (downUnderpressure && pushedDown == false && cropQueue.queue[downIndex].size > 1)
-//                {
-//                    const float downPushedPressure = firstIdealPressure(downIndex, -1);
-//                    const float middlePushedPressure = lastIdealPressure(middleIndex, 1) + pressureDelta;
-//                    if((downPushedPressure - middlePushedPressure) <= 0.)
-//                    {
-//                        pushCropDown(middleIndex);
-//                        pushedDown = true;
-//                    }
-//                }
-//            }
-//            else
-//            {
-//                pushedDown = false;
-//            }
-//        }
-//
-//        upIndex = middleIndex;
-//        middleIndex = downIndex;
-//        downIndex = cropQueue.queue[middleIndex].nextCrop;
-//    }
-//}

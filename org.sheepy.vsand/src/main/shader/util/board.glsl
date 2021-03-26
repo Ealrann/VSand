@@ -1,12 +1,5 @@
 #define MASS_DELTA_RATIO 0.001
 
-#define SOLID   0
-#define LIQUID  1
-#define GAZ     2
-#define SPECIAL 3
-
-const uint FALLING_FLAG = 1u << 8;
-
 layout (constant_id = 0) const int MATERIAL_COUNT = 1;
 layout (constant_id = 1) const int WIDTH = 1;
 layout (constant_id = 2) const int HEIGHT = 1;
@@ -57,30 +50,37 @@ layout(binding = 4) uniform STransformation
     uvec4 data[TRANSFOM_ARRAY_COUNT];
 }transformations;
 
-const Value voidValue = Value(0, 1., false);
+
+
+struct Cell
+{
+    uint materialId;
+    float pressure;
+};
+
+const Cell voidCell = Cell(0, 0.);
 
 //
-Value readValue(const uint value);
-uint writeValue(const Value value);
-float firstIdealMass(const float mass, const uint size, const float density);
+//Value readValue(const uint packedCell);
+//uint writeCell(const Cell cell);
+//float firstIdealMass(const float mass, const uint size, const float density);
 
-Value unpackValue(const uint value)
+Cell unpackCell(const uint packedCell)
 {
-    if (value == 0) return voidValue;
-    const uint materialId = value & 0xFFu;
-    const float mass = unpackHalf2x16(value).y;
-    const bool falling = (value & FALLING_FLAG) != 0;
-    return Value(materialId, mass, falling);
+    if (packedCell == 0) return voidCell;
+    const uint materialId = packedCell & 0xFFu;
+    const float pressure = unpackHalf2x16(packedCell).y;
+    return Cell(materialId, pressure);
 }
 
-uint packValue(const uint materialId, const float mass, const bool falling)
+uint packCell(const uint materialId, const float pressure)
 {
-    return materialId | (packHalf2x16(vec2(0., mass)) & 0xFFFF0000u) | (falling ? FALLING_FLAG : 0);
+    return materialId | (packHalf2x16(vec2(0., pressure)) & 0xFFFF0000u);
 }
 
-uint packValue(const Value value)
+uint packCell(const Cell cell)
 {
-    return packValue(value.materialId, value.mass, value.falling);
+    return packCell(cell.materialId, cell.pressure);
 }
 
 float massDelta(const float density)
@@ -88,12 +88,12 @@ float massDelta(const float density)
     return MASS_DELTA_RATIO * density;
 }
 
-float firstIdealMass(const float mass, const uint height, const float density)
-{
-    // Han formula
-    const float massDelta = massDelta(density);
-    return (mass / height) - (((height - 1) * massDelta) / 2.);
-}
+//float firstIdealMass(const float mass, const uint height, const float density)
+//{
+//    // Han formula
+//    const float massDelta = massDelta(density);
+//    return (mass / height) - (((height - 1) * massDelta) / 2.);
+//}
 
 //float pressureNewCrop(const uint type, const float inheritedFirstPressure, const float pressure, const uint size, const int density);
 //void writeCrop(const uint cropAddress, const uint x, const uint y, const bool vertical);
