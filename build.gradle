@@ -1,7 +1,6 @@
 buildscript {
 	repositories {
 		mavenLocal()
-		jcenter()
 		mavenCentral()
 	}
 	dependencies {
@@ -32,7 +31,7 @@ subprojects {
 
 	afterEvaluate {
 		repositories {
-			jcenter()
+			mavenCentral()
 			maven {
 				maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 				url "https://maven.pkg.github.com/ealrann/emf-standalone"
