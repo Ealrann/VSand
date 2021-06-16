@@ -49,7 +49,7 @@ void fall()
         if(materialId != previousMaterialId)
         {
             const Material material = configuration.materials[materialId];
-            bool isStatic = previousMaterial.isStatic != 0 || material.isStatic != 0;
+            const bool isStatic = previousMaterial.isStatic != 0 || material.isStatic != 0;
 
             if(!isStatic && !discardMove && previousMaterial.density > material.density)
             {
