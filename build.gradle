@@ -12,22 +12,8 @@ subprojects {
 
 	apply plugin: 'java-library'
 
-	sourceCompatibility = 15
-	targetCompatibility = 15
-
-	tasks.withType(JavaCompile) {
-		options.compilerArgs += "--enable-preview"
-	}
-	tasks.withType(Test) {
-		jvmArgs += "--enable-preview"
-	}
-	tasks.withType(JavaExec) {
-		jvmArgs += "--enable-preview"
-	}
-
-	java {
-		modularity.inferModulePath = true
-	}
+	sourceCompatibility = 17
+	targetCompatibility = 17
 
 	afterEvaluate {
 		repositories {

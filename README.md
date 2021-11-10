@@ -59,7 +59,7 @@ Feel free to add a new issues if you want to see new things in the game, or if y
 
 If you want to contribute to the project, or simply run the program from the source: 
 
-First, you need to setup a JDK 14 (Right now, I use [the OpenJ9 hotspot](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot)).
+First, you need to setup a JDK 17 (Right now, I use [the Eclipse Temurin](https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jdk_x64_linux_hotspot_17.0.1_12.tar.gz)).
 
 You can clone the repo using:
 
