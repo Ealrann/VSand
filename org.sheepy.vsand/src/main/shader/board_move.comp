@@ -30,22 +30,17 @@ void main()
 
 void fall()
 {
-    if(!isCourseInsideBoard(true)) return;
-
-    initCourse(true);
+    if(!course_init(true)) return;
 
     bool discardMove = false;
-    ivec2 location = courseNext();
-    uint previousMaterialId = board[location.x][location.y].materialId;
+    uint materialId;
+    uint previousMaterialId = board[course_location.x][course_location.y].materialId;
     Material previousMaterial = configuration.materials[previousMaterialId];
-    ivec2 previousLocation = location;
-    ivec2 topLocation = location;
+    ivec2 topLocation = course_location;
 
-    while(courseHasNext())
+    while(course_next())
     {
-        location = courseNext();
-        uint materialId = board[location.x][location.y].materialId;
-        
+        materialId = board[course_location.x][course_location.y].materialId;
         if(materialId != previousMaterialId)
         {
             const Material material = configuration.materials[materialId];
@@ -56,11 +51,11 @@ void fall()
                 bool solidToGaz = previousMaterial.type == SOLID && material.type == GAZ;
                 if(solidToGaz)
                 {
-                    swapCells(topLocation, location);
+                    swapCells(topLocation, course_location);
                 }
                 else
                 {
-                    swapCells(previousLocation, location);
+                    swapCells(course_previousLocation, course_location);
                 }
                 materialId = previousMaterialId;
                 discardMove = true;
@@ -70,12 +65,10 @@ void fall()
                 discardMove = false;
             }
             
-            topLocation = location;
+            topLocation = course_location;
             previousMaterialId = materialId;
             previousMaterial = material;
         }
-
-        previousLocation = location;
     }
 }
 

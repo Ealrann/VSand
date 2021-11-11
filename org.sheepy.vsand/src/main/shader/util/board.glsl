@@ -56,9 +56,10 @@ struct Cell
 {
     uint materialId;
     float pressure;
+    bool pressed;
 };
 
-const Cell VOID_CELL = Cell(0, 0.);
+const Cell VOID_CELL = Cell(0, 0., true);
 
 //
 //Value readValue(const uint packedCell);
@@ -70,12 +71,13 @@ Cell unpackCell(const uint packedCell)
     if (packedCell == 0) return VOID_CELL;
     const uint materialId = packedCell & 0xFFu;
     const float pressure = unpackHalf2x16(packedCell).y;
-    return Cell(materialId, pressure);
+    return Cell(materialId, pressure, false);
 }
 
 uint packCell(const uint materialId, const float pressure)
 {
-    return materialId | (packHalf2x16(vec2(0., pressure)) & 0xFFFF0000u);
+    return materialId
+            | (packHalf2x16(vec2(0., pressure)) & 0xFFFF0000u);
 }
 
 uint packCell(const Cell cell)

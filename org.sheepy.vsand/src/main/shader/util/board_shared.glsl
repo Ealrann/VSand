@@ -51,30 +51,65 @@ void saveBoard()
     }
 }
 
-bool courseVertical;
-int courseOffset;
-int courseLength;
+// =======================================
 
-bool isCourseInsideBoard(const bool vertical)
+bool iterationVertical;
+int iterationOffset;
+int iterationLength;
+
+void iteration_init(const bool vertical)
+{
+    iterationVertical = vertical;
+    iterationOffset = -1;
+    iterationLength = int(vertical ? localHeight : localWidth);
+}
+
+bool iteration_hasNext()
+{
+    return iterationOffset < iterationLength - 1;
+}
+
+ivec2 iteration_next()
+{
+    iterationOffset++;
+    return iterationVertical ? ivec2(localStartVLocation.x, localStartVLocation.y + iterationOffset) : ivec2(localStartHLocation.x + iterationOffset, localStartHLocation.y);
+}
+
+// =======================================
+
+ivec2 course_location;
+ivec2 course_previousLocation;
+
+bool course_isInsideBoard(const bool vertical)
 {
     if(vertical) return globalVLocation.x >= 0 && globalVLocation.x < WIDTH;
     else return globalHLocation.y >= 0 && globalHLocation.y < HEIGHT;
 }
 
-void initCourse(const bool vertical)
+bool course_init(const bool vertical)
 {
-    courseVertical = vertical;
-    courseOffset = -1;
-    courseLength = int(vertical ? localHeight : localWidth);
+    if(course_isInsideBoard(vertical) == false)
+    {
+        return false;
+    }
+    else
+    {
+        iteration_init(vertical);
+        course_location = iteration_next();
+        return true;
+    }
 }
 
-bool courseHasNext()
+bool course_next()
 {
-    return courseOffset < courseLength - 1;
-}
-
-ivec2 courseNext()
-{
-    courseOffset++;
-    return courseVertical ? ivec2(localStartVLocation.x, localStartVLocation.y + courseOffset) : ivec2(localStartHLocation.x + courseOffset, localStartHLocation.y);
+    if(iteration_hasNext())
+    {
+        course_previousLocation = course_location;
+        course_location = iteration_next();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
