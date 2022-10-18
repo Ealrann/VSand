@@ -37,6 +37,7 @@ void fall()
     uint previousMaterialId = board[course_location.x][course_location.y].materialId;
     Material previousMaterial = configuration.materials[previousMaterialId];
     ivec2 topLocation = course_location;
+    uint count = 1;
 
     while(course_next())
     {
@@ -68,6 +69,14 @@ void fall()
             topLocation = course_location;
             previousMaterialId = materialId;
             previousMaterial = material;
+            count = 0;
+        }
+
+        count++;
+
+        if(count >= 2)
+        {
+            board[course_location.x][course_location.y].pressed = true;
         }
     }
 }
