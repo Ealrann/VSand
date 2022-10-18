@@ -7,3 +7,6 @@
 [submodule "VSand"]
 	path = VSand
 	url = https://github.com/Ealrann/VSand.git
+[submodule "Logoce"]
+	path = Logoce
+	url = https://github.com/Ealrann/Logoce.git
