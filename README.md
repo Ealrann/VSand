@@ -59,16 +59,24 @@ Feel free to add a new issues if you want to see new things in the game, or if y
 
 If you want to contribute to the project, or simply run the program from the source: 
 
-First, you need to setup a JDK 17 (Right now, I'm using the [Eclipse Temurin](https://github.com/adoptium/temurin17-binaries/releases/tag/jdk-17.0.5%2B8)).
+#### 1. JDK
+You need to setup a JDK 17 (Right now, I'm using the [Eclipse Temurin](https://github.com/adoptium/temurin17-binaries/releases/tag/jdk-17.0.5%2B8)).
 
-Secondly, you need to configure a github token, to be able to resolve some github packages dependencies. You can follow [these steps to configure a token](https://github.com/Ealrann/EMF-Standalone).
+#### 2. Github Token
+You need to configure a github token with `Read package` capability. Follow [these steps to create a github token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). Then, put your github name and token into a file `<USER_HOME>/.gradle/gradle.properties`:
+```
+github.username=
+github.token=
+```
 
-You can then clone the repository using:
+#### 3. Clone the repository
+Finally, you can clone the repository using:
 
 ```
 git clone --recursive --single-branch --branch root https://github.com/Ealrann/VSand.git
 ```
 
+#### 4. Run the game
 To launch the game:
 ```shell script
 # Go to the VSand project directory
