@@ -59,9 +59,11 @@ Feel free to add a new issues if you want to see new things in the game, or if y
 
 If you want to contribute to the project, or simply run the program from the source: 
 
-First, you need to setup a JDK 14 (Right now, I use [the OpenJ9 hotspot](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot)).
+First, you need to setup a JDK 17 (Right now, I'm using the [Eclipse Temurin](https://github.com/adoptium/temurin17-binaries/releases/tag/jdk-17.0.5%2B8)).
 
-You can clone the repo using:
+Secondly, you need to configure a github token, to be able to resolve some github packages dependencies. You can follow [these steps to configure a token](https://github.com/Ealrann/EMF-Standalone).
+
+You can then clone the repository using:
 
 ```
 git clone --recursive --single-branch --branch root https://github.com/Ealrann/VSand.git
@@ -77,7 +79,7 @@ cd VSand/VSand/
 
 To update an existing repository, go back to the root directory (The one containing the submodules *Lily-core*, *Lily-vulkan*, and *VSand*), and use:
 ```
-pull --rebase --recurse-submodules
+git pull --rebase --recurse-submodules
 ```
 
 ### Frameworks/API used
