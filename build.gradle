@@ -21,8 +21,8 @@ subprojects {
 			maven {
 				url "https://maven.pkg.github.com/ealrann/emf-standalone"
 				credentials {
-					username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-					password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+                                        username = findProperty("github.username")
+                                        password = findProperty("github.token")
 				}
 			}
 		}
