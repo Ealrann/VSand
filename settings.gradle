@@ -1,6 +1,6 @@
 rootProject.name = "org.sheepy.lily.vsand.root"
 
-
+includeBuild 'Logoce'
 includeBuild 'Lily-core'
 includeBuild 'Lily-vulkan'
 includeBuild 'VSand'
