@@ -58,15 +58,16 @@ butler {
 	user = "ealrann"
 	game = "vsand"
 	userVersion = project.version
+}
 
-	windows {
-		binDirectory = "$projectDir/build/image"
-		channel = "windows"
-	}
-	linux {
-		binDirectory = "$projectDir/build/image"
-		channel = "linux"
-	}
+task butlerPushWindows(type: org.mini2Dx.butler.task.PushTask) {
+	binDirectory = new File("$projectDir/build/image/")
+	channel = "windows"
+}
+
+task butlerPushLinux(type: org.mini2Dx.butler.task.PushTask) {
+	binDirectory = new File("$projectDir/build/image")
+	channel = "linux"
 }
 
 run {
