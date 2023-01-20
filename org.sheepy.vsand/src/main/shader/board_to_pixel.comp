@@ -1,15 +1,15 @@
 #version 450
 
-#define WIDTH 1248
-#define HEIGHT 704
-
-#define CHUNK_WIDTH 78
-#define CHUNK_HEIGHT 44
 
 #define WORKGROUP_SIZE 8
 #define EFFECTIVE_SIZE 16
 
 layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
+
+const int CHUNK_WIDTH = WIDTH / EFFECTIVE_SIZE;
+const int CHUNK_HEIGHT = HEIGHT / EFFECTIVE_SIZE;
 
 const int SWIZZLED_WIDTH = WIDTH / 2;
 const int SWIZZLED_HEIGHT = HEIGHT / 2;
@@ -45,17 +45,17 @@ layout(binding = 1) uniform SConfiguration
 // The chunk state board.
 layout(binding = 2) buffer SChunks
 {
-	int data[CHUNK_WIDTH][CHUNK_HEIGHT];
+	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
 }chunks;
 
 layout(binding = 3) buffer readonly SBoard1
 {
-	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
 }board1;
 
 layout(binding = 4) buffer readonly SBoard2
 {
-	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
 }board2;
 
 const uint G_MASK = 255 << 8;
@@ -75,9 +75,10 @@ vec4 computeColor(ivec2 loc, vec4 color);
 
 void main()
 {
+    uint chunk_loc = gl_WorkGroupID.y + gl_WorkGroupID.x * CHUNK_HEIGHT;
 	if(gl_LocalInvocationIndex == 0)
 	{
-		int chunkState = chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y];
+		int chunkState = chunks.data[chunk_loc];
 
 		ivec2 workgroupUpLeftCorner    = ivec2(gl_WorkGroupID.xy)     * EFFECTIVE_SIZE;
 		ivec2 workgroupDownRightCorner = ivec2(gl_WorkGroupID.xy + 1) * EFFECTIVE_SIZE - 1;
@@ -94,7 +95,7 @@ void main()
 			sleeping = false;
 			if(colorTweakPreTest == false)
 			{
-				chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = chunkState ^ 2;
+				chunks.data[chunk_loc] = chunkState ^ 2;
 			}
 		}
 		else
@@ -108,11 +109,10 @@ void main()
 
 	if(gl_LocalInvocationIndex == 0 && colorTweakPreTest == true)
 	{
-		chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] |= 2;
+		chunks.data[chunk_loc] |= 2;
 	}
 
-	ivec2 loc = ivec2(gl_GlobalInvocationID.xy) * 2;
-
+    const ivec2 loc = ivec2(gl_GlobalInvocationID.xy) * 2;
 	if(  loc.x >= WIDTH
 		|| loc.y >= HEIGHT
 		|| (   pushConstants.forceClear == 0
@@ -123,8 +123,9 @@ void main()
 		return;
 	}
 
-	uvec2 swizzled = loc >> 1;
-	uint value = pushConstants.boardToWrite == 0 ? board1.data[swizzled.x][swizzled.y] : board2.data[swizzled.x][swizzled.y];
+    uvec2 swizzled = loc >> 1;
+    uint board_loc = swizzled.y + swizzled.x * SWIZZLED_HEIGHT;
+	uint value = pushConstants.boardToWrite == 0 ? board1.data[board_loc] : board2.data[board_loc];
 	uvec4 unswizzledValue = (unswizzleVec & value) >> unswizzleOffset;
 
 	vec4 color1 = configuration.materials[unswizzledValue.x].color;

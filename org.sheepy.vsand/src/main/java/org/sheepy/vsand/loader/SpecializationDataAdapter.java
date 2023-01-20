@@ -12,18 +12,23 @@ import org.sheepy.vsand.model.VSandApplication;
 
 import java.nio.ByteBuffer;
 
-@ModelExtender(scope = ConstantBuffer.class, name = "MaterialCount")
+@ModelExtender(scope = ConstantBuffer.class, name = "SpecializationData")
 @Adapter(singleton = true)
 @AutoLoad
-public final class MaterialCountAdapter implements IAdapter
+public final class SpecializationDataAdapter implements IAdapter
 {
 	@Load
 	private static void load(ConstantBuffer buffer)
 	{
 		final var application = (VSandApplication) EcoreUtil.getRootContainer(buffer);
 		final int count = application.getMaterials().getMaterials().size();
-		final ByteBuffer bBuffer = MemoryUtil.memCalloc(4);
+		final var size = application.getSize();
+		assert size.x() % 16 == 0;
+		assert size.y() % 16 == 0;
+		final ByteBuffer bBuffer = MemoryUtil.memCalloc(3 * Integer.BYTES);
 		bBuffer.putInt(count);
+		bBuffer.putInt(size.x());
+		bBuffer.putInt(size.y());
 		bBuffer.flip();
 		buffer.setData(bBuffer);
 	}

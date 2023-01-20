@@ -37,10 +37,13 @@ public final class Extenders implements IAdapterProvider
 					   DrawLineAdapter.class,
 					   ApplicationBehaviour.class,
 					   MaterialSelectorInputProviderAdapter.class,
-					   MaterialCountAdapter.class,
+					   SpecializationDataAdapter.class,
 					   InputManager.class,
 					   PrimaryDrawer.class,
-					   SecondaryDrawer.class);
+					   SecondaryDrawer.class,
+					   BoardUpdateDispatchTaskLoader.class,
+					   BoardToPixelDispatchTaskLoader.class,
+					   DrawDispatchTaskLoader.class);
 	}
 
 	@Override

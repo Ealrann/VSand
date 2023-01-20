@@ -3,6 +3,7 @@
 package org.sheepy.vsand.model.impl;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -401,7 +402,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	{
 		if (drawQueue == null)
 		{
-			drawQueue = new EObjectContainmentEList<DrawCommand>(DrawCommand.class, this, VSandPackage.VSAND_APPLICATION__DRAW_QUEUE);
+			drawQueue = new EObjectContainmentEList<>(DrawCommand.class, this, VSandPackage.VSAND_APPLICATION__DRAW_QUEUE);
 		}
 		return drawQueue;
 	}
@@ -416,7 +417,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	{
 		if (mainMaterial != null && ((EObject)mainMaterial).eIsProxy())
 		{
-			InternalEObject oldMainMaterial = (InternalEObject)mainMaterial;
+			InternalEObject oldMainMaterial = mainMaterial;
 			mainMaterial = (Material)eResolveProxy(oldMainMaterial);
 			if (mainMaterial != oldMainMaterial)
 			{
@@ -461,7 +462,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	{
 		if (secondaryMaterial != null && ((EObject)secondaryMaterial).eIsProxy())
 		{
-			InternalEObject oldSecondaryMaterial = (InternalEObject)secondaryMaterial;
+			InternalEObject oldSecondaryMaterial = secondaryMaterial;
 			secondaryMaterial = (Material)eResolveProxy(oldSecondaryMaterial);
 			if (secondaryMaterial != oldSecondaryMaterial)
 			{
@@ -656,7 +657,7 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	{
 		if (boardUpdateTask != null && ((EObject)boardUpdateTask).eIsProxy())
 		{
-			InternalEObject oldBoardUpdateTask = (InternalEObject)boardUpdateTask;
+			InternalEObject oldBoardUpdateTask = boardUpdateTask;
 			boardUpdateTask = (CompositeTask)eResolveProxy(oldBoardUpdateTask);
 			if (boardUpdateTask != oldBoardUpdateTask)
 			{

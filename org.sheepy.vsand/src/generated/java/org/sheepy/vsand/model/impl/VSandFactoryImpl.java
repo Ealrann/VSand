@@ -5,12 +5,24 @@ package org.sheepy.vsand.model.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
-import org.sheepy.vsand.model.*;
+import org.sheepy.vsand.model.BoardConstantBuffer;
+import org.sheepy.vsand.model.DrawCircle;
+import org.sheepy.vsand.model.DrawConstantBuffer;
+import org.sheepy.vsand.model.DrawLine;
+import org.sheepy.vsand.model.DrawSquare;
+import org.sheepy.vsand.model.InputMaterialProvider;
+import org.sheepy.vsand.model.Material;
+import org.sheepy.vsand.model.MaterialProvider;
+import org.sheepy.vsand.model.Materials;
+import org.sheepy.vsand.model.MultipleTransformation;
+import org.sheepy.vsand.model.PixelConstantBuffer;
+import org.sheepy.vsand.model.Transformation;
+import org.sheepy.vsand.model.Transformations;
+import org.sheepy.vsand.model.VSandApplication;
+import org.sheepy.vsand.model.VSandFactory;
+import org.sheepy.vsand.model.VSandPackage;
 
 /**
  * <!-- begin-user-doc -->

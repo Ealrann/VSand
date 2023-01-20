@@ -13,11 +13,11 @@ public final class BoardUtil
 
 		if(application.getScene() != null)
 		{
-			final var sceneSize = application.getScene().getSize();
+			final var windowSize = application.getScene().getSize();
 			final float boardWidth = boardSize.x();
 			final float boardHeight = boardSize.y();
-			final float width = sceneSize.x();
-			final float height = sceneSize.y();
+			final float width = windowSize.x();
+			final float height = windowSize.y();
 
 			if (width != boardWidth || height != boardHeight)
 			{

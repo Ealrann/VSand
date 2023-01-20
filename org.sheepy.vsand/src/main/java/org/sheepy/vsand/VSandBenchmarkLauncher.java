@@ -2,6 +2,7 @@ package org.sheepy.vsand;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.joml.Vector2i;
 import org.sheepy.lily.core.api.LilyLauncher;
 import org.sheepy.lily.core.api.util.DebugUtil;
 import org.sheepy.lily.vulkan.model.VulkanEngine;
@@ -24,6 +25,8 @@ public final class VSandBenchmarkLauncher
 		DebugUtil.parseMainArgs(args);
 
 		final var application = createTestApplication();
+		application.setSize(new Vector2i(1024, 600));
+		application.getScene().setSize(new Vector2i(1024, 600));
 
 		final var vulkanEngine = (VulkanEngine) application.getEngines().get(0);
 		final var graphicProcess = (GraphicProcess) vulkanEngine.getProcesses().get(1);
@@ -41,7 +44,7 @@ public final class VSandBenchmarkLauncher
 		EcoreUtil.delete(application.getScene().getCompositors().get(1));
 
 		final DemoDrawer drawer = new DemoDrawer(application);
-		drawer.drawLavaPot(200, 400);
+		drawer.drawLavaPot(75, 400);
 
 		return application;
 	}

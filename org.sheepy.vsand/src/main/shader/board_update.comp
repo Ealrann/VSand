@@ -2,21 +2,15 @@
 
 #include "rand_utils.glsl"
 
-#define WIDTH 1248
-#define HEIGHT 704
-
-#define CHUNK_WIDTH 78
-#define CHUNK_HEIGHT 44
-
 #define UP    0
 #define DOWN  1
 #define RIGHT 2
 #define LEFT  3
 
-#define TO_UP    1 << 0
-#define TO_DOWN  1 << 1
-#define TO_RIGHT 1 << 2
-#define TO_LEFT  1 << 3
+#define TO_UP    1
+#define TO_DOWN  2
+#define TO_RIGHT 4
+#define TO_LEFT  8
 
 #define TARGET_VALUE_POSITION 16u
 #define INITIAL_VALUE_POSITION 24u
@@ -27,6 +21,11 @@
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
 layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
+
+const int CHUNK_WIDTH = WIDTH / EFFECTIVE_SIZE;
+const int CHUNK_HEIGHT = HEIGHT / EFFECTIVE_SIZE;
 
 const int TRANSFOM_ARRAY_COUNT = MATERIAL_COUNT * MATERIAL_COUNT / 4;
 const int WORKGROUP_AREA = WORKGROUP_SIZE * WORKGROUP_SIZE;
@@ -37,10 +36,6 @@ const uint TARGET_VALUE_MASK = 255u << TARGET_VALUE_POSITION;
 
 const int SWIZZLED_WIDTH = WIDTH / 2;
 const int SWIZZLED_HEIGHT = HEIGHT / 2;
-
-const int HALF_EFFECTIVE_SIZE = EFFECTIVE_SIZE / 2;
-const int HALF_WORKGROUP_SIZE = WORKGROUP_SIZE / 2;
-
 
 struct Entry
 {
@@ -79,19 +74,19 @@ layout(binding = 1) uniform STransformation
 // The chunk state board.
 layout(binding = 2) buffer SChunks
 {
-	int data[CHUNK_WIDTH][CHUNK_HEIGHT];
+	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
 }chunks;
 
 // The game board, with all the values.
 layout(binding = 3) buffer SBoard1
 {
-	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
 }board1;
 
 // The next game board, with all the values.
 layout(binding = 4) buffer SBoard2
 {
-	uint data[SWIZZLED_WIDTH][SWIZZLED_HEIGHT];
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
 }board2;
 
 
@@ -160,21 +155,21 @@ void main()
 	if(gl_LocalInvocationIndex == 0)
 	{
 		updated = false;
-		chunkActive = ((chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] & 1) != 0);
+		chunkActive = ((chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y] & 1) != 0);
 		if(gl_WorkGroupID.x > 0)
-			chunkNeighborActive.x = ((chunks.data[gl_WorkGroupID.x - 1][gl_WorkGroupID.y] & 1) != 0);
+			chunkNeighborActive.x = ((chunks.data[(gl_WorkGroupID.x - 1) * CHUNK_HEIGHT + gl_WorkGroupID.y] & 1) != 0);
 		else
 			chunkNeighborActive.x = false;
 		if(gl_WorkGroupID.y > 0)
-			chunkNeighborActive.y = ((chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y - 1] & 1) != 0);
+			chunkNeighborActive.y = ((chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y - 1] & 1) != 0);
 		else
 			chunkNeighborActive.y = false;
 		if(gl_WorkGroupID.x < CHUNK_WIDTH - 1)
-			chunkNeighborActive.z = ((chunks.data[gl_WorkGroupID.x + 1][gl_WorkGroupID.y] & 1) != 0);
+			chunkNeighborActive.z = ((chunks.data[(gl_WorkGroupID.x + 1) * CHUNK_HEIGHT + gl_WorkGroupID.y] & 1) != 0);
 		else
 			chunkNeighborActive.z = false;
 		if(gl_WorkGroupID.y < CHUNK_HEIGHT - 1)
-			chunkNeighborActive.w = ((chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y + 1] & 1) != 0);
+			chunkNeighborActive.w = ((chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y + 1] & 1) != 0);
 		else
 			chunkNeighborActive.w = false;
 	}
@@ -255,9 +250,9 @@ void main()
 				  | (board[localLoc.x + 1][localLoc.y + 1] << 24);
 
 		if(pushConstants.boardToWrite == 0)
-			board1.data[swizzledLoc.x][swizzledLoc.y] = value;
+			board1.data[swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y] = value;
 		else
-			board2.data[swizzledLoc.x][swizzledLoc.y] = value;
+			board2.data[swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y] = value;
 	}
 
 
@@ -265,12 +260,12 @@ void main()
 	{
 		if(updated)
 		{
-			chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] = 3;
+			chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y] = 3;
 		}
 		else
 		{
 			// Clean all except 2
-			chunks.data[gl_WorkGroupID.x][gl_WorkGroupID.y] &= 2;
+			chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y] &= 2;
 		}
 	}
 }
@@ -283,7 +278,7 @@ bool invalidCell(ivec2 loc)
 void fillBoardSharedBuffer(ivec2 loc, ivec2 localLoc)
 {
 	ivec2 swizzled = loc >> 1;
-	uint value = pushConstants.boardToWrite == 0 ? board2.data[swizzled.x][swizzled.y] : board1.data[swizzled.x][swizzled.y];
+	uint value = pushConstants.boardToWrite == 0 ? board2.data[swizzled.x * SWIZZLED_HEIGHT + swizzled.y] : board1.data[swizzled.x * SWIZZLED_HEIGHT + swizzled.y];
 
 	uvec4 unswizzledValue = (unswizzleVec & value) >> unswizzleOffset;
 
@@ -297,7 +292,7 @@ uint getValue(ivec2 loc)
 {
 	ivec2 swizzled = loc >> 1;
 	uint offset = ((loc.x & 1)	| ((loc.y & 1) << 1)) << 3;
-	uint value = pushConstants.boardToWrite == 0 ? board2.data[swizzled.x][swizzled.y] : board1.data[swizzled.x][swizzled.y];
+	uint value = pushConstants.boardToWrite == 0 ? board2.data[swizzled.x * SWIZZLED_HEIGHT + swizzled.y] : board1.data[swizzled.x * SWIZZLED_HEIGHT + swizzled.y];
 
 	return ((value >> offset) & 0xFFu);
 }
