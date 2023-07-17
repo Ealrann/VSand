@@ -8,7 +8,6 @@ Bundle-ClassPath: .
 Bundle-Activator: org.sheepy.vsand.model.provider.VSandEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-14
 Export-Package: org.sheepy.vsand.model.provider
 Require-Bundle: org.eclipse.core.runtime;x-installation:=greedy;resolution:=optional,
  org.sheepy.vsand.model;visibility:=reexport,

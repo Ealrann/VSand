@@ -7,7 +7,6 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-14
 Export-Package: org.sheepy.vsand.model,
  org.sheepy.vsand.model.impl,
  org.sheepy.vsand.model.util
