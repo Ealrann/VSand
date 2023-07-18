@@ -12,18 +12,20 @@ subprojects {
 
 	apply plugin: 'java-library'
 
-	sourceCompatibility = 17
-	targetCompatibility = 17
+	java {
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
+	}
 
 	afterEvaluate {
 		repositories {
 			mavenCentral()
+			maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 			maven {
 				url "https://maven.pkg.github.com/ealrann/emf-standalone"
-				maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 				credentials {
-                                        username = findProperty("github.username")
-                                        password = findProperty("github.token")
+					username = findProperty("github.username")
+                    password = findProperty("github.token")
 				}
 			}
 		}

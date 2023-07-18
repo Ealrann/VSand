@@ -1,4 +1,5 @@
 import org.gradle.internal.os.OperatingSystem
+import org.mini2Dx.butler.task.PushTask
 
 plugins {
 	id 'application'
@@ -21,38 +22,36 @@ switch ( OperatingSystem.current() ) {
 		break
 }
 
-task jlink(type: Exec, dependsOn: ['installDist']) {
-	def javaHome = System.properties.'java.home'
-	workingDir "$buildDir"
-	commandLine "$javaHome/bin/jlink",
-		'--strip-debug',
-		'--no-header-files',
-		'--no-man-pages',
-		'--exclude-files', '**java_*.properties',
-		'--compress', '2',
-		'--add-modules', "java.base,java.xml,jdk.unsupported",
-		'--output', 'image'
-}
-
-task cleanJlink(type: Delete) {
+var cleanJlink = tasks.register('cleanJlink', Delete) {
 	delete "$buildDir/image"
 }
 
-task copyReleng(type: Copy) {
+var copyReleng = tasks.register('copyReleng', Copy) {
 	from "releng/$project.ext.OS"
 	into "$buildDir/image"
 }
 
-task copyModules(type: Copy) {
+var copyModules = tasks.register('copyModules', Copy) {
 	from "$buildDir/install/org.sheepy.vsand/lib/"
 	into "$buildDir/image/modules"
 }
 
-tasks.clean.dependsOn(cleanJlink)
-tasks.jlink.dependsOn(cleanJlink)
-tasks.jlink.finalizedBy(copyReleng)
-tasks.jlink.finalizedBy(copyModules)
+tasks.register('jlink', Exec) {
+	dependsOn(tasks.named('installDist'), cleanJlink)
+	def javaHome = System.properties.'java.home'
+	workingDir "$buildDir"
+	commandLine "$javaHome/bin/jlink",
+			'--strip-debug',
+			'--no-header-files',
+			'--no-man-pages',
+			'--exclude-files', '**java_*.properties',
+			'--compress', '2',
+			'--add-modules', "java.base,java.xml,jdk.unsupported",
+			'--output', 'image'
+	finalizedBy(copyReleng, copyModules)
+}
 
+tasks.named('clean').configure {dependsOn(cleanJlink) }
 
 butler {
 	user = "ealrann"
@@ -60,12 +59,12 @@ butler {
 	userVersion = project.version
 }
 
-task butlerPushWindows(type: org.mini2Dx.butler.task.PushTask) {
+tasks.register('butlerPushWindows', PushTask) {
 	binDirectory = new File("$projectDir/build/image/")
 	channel = "windows"
 }
 
-task butlerPushLinux(type: org.mini2Dx.butler.task.PushTask) {
+tasks.register('butlerPushLinux', PushTask) {
 	binDirectory = new File("$projectDir/build/image")
 	channel = "linux"
 }
@@ -85,7 +84,7 @@ test {
 }
 
 // Temporary: https://github.com/gradle/gradle/issues/890#issuecomment-613427968
-test { classpath = configurations[sourceSets.test.runtimeClasspathConfigurationName] + files(compileTestJava) }
+test { classpath = configurations.named(sourceSets.test.runtimeClasspathConfigurationName).get() + files(compileTestJava) }
 dependencies { testImplementation project(path) }
 // end Temporary ---------------------------------------------------------------
 
