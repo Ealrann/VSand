@@ -26,8 +26,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="brushSize" unique="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="4"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="boardUpdateTask" eType="ecore:EClass ../../org.sheepy.lily.vulkan.model/model/process.ecore#//CompositeTask"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="0.0.0"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" lowerBound="1" eType="ecore:EDataType ../../org.sheepy.lily.core.model/model/types.ecore#//Vector2i"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BoardConstantBuffer" eSuperTypes="../../org.sheepy.lily.vulkan.model/model/vulkanresource.ecore#//ConstantBuffer">

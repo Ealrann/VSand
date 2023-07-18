@@ -143,6 +143,15 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__RESOURCE_PKG = ApplicationPackage.APPLICATION__RESOURCE_PKG;
 
 	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VSAND_APPLICATION__VERSION = ApplicationPackage.APPLICATION__VERSION;
+
+	/**
 	 * The feature id for the '<em><b>Materials</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -251,22 +260,13 @@ public interface VSandPackage extends EPackage
 	int VSAND_APPLICATION__BOARD_UPDATE_TASK = ApplicationPackage.APPLICATION_FEATURE_COUNT + 11;
 
 	/**
-	 * The feature id for the '<em><b>Version</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VSAND_APPLICATION__VERSION = ApplicationPackage.APPLICATION_FEATURE_COUNT + 12;
-
-	/**
 	 * The feature id for the '<em><b>Size</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION__SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 13;
+	int VSAND_APPLICATION__SIZE = ApplicationPackage.APPLICATION_FEATURE_COUNT + 12;
 
 	/**
 	 * The number of structural features of the '<em>Application</em>' class.
@@ -275,7 +275,7 @@ public interface VSandPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 14;
+	int VSAND_APPLICATION_FEATURE_COUNT = ApplicationPackage.APPLICATION_FEATURE_COUNT + 13;
 
 	/**
 	 * The number of operations of the '<em>Application</em>' class.
@@ -1371,17 +1371,6 @@ public interface VSandPackage extends EPackage
 	EReference getVSandApplication_BoardUpdateTask();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#getVersion <em>Version</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Version</em>'.
-	 * @see org.sheepy.vsand.model.VSandApplication#getVersion()
-	 * @see #getVSandApplication()
-	 * @generated
-	 */
-	EAttribute getVSandApplication_Version();
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.sheepy.vsand.model.VSandApplication#getSize <em>Size</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2100,14 +2089,6 @@ public interface VSandPackage extends EPackage
 		 * @generated
 		 */
 		EReference VSAND_APPLICATION__BOARD_UPDATE_TASK = eINSTANCE.getVSandApplication_BoardUpdateTask();
-
-		/**
-		 * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute VSAND_APPLICATION__VERSION = eINSTANCE.getVSandApplication_Version();
 
 		/**
 		 * The meta object literal for the '<em><b>Size</b></em>' attribute feature.

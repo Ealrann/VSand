@@ -43,7 +43,6 @@ import org.sheepy.vsand.model.VSandPackage;
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#isShowSleepZones <em>Show Sleep Zones</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBrushSize <em>Brush Size</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getBoardUpdateTask <em>Board Update Task</em>}</li>
- *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getVersion <em>Version</em>}</li>
  *   <li>{@link org.sheepy.vsand.model.impl.VSandApplicationImpl#getSize <em>Size</em>}</li>
  * </ul>
  *
@@ -230,26 +229,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @ordered
 	 */
 	protected CompositeTask boardUpdateTask;
-
-	/**
-	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getVersion()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String VERSION_EDEFAULT = "0.0.0";
-
-	/**
-	 * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getVersion()
-	 * @generated
-	 * @ordered
-	 */
-	protected String version = VERSION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getSize() <em>Size</em>}' attribute.
@@ -698,31 +677,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 	 * @generated
 	 */
 	@Override
-	public String getVersion()
-	{
-		return version;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setVersion(String newVersion)
-	{
-		String oldVersion = version;
-		version = newVersion;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, VSandPackage.VSAND_APPLICATION__VERSION, oldVersion, version));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public Vector2ic getSize()
 	{
 		return size;
@@ -799,8 +753,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
 				if (resolve) return getBoardUpdateTask();
 				return basicGetBoardUpdateTask();
-			case VSandPackage.VSAND_APPLICATION__VERSION:
-				return getVersion();
 			case VSandPackage.VSAND_APPLICATION__SIZE:
 				return getSize();
 		}
@@ -855,9 +807,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
 				setBoardUpdateTask((CompositeTask)newValue);
 				return;
-			case VSandPackage.VSAND_APPLICATION__VERSION:
-				setVersion((String)newValue);
-				return;
 			case VSandPackage.VSAND_APPLICATION__SIZE:
 				setSize((Vector2ic)newValue);
 				return;
@@ -911,9 +860,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
 				setBoardUpdateTask((CompositeTask)null);
 				return;
-			case VSandPackage.VSAND_APPLICATION__VERSION:
-				setVersion(VERSION_EDEFAULT);
-				return;
 			case VSandPackage.VSAND_APPLICATION__SIZE:
 				setSize(SIZE_EDEFAULT);
 				return;
@@ -955,8 +901,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 				return brushSize != BRUSH_SIZE_EDEFAULT;
 			case VSandPackage.VSAND_APPLICATION__BOARD_UPDATE_TASK:
 				return boardUpdateTask != null;
-			case VSandPackage.VSAND_APPLICATION__VERSION:
-				return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
 			case VSandPackage.VSAND_APPLICATION__SIZE:
 				return SIZE_EDEFAULT == null ? size != null : !SIZE_EDEFAULT.equals(size);
 		}
@@ -986,8 +930,6 @@ public class VSandApplicationImpl extends ApplicationImpl implements VSandApplic
 		result.append(showSleepZones);
 		result.append(", brushSize: ");
 		result.append(brushSize);
-		result.append(", version: ");
-		result.append(version);
 		result.append(", size: ");
 		result.append(size);
 		result.append(')');

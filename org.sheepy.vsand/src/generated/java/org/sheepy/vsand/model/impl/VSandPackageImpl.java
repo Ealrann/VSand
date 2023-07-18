@@ -396,20 +396,9 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVSandApplication_Version()
-	{
-		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(12);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EAttribute getVSandApplication_Size()
 	{
-		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(13);
+		return (EAttribute)vSandApplicationEClass.getEStructuralFeatures().get(12);
 	}
 
 	/**
@@ -1050,7 +1039,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SHOW_SLEEP_ZONES);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__BRUSH_SIZE);
 		createEReference(vSandApplicationEClass, VSAND_APPLICATION__BOARD_UPDATE_TASK);
-		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__VERSION);
 		createEAttribute(vSandApplicationEClass, VSAND_APPLICATION__SIZE);
 
 		boardConstantBufferEClass = createEClass(BOARD_CONSTANT_BUFFER);
@@ -1185,7 +1173,6 @@ public class VSandPackageImpl extends EPackageImpl implements VSandPackage
 		initEAttribute(getVSandApplication_ShowSleepZones(), ecorePackage.getEBoolean(), "showSleepZones", "false", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_BrushSize(), ecorePackage.getEInt(), "brushSize", "4", 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVSandApplication_BoardUpdateTask(), theProcessPackage.getCompositeTask(), null, "boardUpdateTask", null, 0, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVSandApplication_Version(), ecorePackage.getEString(), "version", "0.0.0", 1, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVSandApplication_Size(), theTypesPackage.getVector2i(), "size", null, 1, 1, VSandApplication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(boardConstantBufferEClass, BoardConstantBuffer.class, "BoardConstantBuffer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

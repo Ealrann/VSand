@@ -61,7 +61,6 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			addShowSleepZonesPropertyDescriptor(object);
 			addBrushSizePropertyDescriptor(object);
 			addBoardUpdateTaskPropertyDescriptor(object);
-			addVersionPropertyDescriptor(object);
 			addSizePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -275,29 +274,6 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Version feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addVersionPropertyDescriptor(Object object)
-	{
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VSandApplication_version_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VSandApplication_version_feature", "_UI_VSandApplication_type"),
-				 VSandPackage.Literals.VSAND_APPLICATION__VERSION,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
 	 * This adds a property descriptor for the Size feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -402,7 +378,6 @@ public class VSandApplicationItemProvider extends ApplicationItemProvider
 			case VSandPackage.VSAND_APPLICATION__FORCE_CLEAR:
 			case VSandPackage.VSAND_APPLICATION__SHOW_SLEEP_ZONES:
 			case VSandPackage.VSAND_APPLICATION__BRUSH_SIZE:
-			case VSandPackage.VSAND_APPLICATION__VERSION:
 			case VSandPackage.VSAND_APPLICATION__SIZE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
