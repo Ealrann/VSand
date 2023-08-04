@@ -243,7 +243,7 @@
           <controls xsi:type="ui:Label" text="Fullscreen"/>
           <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="f"/>
           <controls xsi:type="ui:Label" text="Quit"/>
-          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Echap"/>
+          <controls xsi:type="ui:Label" horizontalRelative="RIGHT" text="Esc"/>
           <controls xsi:type="ui:Label"/>
           <controls xsi:type="ui:Label"/>
           <controls xsi:type="ui:DynamicRowLayout"/>
