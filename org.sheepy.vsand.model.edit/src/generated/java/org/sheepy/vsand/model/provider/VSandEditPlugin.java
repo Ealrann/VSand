@@ -3,10 +3,8 @@
 package org.sheepy.vsand.model.provider;
 
 import org.eclipse.emf.common.EMFPlugin;
-
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.sheepy.lily.core.model.resource.provider.LilyEditPlugin;
-import org.sheepy.lily.vulkan.extra.model.mesh.provider.ExtraEditPlugin;
 import org.sheepy.lily.vulkan.model.process.compute.provider.LilyVulkanEditPlugin;
 import org.sheepy.vulkan.model.barrier.provider.VulkanEditPlugin;
 
@@ -43,9 +41,9 @@ public final class VSandEditPlugin extends EMFPlugin
 	public VSandEditPlugin()
 	{
 		super
-		  (new ResourceLocator [] 
+		  (new ResourceLocator []
 		   {
-		     ExtraEditPlugin.INSTANCE,
+		     org.sheepy.lily.vulkan.extra.model.nuklear.provider.ExtraEditPlugin.INSTANCE,
 		     LilyEditPlugin.INSTANCE,
 		     LilyVulkanEditPlugin.INSTANCE,
 		     VulkanEditPlugin.INSTANCE,
