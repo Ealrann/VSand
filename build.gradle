@@ -25,7 +25,7 @@ subprojects {
 				url "https://maven.pkg.github.com/ealrann/emf-standalone"
 				credentials {
 					username = findProperty("github.username")
-                    password = findProperty("github.token")
+					password = findProperty("github.token")
 				}
 			}
 		}
