@@ -17,8 +17,6 @@ public final class VSandApplicationLauncher
 
 	public static void main(String[] args) throws IOException
 	{
-		Configuration.STACK_SIZE.set(128);
-
 		DebugUtil.parseMainArgs(args);
 		final var application = loadApplication();
 		final var mainLoop = VSandMainLoop.create(application);
