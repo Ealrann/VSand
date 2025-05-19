@@ -1,1 +1,1 @@
-butler push /dev/shm/gradle-build/ ealrann/vsand:linux --userversion 1.4.3
+butler push /dev/shm/gradle-build/VSand/org.sheepy.vsand/image ealrann/vsand:linux --userversion 1.4.3
