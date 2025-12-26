@@ -1,0 +1,5 @@
+#!/bin/sh
+DIR=${0%/*}/bin
+ARGS="-Xms32M -Xmx64M --enable-preview --enable-native-access=org.lwjgl --add-exports org.lwjgl/org.lwjgl.system.ffm=org.lwjgl.glfw,org.lwjgl.openal,org.lwjgl.stb,org.lwjgl.vulkan,org.lwjgl.nuklear"
+#ARGS="-Xms32M -Xmx64M -Xscmx32M -Xshareclasses:cacheDir=sharedClasses,name=VSand,nonfatal" #OpenJ9
+(cd $DIR && ./java $ARGS -p ../modules -m org.sheepy.vsand/org.sheepy.vsand.VSandApplicationLauncher $@)

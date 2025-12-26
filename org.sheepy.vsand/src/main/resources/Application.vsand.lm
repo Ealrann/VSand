@@ -1,0 +1,370 @@
+(VSandApplication domain=org.sheepy.vsand name=VSand metamodels=org.sheepy.vsand.model.VSand,org.sheepy.lily.core.model.Types,org.sheepy.lily.core.model.Resource,org.sheepy.lily.core.model.Application,org.sheepy.lily.core.model.UI,org.sheepy.lily.core.model.Variable,org.sheepy.lily.vulkan.extra.model.Nuklear,org.sheepy.lily.vulkan.model.process.Compute,org.sheepy.lily.vulkan.model.process.Graphic,org.sheepy.lily.vulkan.model.Process,org.sheepy.lily.vulkan.model.Vulkan,org.sheepy.lily.vulkan.model.VulkanResource,org.sheepy.lily.openal.model.OpenAL,org.sheepy.vulkan.model.Barrier,org.sheepy.vulkan.model.GraphicPipeline,org.sheepy.vulkan.model.Pipeline,org.sheepy.vulkan.model.Enumeration title=VSand mainMaterial=/materials/materials.1 secondaryMaterial=/materials/materials.3 boardUpdateTask="@Update Board" size="1280;704"
+	(engines=VulkanEngine
+		(resourcePkg
+			(resources=MemoryChunk
+				(parts=StaticImage name="Board Image" initialLayout=TRANSFER_SRC_OPTIMAL fillWithZero=true size="1248;672" usages=TRANSFER_SRC,STORAGE,TRANSFER_DST)
+			)
+		)
+		(processes=ComputeProcess name="Board Compute" resetAllowed=true
+			(resourcePkg
+				(resources=Shader name=draw stage=COMPUTE_BIT
+					(file=StringModuleResource name="" path=draw.comp.spv moduleName=org.sheepy.vsand)
+					(constants name=MaterialCount size=4)
+					(constants name=Width constantId=1 size=4)
+					(constants name=Height constantId=2 size=4)
+				)
+				(resources=Shader name=boardUpdate stage=COMPUTE_BIT
+					(file=StringModuleResource name="" path=board_update.comp.spv moduleName=org.sheepy.vsand)
+					(constants name=MaterialCount size=4)
+					(constants name=Width constantId=1 size=4)
+					(constants name=Height constantId=2 size=4)
+				)
+				(resources=Shader name=boardToPixel stage=COMPUTE_BIT
+					(file=StringModuleResource name="" path=board_to_pixel.comp.spv moduleName=org.sheepy.vsand)
+					(constants name=MaterialCount size=4)
+					(constants name=Width constantId=1 size=4)
+					(constants name=Height constantId=2 size=4)
+				)
+				(resources=BoardConstantBuffer name=BoardConstants)
+				(resources=ConstantBuffer name=SpecializationData)
+				(resources=MemoryChunk
+					(parts=BufferMemory name=Board
+						(buffers=StaticBuffer name="Board Buffer 1" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT)
+						(buffers=StaticBuffer name="Board Buffer 2" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT)
+						(buffers=StaticBuffer name="Chunk Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT)
+					)
+					(parts=BufferMemory name=Data
+						(buffers=DataBuffer name=Configuration usages=UNIFORM_BUFFER_BIT,TRANSFER_DST_BIT)
+						(buffers=DataBuffer name=Transformation usages=UNIFORM_BUFFER_BIT,TRANSFER_DST_BIT)
+					)
+				)
+			)
+			(descriptorPkg
+				(descriptors=BufferDescriptor name=Chunk type=STORAGE_BUFFER buffer="@Chunk Buffer" shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=Board1 type=STORAGE_BUFFER buffer="@Board Buffer 1" shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=Board2 type=STORAGE_BUFFER buffer="@Board Buffer 2" shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=Config type=UNIFORM_BUFFER buffer=@Configuration shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=Transfo type=UNIFORM_BUFFER buffer=@Transformation shaderStages=COMPUTE_BIT)
+				(descriptors=ImageDescriptor name=BoardImage type=STORAGE_IMAGE images="@Board Image" shaderStages=COMPUTE_BIT)
+			)
+			(descriptorPool)
+			(executionManager=ComputeExecutionManager waitForExecution=/engines.0/processes.0/executionManager waitedBy=/engines.0/processes.1/executionManager,/engines.0/processes.0/executionManager)
+			(pipelinePkg
+				(pipelines=ComputePipeline name=Draw record=false specializationData=@SpecializationData layout=@Draw shader=@draw
+					(resourcePkg
+						(resources=DrawConstantBuffer name=DrawConstants boardConstantBuffer=@BoardConstants)
+					)
+					(taskPkgs
+						(tasks=BindDescriptorSets descriptorSets=@Draw bindPoint=COMPUTE)
+						(tasks=PushConstantBuffer name="" buffer=@DrawConstants stages=COMPUTE_BIT)
+						(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+							(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT dstAccessMask=SHADER_WRITE_BIT
+								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+							)
+						)
+						(tasks=DispatchTask name=Draw workgroupCountX=78 workgroupCountY=44)
+					)
+					(descriptorPool
+						(descriptorSets name=Draw descriptors=@Chunk,@Board1,@Board2)
+					)
+					(pushConstantRanges size=72 stages=COMPUTE_BIT)
+				)
+				(pipelines=ComputePipeline name=Step specializationData=@SpecializationData layout="@Update Board Common" shader=@boardUpdate
+					(taskPkgs
+						(tasks=BindDescriptorSets descriptorSets="@Update Board Common" bindPoint=COMPUTE)
+						(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+							(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+							)
+						)
+						(tasks=CompositeTask name="Update Board"
+							(tasks=PushConstantBuffer buffer=@BoardConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Board update" workgroupCountX=78 workgroupCountY=44)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+								)
+							)
+						)
+					)
+					(descriptorPool
+						(descriptorSets name="Update Board Common" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2)
+					)
+					(pushConstantRanges size=8 stages=COMPUTE_BIT)
+				)
+				(pipelines=ComputePipeline name="Board to Pixel" specializationData=@SpecializationData layout="@Board to Pixel" shader=@boardToPixel
+					(resourcePkg
+						(resources=PixelConstantBuffer name=PixelConstants boardConstantBuffer=@BoardConstants)
+					)
+					(taskPkgs
+						(tasks=BindDescriptorSets descriptorSets="@Board to Pixel" bindPoint=COMPUTE)
+						(tasks=PushConstantBuffer name="" buffer=@PixelConstants stages=COMPUTE_BIT)
+						(tasks=PipelineBarrier srcStage=TRANSFER_BIT dstStage=COMPUTE_SHADER_BIT
+							(barriers=ImageBarrier dstLayout=GENERAL image="@Board Image" srcAccessMask=TRANSFER_READ_BIT dstAccessMask=SHADER_WRITE_BIT)
+						)
+						(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+							(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+							)
+						)
+						(tasks=DispatchTask name=BoardToPixel workgroupCountX=78 workgroupCountY=44)
+					)
+					(descriptorPool
+						(descriptorSets name="Board to Pixel" descriptors=@BoardImage,@Config,@Chunk,@Board1,@Board2)
+					)
+					(pushConstantRanges size=28 stages=COMPUTE_BIT)
+				)
+			)
+			(configuration)
+		)
+		(processes=GraphicProcess resetAllowed=true
+			(descriptorPool)
+			(executionManager=GraphicExecutionManager waitForExecution=/engines.0/processes.0/executionManager)
+			(configuration acquireWaitStage=COMPUTE_SHADER_BIT
+				(swapchainConfiguration requiredSwapImageCount=2 allowingAccessFromCompute=true swapImageUsages=COLOR_ATTACHMENT,TRANSFER_DST
+					(colorAttachment name=Swapchain stencilLoadOp=DONT_CARE stencilStoreOp=DONT_CARE initialLayout=TRANSFER_DST_OPTIMAL finalLayout=PRESENT_SRC_KHR clearValue="0.0;0.0;0.0;0.0")
+				)
+				(framebufferConfiguration)
+				(surface
+					(colorDomain)
+				)
+				(renderPass)
+				(imageViews)
+			)
+			(attachmentPkg)
+		)
+	)
+	(engines=OpenALEngine
+		(resourcePkg
+			(resources=SoundContinuous name=Sand attackMs=500 decayMs=6000
+				(file=StringModuleResource path=sand.ogg moduleName=org.sheepy.vsand)
+			)
+			(resources=SoundContinuous name=Water attackMs=700 decayMs=4700
+				(file=StringModuleResource path=water.ogg moduleName=org.sheepy.vsand)
+			)
+			(resources=SoundContinuous name=Lava attackMs=500 decayMs=2500
+				(file=StringModuleResource path=lava.ogg moduleName=org.sheepy.vsand)
+			)
+			(resources=SoundContinuous name=Fire attackMs=500 decayMs=1780
+				(file=StringModuleResource path=fire.ogg moduleName=org.sheepy.vsand)
+			)
+			(resources=SoundContinuous name=Steam attackMs=1000 decayMs=2000
+				(file=StringModuleResource path=steam.ogg moduleName=org.sheepy.vsand)
+			)
+		)
+	)
+	(scene resizeable=true size="1248;704"
+		(compositors=BackgroundImage sampling=Nearest srcImage="@Board Image" dstImage=/engines.0/processes.1/configuration/swapchainConfiguration/colorAttachment)
+			(compositors=UI currentUIPage=/scene/compositors.1/uiPages.0 dstImage=/engines.0/processes.1/configuration/swapchainConfiguration/colorAttachment
+				(uiPages name=Main
+					(panels=Panel name=Config horizontalRelative=RIGHT width=220 height=90
+						(controls=DynamicRowLayout)
+						(controls=VariableLabel text=Speed
+							(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.lily.vulkan.model.Process#CompositeTask#repeatCount target="@Update Board")
+					)
+					(controls=Slider minValue=1 maxValue=32
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.lily.vulkan.model.Process#CompositeTask#repeatCount target="@Update Board")
+					)
+					(controls=VariableLabel text="Brush Size"
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#brushSize target=/)
+					)
+					(controls=Slider minValue=1 maxValue=8
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#brushSize target=/)
+					)
+				)
+				(panels=SelectorPanel name="Primary Material" position="34;0" verticalRelative=MIDDLE horizontalRelative=RIGHT buttonSizePx=28 selectionR=229 selectionG=57 selectionB=53 printLabels=true autoHideLabels=false
+					(variableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#mainMaterial target=/)
+					(inputProvider=InputMaterialProvider materials=/materials)
+				)
+				(panels=Panel name=Controls width=300 height=265 showTitle=true minimizable=true minimized=true
+					(controls=DynamicRowLayout columnCount=2)
+					(controls=Label text="Primary material")
+					(controls=Label horizontalRelative=RIGHT text=Scroll)
+					(controls=Label text="Secondary material")
+					(controls=Label horizontalRelative=RIGHT text="Shift + Scroll")
+					(controls=Label text=Speed)
+					(controls=Label horizontalRelative=RIGHT text=" /  *")
+					(controls=Label text=Brush)
+					(controls=Label horizontalRelative=RIGHT text=" -  +")
+					(controls=Label text=Pause)
+					(controls=Label horizontalRelative=RIGHT text="Space bar")
+					(controls=Label text="Next Frame")
+					(controls=Label horizontalRelative=RIGHT text=n)
+					(controls=Label text=Fullscreen)
+					(controls=Label horizontalRelative=RIGHT text=f)
+					(controls=Label text=Quit)
+					(controls=Label horizontalRelative=RIGHT text=Esc)
+					(controls=Label)
+					(controls=Label)
+					(controls=DynamicRowLayout)
+					(controls=VariableLabel text=Version
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#version target=/)
+					)
+					(controls=Label text="https://github.com/ealrann/VSand")
+				)
+				(panels=SelectorPanel name="Secondary Material" position="0;0" verticalRelative=MIDDLE horizontalRelative=RIGHT buttonSizePx=28 selectionR=3 selectionG=155 selectionB=229
+					(variableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#secondaryMaterial target=/)
+					(inputProvider=InputMaterialProvider materials=/materials)
+				)
+			)
+			(fontPkg
+				(fonts name=Default
+					(tables name=Fira charTables=Base
+						(file=StringModuleResource path=FiraSans-Regular.ttf moduleName=org.sheepy.vsand)
+					)
+				)
+			)
+		)
+	)
+	(materials
+		(materials name=Void runoff=60)
+		(materials name=Sand density=5 runoff=1 r=244 g=244 b=67 paintSound=/engines.1/resourcePkg/resources.0)
+		(materials name=Dirt isStatic=true density=5 runoff=1 r=72 g=38 b=4)
+		(materials name=Wall isStatic=true density=20 r=153 g=153 b=143)
+		(materials name=Concrete density=4 runoff=12 r=94 g=94 b=85 paintSound=/engines.1/resourcePkg/resources.1 pitch=0.25f)
+		(materials name=Water density=3 runoff=64 r=67 g=67 b=244 paintSound=/engines.1/resourcePkg/resources.1)
+		(materials name=Snow density=1 runoff=1 r=245 g=245 b=255)
+		(materials name=SnowHard isStatic=true density=3 r=245 g=245 b=255 userFriendly=false)
+		(materials name=Steam density=-2 runoff=1 r=159 g=159 b=249 paintSound=/engines.1/resourcePkg/resources.4)
+		(materials name=WetDirt density=5 runoff=1 r=48 g=26 b=3 userFriendly=false)
+		(materials name=Grass isStatic=true density=1 r=11 g=193 b=11 userFriendly=false)
+		(materials name=Fire density=-1 r=244 g=67 b=67 paintSound=/engines.1/resourcePkg/resources.3)
+		(materials name=FireStatic isStatic=true r=244 g=38 b=38 userFriendly=false)
+		(materials name=FireFinal isStatic=true r=255 userFriendly=false)
+		(materials name=Plant isStatic=true density=15 r=67 g=244 b=67)
+		(materials name=Wax isStatic=true density=20 r=254 g=254 b=231)
+		(materials name=LiquidWax density=2 runoff=3 r=231 g=254 b=254 userFriendly=false)
+		(materials name=BurningWax isStatic=true r=244 g=38 b=38 userFriendly=false)
+		(materials name=Lava density=4 runoff=5 r=244 g=111 b=67 paintSound=/engines.1/resourcePkg/resources.2)
+		(materials name=LavaBoiling density=2 runoff=6 r=244 g=244 b=67 userFriendly=false)
+		(materials name=Powder density=1 runoff=1 r=50 g=50 b=50)
+		(materials name=Petrol density=2 runoff=30 r=30 g=30 b=95 paintSound=/engines.1/resourcePkg/resources.1 pitch=0.7f)
+		(materials name=PetrolFire density=1 runoff=30 r=50 g=15 b=106 userFriendly=false)
+		(materials name=Sparkle r=255 g=251 b=224 userFriendly=false)
+		(materials name=HotWax density=1 runoff=3 r=231 g=254 b=254 userFriendly=false)
+		(materials name=Acid density=4 runoff=30 r=35 g=245 b=130)
+		(materials name=AcidVapor density=-2 runoff=30 g=255 b=200 userFriendly=false)
+	)
+	(transformations
+		(transformations=Transformation probability=950 target=/materials/materials.14 reactant=/materials/materials.5 catalyst=/materials/materials.14)
+		(transformations=Transformation probability=200 target=/materials/materials.11 reactant=/materials/materials.0 catalyst=/materials/materials.11)
+		(transformations=Transformation probability=550 target=/materials/materials.0 reactant=/materials/materials.11)
+		(transformations=Transformation probability=1000 target=/materials/materials.0 reactant=/materials/materials.11 catalyst=/materials/materials.5)
+		(transformations=Transformation probability=1000 target=/materials/materials.0 reactant=/materials/materials.12 catalyst=/materials/materials.5)
+		(transformations=Transformation probability=200 isStaticTransformation=true target=/materials/materials.3 reactant=/materials/materials.4)
+		(transformations=MultipleTransformation probability=440 target=/materials/materials.8 name="[Water] + Heat = [Steam]"
+			(reactants materials=/materials/materials.5,/materials/materials.7,/materials/materials.6)
+			(catalysts materials=/materials/materials.11,/materials/materials.13,/materials/materials.12,/materials/materials.23)
+		)
+		(transformations=Transformation probability=350 isStaticTransformation=true target=/materials/materials.7 reactant=/materials/materials.6)
+		(transformations=MultipleTransformation probability=50 target=/materials/materials.5 name="[SnowHard] + [All] = [Water]"
+			(reactants materials=/materials/materials.7)
+			(catalysts materials=/materials/materials.7,/materials/materials.6 filterMode=true)
+		)
+		(transformations=Transformation probability=90 target=/materials/materials.5 reactant=/materials/materials.8)
+		(transformations=Transformation probability=250 target=/materials/materials.5 reactant=/materials/materials.8 catalyst=/materials/materials.7)
+		(transformations=Transformation probability=250 target=/materials/materials.9 reactant=/materials/materials.2 catalyst=/materials/materials.5)
+		(transformations=Transformation probability=60 isStaticTransformation=true target=/materials/materials.2 reactant=/materials/materials.9)
+		(transformations=Transformation probability=125 isStaticTransformation=true target=/materials/materials.10 reactant=/materials/materials.9 catalyst=/materials/materials.0)
+		(transformations=Transformation probability=100 isStaticTransformation=true target=/materials/materials.10 reactant=/materials/materials.9 catalyst=/materials/materials.5)
+		(transformations=Transformation probability=75 target=/materials/materials.9 reactant=/materials/materials.2 catalyst=/materials/materials.9)
+		(transformations=Transformation probability=340 target=/materials/materials.13 reactant=/materials/materials.12)
+		(transformations=Transformation probability=700 target=/materials/materials.0 reactant=/materials/materials.13)
+		(transformations=Transformation probability=700 target=/materials/materials.11 reactant=/materials/materials.13 catalyst=/materials/materials.0)
+		(transformations=Transformation probability=470 target=/materials/materials.12 reactant=/materials/materials.14 catalyst=/materials/materials.11)
+		(transformations=Transformation probability=450 target=/materials/materials.12 reactant=/materials/materials.14 catalyst=/materials/materials.12)
+		(transformations=Transformation probability=1000 target=/materials/materials.12 reactant=/materials/materials.14 catalyst=/materials/materials.13)
+		(transformations=Transformation probability=350 target=/materials/materials.12 reactant=/materials/materials.10 catalyst=/materials/materials.11)
+		(transformations=Transformation probability=350 target=/materials/materials.12 reactant=/materials/materials.10 catalyst=/materials/materials.12)
+		(transformations=Transformation probability=1000 target=/materials/materials.12 reactant=/materials/materials.10 catalyst=/materials/materials.13)
+		(transformations=Transformation probability=2 target=/materials/materials.10 reactant=/materials/materials.5 catalyst=/materials/materials.10)
+		(transformations=Transformation probability=200 target=/materials/materials.17 reactant=/materials/materials.15 catalyst=/materials/materials.11)
+		(transformations=Transformation probability=175 target=/materials/materials.17 reactant=/materials/materials.15 catalyst=/materials/materials.12)
+		(transformations=Transformation probability=1000 target=/materials/materials.17 reactant=/materials/materials.15 catalyst=/materials/materials.13)
+		(transformations=Transformation probability=1000 target=/materials/materials.17 reactant=/materials/materials.15 catalyst=/materials/materials.24)
+		(transformations=Transformation probability=200 target=/materials/materials.16 reactant=/materials/materials.24)
+		(transformations=Transformation probability=180 target=/materials/materials.24 reactant=/materials/materials.17)
+		(transformations=Transformation probability=600 target=/materials/materials.12 reactant=/materials/materials.17 catalyst=/materials/materials.0)
+		(transformations=Transformation probability=80 isStaticTransformation=true target=/materials/materials.15 reactant=/materials/materials.16)
+		(transformations=Transformation probability=1000 propagation=3 target=/materials/materials.23 reactant=/materials/materials.20 catalyst=/materials/materials.11)
+		(transformations=Transformation probability=1000 propagation=4 target=/materials/materials.23 reactant=/materials/materials.20 catalyst=/materials/materials.23)
+		(transformations=Transformation probability=1000 propagation=3 target=/materials/materials.23 reactant=/materials/materials.20 catalyst=/materials/materials.13)
+		(transformations=Transformation probability=1000 propagation=3 target=/materials/materials.23 reactant=/materials/materials.20 catalyst=/materials/materials.12)
+		(transformations=Transformation probability=1000 target=/materials/materials.23 reactant=/materials/materials.20 catalyst=/materials/materials.18)
+		(transformations=Transformation probability=400 propagation=2 target=/materials/materials.22 reactant=/materials/materials.21 catalyst=/materials/materials.11)
+		(transformations=Transformation probability=400 propagation=2 target=/materials/materials.22 reactant=/materials/materials.21 catalyst=/materials/materials.13)
+		(transformations=Transformation probability=400 propagation=2 target=/materials/materials.22 reactant=/materials/materials.21 catalyst=/materials/materials.12)
+		(transformations=Transformation probability=200 target=/materials/materials.22 reactant=/materials/materials.21 catalyst=/materials/materials.22)
+		(transformations=Transformation probability=200 target=/materials/materials.21 reactant=/materials/materials.22)
+		(transformations=Transformation probability=35 target=/materials/materials.11 reactant=/materials/materials.22 catalyst=/materials/materials.0)
+		(transformations=Transformation probability=175 target=/materials/materials.11 reactant=/materials/materials.0 catalyst=/materials/materials.22)
+		(transformations=Transformation probability=260 target=/materials/materials.21 reactant=/materials/materials.22 catalyst=/materials/materials.5)
+		(transformations=Transformation probability=80 target=/materials/materials.8 reactant=/materials/materials.5 catalyst=/materials/materials.22)
+		(transformations=Transformation probability=450 target=/materials/materials.13 reactant=/materials/materials.23)
+		(transformations=MultipleTransformation probability=350 target=/materials/materials.11 name="[All] + [Sparkle] = [Fire]"
+			(reactants materials=/materials/materials.11,/materials/materials.13,/materials/materials.12 filterMode=true)
+			(catalysts materials=/materials/materials.23)
+		)
+		(transformations=Transformation probability=1000 propagation=5 target=/materials/materials.13 reactant=/materials/materials.0 catalyst=/materials/materials.23)
+		(transformations=Transformation probability=50 propagation=3 target=/materials/materials.26 reactant=/materials/materials.25 catalyst=/materials/materials.0)
+		(transformations=Transformation probability=560 target=/materials/materials.25 reactant=/materials/materials.26)
+		(transformations=MultipleTransformation probability=160 target=/materials/materials.0 name="[Acid] + [All] = [Void]"
+			(reactants materials=/materials/materials.25,/materials/materials.26)
+			(catalysts materials=/materials/materials.25,/materials/materials.0,/materials/materials.26,/materials/materials.1,/materials/materials.5,/materials/materials.8 filterMode=true)
+		)
+		(transformations=MultipleTransformation probability=150 target=/materials/materials.0 name="[All] + [Acid] = [Void]"
+			(reactants materials=/materials/materials.0,/materials/materials.25,/materials/materials.26,/materials/materials.1,/materials/materials.8,/materials/materials.5,/materials/materials.4,/materials/materials.2,/materials/materials.9,/materials/materials.10,/materials/materials.14 filterMode=true)
+			(catalysts materials=/materials/materials.25,/materials/materials.26)
+		)
+		(transformations=MultipleTransformation probability=200 target=/materials/materials.8 name="[Wet] + [Acid] = [Vapor]"
+			(reactants materials=/materials/materials.2,/materials/materials.4,/materials/materials.14)
+			(catalysts materials=/materials/materials.25,/materials/materials.26)
+		)
+		(transformations=MultipleTransformation probability=200 target=/materials/materials.0 name="[Dry] + [Acid] = [Vapor]"
+			(reactants materials=/materials/materials.4,/materials/materials.2)
+			(catalysts materials=/materials/materials.25,/materials/materials.26)
+		)
+		(transformations=MultipleTransformation probability=4 target=/materials/materials.0 name="[Acid] + [Wall] = [Void]"
+			(reactants materials=/materials/materials.25,/materials/materials.26)
+			(catalysts materials=/materials/materials.3)
+		)
+		(transformations=MultipleTransformation probability=35 target=/materials/materials.0 name="[Wall] + [Acid] = [Void]"
+			(reactants materials=/materials/materials.3)
+			(catalysts materials=/materials/materials.25,/materials/materials.26)
+		)
+		(transformations=Transformation probability=220 target=/materials/materials.19 reactant=/materials/materials.18)
+		(transformations=Transformation probability=175 target=/materials/materials.18 reactant=/materials/materials.19)
+		(transformations=MultipleTransformation probability=235 target=/materials/materials.11 name="[All] + [Lava] = [Fire]"
+			(reactants materials=/materials/materials.18,/materials/materials.19,/materials/materials.0,/materials/materials.11,/materials/materials.13,/materials/materials.12,/materials/materials.23 filterMode=true)
+			(catalysts materials=/materials/materials.18,/materials/materials.19)
+		)
+		(transformations=Transformation probability=200 target=/materials/materials.11 reactant=/materials/materials.0 catalyst=/materials/materials.19)
+		(transformations=Transformation probability=450 target=/materials/materials.18 reactant=/materials/materials.19 catalyst=/materials/materials.18)
+		(transformations=Transformation probability=300 target=/materials/materials.16 reactant=/materials/materials.15 catalyst=/materials/materials.18)
+		(transformations=Transformation probability=500 target=/materials/materials.18 reactant=/materials/materials.1 catalyst=/materials/materials.19)
+		(transformations=Transformation probability=200 target=/materials/materials.18 reactant=/materials/materials.2 catalyst=/materials/materials.19)
+		(transformations=Transformation probability=45 target=/materials/materials.11 reactant=/materials/materials.3 catalyst=/materials/materials.18)
+		(transformations=Transformation probability=350 target=/materials/materials.18 reactant=/materials/materials.19 catalyst=/materials/materials.4)
+		(transformations=Transformation probability=30 target=/materials/materials.3 reactant=/materials/materials.4 catalyst=/materials/materials.18)
+		(transformations=Transformation probability=50 target=/materials/materials.8 reactant=/materials/materials.4 catalyst=/materials/materials.19)
+		(transformations=Transformation probability=260 target=/materials/materials.0 reactant=/materials/materials.5 catalyst=/materials/materials.18)
+		(transformations=MultipleTransformation probability=350 target=/materials/materials.8 name="[Snow] + [Lava] = [Steam]"
+			(reactants materials=/materials/materials.6,/materials/materials.7)
+			(catalysts materials=/materials/materials.18,/materials/materials.19)
+		)
+		(transformations=Transformation probability=500 target=/materials/materials.8 reactant=/materials/materials.5 catalyst=/materials/materials.19)
+		(transformations=MultipleTransformation probability=50 target=/materials/materials.0 name="[LavaBoiling] + [Water] = [Void]"
+			(reactants materials=/materials/materials.19)
+			(catalysts materials=/materials/materials.5,/materials/materials.6,/materials/materials.7)
+		)
+		(transformations=Transformation probability=200 target=/materials/materials.0 reactant=/materials/materials.18 catalyst=/materials/materials.5)
+		(transformations=MultipleTransformation probability=240 target=/materials/materials.0 name="[Lava] + [Snow] = [Void]"
+			(reactants materials=/materials/materials.18)
+			(catalysts materials=/materials/materials.6,/materials/materials.7)
+		)
+		(transformations=MultipleTransformation probability=300 target=/materials/materials.5 name="[Snow] + [Fire] = [Water]"
+			(reactants materials=/materials/materials.6,/materials/materials.7)
+			(catalysts materials=/materials/materials.11,/materials/materials.13,/materials/materials.12,/materials/materials.16)
+		)
+	)
+)

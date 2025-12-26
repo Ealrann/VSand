@@ -1,0 +1,140 @@
+import org.gradle.internal.os.OperatingSystem
+import org.mini2Dx.butler.task.PushTask
+
+plugins {
+	id 'application'
+	id 'distribution'
+	id 'org.mini2Dx.butler'
+	id 'org.logoce.lmf.gradle-plugin' version "$logoceVersion"
+}
+
+lmf {
+	includes = ['model/**/*.lm']
+}
+
+def conf = new ConfigSlurper().parse(file("src/main/resources/version.properties").toURI().toURL())
+version = conf.version
+
+switch ( OperatingSystem.current() ) {
+	case OperatingSystem.WINDOWS:
+		project.ext.OS = "windows"
+		break
+	case OperatingSystem.LINUX:
+		project.ext.OS = "linux"
+		break
+	case OperatingSystem.MAC_OS:
+		project.ext.OS = "macos"
+		break
+}
+
+def imageDir = layout.buildDirectory.dir('image')
+def modulesDir = imageDir.map { it.dir('modules') }
+
+var cleanJlink = tasks.register('cleanJlink', Delete) {
+	delete imageDir
+}
+
+var copyReleng = tasks.register('copyReleng', Copy) {
+	from "releng/$project.ext.OS"
+	into imageDir
+}
+
+var copyModules = tasks.register('copyModules', Copy) {
+	from layout.buildDirectory.dir('install/org.sheepy.vsand/lib')
+	into modulesDir
+}
+
+var jlinkRuntime = tasks.register('jlinkRuntime', Exec) {
+	dependsOn(tasks.named('installDist'), cleanJlink)
+	def javaHome = System.properties.'java.home'
+	workingDir layout.buildDirectory.get().asFile
+	commandLine "$javaHome/bin/jlink",
+			'--strip-debug',
+			'--no-header-files',
+			'--no-man-pages',
+			'--exclude-files', '**java_*.properties',
+			'--compress', '2',
+			'--add-modules', "java.base,java.xml,jdk.unsupported",
+			'--output', imageDir.get().asFile.absolutePath
+}
+
+copyReleng.configure { dependsOn(jlinkRuntime) }
+copyModules.configure { dependsOn(jlinkRuntime) }
+
+tasks.register('jlink') {
+	dependsOn(copyReleng, copyModules)
+}
+
+tasks.named('clean').configure {dependsOn(cleanJlink) }
+
+butler {
+	user = "ealrann"
+	game = "vsand"
+	userVersion = project.version
+}
+
+tasks.register('butlerPushWindows', PushTask) {
+	binDirectory = new File("$projectDir/build/image/")
+	channel = "windows"
+}
+
+tasks.register('butlerPushLinux', PushTask) {
+	binDirectory = new File("$projectDir/build/image")
+	channel = "linux"
+}
+
+run {
+	enableAssertions = true
+}
+
+application {
+	mainModule = 'org.sheepy.vsand'
+	mainClass = 'org.sheepy.vsand.VSandApplicationLauncher'
+	// mainClass = 'org.sheepy.vsand.VSandBenchmarkLauncher'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+// Temporary: https://github.com/gradle/gradle/issues/890#issuecomment-613427968
+test { classpath = configurations.named(sourceSets.test.runtimeClasspathConfigurationName).get() + files(compileTestJava) }
+dependencies { testImplementation project(path) }
+// end Temporary ---------------------------------------------------------------
+
+def lwjglFfmExports = "org.lwjgl/org.lwjgl.system.ffm=org.lwjgl.glfw,org.lwjgl.openal,org.lwjgl.stb,org.lwjgl.vulkan,org.lwjgl.nuklear"
+
+tasks.withType(Test).configureEach {
+	jvmArgs '--add-exports', lwjglFfmExports
+}
+
+tasks.withType(JavaExec).configureEach {
+	jvmArgs '--add-exports', lwjglFfmExports
+}
+
+dependencies {
+
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.api'
+	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.api'
+
+	api "org.logoce.lmf:logoce.lmf.core.api"
+
+	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.base'
+	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.nuklear'
+	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.openal.core'
+
+	testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+	testImplementation "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
+
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
+}
+
+sourceSets {
+	main {
+		java.srcDirs = ['src/main/model',
+						'src/main/generated',
+						'src/main/java',
+						'src/main/shader']
+	}
+}

@@ -1,0 +1,99 @@
+(MetaModel domain=org.sheepy.vsand.model name=VSand
+	imports=org.sheepy.lily.core.model.Application,org.sheepy.lily.core.model.Types,org.sheepy.lily.core.model.Resource,org.sheepy.lily.vulkan.model.Process,org.sheepy.lily.vulkan.model.VulkanResource,org.sheepy.lily.vulkan.extra.model.Nuklear
+
+	(Definition VSandApplication
+		(includes group=#Application@Application)
+		(-contains name=materials @Materials [1..1])
+		(-contains name=transformations @Transformations [1..1])
+		(+contains name=drawQueue @DrawCommand [0..*])
+		(+refers name=mainMaterial @Material [0..1])
+		(+refers name=secondaryMaterial @Material [0..1])
+		(+att name=nextMode datatype=#LMCore@boolean [0..1] defaultValue=false)
+		(+att name=paused datatype=#LMCore@boolean [0..1] defaultValue=false)
+		(+att name=speed datatype=#LMCore@int [0..1] defaultValue=1)
+		(+att name=forceClear datatype=#LMCore@boolean [0..1] defaultValue=false)
+		(+att name=showSleepZones datatype=#LMCore@boolean [0..1] defaultValue=false)
+		(+att name=brushSize datatype=#LMCore@int [0..1] defaultValue=4)
+		(+refers name=boardUpdateTask #Process@CompositeTask [0..1])
+		(+att name=size datatype=#Types@Vector2i [1..1]))
+
+	(Definition BoardConstantBuffer
+		(includes group=#VulkanResource@ConstantBuffer)
+		(+att name=currentBoardBuffer datatype=#LMCore@int [0..1] defaultValue=0))
+
+	(Definition DrawConstantBuffer
+		(includes group=@BoardConstantBuffer)
+		(+refers name=boardConstantBuffer @BoardConstantBuffer [0..1]))
+
+	(Definition PixelConstantBuffer
+		(includes group=@BoardConstantBuffer)
+		(+refers name=boardConstantBuffer @BoardConstantBuffer [0..1]))
+
+	(Group DrawCommand
+		(+refers name=material @Material [0..1]))
+
+	(Definition DrawCircle
+		(includes group=@DrawCommand)
+		(+att name=x datatype=#LMCore@int [0..1])
+		(+att name=y datatype=#LMCore@int [0..1])
+		(+att name=size datatype=#LMCore@int [0..1]))
+
+	(Definition DrawSquare
+		(includes group=@DrawCommand)
+		(+att name=x datatype=#LMCore@int [0..1])
+		(+att name=y datatype=#LMCore@int [0..1])
+		(+att name=size datatype=#LMCore@int [0..1]))
+
+	(Definition DrawLine
+		(includes group=@DrawCommand)
+		(+att name=x1 datatype=#LMCore@int [0..1])
+		(+att name=y1 datatype=#LMCore@int [0..1])
+		(+att name=x2 datatype=#LMCore@int [0..1])
+		(+att name=y2 datatype=#LMCore@int [0..1])
+		(+att name=size datatype=#LMCore@int [0..1]))
+
+	(Definition Materials
+		(+contains name=materials @Material [0..*]))
+
+	(Definition Material
+		(+att name=name datatype=#LMCore@string [0..1])
+		(+att name=isStatic datatype=#LMCore@boolean [0..1])
+		(+att name=density datatype=@signedInt [0..1])
+		(+att name=runoff datatype=#LMCore@int [0..1])
+		(+att name=r datatype=#LMCore@int [0..1] defaultValue=0)
+		(+att name=g datatype=#LMCore@int [0..1] defaultValue=0)
+		(+att name=b datatype=#LMCore@int [0..1] defaultValue=0)
+		(+att name=userFriendly datatype=#LMCore@boolean [0..1] defaultValue=true)
+		(+refers name=paintSound #Resource@Sound [0..1])
+		(+att name=pitch datatype=#LMCore@float [1..1] defaultValue=1f))
+
+	(Definition Transformations
+		(+contains name=transformations @ITransformation [0..*]))
+
+	(Definition Transformation
+		(includes group=@ITransformation)
+		(+refers name=reactant @Material [0..1])
+		(+refers name=catalyst @Material [0..1]))
+
+	(Definition MultipleTransformation
+		(includes group=@ITransformation)
+		(+contains name=reactants @MaterialProvider [1..1])
+		(+contains name=catalysts @MaterialProvider [1..1])
+		(+att name=name datatype=#LMCore@string [0..1] defaultValue=""))
+
+	(Definition MaterialProvider
+		(+refers name=materials @Material [0..*])
+		(+att name=filterMode datatype=#LMCore@boolean [1..1] defaultValue=false))
+
+	(Group ITransformation
+		(+att name=probability datatype=#LMCore@int [0..1])
+		(+att name=propagation datatype=#LMCore@int [0..1] defaultValue=1)
+		(+att name=isStaticTransformation datatype=#LMCore@boolean [0..1])
+		(+refers name=target @Material [0..1]))
+
+	(Definition InputMaterialProvider
+		(includes group=#Nuklear@IInputProvider)
+		(+refers name=materials @Materials [1..1]))
+
+	(Unit name=signedInt matcher="rgx_match:<-?[0-9]+>" defaultValue=0 primitive=int)
+)

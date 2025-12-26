@@ -1,0 +1,709 @@
+#version 450
+
+#include "rand_utils.glsl"
+
+#define UP    0
+#define DOWN  1
+#define RIGHT 2
+#define LEFT  3
+
+#define TO_UP    1
+#define TO_DOWN  2
+#define TO_RIGHT 4
+#define TO_LEFT  8
+
+#define TARGET_VALUE_POSITION 16u
+#define INITIAL_VALUE_POSITION 24u
+
+#define EFFECTIVE_SIZE 16
+#define WORKGROUP_SIZE 20
+
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
+
+layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
+
+const int CHUNK_WIDTH = WIDTH / EFFECTIVE_SIZE;
+const int CHUNK_HEIGHT = HEIGHT / EFFECTIVE_SIZE;
+
+const int TRANSFOM_ARRAY_COUNT = (MATERIAL_COUNT * MATERIAL_COUNT + 3) / 4;
+const int WORKGROUP_AREA = WORKGROUP_SIZE * WORKGROUP_SIZE;
+
+const uint STATIC_TRANSFO_FLAG = 1 << 30;
+const uint MOVED_TAG = 1 << 4;
+const uint TARGET_VALUE_MASK = 255u << TARGET_VALUE_POSITION;
+
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	int padding;
+	vec4 color;
+};
+
+// Random number, change each frame.
+layout (push_constant) uniform PushConstants {
+	float random;
+	uint boardToWrite;
+} pushConstants;
+
+// The definition of materials.
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+} configuration;
+
+// The description of the transformations.
+// Each cell contains :
+// 1 bit for the sign
+// 1 bit for isStatic (if the transformation should occur only if the material doesn't move.
+// 14 bits for the probability (not all used, probability is only an integer from 0 to 1000).
+// 8 bits for the propagated distance.
+// 8 bits for the target value.
+layout(binding = 1) uniform STransformation
+{
+	// float[] is horrible in uniform buffers (std140), so we use uvec4[]
+	uvec4 data[TRANSFOM_ARRAY_COUNT];
+}transformations;
+
+// The chunk state board.
+layout(binding = 2) buffer SChunks
+{
+	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
+}chunks;
+
+// The game board, with all the values.
+layout(binding = 3) buffer SBoard1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+}board1;
+
+// The next game board, with all the values.
+layout(binding = 4) buffer SBoard2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+}board2;
+
+
+// DecisionBoard store necessary informations around movement.
+// Each 32 bit value (one per cell) stores:
+// 8 bits for the initial value
+// 8 bits for the swapped value
+// 8 unused bits with a random value.
+// 3 unused bits.
+// 1 bit, true if the cell is swapped.
+// 4 bits for the direction we intend to swap.
+shared uint decision[WORKGROUP_SIZE][WORKGROUP_SIZE];
+shared uint board[WORKGROUP_SIZE][WORKGROUP_SIZE];
+shared bool chunkActive;
+shared bvec4 chunkNeighborActive;
+shared bool updated;
+shared Entry materials[MATERIAL_COUNT];
+
+const uvec4 unswizzleVec = uvec4(0xFF, 0xFF00, 0xFF0000, 0xFF000000);
+const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
+const ivec4 farBorderLoc   = ivec4(0, 0, WORKGROUP_SIZE - 1, WORKGROUP_SIZE - 1);
+const ivec4 closeBorderLoc = ivec4(1, 1, WORKGROUP_SIZE - 2, WORKGROUP_SIZE - 2);
+const ivec4 innerBorderLoc = ivec4(2, 2, WORKGROUP_SIZE - 3, WORKGROUP_SIZE - 3);
+
+
+bool chooseTo(ivec2 loc, ivec2 localLoc);
+bool acceptFrom(ivec2 loc, ivec2 localLoc);
+bool swap(ivec2 loc, ivec2 localLoc);
+bool transformation(ivec2 loc, ivec2 localLoc, bool moved);
+int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity);
+bool invalidCell(ivec2 loc);
+void fillBoardSharedBuffer(ivec2 loc, ivec2 localLoc);
+uint getValue(ivec2 loc);
+bool transform(ivec2 loc, ivec2 localLoc, uint transfo, bool moved);
+
+/**
+ * Here, we will choose one favourite destination.
+ */
+void main()
+{
+	ivec2 loc = ivec2(gl_GlobalInvocationID.xy) - 2 - (4 * ivec2(gl_WorkGroupID.xy));
+	ivec2 localLoc = ivec2(gl_LocalInvocationID.xy);
+
+	bool evenCell = (loc.x & 1) == 0 && (loc.y & 1) == 0;
+	bool invalid = invalidCell(loc);
+	ivec4 dualLoc = ivec4(localLoc.xyxy);
+
+	bvec4 farBorderVec = equal(dualLoc, farBorderLoc);
+	bool farBorder = any(farBorderVec);
+
+	bvec4 closeBorderVec = equal(dualLoc, closeBorderLoc);
+	bool closeBorder = any(closeBorderVec);
+
+	bvec4 innerBorderVec = equal(dualLoc, innerBorderLoc);
+	bool innerBorder = any(innerBorderVec);
+
+	if(invalid)
+	{
+		board[localLoc.x][localLoc.y] = 0;
+	}
+	else if (evenCell)
+	{
+		fillBoardSharedBuffer(loc, localLoc);
+	}
+
+	if(gl_LocalInvocationIndex == 0)
+	{
+		updated = false;
+		chunkActive = ((chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y] & 1) != 0);
+		if(gl_WorkGroupID.x > 0)
+			chunkNeighborActive.x = ((chunks.data[(gl_WorkGroupID.x - 1) * CHUNK_HEIGHT + gl_WorkGroupID.y] & 1) != 0);
+		else
+			chunkNeighborActive.x = false;
+		if(gl_WorkGroupID.y > 0)
+			chunkNeighborActive.y = ((chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y - 1] & 1) != 0);
+		else
+			chunkNeighborActive.y = false;
+		if(gl_WorkGroupID.x < CHUNK_WIDTH - 1)
+			chunkNeighborActive.z = ((chunks.data[(gl_WorkGroupID.x + 1) * CHUNK_HEIGHT + gl_WorkGroupID.y] & 1) != 0);
+		else
+			chunkNeighborActive.z = false;
+		if(gl_WorkGroupID.y < CHUNK_HEIGHT - 1)
+			chunkNeighborActive.w = ((chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y + 1] & 1) != 0);
+		else
+			chunkNeighborActive.w = false;
+	}
+
+	if(gl_LocalInvocationIndex < MATERIAL_COUNT)
+	{
+		materials[gl_LocalInvocationIndex] = configuration.materials[gl_LocalInvocationIndex];
+	}
+
+
+	barrier();
+
+
+	uint currentValue = board[localLoc.x][localLoc.y];
+	// Erase Tag,
+	// Erase previous value
+	// and Store the current value to the decision buffer.
+	decision[localLoc.x][localLoc.y] = currentValue << INITIAL_VALUE_POSITION;
+
+	bool dynamicCell = materials[currentValue].isStatic == 0;
+	bool borderActive = (((innerBorderVec.x || closeBorderVec.x) && chunkNeighborActive.x)
+					  || ((innerBorderVec.y || closeBorderVec.y) && chunkNeighborActive.y)
+					  || ((innerBorderVec.z || closeBorderVec.z) && chunkNeighborActive.z)
+					  || ((innerBorderVec.w || closeBorderVec.w) && chunkNeighborActive.w));
+
+	bool activeCell = !invalid && dynamicCell && (chunkActive || borderActive);
+
+	bool choosedTo = false;
+	if (activeCell)
+	{
+		choosedTo = chooseTo(loc, localLoc);
+	}
+
+
+	barrier();
+
+
+	bool acceptedFrom = false;
+	if(!choosedTo && !farBorder && activeCell)
+	{
+		acceptedFrom = acceptFrom(loc, localLoc);
+	}
+
+
+	barrier();
+
+
+	bool swapped = false;
+	if((choosedTo || acceptedFrom) && !closeBorder && !farBorder)
+	{
+		updated = true;
+		swapped = swap(loc, localLoc);
+	}
+
+
+	barrier();
+
+
+	if(!closeBorder && !farBorder)
+	{
+		if(transformation(loc, localLoc, swapped))
+		{
+			updated = true;
+		}
+	}
+
+
+	barrier();
+
+
+	if(evenCell && !invalid && (updated || chunkActive) && !farBorder && !closeBorder)
+	{
+		uvec2 swizzledLoc = loc >> 1;
+
+		uint value = board[localLoc.x][localLoc.y]
+				  | (board[localLoc.x + 1][localLoc.y] << 8)
+				  | (board[localLoc.x][localLoc.y + 1] << 16)
+				  | (board[localLoc.x + 1][localLoc.y + 1] << 24);
+
+		if(pushConstants.boardToWrite == 0)
+			board1.data[swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y] = value;
+		else
+			board2.data[swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y] = value;
+	}
+
+
+	if(gl_LocalInvocationIndex == 1)
+	{
+		if(updated)
+		{
+			chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y] = 3;
+		}
+		else
+		{
+			// Clean all except 2
+			chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y] &= 2;
+		}
+	}
+}
+
+bool invalidCell(ivec2 loc)
+{
+	return (loc.x < 0 || loc.y < 0 || loc.x >= WIDTH || loc.y >= HEIGHT);
+}
+
+void fillBoardSharedBuffer(ivec2 loc, ivec2 localLoc)
+{
+	ivec2 swizzled = loc >> 1;
+	uint value = pushConstants.boardToWrite == 0 ? board2.data[swizzled.x * SWIZZLED_HEIGHT + swizzled.y] : board1.data[swizzled.x * SWIZZLED_HEIGHT + swizzled.y];
+
+	uvec4 unswizzledValue = (unswizzleVec & value) >> unswizzleOffset;
+
+	board[localLoc.x][localLoc.y]         = unswizzledValue.x;
+	board[localLoc.x + 1][localLoc.y]     = unswizzledValue.y;
+	board[localLoc.x][localLoc.y + 1]     = unswizzledValue.z;
+	board[localLoc.x + 1][localLoc.y + 1] = unswizzledValue.w;
+}
+
+uint getValue(ivec2 loc)
+{
+	ivec2 swizzled = loc >> 1;
+	uint offset = ((loc.x & 1)	| ((loc.y & 1) << 1)) << 3;
+	uint value = pushConstants.boardToWrite == 0 ? board2.data[swizzled.x * SWIZZLED_HEIGHT + swizzled.y] : board1.data[swizzled.x * SWIZZLED_HEIGHT + swizzled.y];
+
+	return ((value >> offset) & 0xFFu);
+}
+
+bool chooseTo(ivec2 loc, ivec2 localLoc)
+{
+	bool res = false;
+
+	uint currentValue = board[localLoc.x][localLoc.y];
+	int density = materials[currentValue].density;
+	uint valueDown = localLoc.y < WORKGROUP_SIZE - 1 ? board[localLoc.x][localLoc.y + 1] : getValue(ivec2(loc.x, loc.y + 1));
+
+	bool wantToFallDown = materials[valueDown].isStatic == 0
+			&& density > materials[valueDown].density;
+	bool luck = false;
+	if (wantToFallDown)
+	{
+        luck = random(uvec4(loc, floatBitsToUint(pushConstants.random), 0)) < 0.92;
+		if (luck)
+		{
+			decision[localLoc.x][localLoc.y] |= uint(TO_DOWN) | (valueDown << TARGET_VALUE_POSITION);
+		}
+		// tag this chunk active, to prevent a no luck sleep.
+		res = true;
+	}
+
+	if(!wantToFallDown || !luck)
+	{
+		// If not falling down, we check the right/left move
+		uint valueLeft = localLoc.x > 0 ? board[localLoc.x - 1][localLoc.y] : getValue(ivec2(loc.x - 1, loc.y));
+		uint valueRight = localLoc.x < WORKGROUP_SIZE - 1 ? board[localLoc.x + 1][localLoc.y] : getValue(ivec2(loc.x + 1, loc.y));
+		uint valueUp = localLoc.y > 0 ? board[localLoc.x][localLoc.y - 1] : getValue(ivec2(loc.x, loc.y - 1));
+		bool isPressed = valueUp == currentValue;
+		int runoff = materials[currentValue].runoff;
+		int distLeft = runoff;
+		int distRight = runoff;
+		luck = pushConstants.random < 0.3;
+
+		if (materials[valueLeft].density < density && materials[valueLeft].isStatic == 0)
+		{
+			if(isPressed && luck)
+				distLeft = 0;
+			else
+			{
+				distLeft = checkFree(loc, localLoc, runoff, -1, density);
+				if(isPressed)
+					res = true; // prevent no luck sleep
+			}
+		}
+		if (materials[valueRight].density < density && materials[valueRight].isStatic == 0)
+		{
+			if(isPressed && luck)
+				distRight = 0;
+			else
+			{
+				distRight = checkFree(loc, localLoc, runoff, 1, density);
+				if(isPressed)
+					res = true; // prevent no luck sleep
+			}
+		}
+
+		bool right = distRight < runoff;
+		bool left = distLeft < runoff;
+		uint targetValue = 0;
+
+		if (right || left)
+		{
+			uint tag = 0;
+			if (right && left)
+			{
+				if (distRight < distLeft)
+				{
+					tag = TO_RIGHT;
+					targetValue = valueRight;
+				}
+				else if (distRight > distLeft)
+				{
+					tag = TO_LEFT;
+					targetValue = valueLeft;
+				}
+				else // if (distLeft == distRight)
+				{
+					if (random(uvec4(loc, floatBitsToUint(pushConstants.random), 1)) < 0.50)
+					{
+						tag = TO_RIGHT;
+						targetValue = valueRight;
+					}
+					else
+					{
+						tag = TO_LEFT;
+						targetValue = valueLeft;
+					}
+				}
+			}
+			else
+			{
+				if (right)
+				{
+					tag = TO_RIGHT;
+					targetValue = valueRight;
+				}
+				else if (left)
+				{
+					tag = TO_LEFT;
+					targetValue = valueLeft;
+				}
+			}
+			decision[localLoc.x][localLoc.y] |= tag | (targetValue << TARGET_VALUE_POSITION);
+			res = true;
+		}
+	}
+
+	return res;
+}
+
+bool acceptFrom(ivec2 loc, ivec2 localLoc)
+{
+	bool res = false;
+
+	bool validTarget;
+	uint targetValue;
+	int targetDensity;
+	uint invertDir;
+	ivec2 targetLoc;
+	ivec2 localTarget;
+	uint iDir;
+	float rand;
+
+	uint value = board[localLoc.x][localLoc.y];
+	int density = materials[value].density;
+	uint decisionValue = decision[localLoc.x][localLoc.y];
+
+	for (int i = 0; i < 3; i++)
+	{
+		// The down is impossible here:
+		// We cannot be the target of a heavier down object.
+		switch(i)
+		{
+			case 0 :
+				iDir = UP;
+				break;
+			case 1 :
+				rand = random(uvec4(loc, floatBitsToUint(pushConstants.random), 2));
+				iDir = rand < 0.50 ? RIGHT : LEFT;
+				break;
+			case 2 :
+				iDir = iDir == RIGHT ? LEFT : RIGHT;
+				break;
+		}
+
+		// resolve the direction
+		invertDir = -1u;
+		switch (iDir)
+		{
+		case UP:
+			targetLoc = ivec2(loc.x, loc.y - 1);
+			localTarget = ivec2(localLoc.x, localLoc.y - 1);
+			invertDir = TO_DOWN;
+			break;
+		case RIGHT:
+			targetLoc = ivec2(loc.x + 1, loc.y);
+			localTarget = ivec2(localLoc.x + 1, localLoc.y);
+			invertDir = TO_LEFT;
+			break;
+		case LEFT:
+			targetLoc = ivec2(loc.x - 1, loc.y);
+			localTarget = ivec2(localLoc.x - 1, localLoc.y);
+			invertDir = TO_RIGHT;
+			break;
+		}
+
+		validTarget = !invalidCell(targetLoc);
+		targetValue =	board[localTarget.x][localTarget.y];
+		targetDensity =	materials[targetValue].density;
+
+		if (targetDensity > density
+				&& (!validTarget
+						|| ((decision[localTarget.x][localTarget.y]
+								& invertDir) != 0)))
+		{
+			// Erase the target value to put the new one
+			decision[localLoc.x][localLoc.y] = (decisionValue & (0xFFFFFF00u ^ TARGET_VALUE_MASK))
+											| 1u << iDir
+											| (targetValue << TARGET_VALUE_POSITION);
+
+			res = true;
+			i = 3; //break;
+		}
+	}
+
+	return res;
+}
+
+bool swap(ivec2 loc, ivec2 localLoc)
+{
+	bool res = false;
+	int direction;
+	uint value;
+	uint targetValue;
+	uint invertDir;
+	bool validPosition;
+	ivec2 target;
+	ivec2 localTarget;
+
+	// We will take the value of our target neighbor if he does the same move.
+	uint dir = decision[localLoc.x][localLoc.y] & 15u;
+
+	if (dir != 0)
+	{
+		value = board[localLoc.x][localLoc.y];
+		// resolve the direction
+		invertDir = 0;
+		target = loc;
+		localTarget = localLoc;
+		switch (dir)
+		{
+		case TO_RIGHT:
+			target.x += 1;
+			localTarget.x += 1;
+			invertDir = TO_LEFT;
+			break;
+		case TO_LEFT:
+			target.x -= 1;
+			localTarget.x -= 1;
+			invertDir = TO_RIGHT;
+			break;
+		case TO_UP:
+			target.y -= 1;
+			localTarget.y -= 1;
+			invertDir = TO_DOWN;
+			break;
+		default:
+			target.y += 1;
+			localTarget.y += 1;
+			invertDir = TO_UP;
+			break;
+		}
+
+		validPosition = !invalidCell(target);
+		if (!validPosition || (decision[localTarget.x][localTarget.y] & invertDir) != 0)
+		{
+			targetValue = (decision[localLoc.x][localLoc.y] & TARGET_VALUE_MASK) >> TARGET_VALUE_POSITION;
+
+			decision[localLoc.x][localLoc.y] = ((decision[localLoc.x][localLoc.y] << 8) >> 8) | (targetValue << INITIAL_VALUE_POSITION)
+					| MOVED_TAG;
+
+			board[localLoc.x][localLoc.y] = targetValue;
+			res = true;
+		}
+	}
+	return res;
+}
+
+
+void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uint propagation);
+
+bool transformation(ivec2 loc, ivec2 localLoc, bool moved)
+{
+	bool res = false;
+	uint currentValue = decision[localLoc.x][localLoc.y] >> 24;
+
+	// UP, DOWN, RIGHT, LEFT
+	uvec4 neighborValue = uvec4(decision[localLoc.x][localLoc.y - 1],
+														decision[localLoc.x][localLoc.y + 1],
+														decision[localLoc.x + 1][localLoc.y],
+														decision[localLoc.x - 1][localLoc.y])  >> 24;
+	bvec4 differentValue = notEqual(neighborValue, uvec4(currentValue));
+
+	if(any(differentValue))
+	{
+		uvec4 transfoIndex = neighborValue * MATERIAL_COUNT + currentValue;
+		uvec4 transfoIndexX = transfoIndex >> 2;
+		uvec4 transfoIndexY = transfoIndex & 3u;
+		uint rand = -1;
+		uint transfoToApply = -1;
+
+		for(int i = 0; i < 4; i++)
+		{
+			uint transfo = transformations.data[transfoIndexX[i]][transfoIndexY[i]];
+			bool staticTransfo = (transfo & STATIC_TRANSFO_FLAG) != 0;
+			if(transfo != -1 && (differentValue[i] || (staticTransfo && !moved)))
+			{
+				if(rand == -1)
+				{
+					float genRand = sqrt(random(uvec4(loc, floatBitsToUint(pushConstants.random), 3)));
+					rand = uint(round(genRand * 1000.));
+				}
+
+				uint probability = (transfo << 2) >> 18;
+				if (rand < probability)
+				{
+					transfoToApply = transfo;
+					break;
+				}
+			}
+		}
+
+		if(transfoToApply != -1)
+		{
+			uint targetValue = transfoToApply & 255u;
+			board[localLoc.x][localLoc.y] = targetValue;
+			uint propagation = (transfoToApply & 65280u) >> 8;
+			if(propagation > 1)
+			{
+				transformPropagate(localLoc, currentValue, targetValue, propagation);
+			}
+			res = true;
+		}
+	}
+
+	return res;
+}
+
+void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uint propagation)
+{
+	int offset = 1;
+	bool up = true;
+	bool down = true;
+	bool right = true;
+	bool left = true;
+
+	while(propagation > 1)
+	{
+		if (up)
+		{
+			uint valueUp = localLoc.y - offset > 1 ? decision[localLoc.x][localLoc.y - offset] >> 24 : 0;
+			if (valueUp == currentValue)
+			{
+				board[localLoc.x][localLoc.y - offset] = targetValue;
+			}
+			else
+			{
+				up = false;
+			}
+		}
+		if (down)
+		{
+			uint valueDown = localLoc.y + offset < (HEIGHT - 2) ? decision[localLoc.x][localLoc.y + offset] >> 24 : 0;
+			if (valueDown == currentValue)
+			{
+				board[localLoc.x][localLoc.y + offset] = targetValue;
+			}
+			else
+			{
+				down = false;
+			}
+		}
+		if (right)
+		{
+			uint valueRight = localLoc.x + offset < (WIDTH - 2) ? decision[localLoc.x + offset][localLoc.y] >> 24 : 0;
+			if (valueRight == currentValue)
+			{
+				board[localLoc.x + offset][localLoc.y] = targetValue;
+			}
+			else
+			{
+				right = false;
+			}
+		}
+		if (left)
+		{
+			uint valueLeft = localLoc.x - offset > 1 ? decision[localLoc.x - offset][localLoc.y] >> 24 : 0;
+			if (valueLeft == currentValue)
+			{
+				board[localLoc.x - offset][localLoc.y] = targetValue;
+			}
+			else
+			{
+				left = false;
+			}
+		}
+
+		propagation --;
+		offset ++;
+	}
+}
+
+int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity)
+{
+	int course = 0;
+
+	if (loc.y + 1 < HEIGHT)
+	{
+		if(loc.x < runoff) runoff = loc.x;
+		if(WIDTH - 1 - loc.x < runoff) runoff = WIDTH - 1 - loc.x;
+
+		while (course < runoff)
+		{
+			loc.x += dir;
+			localLoc.x += dir;
+
+			bool xValid = localLoc.x >= 0 && localLoc.x < WORKGROUP_SIZE;
+			uint neighborValue = xValid ? board[localLoc.x][localLoc.y] : getValue(loc);
+			if (configuration.materials[neighborValue].isStatic == 1
+					|| configuration.materials[neighborValue].density >= srcDensity)
+			{
+				course = runoff + 1;
+				break;
+			}
+
+
+			uint valueDown = xValid ? board[localLoc.x][localLoc.y + 1] : getValue(ivec2(loc.x, loc.y + 1));
+			if ((xValid && materials[valueDown].isStatic == 0	&& materials[valueDown].density < srcDensity)
+				|| (!xValid && valueDown == 0))
+			{
+				break;
+			}
+
+			course++;
+		}
+	}
+
+	return course;
+}

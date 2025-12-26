@@ -1,0 +1,18 @@
+pluginManagement {
+	repositories {
+		mavenLocal()
+		gradlePluginPortal()
+	}
+	includeBuild '../lmf'
+}
+
+rootProject.name = "VSand"
+
+
+include ':org.sheepy.vsand'
+
+if (gradle.parent == null) {
+	includeBuild '../Lily-vulkan'
+	includeBuild '../Lily-core'
+	includeBuild '../lmf'
+}

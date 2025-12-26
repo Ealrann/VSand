@@ -1,0 +1,164 @@
+#version 450
+
+#define WORKGROUP_SIZE_X 16
+#define WORKGROUP_SIZE_Y 16
+
+#define SQUARE		0
+#define CIRCLE		1
+#define LINE		2
+
+layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
+
+layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
+
+const int CHUNK_WIDTH = WIDTH / WORKGROUP_SIZE_X;
+const int CHUNK_HEIGHT = HEIGHT / WORKGROUP_SIZE_Y;
+
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
+
+// The chunk state board.
+layout(binding = 0) buffer SChunks
+{
+	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
+}chunks;
+
+// The game board, with all the values.
+layout(binding = 1) buffer SBoard1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+}board1;
+layout(binding = 2) buffer SBoard2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+}board2;
+
+layout (push_constant) uniform PushConstants
+{
+	// Shape to draw
+	int shape;
+	int size;
+	int x;
+	int y;
+
+	// BoundingBox
+	int minX;
+	int minY;
+	int maxX;
+	int maxY;
+
+	// For line, Rectangle to draw
+	int x1;
+	int y1;
+	int x2;
+	int y2;
+	int x3;
+	int y3;
+	int x4;
+	int y4;
+
+	uint value;
+
+	uint boardToWrite;
+
+}attributes;
+
+bool testCircle(int x, int y);
+bool testLine(int x, int y);
+int computeSide(int x, int y, int x1, int y1, int x2, int y2);
+void setValue(int x, int y, uint value);
+
+void main()
+{
+	if (gl_GlobalInvocationID.y < HEIGHT)
+	{
+		int x = int(gl_GlobalInvocationID.x);
+		int y = int(gl_GlobalInvocationID.y);
+
+		if (x >= attributes.minX && y >= attributes.minY && x <= attributes.maxX
+				&& y <= attributes.maxY)
+		{
+			bool isInShape = false;
+			switch (attributes.shape)
+			{
+			case SQUARE:
+				isInShape = true;
+				break;
+			case CIRCLE:
+				isInShape = testCircle(x, y);
+				break;
+			case LINE:
+				isInShape = testLine(x, y) || testCircle(x, y);
+				break;
+			}
+
+			if (isInShape)
+			{
+				setValue(x, y, attributes.value);
+				chunks.data[gl_WorkGroupID.x * CHUNK_HEIGHT + gl_WorkGroupID.y] = 3;
+			}
+		}
+	}
+}
+
+void setValue(int x, int y, uint value)
+{
+	if(x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+	{
+		uint swizzledX = x >> 1;
+		uint swizzledY = y >> 1;
+		uint offset = ((x & 1)	| ((y & 1) << 1)) << 3;
+
+        uint swizzledLoc = swizzledX * SWIZZLED_HEIGHT + swizzledY;
+		if(attributes.boardToWrite == 0)
+		{
+			atomicAnd(board1.data[swizzledLoc], 0xFFFFFFFF ^ (0xFF << offset));
+			atomicOr(board1.data[swizzledLoc], value << offset);
+		}
+		else
+		{
+			atomicAnd(board2.data[swizzledLoc], 0xFFFFFFFF ^ (0xFF << offset));
+			atomicOr(board2.data[swizzledLoc], value << offset);
+		}
+	}
+}
+
+bool testCircle(int x, int y)
+{
+	int distX = (attributes.x - x) * (attributes.x - x);
+	int distY = (attributes.y - y) * (attributes.y - y);
+
+	int halfSize = attributes.size >> 1; // divide by 2;
+
+	return (distX + distY) <= (halfSize * halfSize);
+}
+
+bool testLine(int x, int y)
+{
+	// Algo from https://stackoverflow.com/a/2752753/4030058
+	int x1 = attributes.x1;
+	int y1 = attributes.y1;
+	int x2 = attributes.x2;
+	int y2 = attributes.y2;
+	int x3 = attributes.x3;
+	int y3 = attributes.y3;
+	int x4 = attributes.x4;
+	int y4 = attributes.y4;
+
+	if (computeSide(x, y, x1, y1, x2, y2) < 0 || computeSide(x, y, x2, y2, x3, y3) < 0
+	 || computeSide(x, y, x3, y3, x4, y4) < 0 || computeSide(x, y, x4, y4, x1, y1) < 0)
+		return false;
+
+	return true;
+}
+
+int computeSide(int x, int y, int x1, int y1, int x2, int y2)
+{
+	int A = -(y2 - y1);
+	int B = x2 - x1;
+	int C = -(A * x1 + B * y1);
+
+	return A * x + B * y + C;
+}
