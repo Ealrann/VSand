@@ -112,7 +112,7 @@ There is a uniform buffer `transformations` addressed as `uvec4[]`:
 
 ```
 layout(binding = 1) uniform STransformation {
-    uvec4 data[TRANSFOM_ARRAY_COUNT];
+    uvec4 data[TRANSFORM_ARRAY_COUNT];
 } transformations;
 ```
 
@@ -137,7 +137,7 @@ rule = transformations.data[uvec4Index][uvec4Element];
 
 So `uvec4` is purely a packing trick to avoid `float[]` std140 overhead: it is physically just an `int[]` / `uint[]` in memory grouped by 4.
 
-Note: `TRANSFOM_ARRAY_COUNT` is computed as `MATERIAL_COUNT * MATERIAL_COUNT / 4` (integer division). If `MATERIAL_COUNT²` is not divisible by 4, the last 1–3 matrix entries exist in the Java buffer but are not addressable through the shader’s `uvec4[]` declaration.
+Note: `TRANSFORM_ARRAY_COUNT` is computed as `(MATERIAL_COUNT * MATERIAL_COUNT + 3) / 4`, i.e. rounded up so the last `uvec4` can hold the remaining 1–3 entries when the matrix size is not divisible by 4.
 
 #### 2.4.2 Rule bit layout (32-bit)
 
