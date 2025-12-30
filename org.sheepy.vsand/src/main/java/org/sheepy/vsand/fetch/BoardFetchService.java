@@ -3,9 +3,12 @@ package org.sheepy.vsand.fetch;
 import org.logoce.lmf.core.api.adapter.Adapter;
 import org.logoce.lmf.core.api.extender.IAdapter;
 import org.logoce.lmf.core.api.extender.ModelExtender;
+import org.logoce.lmf.core.api.notification.Notification;
+import org.sheepy.lily.core.api.adapter.NotifyChanged;
+import org.sheepy.lily.core.api.application.IApplicationAdapter;
 import org.sheepy.lily.core.api.adapter.Load;
 import org.sheepy.lily.core.api.cadence.AutoLoad;
-import org.sheepy.lily.core.api.cadence.Tick;
+import org.sheepy.lily.core.api.cadence.EditingCommand;
 import org.sheepy.lily.vulkan.model.process.CompositeTask;
 import org.sheepy.lily.vulkan.model.process.FetchBuffer;
 import org.sheepy.lily.vulkan.model.process.IPipelineTask;
@@ -22,20 +25,15 @@ public final class BoardFetchService implements IAdapter
 {
 	private final VSandApplication application;
 
-	private CompositeTask fetchTask;
-	private PipelineBarrier fetchBarrier;
-	private FetchBuffer fetchBoard1;
-	private FetchBuffer fetchBoard2;
 	private BoardConstantBuffer boardConstantBuffer;
-	private boolean pendingRequest = false;
-	private int pendingBuffers = 0;
+	private FetchPipeline fetchPipeline;
 
-	private byte[] lastBoard1;
-	private byte[] lastBoard2;
+	private boolean fetchInProgress = false;
+	private boolean fetchQueued = false;
+
 	private byte[] lastBoard;
-	private int lastBoardIndex = -1;
 
-	private BoardFetchService(VSandApplication application)
+	private BoardFetchService(final VSandApplication application)
 	{
 		this.application = application;
 	}
@@ -43,56 +41,76 @@ public final class BoardFetchService implements IAdapter
 	@Load
 	private void load()
 	{
-		fetchTask = application.fetchBoardTask();
-		fetchBarrier = findBarrier(fetchTask);
-		fetchBoard1 = findFetchBuffer(fetchTask, "Fetch Board 1");
-		fetchBoard2 = findFetchBuffer(fetchTask, "Fetch Board 2");
+		fetchPipeline = FetchPipeline.of(application.fetchBoardTask());
 		boardConstantBuffer = findBoardConstantBuffer(application);
 	}
 
-	@Tick
-	private void tick()
+	@NotifyChanged(featureIds = VSandApplication.FeatureIDs.FETCH_REQUESTED)
+	private void fetchRequestedChanged(final Notification notification)
 	{
-		if (application.fetchRequested() && pendingRequest == false)
+		if (notification.booleanValue() == false) return;
+		if (fetchInProgress || fetchQueued) return;
+
+		if (scheduleFetch())
 		{
 			application.fetchRequested(false);
-			triggerFetch();
 		}
 	}
 
-	public void triggerFetch()
+	private boolean scheduleFetch()
 	{
-		if (fetchTask == null) return;
+		if (fetchPipeline == null) return false;
+		if (fetchInProgress || fetchQueued) return false;
+
+		final var applicationAdapter = application.adapt(IApplicationAdapter.class);
+		final var cadenceManager = applicationAdapter != null ? applicationAdapter.getCadenceManager() : null;
+		final var commandStack = cadenceManager != null ? cadenceManager.getCommandStack() : null;
+		if (commandStack == null)
+		{
+			triggerFetchNow();
+			return true;
+		}
+
+		fetchQueued = true;
+		commandStack.add(new EditingCommand("org.sheepy.vsand.fetch.BoardFetchService")
+		{
+			@Override
+			public void execute()
+			{
+				fetchQueued = false;
+				triggerFetchNow();
+			}
+		});
+
+		return true;
+	}
+
+	private void triggerFetchNow()
+	{
+		if (fetchPipeline == null) return;
 
 		final int boardIndex = resolveTargetBoardIndex();
-		final int enabledBuffers = enableFetchBuffers(boardIndex);
-		if (enabledBuffers == 0) return;
+		final boolean enabled = fetchPipeline.enableFetchBufferForBoardIndex(boardIndex);
+		if (enabled == false) return;
 
-		pendingRequest = true;
-		pendingBuffers = enabledBuffers;
-		if (fetchBarrier != null) fetchBarrier.enabled(true);
-		fetchTask.enabled(true);
+		fetchInProgress = true;
+		fetchPipeline.enable();
 	}
 
 	public void onBufferFetched(int bufferIndex, ByteBuffer data)
 	{
 		final byte[] copy = new byte[data.remaining()];
 		data.get(copy);
-		if (bufferIndex == 0) lastBoard1 = copy;
-		else if (bufferIndex == 1) lastBoard2 = copy;
 		lastBoard = copy;
-		lastBoardIndex = bufferIndex;
 
-		if (pendingRequest)
+		if (fetchInProgress == false) return;
+
+		fetchInProgress = false;
+		fetchPipeline.disable();
+
+		if (application.fetchRequested() && fetchQueued == false && scheduleFetch())
 		{
-			pendingBuffers--;
-			if (pendingBuffers <= 0)
-			{
-				pendingRequest = false;
-				fetchTask.enabled(false);
-				if (fetchBarrier != null) fetchBarrier.enabled(false);
-				disableFetchBuffers();
-			}
+			application.fetchRequested(false);
 		}
 	}
 
@@ -101,49 +119,10 @@ public final class BoardFetchService implements IAdapter
 		return lastBoard;
 	}
 
-	public int lastBoardIndex()
-	{
-		return lastBoardIndex;
-	}
-
-	public byte[] lastBoard1()
-	{
-		return lastBoard1;
-	}
-
-	public byte[] lastBoard2()
-	{
-		return lastBoard2;
-	}
-
 	private int resolveTargetBoardIndex()
 	{
 		if (boardConstantBuffer == null) return 0;
 		return nextBoardIndex(boardConstantBuffer.currentBoardBuffer());
-	}
-
-	private int enableFetchBuffers(int boardIndex)
-	{
-		int enabledCount = 0;
-		if (fetchBoard1 != null)
-		{
-			final boolean enabled = boardIndex == 0;
-			fetchBoard1.enabled(enabled);
-			if (enabled) enabledCount++;
-		}
-		if (fetchBoard2 != null)
-		{
-			final boolean enabled = boardIndex == 1;
-			fetchBoard2.enabled(enabled);
-			if (enabled) enabledCount++;
-		}
-		return enabledCount;
-	}
-
-	private void disableFetchBuffers()
-	{
-		if (fetchBoard1 != null) fetchBoard1.enabled(false);
-		if (fetchBoard2 != null) fetchBoard2.enabled(false);
 	}
 
 	private static int nextBoardIndex(int currentIndex)
@@ -151,30 +130,69 @@ public final class BoardFetchService implements IAdapter
 		return (currentIndex + 1) % 2;
 	}
 
-	private static PipelineBarrier findBarrier(CompositeTask task)
+	private record FetchPipeline(CompositeTask task, PipelineBarrier barrier, FetchBuffer board1, FetchBuffer board2)
 	{
-		if (task == null) return null;
-		for (IPipelineTask subTask : task.tasks())
+		private static FetchPipeline of(final CompositeTask task)
 		{
-			if (subTask instanceof PipelineBarrier barrier)
-			{
-				return barrier;
-			}
-		}
-		return null;
-	}
+			if (task == null) return null;
 
-	private static FetchBuffer findFetchBuffer(CompositeTask task, String name)
-	{
-		if (task == null) return null;
-		for (IPipelineTask subTask : task.tasks())
-		{
-			if (subTask instanceof FetchBuffer fetchBuffer && name.equals(fetchBuffer.name()))
+			PipelineBarrier barrier = null;
+			FetchBuffer board1 = null;
+			FetchBuffer board2 = null;
+			for (final IPipelineTask subTask : task.tasks())
 			{
-				return fetchBuffer;
+				if (subTask instanceof PipelineBarrier pipelineBarrier)
+				{
+					barrier = pipelineBarrier;
+				}
+				else if (subTask instanceof FetchBuffer fetchBuffer)
+				{
+					if ("Fetch Board 1".equals(fetchBuffer.name()))
+					{
+						board1 = fetchBuffer;
+					}
+					else if ("Fetch Board 2".equals(fetchBuffer.name()))
+					{
+						board2 = fetchBuffer;
+					}
+				}
 			}
+
+			return new FetchPipeline(task, barrier, board1, board2);
 		}
-		return null;
+
+		private void enable()
+		{
+			if (barrier != null) barrier.enabled(true);
+			task.enabled(true);
+		}
+
+		private void disable()
+		{
+			task.enabled(false);
+			if (barrier != null) barrier.enabled(false);
+
+			if (board1 != null) board1.enabled(false);
+			if (board2 != null) board2.enabled(false);
+		}
+
+		private boolean enableFetchBufferForBoardIndex(final int boardIndex)
+		{
+			boolean enabled = false;
+			if (board1 != null)
+			{
+				final boolean shouldEnable = boardIndex == 0;
+				board1.enabled(shouldEnable);
+				enabled |= shouldEnable;
+			}
+			if (board2 != null)
+			{
+				final boolean shouldEnable = boardIndex == 1;
+				board2.enabled(shouldEnable);
+				enabled |= shouldEnable;
+			}
+			return enabled;
+		}
 	}
 
 	private static BoardConstantBuffer findBoardConstantBuffer(VSandApplication application)
