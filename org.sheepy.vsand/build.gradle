@@ -133,9 +133,6 @@ dependencies {
 
 sourceSets {
 	main {
-		java.srcDirs = ['src/main/model',
-						'src/main/generated',
-						'src/main/java',
-						'src/main/shader']
+		java.srcDirs += ['src/main/shader']
 	}
 }
