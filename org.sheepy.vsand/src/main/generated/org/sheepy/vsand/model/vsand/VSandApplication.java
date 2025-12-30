@@ -42,21 +42,25 @@ public interface VSandApplication extends Application {
   Material secondaryMaterial();
   boolean nextMode();
   boolean paused();
+  boolean fetchRequested();
   int speed();
   boolean forceClear();
   boolean showSleepZones();
   int brushSize();
   CompositeTask boardUpdateTask();
+  CompositeTask fetchBoardTask();
   Vector2ic size();
   void mainMaterial(final Material mainMaterial);
   void secondaryMaterial(final Material secondaryMaterial);
   void nextMode(final boolean nextMode);
   void paused(final boolean paused);
+  void fetchRequested(final boolean fetchRequested);
   void speed(final int speed);
   void forceClear(final boolean forceClear);
   void showSleepZones(final boolean showSleepZones);
   void brushSize(final int brushSize);
   void boardUpdateTask(final CompositeTask boardUpdateTask);
+  void fetchBoardTask(final CompositeTask fetchBoardTask);
   void size(final Vector2ic size);
 
   interface FeatureIDs {
@@ -80,11 +84,13 @@ public interface VSandApplication extends Application {
     int SECONDARY_MATERIAL = 296460738;
     int NEXT_MODE = -977627057;
     int PAUSED = -434692985;
+    int FETCH_REQUESTED = -1348027347;
     int SPEED = -1534841394;
     int FORCE_CLEAR = -1647213317;
     int SHOW_SLEEP_ZONES = -271197466;
     int BRUSH_SIZE = -1512386462;
     int BOARD_UPDATE_TASK = 145713723;
+    int FETCH_BOARD_TASK = 646765130;
     int SIZE = 2028692890;
   }
 
@@ -109,13 +115,15 @@ public interface VSandApplication extends Application {
     Relation<Material, Material, Listener<Material>, Features<?>> SECONDARY_MATERIAL = new RelationBuilder<Material, Material, Listener<Material>, Features<?>>().name("secondaryMaterial").id(VSandApplication.FeatureIDs.SECONDARY_MATERIAL).concept(() -> VSandModelDefinition.Groups.MATERIAL).build();
     Attribute<Boolean, Boolean, BooleanListener, Features<?>> NEXT_MODE = new AttributeBuilder<Boolean, Boolean, BooleanListener, Features<?>>().name("nextMode").defaultValue("false").id(VSandApplication.FeatureIDs.NEXT_MODE).datatype(() -> LMCoreModelDefinition.Units.BOOLEAN).build();
     Attribute<Boolean, Boolean, BooleanListener, Features<?>> PAUSED = new AttributeBuilder<Boolean, Boolean, BooleanListener, Features<?>>().name("paused").defaultValue("false").id(VSandApplication.FeatureIDs.PAUSED).datatype(() -> LMCoreModelDefinition.Units.BOOLEAN).build();
+    Attribute<Boolean, Boolean, BooleanListener, Features<?>> FETCH_REQUESTED = new AttributeBuilder<Boolean, Boolean, BooleanListener, Features<?>>().name("fetchRequested").defaultValue("false").id(VSandApplication.FeatureIDs.FETCH_REQUESTED).datatype(() -> LMCoreModelDefinition.Units.BOOLEAN).build();
     Attribute<Integer, Integer, IntListener, Features<?>> SPEED = new AttributeBuilder<Integer, Integer, IntListener, Features<?>>().name("speed").defaultValue("1").id(VSandApplication.FeatureIDs.SPEED).datatype(() -> LMCoreModelDefinition.Units.INT).build();
     Attribute<Boolean, Boolean, BooleanListener, Features<?>> FORCE_CLEAR = new AttributeBuilder<Boolean, Boolean, BooleanListener, Features<?>>().name("forceClear").defaultValue("false").id(VSandApplication.FeatureIDs.FORCE_CLEAR).datatype(() -> LMCoreModelDefinition.Units.BOOLEAN).build();
     Attribute<Boolean, Boolean, BooleanListener, Features<?>> SHOW_SLEEP_ZONES = new AttributeBuilder<Boolean, Boolean, BooleanListener, Features<?>>().name("showSleepZones").defaultValue("false").id(VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES).datatype(() -> LMCoreModelDefinition.Units.BOOLEAN).build();
     Attribute<Integer, Integer, IntListener, Features<?>> BRUSH_SIZE = new AttributeBuilder<Integer, Integer, IntListener, Features<?>>().name("brushSize").defaultValue("4").id(VSandApplication.FeatureIDs.BRUSH_SIZE).datatype(() -> LMCoreModelDefinition.Units.INT).build();
     Relation<CompositeTask, CompositeTask, Listener<CompositeTask>, Features<?>> BOARD_UPDATE_TASK = new RelationBuilder<CompositeTask, CompositeTask, Listener<CompositeTask>, Features<?>>().name("boardUpdateTask").id(VSandApplication.FeatureIDs.BOARD_UPDATE_TASK).concept(() -> ProcessModelDefinition.Groups.COMPOSITE_TASK).build();
+    Relation<CompositeTask, CompositeTask, Listener<CompositeTask>, Features<?>> FETCH_BOARD_TASK = new RelationBuilder<CompositeTask, CompositeTask, Listener<CompositeTask>, Features<?>>().name("fetchBoardTask").id(VSandApplication.FeatureIDs.FETCH_BOARD_TASK).concept(() -> ProcessModelDefinition.Groups.COMPOSITE_TASK).build();
     Attribute<Vector2ic, Vector2ic, Listener<Vector2ic>, Features<?>> SIZE = new AttributeBuilder<Vector2ic, Vector2ic, Listener<Vector2ic>, Features<?>>().name("size").mandatory(true).id(VSandApplication.FeatureIDs.SIZE).datatype(() -> TypesModelDefinition.JavaWrappers.VECTOR2I).build();
-    List<Feature<?, ?, ?, ?>> ALL = List.of(NAME, DOMAIN, IMPORTS, METAMODELS, ENGINES, RUN, TITLE, SCENE, TIME_CONFIGURATION, EXTENSION_PKG, MODELS, RESOURCE_PKG, VERSION, MATERIALS, TRANSFORMATIONS, DRAW_QUEUE, MAIN_MATERIAL, SECONDARY_MATERIAL, NEXT_MODE, PAUSED, SPEED, FORCE_CLEAR, SHOW_SLEEP_ZONES, BRUSH_SIZE, BOARD_UPDATE_TASK, SIZE);
+    List<Feature<?, ?, ?, ?>> ALL = List.of(NAME, DOMAIN, IMPORTS, METAMODELS, ENGINES, RUN, TITLE, SCENE, TIME_CONFIGURATION, EXTENSION_PKG, MODELS, RESOURCE_PKG, VERSION, MATERIALS, TRANSFORMATIONS, DRAW_QUEUE, MAIN_MATERIAL, SECONDARY_MATERIAL, NEXT_MODE, PAUSED, FETCH_REQUESTED, SPEED, FORCE_CLEAR, SHOW_SLEEP_ZONES, BRUSH_SIZE, BOARD_UPDATE_TASK, FETCH_BOARD_TASK, SIZE);
   }
 
   interface Builder extends IFeaturedObject.Builder<VSandApplication> {
@@ -139,11 +147,13 @@ public interface VSandApplication extends Application {
     Builder secondaryMaterial(Supplier<Material> secondaryMaterial);
     Builder nextMode(boolean nextMode);
     Builder paused(boolean paused);
+    Builder fetchRequested(boolean fetchRequested);
     Builder speed(int speed);
     Builder forceClear(boolean forceClear);
     Builder showSleepZones(boolean showSleepZones);
     Builder brushSize(int brushSize);
     Builder boardUpdateTask(Supplier<CompositeTask> boardUpdateTask);
+    Builder fetchBoardTask(Supplier<CompositeTask> fetchBoardTask);
     Builder size(Vector2ic size);
     Builder addEngines(List<IEngine> engines);
     Builder addModels(List<IModel> models);

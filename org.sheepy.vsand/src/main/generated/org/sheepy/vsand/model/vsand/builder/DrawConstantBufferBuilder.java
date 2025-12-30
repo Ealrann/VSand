@@ -16,6 +16,8 @@ public final class DrawConstantBufferBuilder implements Builder {
   private String name;
   private ByteBuffer data;
   private int currentBoardBuffer = 0;
+  private boolean deterministicRandom = false;
+  private long randomSeed = 0;
   private Supplier<BoardConstantBuffer> boardConstantBuffer = () -> null;
 
   public DrawConstantBufferBuilder() {
@@ -40,6 +42,18 @@ public final class DrawConstantBufferBuilder implements Builder {
   }
 
   @Override
+  public DrawConstantBufferBuilder deterministicRandom(boolean deterministicRandom) {
+    this.deterministicRandom = deterministicRandom;
+    return this;
+  }
+
+  @Override
+  public DrawConstantBufferBuilder randomSeed(long randomSeed) {
+    this.randomSeed = randomSeed;
+    return this;
+  }
+
+  @Override
   public DrawConstantBufferBuilder boardConstantBuffer(
       Supplier<BoardConstantBuffer> boardConstantBuffer) {
     this.boardConstantBuffer = boardConstantBuffer;
@@ -51,6 +65,8 @@ public final class DrawConstantBufferBuilder implements Builder {
     final var built = new DrawConstantBufferImpl(name);
     built.data(data);
     built.currentBoardBuffer(currentBoardBuffer);
+    built.deterministicRandom(deterministicRandom);
+    built.randomSeed(randomSeed);
     built.boardConstantBuffer(boardConstantBuffer.get());
     return built;
   }
@@ -68,7 +84,7 @@ public final class DrawConstantBufferBuilder implements Builder {
   }
 
   private static final class Inserters {
-    private static final FeatureInserter<DrawConstantBufferBuilder> ATTRIBUTE_INSERTER = new FeatureInserter.Builder<DrawConstantBufferBuilder>(3, Inserters::attributeIndex).add(DrawConstantBuffer.FeatureIDs.NAME, (builder, value) -> builder.name((String) value)).add(DrawConstantBuffer.FeatureIDs.DATA, (builder, value) -> builder.data((ByteBuffer) value)).add(DrawConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER, (builder, value) -> builder.currentBoardBuffer((int) value)).build();
+    private static final FeatureInserter<DrawConstantBufferBuilder> ATTRIBUTE_INSERTER = new FeatureInserter.Builder<DrawConstantBufferBuilder>(5, Inserters::attributeIndex).add(DrawConstantBuffer.FeatureIDs.NAME, (builder, value) -> builder.name((String) value)).add(DrawConstantBuffer.FeatureIDs.DATA, (builder, value) -> builder.data((ByteBuffer) value)).add(DrawConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER, (builder, value) -> builder.currentBoardBuffer((int) value)).add(DrawConstantBuffer.FeatureIDs.DETERMINISTIC_RANDOM, (builder, value) -> builder.deterministicRandom((boolean) value)).add(DrawConstantBuffer.FeatureIDs.RANDOM_SEED, (builder, value) -> builder.randomSeed((long) value)).build();
     private static final RelationLazyInserter<DrawConstantBufferBuilder> RELATION_INSERTER = new RelationLazyInserter.Builder<DrawConstantBufferBuilder>(1, Inserters::relationIndex).add(DrawConstantBuffer.FeatureIDs.BOARD_CONSTANT_BUFFER, (builder, value) -> builder.boardConstantBuffer((Supplier<BoardConstantBuffer>) value)).build();
 
     private static int attributeIndex(final int featureId) {
@@ -76,6 +92,8 @@ public final class DrawConstantBufferBuilder implements Builder {
         case DrawConstantBuffer.FeatureIDs.NAME -> 0;
         case DrawConstantBuffer.FeatureIDs.DATA -> 1;
         case DrawConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER -> 2;
+        case DrawConstantBuffer.FeatureIDs.DETERMINISTIC_RANDOM -> 3;
+        case DrawConstantBuffer.FeatureIDs.RANDOM_SEED -> 4;
         default -> throw new IllegalArgumentException("Unknown attribute featureId: " + featureId);
       };
     }

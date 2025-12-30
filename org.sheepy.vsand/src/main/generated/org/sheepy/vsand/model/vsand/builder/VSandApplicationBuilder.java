@@ -46,11 +46,13 @@ public final class VSandApplicationBuilder implements Builder {
   private Supplier<Material> secondaryMaterial = () -> null;
   private boolean nextMode = false;
   private boolean paused = false;
+  private boolean fetchRequested = false;
   private int speed = 1;
   private boolean forceClear = false;
   private boolean showSleepZones = false;
   private int brushSize = 4;
   private Supplier<CompositeTask> boardUpdateTask = () -> null;
+  private Supplier<CompositeTask> fetchBoardTask = () -> null;
   private Vector2ic size;
 
   public VSandApplicationBuilder() {
@@ -207,6 +209,12 @@ public final class VSandApplicationBuilder implements Builder {
   }
 
   @Override
+  public VSandApplicationBuilder fetchRequested(boolean fetchRequested) {
+    this.fetchRequested = fetchRequested;
+    return this;
+  }
+
+  @Override
   public VSandApplicationBuilder speed(int speed) {
     this.speed = speed;
     return this;
@@ -237,6 +245,12 @@ public final class VSandApplicationBuilder implements Builder {
   }
 
   @Override
+  public VSandApplicationBuilder fetchBoardTask(Supplier<CompositeTask> fetchBoardTask) {
+    this.fetchBoardTask = fetchBoardTask;
+    return this;
+  }
+
+  @Override
   public VSandApplicationBuilder size(Vector2ic size) {
     this.size = size;
     return this;
@@ -261,11 +275,13 @@ public final class VSandApplicationBuilder implements Builder {
     built.secondaryMaterial(secondaryMaterial.get());
     built.nextMode(nextMode);
     built.paused(paused);
+    built.fetchRequested(fetchRequested);
     built.speed(speed);
     built.forceClear(forceClear);
     built.showSleepZones(showSleepZones);
     built.brushSize(brushSize);
     built.boardUpdateTask(boardUpdateTask.get());
+    built.fetchBoardTask(fetchBoardTask.get());
     return built;
   }
 
@@ -282,8 +298,8 @@ public final class VSandApplicationBuilder implements Builder {
   }
 
   private static final class Inserters {
-    private static final FeatureInserter<VSandApplicationBuilder> ATTRIBUTE_INSERTER = new FeatureInserter.Builder<VSandApplicationBuilder>(14, Inserters::attributeIndex).add(VSandApplication.FeatureIDs.NAME, (builder, value) -> builder.name((String) value)).add(VSandApplication.FeatureIDs.DOMAIN, (builder, value) -> builder.domain((String) value)).add(VSandApplication.FeatureIDs.IMPORTS, (builder, value) -> builder.addImport((String) value)).add(VSandApplication.FeatureIDs.METAMODELS, (builder, value) -> builder.addMetamodel((String) value)).add(VSandApplication.FeatureIDs.RUN, (builder, value) -> builder.run((boolean) value)).add(VSandApplication.FeatureIDs.TITLE, (builder, value) -> builder.title((String) value)).add(VSandApplication.FeatureIDs.VERSION, (builder, value) -> builder.version((String) value)).add(VSandApplication.FeatureIDs.NEXT_MODE, (builder, value) -> builder.nextMode((boolean) value)).add(VSandApplication.FeatureIDs.PAUSED, (builder, value) -> builder.paused((boolean) value)).add(VSandApplication.FeatureIDs.SPEED, (builder, value) -> builder.speed((int) value)).add(VSandApplication.FeatureIDs.FORCE_CLEAR, (builder, value) -> builder.forceClear((boolean) value)).add(VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES, (builder, value) -> builder.showSleepZones((boolean) value)).add(VSandApplication.FeatureIDs.BRUSH_SIZE, (builder, value) -> builder.brushSize((int) value)).add(VSandApplication.FeatureIDs.SIZE, (builder, value) -> builder.size((Vector2ic) value)).build();
-    private static final RelationLazyInserter<VSandApplicationBuilder> RELATION_INSERTER = new RelationLazyInserter.Builder<VSandApplicationBuilder>(12, Inserters::relationIndex).add(VSandApplication.FeatureIDs.ENGINES, (builder, value) -> builder.addEngine((Supplier<IEngine>) value)).add(VSandApplication.FeatureIDs.SCENE, (builder, value) -> builder.scene((Supplier<Scene>) value)).add(VSandApplication.FeatureIDs.TIME_CONFIGURATION, (builder, value) -> builder.timeConfiguration((Supplier<TimeConfiguration>) value)).add(VSandApplication.FeatureIDs.EXTENSION_PKG, (builder, value) -> builder.extensionPkg((Supplier<ApplicationExtensionPkg>) value)).add(VSandApplication.FeatureIDs.MODELS, (builder, value) -> builder.addModel((Supplier<IModel>) value)).add(VSandApplication.FeatureIDs.RESOURCE_PKG, (builder, value) -> builder.resourcePkg((Supplier<ResourcePkg>) value)).add(VSandApplication.FeatureIDs.MATERIALS, (builder, value) -> builder.materials((Supplier<Materials>) value)).add(VSandApplication.FeatureIDs.TRANSFORMATIONS, (builder, value) -> builder.transformations((Supplier<Transformations>) value)).add(VSandApplication.FeatureIDs.DRAW_QUEUE, (builder, value) -> builder.addDrawQueue((Supplier<DrawCommand>) value)).add(VSandApplication.FeatureIDs.MAIN_MATERIAL, (builder, value) -> builder.mainMaterial((Supplier<Material>) value)).add(VSandApplication.FeatureIDs.SECONDARY_MATERIAL, (builder, value) -> builder.secondaryMaterial((Supplier<Material>) value)).add(VSandApplication.FeatureIDs.BOARD_UPDATE_TASK, (builder, value) -> builder.boardUpdateTask((Supplier<CompositeTask>) value)).build();
+    private static final FeatureInserter<VSandApplicationBuilder> ATTRIBUTE_INSERTER = new FeatureInserter.Builder<VSandApplicationBuilder>(15, Inserters::attributeIndex).add(VSandApplication.FeatureIDs.NAME, (builder, value) -> builder.name((String) value)).add(VSandApplication.FeatureIDs.DOMAIN, (builder, value) -> builder.domain((String) value)).add(VSandApplication.FeatureIDs.IMPORTS, (builder, value) -> builder.addImport((String) value)).add(VSandApplication.FeatureIDs.METAMODELS, (builder, value) -> builder.addMetamodel((String) value)).add(VSandApplication.FeatureIDs.RUN, (builder, value) -> builder.run((boolean) value)).add(VSandApplication.FeatureIDs.TITLE, (builder, value) -> builder.title((String) value)).add(VSandApplication.FeatureIDs.VERSION, (builder, value) -> builder.version((String) value)).add(VSandApplication.FeatureIDs.NEXT_MODE, (builder, value) -> builder.nextMode((boolean) value)).add(VSandApplication.FeatureIDs.PAUSED, (builder, value) -> builder.paused((boolean) value)).add(VSandApplication.FeatureIDs.FETCH_REQUESTED, (builder, value) -> builder.fetchRequested((boolean) value)).add(VSandApplication.FeatureIDs.SPEED, (builder, value) -> builder.speed((int) value)).add(VSandApplication.FeatureIDs.FORCE_CLEAR, (builder, value) -> builder.forceClear((boolean) value)).add(VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES, (builder, value) -> builder.showSleepZones((boolean) value)).add(VSandApplication.FeatureIDs.BRUSH_SIZE, (builder, value) -> builder.brushSize((int) value)).add(VSandApplication.FeatureIDs.SIZE, (builder, value) -> builder.size((Vector2ic) value)).build();
+    private static final RelationLazyInserter<VSandApplicationBuilder> RELATION_INSERTER = new RelationLazyInserter.Builder<VSandApplicationBuilder>(13, Inserters::relationIndex).add(VSandApplication.FeatureIDs.ENGINES, (builder, value) -> builder.addEngine((Supplier<IEngine>) value)).add(VSandApplication.FeatureIDs.SCENE, (builder, value) -> builder.scene((Supplier<Scene>) value)).add(VSandApplication.FeatureIDs.TIME_CONFIGURATION, (builder, value) -> builder.timeConfiguration((Supplier<TimeConfiguration>) value)).add(VSandApplication.FeatureIDs.EXTENSION_PKG, (builder, value) -> builder.extensionPkg((Supplier<ApplicationExtensionPkg>) value)).add(VSandApplication.FeatureIDs.MODELS, (builder, value) -> builder.addModel((Supplier<IModel>) value)).add(VSandApplication.FeatureIDs.RESOURCE_PKG, (builder, value) -> builder.resourcePkg((Supplier<ResourcePkg>) value)).add(VSandApplication.FeatureIDs.MATERIALS, (builder, value) -> builder.materials((Supplier<Materials>) value)).add(VSandApplication.FeatureIDs.TRANSFORMATIONS, (builder, value) -> builder.transformations((Supplier<Transformations>) value)).add(VSandApplication.FeatureIDs.DRAW_QUEUE, (builder, value) -> builder.addDrawQueue((Supplier<DrawCommand>) value)).add(VSandApplication.FeatureIDs.MAIN_MATERIAL, (builder, value) -> builder.mainMaterial((Supplier<Material>) value)).add(VSandApplication.FeatureIDs.SECONDARY_MATERIAL, (builder, value) -> builder.secondaryMaterial((Supplier<Material>) value)).add(VSandApplication.FeatureIDs.BOARD_UPDATE_TASK, (builder, value) -> builder.boardUpdateTask((Supplier<CompositeTask>) value)).add(VSandApplication.FeatureIDs.FETCH_BOARD_TASK, (builder, value) -> builder.fetchBoardTask((Supplier<CompositeTask>) value)).build();
 
     private static int attributeIndex(final int featureId) {
       return switch (featureId) {
@@ -296,11 +312,12 @@ public final class VSandApplicationBuilder implements Builder {
         case VSandApplication.FeatureIDs.VERSION -> 6;
         case VSandApplication.FeatureIDs.NEXT_MODE -> 7;
         case VSandApplication.FeatureIDs.PAUSED -> 8;
-        case VSandApplication.FeatureIDs.SPEED -> 9;
-        case VSandApplication.FeatureIDs.FORCE_CLEAR -> 10;
-        case VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES -> 11;
-        case VSandApplication.FeatureIDs.BRUSH_SIZE -> 12;
-        case VSandApplication.FeatureIDs.SIZE -> 13;
+        case VSandApplication.FeatureIDs.FETCH_REQUESTED -> 9;
+        case VSandApplication.FeatureIDs.SPEED -> 10;
+        case VSandApplication.FeatureIDs.FORCE_CLEAR -> 11;
+        case VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES -> 12;
+        case VSandApplication.FeatureIDs.BRUSH_SIZE -> 13;
+        case VSandApplication.FeatureIDs.SIZE -> 14;
         default -> throw new IllegalArgumentException("Unknown attribute featureId: " + featureId);
       };
     }
@@ -319,6 +336,7 @@ public final class VSandApplicationBuilder implements Builder {
         case VSandApplication.FeatureIDs.MAIN_MATERIAL -> 9;
         case VSandApplication.FeatureIDs.SECONDARY_MATERIAL -> 10;
         case VSandApplication.FeatureIDs.BOARD_UPDATE_TASK -> 11;
+        case VSandApplication.FeatureIDs.FETCH_BOARD_TASK -> 12;
         default -> throw new IllegalArgumentException("Unknown relation featureId: " + featureId);
       };
     }

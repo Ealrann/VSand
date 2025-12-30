@@ -10,16 +10,20 @@
 		(+refers name=secondaryMaterial @Material [0..1])
 		(+att name=nextMode datatype=#LMCore@boolean [0..1] defaultValue=false)
 		(+att name=paused datatype=#LMCore@boolean [0..1] defaultValue=false)
+		(+att name=fetchRequested datatype=#LMCore@boolean [0..1] defaultValue=false)
 		(+att name=speed datatype=#LMCore@int [0..1] defaultValue=1)
 		(+att name=forceClear datatype=#LMCore@boolean [0..1] defaultValue=false)
 		(+att name=showSleepZones datatype=#LMCore@boolean [0..1] defaultValue=false)
 		(+att name=brushSize datatype=#LMCore@int [0..1] defaultValue=4)
 		(+refers name=boardUpdateTask #Process@CompositeTask [0..1])
+		(+refers name=fetchBoardTask #Process@CompositeTask [0..1])
 		(+att name=size datatype=#Types@Vector2i [1..1]))
 
 	(Definition BoardConstantBuffer
 		(includes group=#VulkanResource@ConstantBuffer)
-		(+att name=currentBoardBuffer datatype=#LMCore@int [0..1] defaultValue=0))
+		(+att name=currentBoardBuffer datatype=#LMCore@int [0..1] defaultValue=0)
+		(+att name=deterministicRandom datatype=#LMCore@boolean [0..1] defaultValue=false)
+		(+att name=randomSeed datatype=#LMCore@long [0..1] defaultValue=0))
 
 	(Definition DrawConstantBuffer
 		(includes group=@BoardConstantBuffer)

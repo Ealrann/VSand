@@ -16,6 +16,8 @@ public final class PixelConstantBufferBuilder implements Builder {
   private String name;
   private ByteBuffer data;
   private int currentBoardBuffer = 0;
+  private boolean deterministicRandom = false;
+  private long randomSeed = 0;
   private Supplier<BoardConstantBuffer> boardConstantBuffer = () -> null;
 
   public PixelConstantBufferBuilder() {
@@ -40,6 +42,18 @@ public final class PixelConstantBufferBuilder implements Builder {
   }
 
   @Override
+  public PixelConstantBufferBuilder deterministicRandom(boolean deterministicRandom) {
+    this.deterministicRandom = deterministicRandom;
+    return this;
+  }
+
+  @Override
+  public PixelConstantBufferBuilder randomSeed(long randomSeed) {
+    this.randomSeed = randomSeed;
+    return this;
+  }
+
+  @Override
   public PixelConstantBufferBuilder boardConstantBuffer(
       Supplier<BoardConstantBuffer> boardConstantBuffer) {
     this.boardConstantBuffer = boardConstantBuffer;
@@ -51,6 +65,8 @@ public final class PixelConstantBufferBuilder implements Builder {
     final var built = new PixelConstantBufferImpl(name);
     built.data(data);
     built.currentBoardBuffer(currentBoardBuffer);
+    built.deterministicRandom(deterministicRandom);
+    built.randomSeed(randomSeed);
     built.boardConstantBuffer(boardConstantBuffer.get());
     return built;
   }
@@ -68,7 +84,7 @@ public final class PixelConstantBufferBuilder implements Builder {
   }
 
   private static final class Inserters {
-    private static final FeatureInserter<PixelConstantBufferBuilder> ATTRIBUTE_INSERTER = new FeatureInserter.Builder<PixelConstantBufferBuilder>(3, Inserters::attributeIndex).add(PixelConstantBuffer.FeatureIDs.NAME, (builder, value) -> builder.name((String) value)).add(PixelConstantBuffer.FeatureIDs.DATA, (builder, value) -> builder.data((ByteBuffer) value)).add(PixelConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER, (builder, value) -> builder.currentBoardBuffer((int) value)).build();
+    private static final FeatureInserter<PixelConstantBufferBuilder> ATTRIBUTE_INSERTER = new FeatureInserter.Builder<PixelConstantBufferBuilder>(5, Inserters::attributeIndex).add(PixelConstantBuffer.FeatureIDs.NAME, (builder, value) -> builder.name((String) value)).add(PixelConstantBuffer.FeatureIDs.DATA, (builder, value) -> builder.data((ByteBuffer) value)).add(PixelConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER, (builder, value) -> builder.currentBoardBuffer((int) value)).add(PixelConstantBuffer.FeatureIDs.DETERMINISTIC_RANDOM, (builder, value) -> builder.deterministicRandom((boolean) value)).add(PixelConstantBuffer.FeatureIDs.RANDOM_SEED, (builder, value) -> builder.randomSeed((long) value)).build();
     private static final RelationLazyInserter<PixelConstantBufferBuilder> RELATION_INSERTER = new RelationLazyInserter.Builder<PixelConstantBufferBuilder>(1, Inserters::relationIndex).add(PixelConstantBuffer.FeatureIDs.BOARD_CONSTANT_BUFFER, (builder, value) -> builder.boardConstantBuffer((Supplier<BoardConstantBuffer>) value)).build();
 
     private static int attributeIndex(final int featureId) {
@@ -76,6 +92,8 @@ public final class PixelConstantBufferBuilder implements Builder {
         case PixelConstantBuffer.FeatureIDs.NAME -> 0;
         case PixelConstantBuffer.FeatureIDs.DATA -> 1;
         case PixelConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER -> 2;
+        case PixelConstantBuffer.FeatureIDs.DETERMINISTIC_RANDOM -> 3;
+        case PixelConstantBuffer.FeatureIDs.RANDOM_SEED -> 4;
         default -> throw new IllegalArgumentException("Unknown attribute featureId: " + featureId);
       };
     }

@@ -117,6 +117,7 @@ dependencies {
 	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.api'
 	implementation 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.extra.api'
 
+	implementation "org.logoce.lmf:logoce.lmf.core.loader"
 	api "org.logoce.lmf:logoce.lmf.core.api"
 
 	runtimeOnly 'org.sheepy.lily.vulkan:org.sheepy.lily.vulkan.base'

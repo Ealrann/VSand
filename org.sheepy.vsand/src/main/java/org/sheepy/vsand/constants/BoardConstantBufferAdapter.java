@@ -11,8 +11,9 @@ import org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer;
 import org.sheepy.vsand.model.vsand.BoardConstantBuffer;
 
 import java.nio.ByteBuffer;
-import java.util.Random;
+import java.util.SplittableRandom;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.random.RandomGenerator;
 
 @ModelExtender(scope = BoardConstantBuffer.class)
 @Adapter
@@ -22,10 +23,12 @@ public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 	private static final int BYTE_SIZE = 2 * Integer.BYTES;
 	private static final int BOARD_INDEX_POSITION = Integer.BYTES;
 
-	private final Random random = ThreadLocalRandom.current();
 	private final BoardConstantBuffer boardConstantBuffer;
 
 	private ByteBuffer buffer = null;
+	private RandomGenerator random = null;
+	private boolean deterministic = false;
+	private long seed = 0;
 
 	private BoardConstantBufferAdapter(BoardConstantBuffer boardConstantBuffer)
 	{
@@ -42,12 +45,26 @@ public final class BoardConstantBufferAdapter implements IConstantBufferUpdater
 	@Override
 	public void beforePush(ConstantBuffer constantBuffer)
 	{
+		ensureRandomInitialized();
 		final float rNumber = random.nextFloat();
 		final int nextIndex = nextBoardIndex(boardConstantBuffer.currentBoardBuffer());
 		boardConstantBuffer.currentBoardBuffer(nextIndex);
 
 		buffer.putFloat(0, rNumber);
 		buffer.putInt(BOARD_INDEX_POSITION, nextIndex);
+	}
+
+	private void ensureRandomInitialized()
+	{
+		final boolean deterministicRandom = boardConstantBuffer.deterministicRandom();
+		final long randomSeed = boardConstantBuffer.randomSeed();
+
+		if (random == null || deterministic != deterministicRandom || seed != randomSeed)
+		{
+			deterministic = deterministicRandom;
+			seed = randomSeed;
+			random = deterministicRandom ? new SplittableRandom(randomSeed) : ThreadLocalRandom.current();
+		}
 	}
 
 	private static int nextBoardIndex(int currentIndex)

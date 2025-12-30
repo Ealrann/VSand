@@ -1,12 +1,14 @@
 package org.sheepy.vsand.test;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.sheepy.lily.core.api.LilyLauncher;
 import org.sheepy.vsand.VSandBenchmarkLauncher;
 import org.sheepy.vsand.logic.VSandMainLoop;
 
 import java.io.IOException;
 
+@Disabled("Requires Vulkan + windowing; skip in automated runs")
 public class VSandTest
 {
 	@Test

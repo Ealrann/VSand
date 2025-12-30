@@ -25,7 +25,7 @@ import org.sheepy.vsand.model.vsand.VSandApplication;
 import org.sheepy.vsand.model.vsand.VSandModelDefinition;
 
 public final class VSandApplicationImpl extends FeaturedObject<VSandApplication.Features<?>> implements VSandApplication {
-  private static final int FEATURE_COUNT = 26;
+  private static final int FEATURE_COUNT = 28;
   private final ModelNotifier<VSandApplication.Features<?>> notifier = new ModelNotifier<>(this, FEATURE_COUNT, this::featureIndex);
   private final String name;
   private final String domain;
@@ -47,11 +47,13 @@ public final class VSandApplicationImpl extends FeaturedObject<VSandApplication.
   private Material secondaryMaterial;
   private boolean nextMode;
   private boolean paused;
+  private boolean fetchRequested;
   private int speed;
   private boolean forceClear;
   private boolean showSleepZones;
   private int brushSize;
   private CompositeTask boardUpdateTask;
+  private CompositeTask fetchBoardTask;
   private Vector2ic size;
 
   public VSandApplicationImpl(final String name, final String domain, final List<String> imports,
@@ -271,6 +273,18 @@ public final class VSandApplicationImpl extends FeaturedObject<VSandApplication.
   }
 
   @Override
+  public boolean fetchRequested() {
+    return fetchRequested;
+  }
+
+  @Override
+  public void fetchRequested(final boolean fetchRequested) {
+    final var oldValue = this.fetchRequested;
+    this.fetchRequested = fetchRequested;
+    notifier.notifyBoolean(VSandApplication.FeatureIDs.FETCH_REQUESTED, false, false, oldValue, fetchRequested);
+  }
+
+  @Override
   public int speed() {
     return speed;
   }
@@ -332,6 +346,19 @@ public final class VSandApplicationImpl extends FeaturedObject<VSandApplication.
   }
 
   @Override
+  public CompositeTask fetchBoardTask() {
+    return fetchBoardTask;
+  }
+
+  @Override
+  public void fetchBoardTask(final CompositeTask fetchBoardTask) {
+    final var oldValue = this.fetchBoardTask;
+    final var eventType = fetchBoardTask == null ? Notification.EventType.UNSET : Notification.EventType.SET;
+    this.fetchBoardTask = fetchBoardTask;
+    notifier.notify(VSandApplication.FeatureIDs.FETCH_BOARD_TASK, false, false, eventType, oldValue, fetchBoardTask);
+  }
+
+  @Override
   public Vector2ic size() {
     return size;
   }
@@ -380,12 +407,14 @@ public final class VSandApplicationImpl extends FeaturedObject<VSandApplication.
       case VSandApplication.FeatureIDs.SECONDARY_MATERIAL -> 17;
       case VSandApplication.FeatureIDs.NEXT_MODE -> 18;
       case VSandApplication.FeatureIDs.PAUSED -> 19;
-      case VSandApplication.FeatureIDs.SPEED -> 20;
-      case VSandApplication.FeatureIDs.FORCE_CLEAR -> 21;
-      case VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES -> 22;
-      case VSandApplication.FeatureIDs.BRUSH_SIZE -> 23;
-      case VSandApplication.FeatureIDs.BOARD_UPDATE_TASK -> 24;
-      case VSandApplication.FeatureIDs.SIZE -> 25;
+      case VSandApplication.FeatureIDs.FETCH_REQUESTED -> 20;
+      case VSandApplication.FeatureIDs.SPEED -> 21;
+      case VSandApplication.FeatureIDs.FORCE_CLEAR -> 22;
+      case VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES -> 23;
+      case VSandApplication.FeatureIDs.BRUSH_SIZE -> 24;
+      case VSandApplication.FeatureIDs.BOARD_UPDATE_TASK -> 25;
+      case VSandApplication.FeatureIDs.FETCH_BOARD_TASK -> 26;
+      case VSandApplication.FeatureIDs.SIZE -> 27;
       default -> throw new IllegalArgumentException("Unknown featureId: " + featureId);
     };
   }
@@ -396,7 +425,7 @@ public final class VSandApplicationImpl extends FeaturedObject<VSandApplication.
   }
 
   private static final class Inserters {
-    private static final FeatureGetter<VSandApplication> GET_MAP = new FeatureGetter.Builder<VSandApplication>(FEATURE_COUNT, VSandApplicationImpl::featureIndexStatic).add(VSandApplication.FeatureIDs.NAME, VSandApplication::name).add(VSandApplication.FeatureIDs.DOMAIN, VSandApplication::domain).add(VSandApplication.FeatureIDs.IMPORTS, VSandApplication::imports).add(VSandApplication.FeatureIDs.METAMODELS, VSandApplication::metamodels).add(VSandApplication.FeatureIDs.ENGINES, VSandApplication::engines).add(VSandApplication.FeatureIDs.RUN, VSandApplication::run).add(VSandApplication.FeatureIDs.TITLE, VSandApplication::title).add(VSandApplication.FeatureIDs.SCENE, VSandApplication::scene).add(VSandApplication.FeatureIDs.TIME_CONFIGURATION, VSandApplication::timeConfiguration).add(VSandApplication.FeatureIDs.EXTENSION_PKG, VSandApplication::extensionPkg).add(VSandApplication.FeatureIDs.MODELS, VSandApplication::models).add(VSandApplication.FeatureIDs.RESOURCE_PKG, VSandApplication::resourcePkg).add(VSandApplication.FeatureIDs.VERSION, VSandApplication::version).add(VSandApplication.FeatureIDs.MATERIALS, VSandApplication::materials).add(VSandApplication.FeatureIDs.TRANSFORMATIONS, VSandApplication::transformations).add(VSandApplication.FeatureIDs.DRAW_QUEUE, VSandApplication::drawQueue).add(VSandApplication.FeatureIDs.MAIN_MATERIAL, VSandApplication::mainMaterial).add(VSandApplication.FeatureIDs.SECONDARY_MATERIAL, VSandApplication::secondaryMaterial).add(VSandApplication.FeatureIDs.NEXT_MODE, VSandApplication::nextMode).add(VSandApplication.FeatureIDs.PAUSED, VSandApplication::paused).add(VSandApplication.FeatureIDs.SPEED, VSandApplication::speed).add(VSandApplication.FeatureIDs.FORCE_CLEAR, VSandApplication::forceClear).add(VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES, VSandApplication::showSleepZones).add(VSandApplication.FeatureIDs.BRUSH_SIZE, VSandApplication::brushSize).add(VSandApplication.FeatureIDs.BOARD_UPDATE_TASK, VSandApplication::boardUpdateTask).add(VSandApplication.FeatureIDs.SIZE, VSandApplication::size).build();
-    private static final FeatureSetter<VSandApplication> SET_MAP = new FeatureSetter.Builder<VSandApplication>(FEATURE_COUNT, VSandApplicationImpl::featureIndexStatic).add(VSandApplication.FeatureIDs.RUN, (object, value) -> ((VSandApplicationImpl) object).run((boolean) value)).add(VSandApplication.FeatureIDs.TITLE, (object, value) -> ((VSandApplicationImpl) object).title((String) value)).add(VSandApplication.FeatureIDs.SCENE, (object, value) -> ((VSandApplicationImpl) object).scene((Scene) value)).add(VSandApplication.FeatureIDs.TIME_CONFIGURATION, (object, value) -> ((VSandApplicationImpl) object).timeConfiguration((TimeConfiguration) value)).add(VSandApplication.FeatureIDs.EXTENSION_PKG, (object, value) -> ((VSandApplicationImpl) object).extensionPkg((ApplicationExtensionPkg) value)).add(VSandApplication.FeatureIDs.RESOURCE_PKG, (object, value) -> ((VSandApplicationImpl) object).resourcePkg((ResourcePkg) value)).add(VSandApplication.FeatureIDs.VERSION, (object, value) -> ((VSandApplicationImpl) object).version((String) value)).add(VSandApplication.FeatureIDs.MAIN_MATERIAL, (object, value) -> ((VSandApplicationImpl) object).mainMaterial((Material) value)).add(VSandApplication.FeatureIDs.SECONDARY_MATERIAL, (object, value) -> ((VSandApplicationImpl) object).secondaryMaterial((Material) value)).add(VSandApplication.FeatureIDs.NEXT_MODE, (object, value) -> ((VSandApplicationImpl) object).nextMode((boolean) value)).add(VSandApplication.FeatureIDs.PAUSED, (object, value) -> ((VSandApplicationImpl) object).paused((boolean) value)).add(VSandApplication.FeatureIDs.SPEED, (object, value) -> ((VSandApplicationImpl) object).speed((int) value)).add(VSandApplication.FeatureIDs.FORCE_CLEAR, (object, value) -> ((VSandApplicationImpl) object).forceClear((boolean) value)).add(VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES, (object, value) -> ((VSandApplicationImpl) object).showSleepZones((boolean) value)).add(VSandApplication.FeatureIDs.BRUSH_SIZE, (object, value) -> ((VSandApplicationImpl) object).brushSize((int) value)).add(VSandApplication.FeatureIDs.BOARD_UPDATE_TASK, (object, value) -> ((VSandApplicationImpl) object).boardUpdateTask((CompositeTask) value)).add(VSandApplication.FeatureIDs.SIZE, (object, value) -> ((VSandApplicationImpl) object).size((Vector2ic) value)).build();
+    private static final FeatureGetter<VSandApplication> GET_MAP = new FeatureGetter.Builder<VSandApplication>(FEATURE_COUNT, VSandApplicationImpl::featureIndexStatic).add(VSandApplication.FeatureIDs.NAME, VSandApplication::name).add(VSandApplication.FeatureIDs.DOMAIN, VSandApplication::domain).add(VSandApplication.FeatureIDs.IMPORTS, VSandApplication::imports).add(VSandApplication.FeatureIDs.METAMODELS, VSandApplication::metamodels).add(VSandApplication.FeatureIDs.ENGINES, VSandApplication::engines).add(VSandApplication.FeatureIDs.RUN, VSandApplication::run).add(VSandApplication.FeatureIDs.TITLE, VSandApplication::title).add(VSandApplication.FeatureIDs.SCENE, VSandApplication::scene).add(VSandApplication.FeatureIDs.TIME_CONFIGURATION, VSandApplication::timeConfiguration).add(VSandApplication.FeatureIDs.EXTENSION_PKG, VSandApplication::extensionPkg).add(VSandApplication.FeatureIDs.MODELS, VSandApplication::models).add(VSandApplication.FeatureIDs.RESOURCE_PKG, VSandApplication::resourcePkg).add(VSandApplication.FeatureIDs.VERSION, VSandApplication::version).add(VSandApplication.FeatureIDs.MATERIALS, VSandApplication::materials).add(VSandApplication.FeatureIDs.TRANSFORMATIONS, VSandApplication::transformations).add(VSandApplication.FeatureIDs.DRAW_QUEUE, VSandApplication::drawQueue).add(VSandApplication.FeatureIDs.MAIN_MATERIAL, VSandApplication::mainMaterial).add(VSandApplication.FeatureIDs.SECONDARY_MATERIAL, VSandApplication::secondaryMaterial).add(VSandApplication.FeatureIDs.NEXT_MODE, VSandApplication::nextMode).add(VSandApplication.FeatureIDs.PAUSED, VSandApplication::paused).add(VSandApplication.FeatureIDs.FETCH_REQUESTED, VSandApplication::fetchRequested).add(VSandApplication.FeatureIDs.SPEED, VSandApplication::speed).add(VSandApplication.FeatureIDs.FORCE_CLEAR, VSandApplication::forceClear).add(VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES, VSandApplication::showSleepZones).add(VSandApplication.FeatureIDs.BRUSH_SIZE, VSandApplication::brushSize).add(VSandApplication.FeatureIDs.BOARD_UPDATE_TASK, VSandApplication::boardUpdateTask).add(VSandApplication.FeatureIDs.FETCH_BOARD_TASK, VSandApplication::fetchBoardTask).add(VSandApplication.FeatureIDs.SIZE, VSandApplication::size).build();
+    private static final FeatureSetter<VSandApplication> SET_MAP = new FeatureSetter.Builder<VSandApplication>(FEATURE_COUNT, VSandApplicationImpl::featureIndexStatic).add(VSandApplication.FeatureIDs.RUN, (object, value) -> ((VSandApplicationImpl) object).run((boolean) value)).add(VSandApplication.FeatureIDs.TITLE, (object, value) -> ((VSandApplicationImpl) object).title((String) value)).add(VSandApplication.FeatureIDs.SCENE, (object, value) -> ((VSandApplicationImpl) object).scene((Scene) value)).add(VSandApplication.FeatureIDs.TIME_CONFIGURATION, (object, value) -> ((VSandApplicationImpl) object).timeConfiguration((TimeConfiguration) value)).add(VSandApplication.FeatureIDs.EXTENSION_PKG, (object, value) -> ((VSandApplicationImpl) object).extensionPkg((ApplicationExtensionPkg) value)).add(VSandApplication.FeatureIDs.RESOURCE_PKG, (object, value) -> ((VSandApplicationImpl) object).resourcePkg((ResourcePkg) value)).add(VSandApplication.FeatureIDs.VERSION, (object, value) -> ((VSandApplicationImpl) object).version((String) value)).add(VSandApplication.FeatureIDs.MAIN_MATERIAL, (object, value) -> ((VSandApplicationImpl) object).mainMaterial((Material) value)).add(VSandApplication.FeatureIDs.SECONDARY_MATERIAL, (object, value) -> ((VSandApplicationImpl) object).secondaryMaterial((Material) value)).add(VSandApplication.FeatureIDs.NEXT_MODE, (object, value) -> ((VSandApplicationImpl) object).nextMode((boolean) value)).add(VSandApplication.FeatureIDs.PAUSED, (object, value) -> ((VSandApplicationImpl) object).paused((boolean) value)).add(VSandApplication.FeatureIDs.FETCH_REQUESTED, (object, value) -> ((VSandApplicationImpl) object).fetchRequested((boolean) value)).add(VSandApplication.FeatureIDs.SPEED, (object, value) -> ((VSandApplicationImpl) object).speed((int) value)).add(VSandApplication.FeatureIDs.FORCE_CLEAR, (object, value) -> ((VSandApplicationImpl) object).forceClear((boolean) value)).add(VSandApplication.FeatureIDs.SHOW_SLEEP_ZONES, (object, value) -> ((VSandApplicationImpl) object).showSleepZones((boolean) value)).add(VSandApplication.FeatureIDs.BRUSH_SIZE, (object, value) -> ((VSandApplicationImpl) object).brushSize((int) value)).add(VSandApplication.FeatureIDs.BOARD_UPDATE_TASK, (object, value) -> ((VSandApplicationImpl) object).boardUpdateTask((CompositeTask) value)).add(VSandApplication.FeatureIDs.FETCH_BOARD_TASK, (object, value) -> ((VSandApplicationImpl) object).fetchBoardTask((CompositeTask) value)).add(VSandApplication.FeatureIDs.SIZE, (object, value) -> ((VSandApplicationImpl) object).size((Vector2ic) value)).build();
   }
 }

@@ -1,4 +1,4 @@
-(VSandApplication domain=org.sheepy.vsand name=VSand metamodels=org.sheepy.vsand.model.VSand,org.sheepy.lily.core.model.Types,org.sheepy.lily.core.model.Resource,org.sheepy.lily.core.model.Application,org.sheepy.lily.core.model.UI,org.sheepy.lily.core.model.Variable,org.sheepy.lily.vulkan.extra.model.Nuklear,org.sheepy.lily.vulkan.model.process.Compute,org.sheepy.lily.vulkan.model.process.Graphic,org.sheepy.lily.vulkan.model.Process,org.sheepy.lily.vulkan.model.Vulkan,org.sheepy.lily.vulkan.model.VulkanResource,org.sheepy.lily.openal.model.OpenAL,org.sheepy.vulkan.model.Barrier,org.sheepy.vulkan.model.GraphicPipeline,org.sheepy.vulkan.model.Pipeline,org.sheepy.vulkan.model.Enumeration title=VSand mainMaterial=/materials/materials.1 secondaryMaterial=/materials/materials.3 boardUpdateTask="@Update Board" size="1280;704"
+(VSandApplication domain=org.sheepy.vsand name=VSand metamodels=org.sheepy.vsand.model.VSand,org.sheepy.lily.core.model.Types,org.sheepy.lily.core.model.Resource,org.sheepy.lily.core.model.Application,org.sheepy.lily.core.model.UI,org.sheepy.lily.core.model.Variable,org.sheepy.lily.vulkan.extra.model.Nuklear,org.sheepy.lily.vulkan.model.process.Compute,org.sheepy.lily.vulkan.model.process.Graphic,org.sheepy.lily.vulkan.model.Process,org.sheepy.lily.vulkan.model.Vulkan,org.sheepy.lily.vulkan.model.VulkanResource,org.sheepy.lily.openal.model.OpenAL,org.sheepy.vulkan.model.Barrier,org.sheepy.vulkan.model.GraphicPipeline,org.sheepy.vulkan.model.Pipeline,org.sheepy.vulkan.model.Enumeration title=VSand mainMaterial=/materials/materials.1 secondaryMaterial=/materials/materials.3 boardUpdateTask="@Update Board" fetchBoardTask="@Fetch Board" size="1280;704"
 	(engines=VulkanEngine
 		(resourcePkg
 			(resources=MemoryChunk
@@ -19,19 +19,19 @@
 					(constants name=Width constantId=1 size=4)
 					(constants name=Height constantId=2 size=4)
 				)
-				(resources=Shader name=boardToPixel stage=COMPUTE_BIT
-					(file=StringModuleResource name="" path=board_to_pixel.comp.spv moduleName=org.sheepy.vsand)
-					(constants name=MaterialCount size=4)
-					(constants name=Width constantId=1 size=4)
-					(constants name=Height constantId=2 size=4)
-				)
-				(resources=BoardConstantBuffer name=BoardConstants)
-				(resources=ConstantBuffer name=SpecializationData)
-				(resources=MemoryChunk
-					(parts=BufferMemory name=Board
-						(buffers=StaticBuffer name="Board Buffer 1" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT)
-						(buffers=StaticBuffer name="Board Buffer 2" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT)
-						(buffers=StaticBuffer name="Chunk Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT)
+					(resources=Shader name=boardToPixel stage=COMPUTE_BIT
+						(file=StringModuleResource name="" path=board_to_pixel.comp.spv moduleName=org.sheepy.vsand)
+						(constants name=MaterialCount size=4)
+						(constants name=Width constantId=1 size=4)
+						(constants name=Height constantId=2 size=4)
+					)
+					(resources=BoardConstantBuffer name=BoardConstants)
+					(resources=ConstantBuffer name=SpecializationData)
+					(resources=MemoryChunk
+						(parts=BufferMemory name=Board
+							(buffers=StaticBuffer name="Board Buffer 1" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+							(buffers=StaticBuffer name="Board Buffer 2" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+							(buffers=StaticBuffer name="Chunk Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
 					)
 					(parts=BufferMemory name=Data
 						(buffers=DataBuffer name=Configuration usages=UNIFORM_BUFFER_BIT,TRANSFER_DST_BIT)
@@ -83,6 +83,19 @@
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
 									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+								)
+							)
+							(tasks=CompositeTask name="Fetch Board" enabled=false
+								(tasks=PipelineBarrier name="Fetch Barrier" srcStage=COMPUTE_SHADER_BIT dstStage=TRANSFER_BIT
+									(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=TRANSFER_READ_BIT
+										(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+									)
+								)
+								(tasks=FetchBuffer name="Fetch Board 1"
+									(bufferReference=BufferReference buffers="@Board Buffer 1")
+								)
+								(tasks=FetchBuffer name="Fetch Board 2"
+									(bufferReference=BufferReference buffers="@Board Buffer 2")
 								)
 							)
 						)

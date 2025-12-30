@@ -8,6 +8,8 @@ import org.sheepy.vsand.constants.PixelConstantBufferAdapter;
 import org.sheepy.vsand.draw.DrawCircleAdapter;
 import org.sheepy.vsand.draw.DrawLineAdapter;
 import org.sheepy.vsand.draw.DrawSquareAdapter;
+import org.sheepy.vsand.fetch.BoardBufferFetchConsumer;
+import org.sheepy.vsand.fetch.BoardFetchService;
 import org.sheepy.vsand.input.InputManager;
 import org.sheepy.vsand.input.PrimaryDrawer;
 import org.sheepy.vsand.input.SecondaryDrawer;
@@ -38,6 +40,8 @@ public final class Extenders implements IAdapterProvider
 					   ApplicationBehaviour.class,
 					   MaterialSelectorInputProviderAdapter.class,
 					   SpecializationDataAdapter.class,
+					   BoardFetchService.class,
+					   BoardBufferFetchConsumer.class,
 					   InputManager.class,
 					   PrimaryDrawer.class,
 					   SecondaryDrawer.class,

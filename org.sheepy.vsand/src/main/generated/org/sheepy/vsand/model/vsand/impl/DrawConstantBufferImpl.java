@@ -14,11 +14,13 @@ import org.sheepy.vsand.model.vsand.DrawConstantBuffer;
 import org.sheepy.vsand.model.vsand.VSandModelDefinition;
 
 public final class DrawConstantBufferImpl extends FeaturedObject<DrawConstantBuffer.Features<?>> implements DrawConstantBuffer {
-  private static final int FEATURE_COUNT = 4;
+  private static final int FEATURE_COUNT = 6;
   private final ModelNotifier<DrawConstantBuffer.Features<?>> notifier = new ModelNotifier<>(this, FEATURE_COUNT, this::featureIndex);
   private final String name;
   private ByteBuffer data;
   private int currentBoardBuffer;
+  private boolean deterministicRandom;
+  private long randomSeed;
   private BoardConstantBuffer boardConstantBuffer;
 
   public DrawConstantBufferImpl(final String name) {
@@ -61,6 +63,30 @@ public final class DrawConstantBufferImpl extends FeaturedObject<DrawConstantBuf
   }
 
   @Override
+  public boolean deterministicRandom() {
+    return deterministicRandom;
+  }
+
+  @Override
+  public void deterministicRandom(final boolean deterministicRandom) {
+    final var oldValue = this.deterministicRandom;
+    this.deterministicRandom = deterministicRandom;
+    notifier.notifyBoolean(BoardConstantBuffer.FeatureIDs.DETERMINISTIC_RANDOM, false, false, oldValue, deterministicRandom);
+  }
+
+  @Override
+  public long randomSeed() {
+    return randomSeed;
+  }
+
+  @Override
+  public void randomSeed(final long randomSeed) {
+    final var oldValue = this.randomSeed;
+    this.randomSeed = randomSeed;
+    notifier.notifyLong(BoardConstantBuffer.FeatureIDs.RANDOM_SEED, false, false, oldValue, randomSeed);
+  }
+
+  @Override
   public BoardConstantBuffer boardConstantBuffer() {
     return boardConstantBuffer;
   }
@@ -93,7 +119,9 @@ public final class DrawConstantBufferImpl extends FeaturedObject<DrawConstantBuf
       case DrawConstantBuffer.FeatureIDs.NAME -> 0;
       case DrawConstantBuffer.FeatureIDs.DATA -> 1;
       case DrawConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER -> 2;
-      case DrawConstantBuffer.FeatureIDs.BOARD_CONSTANT_BUFFER -> 3;
+      case DrawConstantBuffer.FeatureIDs.DETERMINISTIC_RANDOM -> 3;
+      case DrawConstantBuffer.FeatureIDs.RANDOM_SEED -> 4;
+      case DrawConstantBuffer.FeatureIDs.BOARD_CONSTANT_BUFFER -> 5;
       default -> throw new IllegalArgumentException("Unknown featureId: " + featureId);
     };
   }
@@ -104,7 +132,7 @@ public final class DrawConstantBufferImpl extends FeaturedObject<DrawConstantBuf
   }
 
   private static final class Inserters {
-    private static final FeatureGetter<DrawConstantBuffer> GET_MAP = new FeatureGetter.Builder<DrawConstantBuffer>(FEATURE_COUNT, DrawConstantBufferImpl::featureIndexStatic).add(DrawConstantBuffer.FeatureIDs.NAME, DrawConstantBuffer::name).add(DrawConstantBuffer.FeatureIDs.DATA, DrawConstantBuffer::data).add(DrawConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER, DrawConstantBuffer::currentBoardBuffer).add(DrawConstantBuffer.FeatureIDs.BOARD_CONSTANT_BUFFER, DrawConstantBuffer::boardConstantBuffer).build();
-    private static final FeatureSetter<DrawConstantBuffer> SET_MAP = new FeatureSetter.Builder<DrawConstantBuffer>(FEATURE_COUNT, DrawConstantBufferImpl::featureIndexStatic).add(DrawConstantBuffer.FeatureIDs.DATA, (object, value) -> ((DrawConstantBufferImpl) object).data((ByteBuffer) value)).add(DrawConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER, (object, value) -> ((DrawConstantBufferImpl) object).currentBoardBuffer((int) value)).add(DrawConstantBuffer.FeatureIDs.BOARD_CONSTANT_BUFFER, (object, value) -> ((DrawConstantBufferImpl) object).boardConstantBuffer((BoardConstantBuffer) value)).build();
+    private static final FeatureGetter<DrawConstantBuffer> GET_MAP = new FeatureGetter.Builder<DrawConstantBuffer>(FEATURE_COUNT, DrawConstantBufferImpl::featureIndexStatic).add(DrawConstantBuffer.FeatureIDs.NAME, DrawConstantBuffer::name).add(DrawConstantBuffer.FeatureIDs.DATA, DrawConstantBuffer::data).add(DrawConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER, DrawConstantBuffer::currentBoardBuffer).add(DrawConstantBuffer.FeatureIDs.DETERMINISTIC_RANDOM, DrawConstantBuffer::deterministicRandom).add(DrawConstantBuffer.FeatureIDs.RANDOM_SEED, DrawConstantBuffer::randomSeed).add(DrawConstantBuffer.FeatureIDs.BOARD_CONSTANT_BUFFER, DrawConstantBuffer::boardConstantBuffer).build();
+    private static final FeatureSetter<DrawConstantBuffer> SET_MAP = new FeatureSetter.Builder<DrawConstantBuffer>(FEATURE_COUNT, DrawConstantBufferImpl::featureIndexStatic).add(DrawConstantBuffer.FeatureIDs.DATA, (object, value) -> ((DrawConstantBufferImpl) object).data((ByteBuffer) value)).add(DrawConstantBuffer.FeatureIDs.CURRENT_BOARD_BUFFER, (object, value) -> ((DrawConstantBufferImpl) object).currentBoardBuffer((int) value)).add(DrawConstantBuffer.FeatureIDs.DETERMINISTIC_RANDOM, (object, value) -> ((DrawConstantBufferImpl) object).deterministicRandom((boolean) value)).add(DrawConstantBuffer.FeatureIDs.RANDOM_SEED, (object, value) -> ((DrawConstantBufferImpl) object).randomSeed((long) value)).add(DrawConstantBuffer.FeatureIDs.BOARD_CONSTANT_BUFFER, (object, value) -> ((DrawConstantBufferImpl) object).boardConstantBuffer((BoardConstantBuffer) value)).build();
   }
 }
