@@ -1,0 +1,8 @@
+# 16x16 contained box + a water column on the left.
+# Goal: water should quickly form a flat pool once it hits the floor.
+
+frame Wall 1
+
+# Vertical water column, a few pixels wide, on the left side (inside the walls),
+# high enough so it falls first and then should spread into a pool.
+line Water 2 2 2 8 3

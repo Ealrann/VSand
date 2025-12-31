@@ -23,6 +23,8 @@ public final class InputManager implements IAdapter
 	private final IInputManager inputManager;
 
 	private boolean shiftPressed = false;
+	private boolean debugKeyPressed = false;
+	private boolean massKeyPressed = false;
 
 	private InputManager(final VSandApplication application, final IObservatoryBuilder observatory)
 	{
@@ -59,20 +61,30 @@ public final class InputManager implements IAdapter
 				case 332 -> halfSpeed(); // /
 				case 333 -> smallerBrush(); // -
 				case 334 -> biggerBrush(); // +
-				case 'n' - 32 -> application.nextMode(true); // n
-				case 'f' - 32 -> application.scene().fullscreen(!application.scene().fullscreen());
-				case 256 -> application.run(false); // Escape
-				case 's' - 32 -> showDebug();
+					case 'n' - 32 -> application.nextMode(true); // n
+					case 'f' - 32 -> application.scene().fullscreen(!application.scene().fullscreen());
+					case 256 -> application.run(false); // Escape
+					case 's' - 32 -> showDebug();
+					case 'm' - 32 -> showMass();
+				}
 			}
-		}
-		else
-		{
-			switch (event.key)
+			else
 			{
-				case 's' - 32 -> application.forceClear(false);
+				switch (event.key)
+				{
+					case 's' - 32 ->
+					{
+						debugKeyPressed = false;
+						updateForceClear();
+					}
+					case 'm' - 32 ->
+					{
+						massKeyPressed = false;
+						updateForceClear();
+					}
+				}
 			}
 		}
-	}
 
 	private void shiftKeyEvent(final EKeyState state)
 	{
@@ -88,8 +100,21 @@ public final class InputManager implements IAdapter
 
 	private void showDebug()
 	{
-		application.forceClear(true);
+		debugKeyPressed = true;
+		updateForceClear();
 		application.showSleepZones(!application.showSleepZones());
+	}
+
+	private void showMass()
+	{
+		massKeyPressed = true;
+		updateForceClear();
+		application.showMass(!application.showMass());
+	}
+
+	private void updateForceClear()
+	{
+		application.forceClear(debugKeyPressed || massKeyPressed);
 	}
 
 	private void biggerBrush()

@@ -19,11 +19,30 @@ const int CHUNK_HEIGHT = HEIGHT / WORKGROUP_SIZE_Y;
 const int SWIZZLED_WIDTH = WIDTH / 2;
 const int SWIZZLED_HEIGHT = HEIGHT / 2;
 
+#include "mass_utils.glsl"
+
+const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	int flags;
+	vec4 color;
+};
+
 // The chunk state board.
 layout(binding = 0) buffer SChunks
 {
 	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
 }chunks;
+
+// The definition of materials.
+layout(binding = 3) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+} configuration;
 
 // The game board, with all the values.
 layout(binding = 1) buffer SBoard1
@@ -34,6 +53,15 @@ layout(binding = 2) buffer SBoard2
 {
 	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
 }board2;
+
+layout(binding = 4) buffer SMass1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+}mass1;
+layout(binding = 5) buffer SMass2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+}mass2;
 
 layout (push_constant) uniform PushConstants
 {
@@ -69,6 +97,7 @@ bool testCircle(int x, int y);
 bool testLine(int x, int y);
 int computeSide(int x, int y, int x1, int y1, int x2, int y2);
 void setValue(int x, int y, uint value);
+bool isPressureLiquid(uint materialId);
 
 void main()
 {
@@ -122,7 +151,27 @@ void setValue(int x, int y, uint value)
 			atomicAnd(board2.data[swizzledLoc], 0xFFFFFFFF ^ (0xFF << offset));
 			atomicOr(board2.data[swizzledLoc], value << offset);
 		}
+
+		const uint mass = isPressureLiquid(value) ? M_FULL : 0u;
+		const uvec2 massLoc = massIndexShift(ivec2(x, y));
+		const uint clearMask = ~(PACKED_U16_MASK << massLoc.y);
+		const uint packedMass = mass << massLoc.y;
+		if(attributes.boardToWrite == 0)
+		{
+			atomicAnd(mass1.data[massLoc.x], clearMask);
+			atomicOr(mass1.data[massLoc.x], packedMass);
+		}
+		else
+		{
+			atomicAnd(mass2.data[massLoc.x], clearMask);
+			atomicOr(mass2.data[massLoc.x], packedMass);
+		}
 	}
+}
+
+bool isPressureLiquid(uint materialId)
+{
+	return (uint(configuration.materials[materialId].flags) & MATERIAL_FLAG_PRESSURE_LIQUID) != 0u;
 }
 
 bool testCircle(int x, int y)

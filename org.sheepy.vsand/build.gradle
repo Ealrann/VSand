@@ -93,6 +93,16 @@ application {
 	// mainClass = 'org.sheepy.vsand.VSandBenchmarkLauncher'
 }
 
+tasks.register('dumpRun', JavaExec) {
+	group = 'application'
+	description = 'Runs the headless VSand state dump tool'
+	dependsOn tasks.named('jar')
+	classpath = files(tasks.named('jar').flatMap { it.archiveFile }) + (configurations.runtimeClasspath - sourceSets.main.output)
+	mainModule = 'org.sheepy.vsand'
+	mainClass = 'org.sheepy.vsand.VSandStateDumpLauncher'
+	enableAssertions = true
+}
+
 test {
 	useJUnitPlatform()
 }

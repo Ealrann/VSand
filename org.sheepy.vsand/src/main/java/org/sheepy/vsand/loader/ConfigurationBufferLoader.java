@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 public final class ConfigurationBufferLoader implements IAdapter
 {
 	private static final int UNIT_BYTES = 8 * Integer.BYTES;
+	private static final int MATERIAL_FLAG_PRESSURE_LIQUID = 1;
 
 	@Load
 	private static void load(DataBuffer buffer)
@@ -36,8 +37,7 @@ public final class ConfigurationBufferLoader implements IAdapter
 			bBuffer.putInt(material.density());
 			bBuffer.putInt(material.runoff());
 
-			// Alignment
-			bBuffer.putInt(0);
+			bBuffer.putInt(materialFlags(material));
 
 			// Color
 			bBuffer.putFloat(material.r() / 255f);
@@ -55,5 +55,22 @@ public final class ConfigurationBufferLoader implements IAdapter
 	{
 		MemoryUtil.memFree(buffer.data());
 		buffer.data(null);
+	}
+
+	private static int materialFlags(final Material material)
+	{
+		return isPressureLiquid(material) ? MATERIAL_FLAG_PRESSURE_LIQUID : 0;
+	}
+
+	private static boolean isPressureLiquid(final Material material)
+	{
+		final var name = material.name();
+		if (name == null) return false;
+
+		return switch (name)
+		{
+			case "Water", "LiquidWax", "Lava", "LavaBoiling", "Petrol", "PetrolFire", "HotWax", "Acid" -> true;
+			default -> false;
+		};
 	}
 }

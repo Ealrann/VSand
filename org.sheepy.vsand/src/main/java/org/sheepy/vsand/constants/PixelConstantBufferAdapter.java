@@ -22,8 +22,8 @@ import java.nio.ByteBuffer;
 @AutoLoad
 public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 {
-	private static final int BYTE_SIZE = 7 * Integer.BYTES;
-	private static final int BOARD_INDEX_POSITION = 6 * Integer.BYTES;
+	private static final int BYTE_SIZE = 9 * Integer.BYTES;
+	private static final int BOARD_INDEX_POSITION = 8 * Integer.BYTES;
 
 	private final PixelConstantBuffer constantBuffer;
 	private final VSandApplication application;
@@ -62,8 +62,10 @@ public final class PixelConstantBufferAdapter implements IConstantBufferUpdater
 
 		buffer.putInt(forceClear ? 1 : 0);
 		buffer.putInt(application.showSleepZones() ? 1 : 0);
+		buffer.putInt(application.showMass() ? 1 : 0);
 		buffer.putInt(index);
 		buffer.putInt(size.getSize() >> 1);
+		buffer.putInt(0);
 
 		if (inputManager != null)
 		{

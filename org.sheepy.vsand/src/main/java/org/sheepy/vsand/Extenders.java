@@ -5,6 +5,7 @@ import org.logoce.lmf.core.api.extender.IAdapterProvider;
 import org.sheepy.vsand.constants.BoardConstantBufferAdapter;
 import org.sheepy.vsand.constants.DrawConstantBufferAdapter;
 import org.sheepy.vsand.constants.PixelConstantBufferAdapter;
+import org.sheepy.vsand.constants.SwapConstantBufferAdapter;
 import org.sheepy.vsand.draw.DrawCircleAdapter;
 import org.sheepy.vsand.draw.DrawLineAdapter;
 import org.sheepy.vsand.draw.DrawSquareAdapter;
@@ -28,15 +29,22 @@ public final class Extenders implements IAdapterProvider
 		return List.of(ConfigurationBufferLoader.class,
 					   Board1BufferLoader.class,
 					   Board2BufferLoader.class,
+					   Mass1BufferLoader.class,
+					   Mass2BufferLoader.class,
+					   FluxDownBufferLoader.class,
+					   FluxUpBufferLoader.class,
+					   FluxRightBufferLoader.class,
+					   FluxLeftBufferLoader.class,
 					   ChunkBufferLoader.class,
-					   BoardImageLoader.class,
-					   TransformationBufferLoader.class,
-					   BoardConstantBufferAdapter.class,
-					   DrawConstantBufferAdapter.class,
-					   PixelConstantBufferAdapter.class,
-					   DrawCircleAdapter.class,
-					   DrawSquareAdapter.class,
-					   DrawLineAdapter.class,
+						   BoardImageLoader.class,
+						   TransformationBufferLoader.class,
+						   BoardConstantBufferAdapter.class,
+						   SwapConstantBufferAdapter.class,
+						   DrawConstantBufferAdapter.class,
+						   PixelConstantBufferAdapter.class,
+						   DrawCircleAdapter.class,
+						   DrawSquareAdapter.class,
+						   DrawLineAdapter.class,
 					   ApplicationBehaviour.class,
 					   MaterialSelectorInputProviderAdapter.class,
 					   SpecializationDataAdapter.class,
@@ -46,6 +54,8 @@ public final class Extenders implements IAdapterProvider
 					   PrimaryDrawer.class,
 					   SecondaryDrawer.class,
 					   BoardUpdateDispatchTaskLoader.class,
+					   PressureFluxDispatchTaskLoader.class,
+					   PressureApplyDispatchTaskLoader.class,
 					   BoardToPixelDispatchTaskLoader.class,
 					   DrawDispatchTaskLoader.class);
 	}

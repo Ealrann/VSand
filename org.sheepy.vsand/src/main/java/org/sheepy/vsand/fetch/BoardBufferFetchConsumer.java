@@ -14,19 +14,48 @@ import java.nio.ByteBuffer;
 @Adapter
 public final class BoardBufferFetchConsumer implements IBufferDataConsumer, IAdapter
 {
+	private enum BufferType
+	{
+		BOARD,
+		MASS,
+		UNKNOWN
+	}
+
 	private final int bufferIndex;
+	private final BufferType bufferType;
 	private final BoardFetchService fetchService;
 
 	private BoardBufferFetchConsumer(StaticBuffer buffer)
 	{
 		final var application = (VSandApplication) ModelUtil.getApplication(buffer);
 		fetchService = application.adaptNotNull(BoardFetchService.class);
-		bufferIndex = buffer.name() != null && buffer.name().endsWith("2") ? 1 : 0;
+
+		final var name = buffer.name();
+		bufferIndex = name != null && name.endsWith("2") ? 1 : 0;
+		if (name != null && name.startsWith("Board Buffer"))
+		{
+			bufferType = BufferType.BOARD;
+		}
+		else if (name != null && name.startsWith("Mass Buffer"))
+		{
+			bufferType = BufferType.MASS;
+		}
+		else
+		{
+			bufferType = BufferType.UNKNOWN;
+		}
 	}
 
 	@Override
 	public void fetch(ByteBuffer data)
 	{
-		fetchService.onBufferFetched(bufferIndex, data);
+		switch (bufferType)
+		{
+			case BOARD -> fetchService.onBoardFetched(bufferIndex, data);
+			case MASS -> fetchService.onMassFetched(bufferIndex, data);
+			case UNKNOWN ->
+			{
+			}
+		}
 	}
 }

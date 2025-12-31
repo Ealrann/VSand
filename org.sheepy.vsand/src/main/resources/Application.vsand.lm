@@ -19,6 +19,18 @@
 					(constants name=Width constantId=1 size=4)
 					(constants name=Height constantId=2 size=4)
 				)
+				(resources=Shader name=pressureFlux stage=COMPUTE_BIT
+					(file=StringModuleResource name="" path=pressure_flux.comp.spv moduleName=org.sheepy.vsand)
+					(constants name=MaterialCount size=4)
+					(constants name=Width constantId=1 size=4)
+					(constants name=Height constantId=2 size=4)
+				)
+				(resources=Shader name=pressureApply stage=COMPUTE_BIT
+					(file=StringModuleResource name="" path=pressure_apply.comp.spv moduleName=org.sheepy.vsand)
+					(constants name=MaterialCount size=4)
+					(constants name=Width constantId=1 size=4)
+					(constants name=Height constantId=2 size=4)
+				)
 					(resources=Shader name=boardToPixel stage=COMPUTE_BIT
 						(file=StringModuleResource name="" path=board_to_pixel.comp.spv moduleName=org.sheepy.vsand)
 						(constants name=MaterialCount size=4)
@@ -26,11 +38,18 @@
 						(constants name=Height constantId=2 size=4)
 					)
 					(resources=BoardConstantBuffer name=BoardConstants)
+					(resources=SwapConstantBuffer name=SwapConstants boardConstantBuffer=@BoardConstants)
 					(resources=ConstantBuffer name=SpecializationData)
 					(resources=MemoryChunk
 						(parts=BufferMemory name=Board
 							(buffers=StaticBuffer name="Board Buffer 1" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
 							(buffers=StaticBuffer name="Board Buffer 2" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+							(buffers=StaticBuffer name="Mass Buffer 1" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+							(buffers=StaticBuffer name="Mass Buffer 2" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+							(buffers=StaticBuffer name="Flux Down Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+							(buffers=StaticBuffer name="Flux Up Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+							(buffers=StaticBuffer name="Flux Right Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+							(buffers=StaticBuffer name="Flux Left Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
 							(buffers=StaticBuffer name="Chunk Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
 					)
 					(parts=BufferMemory name=Data
@@ -43,6 +62,12 @@
 				(descriptors=BufferDescriptor name=Chunk type=STORAGE_BUFFER buffer="@Chunk Buffer" shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Board1 type=STORAGE_BUFFER buffer="@Board Buffer 1" shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Board2 type=STORAGE_BUFFER buffer="@Board Buffer 2" shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=Mass1 type=STORAGE_BUFFER buffer="@Mass Buffer 1" shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=Mass2 type=STORAGE_BUFFER buffer="@Mass Buffer 2" shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=FluxDown type=STORAGE_BUFFER buffer="@Flux Down Buffer" shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=FluxUp type=STORAGE_BUFFER buffer="@Flux Up Buffer" shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=FluxRight type=STORAGE_BUFFER buffer="@Flux Right Buffer" shaderStages=COMPUTE_BIT)
+				(descriptors=BufferDescriptor name=FluxLeft type=STORAGE_BUFFER buffer="@Flux Left Buffer" shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Config type=UNIFORM_BUFFER buffer=@Configuration shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Transfo type=UNIFORM_BUFFER buffer=@Transformation shaderStages=COMPUTE_BIT)
 				(descriptors=ImageDescriptor name=BoardImage type=STORAGE_IMAGE images="@Board Image" shaderStages=COMPUTE_BIT)
@@ -59,51 +84,227 @@
 						(tasks=PushConstantBuffer name="" buffer=@DrawConstants stages=COMPUTE_BIT)
 						(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 							(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT dstAccessMask=SHADER_WRITE_BIT
-								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
 							)
 						)
 						(tasks=DispatchTask name=Draw workgroupCountX=78 workgroupCountY=44)
 					)
 					(descriptorPool
-						(descriptorSets name=Draw descriptors=@Chunk,@Board1,@Board2)
+						(descriptorSets name=Draw descriptors=@Chunk,@Board1,@Board2,@Config,@Mass1,@Mass2)
 					)
 					(pushConstantRanges size=72 stages=COMPUTE_BIT)
 				)
-				(pipelines=ComputePipeline name=Step specializationData=@SpecializationData layout="@Update Board Common" shader=@boardUpdate
-					(taskPkgs
-						(tasks=BindDescriptorSets descriptorSets="@Update Board Common" bindPoint=COMPUTE)
-						(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-							(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
-							)
-						)
-						(tasks=CompositeTask name="Update Board"
-							(tasks=PushConstantBuffer buffer=@BoardConstants stages=COMPUTE_BIT)
-							(tasks=DispatchTask name="Board update" workgroupCountX=78 workgroupCountY=44)
+				(pipelines=CompositePipeline name=Simulation repeat=1
+					(pipelines=ComputePipeline name="Board Update" specializationData=@SpecializationData layout="@Update Board Common" shader=@boardUpdate
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Update Board Common" bindPoint=COMPUTE)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
 								)
 							)
-							(tasks=CompositeTask name="Fetch Board" enabled=false
-								(tasks=PipelineBarrier name="Fetch Barrier" srcStage=COMPUTE_SHADER_BIT dstStage=TRANSFER_BIT
-									(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=TRANSFER_READ_BIT
-										(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+							(tasks=CompositeTask name="Update Board"
+								(tasks=PushConstantBuffer buffer=@BoardConstants stages=COMPUTE_BIT)
+								(tasks=DispatchTask name="Board update" workgroupCountX=78 workgroupCountY=44)
+								(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+									(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+										(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
 									)
-								)
-								(tasks=FetchBuffer name="Fetch Board 1"
-									(bufferReference=BufferReference buffers="@Board Buffer 1")
-								)
-								(tasks=FetchBuffer name="Fetch Board 2"
-									(bufferReference=BufferReference buffers="@Board Buffer 2")
 								)
 							)
 						)
+						(descriptorPool
+							(descriptorSets name="Update Board Common" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2)
+						)
+						(pushConstantRanges size=8 stages=COMPUTE_BIT)
 					)
-					(descriptorPool
-						(descriptorSets name="Update Board Common" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2)
+					(pipelines=ComputePipeline name="Pressure Flux 1" specializationData=@SpecializationData layout="@Pressure Flux 1" shader=@pressureFlux
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Pressure Flux 1" bindPoint=COMPUTE)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+							(tasks=PushConstantBuffer buffer=@SwapConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Pressure flux" workgroupCountX=78 workgroupCountY=44)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+						)
+						(descriptorPool
+							(descriptorSets name="Pressure Flux 1" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@FluxDown,@FluxUp,@FluxRight,@FluxLeft)
+						)
+						(pushConstantRanges size=8 stages=COMPUTE_BIT)
 					)
-					(pushConstantRanges size=8 stages=COMPUTE_BIT)
+					(pipelines=ComputePipeline name="Pressure Apply 1" specializationData=@SpecializationData layout="@Pressure Apply 1" shader=@pressureApply
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Pressure Apply 1" bindPoint=COMPUTE)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+							(tasks=DispatchTask name="Pressure apply" workgroupCountX=78 workgroupCountY=44)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+						)
+						(descriptorPool
+							(descriptorSets name="Pressure Apply 1" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@FluxDown,@FluxUp,@FluxRight,@FluxLeft)
+						)
+						(pushConstantRanges size=8 stages=COMPUTE_BIT)
+					)
+					(pipelines=ComputePipeline name="Pressure Flux 2" specializationData=@SpecializationData layout="@Pressure Flux 2" shader=@pressureFlux
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Pressure Flux 2" bindPoint=COMPUTE)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+							(tasks=PushConstantBuffer buffer=@SwapConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Pressure flux" workgroupCountX=78 workgroupCountY=44)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+						)
+						(descriptorPool
+							(descriptorSets name="Pressure Flux 2" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@FluxDown,@FluxUp,@FluxRight,@FluxLeft)
+						)
+						(pushConstantRanges size=8 stages=COMPUTE_BIT)
+					)
+					(pipelines=ComputePipeline name="Pressure Apply 2" specializationData=@SpecializationData layout="@Pressure Apply 2" shader=@pressureApply
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Pressure Apply 2" bindPoint=COMPUTE)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+							(tasks=DispatchTask name="Pressure apply" workgroupCountX=78 workgroupCountY=44)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+						)
+						(descriptorPool
+							(descriptorSets name="Pressure Apply 2" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@FluxDown,@FluxUp,@FluxRight,@FluxLeft)
+						)
+						(pushConstantRanges size=8 stages=COMPUTE_BIT)
+					)
+					(pipelines=ComputePipeline name="Pressure Flux 3" specializationData=@SpecializationData layout="@Pressure Flux 3" shader=@pressureFlux
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Pressure Flux 3" bindPoint=COMPUTE)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+							(tasks=PushConstantBuffer buffer=@SwapConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Pressure flux" workgroupCountX=78 workgroupCountY=44)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+						)
+						(descriptorPool
+							(descriptorSets name="Pressure Flux 3" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@FluxDown,@FluxUp,@FluxRight,@FluxLeft)
+						)
+						(pushConstantRanges size=8 stages=COMPUTE_BIT)
+					)
+					(pipelines=ComputePipeline name="Pressure Apply 3" specializationData=@SpecializationData layout="@Pressure Apply 3" shader=@pressureApply
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Pressure Apply 3" bindPoint=COMPUTE)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+							(tasks=DispatchTask name="Pressure apply" workgroupCountX=78 workgroupCountY=44)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+						)
+						(descriptorPool
+							(descriptorSets name="Pressure Apply 3" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@FluxDown,@FluxUp,@FluxRight,@FluxLeft)
+						)
+						(pushConstantRanges size=8 stages=COMPUTE_BIT)
+					)
+					(pipelines=ComputePipeline name="Pressure Flux 4" specializationData=@SpecializationData layout="@Pressure Flux 4" shader=@pressureFlux
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Pressure Flux 4" bindPoint=COMPUTE)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+							(tasks=PushConstantBuffer buffer=@SwapConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Pressure flux" workgroupCountX=78 workgroupCountY=44)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+						)
+						(descriptorPool
+							(descriptorSets name="Pressure Flux 4" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@FluxDown,@FluxUp,@FluxRight,@FluxLeft)
+						)
+						(pushConstantRanges size=8 stages=COMPUTE_BIT)
+					)
+						(pipelines=ComputePipeline name="Pressure Apply 4" specializationData=@SpecializationData layout="@Pressure Apply 4" shader=@pressureApply
+							(taskPkgs
+								(tasks=BindDescriptorSets descriptorSets="@Pressure Apply 4" bindPoint=COMPUTE)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+							(tasks=DispatchTask name="Pressure apply" workgroupCountX=78 workgroupCountY=44)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Flux Down Buffer","@Flux Up Buffer","@Flux Right Buffer","@Flux Left Buffer")
+								)
+							)
+						)
+						(descriptorPool
+							(descriptorSets name="Pressure Apply 4" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@FluxDown,@FluxUp,@FluxRight,@FluxLeft)
+							)
+							(pushConstantRanges size=8 stages=COMPUTE_BIT)
+						)
+						)
+						(pipelines=Pipeline name="Fetch"
+							(taskPkgs
+								(tasks=CompositeTask name="Fetch Board" enabled=false
+							(tasks=PipelineBarrier name="Fetch Barrier" srcStage=COMPUTE_SHADER_BIT dstStage=TRANSFER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=TRANSFER_READ_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
+								)
+							)
+							(tasks=FetchBuffer name="Fetch Board 1"
+								(bufferReference=BufferReference buffers="@Board Buffer 1")
+							)
+							(tasks=FetchBuffer name="Fetch Board 2"
+								(bufferReference=BufferReference buffers="@Board Buffer 2")
+							)
+							(tasks=FetchBuffer name="Fetch Mass 1"
+								(bufferReference=BufferReference buffers="@Mass Buffer 1")
+							)
+							(tasks=FetchBuffer name="Fetch Mass 2"
+								(bufferReference=BufferReference buffers="@Mass Buffer 2")
+							)
+						)
+					)
 				)
 				(pipelines=ComputePipeline name="Board to Pixel" specializationData=@SpecializationData layout="@Board to Pixel" shader=@boardToPixel
 					(resourcePkg
@@ -117,15 +318,15 @@
 						)
 						(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 							(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Chunk Buffer")
+								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
 							)
 						)
 						(tasks=DispatchTask name=BoardToPixel workgroupCountX=78 workgroupCountY=44)
 					)
 					(descriptorPool
-						(descriptorSets name="Board to Pixel" descriptors=@BoardImage,@Config,@Chunk,@Board1,@Board2)
+						(descriptorSets name="Board to Pixel" descriptors=@BoardImage,@Config,@Chunk,@Board1,@Board2,@Mass1,@Mass2)
 					)
-					(pushConstantRanges size=28 stages=COMPUTE_BIT)
+					(pushConstantRanges size=36 stages=COMPUTE_BIT)
 				)
 			)
 			(configuration)
@@ -173,10 +374,10 @@
 					(panels=Panel name=Config horizontalRelative=RIGHT width=220 height=90
 						(controls=DynamicRowLayout)
 						(controls=VariableLabel text=Speed
-							(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.lily.vulkan.model.Process#CompositeTask#repeatCount target="@Update Board")
+							(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#speed target=/)
 					)
 					(controls=Slider minValue=1 maxValue=32
-						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.lily.vulkan.model.Process#CompositeTask#repeatCount target="@Update Board")
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#speed target=/)
 					)
 					(controls=VariableLabel text="Brush Size"
 						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#brushSize target=/)

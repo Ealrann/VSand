@@ -40,12 +40,14 @@ const uint DECISION_KEEP_RANDOM_AND_INITIAL_MASK = 0xFF00FF00u;
 const int SWIZZLED_WIDTH = WIDTH / 2;
 const int SWIZZLED_HEIGHT = HEIGHT / 2;
 
+#include "mass_utils.glsl"
+
 struct Entry
 {
 	int isStatic;
 	int density;
 	int runoff;
-	int padding;
+	int flags;
 	vec4 color;
 };
 
@@ -92,6 +94,14 @@ layout(binding = 4) buffer SBoard2
 	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
 }board2;
 
+layout(binding = 5) buffer SMass1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+}mass1;
+layout(binding = 6) buffer SMass2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+}mass2;
 
 // DecisionBoard store necessary informations around movement.
 // Each 32 bit value (one per cell) stores:
@@ -103,11 +113,18 @@ layout(binding = 4) buffer SBoard2
 // 4 bits for the direction we intend to swap.
 shared uint cellDecision[WORKGROUP_SIZE][WORKGROUP_SIZE];
 shared uint cellMaterial[WORKGROUP_SIZE][WORKGROUP_SIZE];
+shared uint cellMass[WORKGROUP_SIZE][WORKGROUP_SIZE];
+shared uint cellInitialMass[WORKGROUP_SIZE][WORKGROUP_SIZE];
 shared bool chunkActive;
 shared bvec4 chunkNeighborActive;
 shared uint updatedFlag;
+shared uint liquidActiveFlag;
 shared Entry materials[MATERIAL_COUNT];
 
+const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
+const int CHUNK_FLAG_SIM_ACTIVE = 1;
+const int CHUNK_FLAG_RENDER_DIRTY = 2;
+const int CHUNK_FLAG_LIQUID_ACTIVE = 4;
 const uvec4 unswizzleVec = uvec4(0xFF, 0xFF00, 0xFF0000, 0xFF000000);
 const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
 const ivec4 farBorderLoc   = ivec4(0, 0, WORKGROUP_SIZE - 1, WORKGROUP_SIZE - 1);
@@ -125,18 +142,27 @@ uint readPackedBoard(ivec2 swizzledLoc);
 void writePackedBoard(ivec2 swizzledLoc, uint value);
 void loadCellMaterial2x2FromGlobal(ivec2 loc, ivec2 localLoc);
 uint readMaterialGlobal(ivec2 loc);
+uint readPackedMassWord(int index);
+void writePackedMassWord(int index, uint value);
+void loadCellMass2x2FromGlobal(ivec2 loc, ivec2 localLoc);
 void markUpdated();
 bool isUpdated();
+void markLiquidActive();
+bool isLiquidActive();
 uint decisionInitialValue(uint decisionValue);
 uint decisionTargetValue(uint decisionValue);
 uint decisionDirection(uint decisionValue);
 int chunkIndex(ivec2 chunkLoc);
 bool isChunkActive(ivec2 chunkLoc);
 void initCellMaterial(ivec2 loc, ivec2 localLoc, bool invalid, bool evenCell);
+void initCellMass(ivec2 loc, ivec2 localLoc, bool invalid, bool evenCell);
 void initChunkActivity();
 void loadMaterialsShared();
 void writeBackBoard(ivec2 loc, ivec2 localLoc, bool invalid, bool evenCell, bool farBorder, bool closeBorder);
 void updateChunkState();
+bool isPressureLiquid(uint materialId);
+bool applyTransform(ivec2 localLoc, uint currentValue, uint targetValue);
+bool isSupportedForPressure(ivec2 localLoc, uint materialId);
 
 /**
  * Here, we will choose one favourite destination.
@@ -159,6 +185,7 @@ void main()
 	bvec4 innerBorderVec = equal(dualLoc, innerBorderLoc);
 
 	initCellMaterial(loc, localLoc, invalid, evenCell);
+	initCellMass(loc, localLoc, invalid, evenCell);
 	initChunkActivity();
 	loadMaterialsShared();
 
@@ -223,6 +250,80 @@ void main()
 	barrier();
 
 
+	if(!closeBorder && !farBorder && !invalid)
+	{
+		const uint value = cellMaterial[localLoc.x][localLoc.y];
+		const bool pressureLiquid = isPressureLiquid(value);
+		const uint mass = cellMass[localLoc.x][localLoc.y];
+		if(!pressureLiquid)
+		{
+			if(mass != 0u)
+			{
+				cellMass[localLoc.x][localLoc.y] = 0u;
+				markUpdated();
+			}
+		}
+		else if(mass == 0u)
+		{
+			cellMaterial[localLoc.x][localLoc.y] = 0u;
+			markUpdated();
+		}
+	}
+
+
+	barrier();
+
+
+	if(!closeBorder && !farBorder && !invalid)
+	{
+		const uint value = cellMaterial[localLoc.x][localLoc.y];
+		if(value != 0u && isPressureLiquid(value))
+		{
+			const uint mass = cellMass[localLoc.x][localLoc.y];
+			if(mass != 0u && isSupportedForPressure(localLoc, value))
+			{
+				const int threshold = int(MIN_FLOW * PRESSURE_HORIZONTAL_DIV);
+
+				const uint leftMat = cellMaterial[localLoc.x - 1][localLoc.y];
+				if(leftMat == value)
+				{
+					const int diff = int(mass) - int(cellMass[localLoc.x - 1][localLoc.y]);
+					if(abs(diff) >= threshold) markLiquidActive();
+				}
+				else if(leftMat == 0u && mass > (M_FULL + MIN_FLOW))
+				{
+					markLiquidActive();
+				}
+
+				const uint rightMat = cellMaterial[localLoc.x + 1][localLoc.y];
+				if(rightMat == value)
+				{
+					const int diff = int(mass) - int(cellMass[localLoc.x + 1][localLoc.y]);
+					if(abs(diff) >= threshold) markLiquidActive();
+				}
+				else if(rightMat == 0u && mass > (M_FULL + MIN_FLOW))
+				{
+					markLiquidActive();
+				}
+
+				const uint upMat = cellMaterial[localLoc.x][localLoc.y - 1];
+				if(upMat == value)
+				{
+					const int diff = int(mass) - int(cellMass[localLoc.x][localLoc.y - 1]);
+					if(abs(diff) >= threshold) markLiquidActive();
+				}
+
+				const uint downMat = cellMaterial[localLoc.x][localLoc.y + 1];
+				if(downMat == value)
+				{
+					const int diff = int(mass) - int(cellMass[localLoc.x][localLoc.y + 1]);
+					if(abs(diff) >= threshold) markLiquidActive();
+				}
+			}
+		}
+	}
+
+
 	writeBackBoard(loc, localLoc, invalid, evenCell, farBorder, closeBorder);
 	updateChunkState();
 }
@@ -240,6 +341,23 @@ uint decisionTargetValue(uint decisionValue)
 uint decisionDirection(uint decisionValue)
 {
 	return decisionValue & DECISION_DIR_MASK;
+}
+
+bool isPressureLiquid(uint materialId)
+{
+	return (uint(materials[materialId].flags) & MATERIAL_FLAG_PRESSURE_LIQUID) != 0u;
+}
+
+bool isSupportedForPressure(ivec2 localLoc, uint materialId)
+{
+	if(localLoc.y + 1 >= WORKGROUP_SIZE) return false;
+
+	const uint belowMat = cellMaterial[localLoc.x][localLoc.y + 1];
+	if(belowMat == 0u) return false;
+
+	const int belowDensity = materials[belowMat].density;
+	const int currentDensity = materials[materialId].density;
+	return materials[belowMat].isStatic != 0 || belowDensity >= currentDensity;
 }
 
 int chunkIndex(ivec2 chunkLoc)
@@ -264,6 +382,19 @@ void initCellMaterial(ivec2 loc, ivec2 localLoc, bool invalid, bool evenCell)
 	}
 }
 
+void initCellMass(ivec2 loc, ivec2 localLoc, bool invalid, bool evenCell)
+{
+	if(invalid)
+	{
+		cellMass[localLoc.x][localLoc.y] = 0u;
+		cellInitialMass[localLoc.x][localLoc.y] = 0u;
+	}
+	else if (evenCell)
+	{
+		loadCellMass2x2FromGlobal(loc, localLoc);
+	}
+}
+
 void initChunkActivity()
 {
 	if(gl_LocalInvocationIndex != 0)
@@ -272,6 +403,7 @@ void initChunkActivity()
 	}
 
 	updatedFlag = 0u;
+	liquidActiveFlag = 0u;
 	ivec2 chunkLoc = ivec2(gl_WorkGroupID.xy);
 	chunkActive = isChunkActive(chunkLoc);
 	if(gl_WorkGroupID.x > 0)
@@ -312,6 +444,15 @@ void writeBackBoard(ivec2 loc, ivec2 localLoc, bool invalid, bool evenCell, bool
 				  | (cellMaterial[localLoc.x + 1][localLoc.y + 1] << 24);
 
 		writePackedBoard(swizzledLoc, value);
+
+		const int baseIndex = (swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y) * 2;
+		const uint massRow0 = (cellMass[localLoc.x][localLoc.y]         & PACKED_U16_MASK)
+							| ((cellMass[localLoc.x + 1][localLoc.y]     & PACKED_U16_MASK) << 16);
+		const uint massRow1 = (cellMass[localLoc.x][localLoc.y + 1]     & PACKED_U16_MASK)
+							| ((cellMass[localLoc.x + 1][localLoc.y + 1] & PACKED_U16_MASK) << 16);
+
+		writePackedMassWord(baseIndex,     massRow0);
+		writePackedMassWord(baseIndex + 1, massRow1);
 	}
 }
 
@@ -322,16 +463,28 @@ void updateChunkState()
 		return;
 	}
 
-	int index = chunkIndex(ivec2(gl_WorkGroupID.xy));
+	const int index = chunkIndex(ivec2(gl_WorkGroupID.xy));
+
+	int state = chunks.data[index];
 	if(isUpdated())
 	{
-		chunks.data[index] = 3;
+		state |= CHUNK_FLAG_SIM_ACTIVE | CHUNK_FLAG_RENDER_DIRTY;
 	}
 	else
 	{
-		// Clean all except 2
-		chunks.data[index] &= 2;
+		state &= ~CHUNK_FLAG_SIM_ACTIVE;
 	}
+
+	if(isLiquidActive())
+	{
+		state |= CHUNK_FLAG_LIQUID_ACTIVE;
+	}
+	else
+	{
+		state &= ~CHUNK_FLAG_LIQUID_ACTIVE;
+	}
+
+	chunks.data[index] = state;
 }
 
 bool isOutsideBoard(ivec2 loc)
@@ -345,6 +498,11 @@ uint readPackedBoard(ivec2 swizzledLoc)
 	return pushConstants.boardToWrite == 0 ? board2.data[index] : board1.data[index];
 }
 
+uint readPackedMassWord(int index)
+{
+	return pushConstants.boardToWrite == 0 ? mass2.data[index] : mass1.data[index];
+}
+
 void writePackedBoard(ivec2 swizzledLoc, uint value)
 {
 	const int index = swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y;
@@ -352,6 +510,14 @@ void writePackedBoard(ivec2 swizzledLoc, uint value)
 		board1.data[index] = value;
 	else
 		board2.data[index] = value;
+}
+
+void writePackedMassWord(int index, uint value)
+{
+	if(pushConstants.boardToWrite == 0)
+		mass1.data[index] = value;
+	else
+		mass2.data[index] = value;
 }
 
 void loadCellMaterial2x2FromGlobal(ivec2 loc, ivec2 localLoc)
@@ -365,6 +531,30 @@ void loadCellMaterial2x2FromGlobal(ivec2 loc, ivec2 localLoc)
 	cellMaterial[localLoc.x + 1][localLoc.y]     = unswizzledValue.y;
 	cellMaterial[localLoc.x][localLoc.y + 1]     = unswizzledValue.z;
 	cellMaterial[localLoc.x + 1][localLoc.y + 1] = unswizzledValue.w;
+}
+
+void loadCellMass2x2FromGlobal(ivec2 loc, ivec2 localLoc)
+{
+	ivec2 swizzledLoc = loc >> 1;
+	const int baseIndex = (swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y) * 2;
+
+	const uint row0 = readPackedMassWord(baseIndex);
+	const uint row1 = readPackedMassWord(baseIndex + 1);
+
+	const uint mass00 = packedU16Read(row0, 0);
+	const uint mass10 = packedU16Read(row0, 16);
+	const uint mass01 = packedU16Read(row1, 0);
+	const uint mass11 = packedU16Read(row1, 16);
+
+	cellMass[localLoc.x][localLoc.y]             = mass00;
+	cellMass[localLoc.x + 1][localLoc.y]         = mass10;
+	cellMass[localLoc.x][localLoc.y + 1]         = mass01;
+	cellMass[localLoc.x + 1][localLoc.y + 1]     = mass11;
+
+	cellInitialMass[localLoc.x][localLoc.y]         = mass00;
+	cellInitialMass[localLoc.x + 1][localLoc.y]     = mass10;
+	cellInitialMass[localLoc.x][localLoc.y + 1]     = mass01;
+	cellInitialMass[localLoc.x + 1][localLoc.y + 1] = mass11;
 }
 
 uint readMaterialGlobal(ivec2 loc)
@@ -384,6 +574,16 @@ void markUpdated()
 bool isUpdated()
 {
 	return updatedFlag != 0u;
+}
+
+void markLiquidActive()
+{
+	atomicOr(liquidActiveFlag, 1u);
+}
+
+bool isLiquidActive()
+{
+	return liquidActiveFlag != 0u;
 }
 
 bool chooseTo(ivec2 loc, ivec2 localLoc)
@@ -630,6 +830,7 @@ bool swap(ivec2 loc, ivec2 localLoc)
 					| MOVED_TAG;
 
 			cellMaterial[localLoc.x][localLoc.y] = targetValue;
+			cellMass[localLoc.x][localLoc.y] = cellInitialMass[localTarget.x][localTarget.y];
 			res = true;
 		}
 	}
@@ -683,13 +884,15 @@ bool transformation(ivec2 loc, ivec2 localLoc, bool moved)
 		if(transfoToApply != -1)
 		{
 			uint targetValue = transfoToApply & 255u;
-			cellMaterial[localLoc.x][localLoc.y] = targetValue;
-			uint propagation = (transfoToApply & 65280u) >> 8;
-			if(propagation > 1)
+			if(applyTransform(localLoc, currentValue, targetValue))
 			{
-				transformPropagate(localLoc, currentValue, targetValue, propagation);
+				uint propagation = (transfoToApply & 65280u) >> 8;
+				if(propagation > 1)
+				{
+					transformPropagate(localLoc, currentValue, targetValue, propagation);
+				}
+				res = true;
 			}
-			res = true;
 		}
 	}
 
@@ -711,7 +914,10 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 			uint valueUp = localLoc.y - offset > 1 ? decisionInitialValue(cellDecision[localLoc.x][localLoc.y - offset]) : 0;
 			if (valueUp == currentValue)
 			{
-				cellMaterial[localLoc.x][localLoc.y - offset] = targetValue;
+				if(!applyTransform(ivec2(localLoc.x, localLoc.y - offset), currentValue, targetValue))
+				{
+					up = false;
+				}
 			}
 			else
 			{
@@ -723,7 +929,10 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 			uint valueDown = localLoc.y + offset < (HEIGHT - 2) ? decisionInitialValue(cellDecision[localLoc.x][localLoc.y + offset]) : 0;
 			if (valueDown == currentValue)
 			{
-				cellMaterial[localLoc.x][localLoc.y + offset] = targetValue;
+				if(!applyTransform(ivec2(localLoc.x, localLoc.y + offset), currentValue, targetValue))
+				{
+					down = false;
+				}
 			}
 			else
 			{
@@ -735,7 +944,10 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 			uint valueRight = localLoc.x + offset < (WIDTH - 2) ? decisionInitialValue(cellDecision[localLoc.x + offset][localLoc.y]) : 0;
 			if (valueRight == currentValue)
 			{
-				cellMaterial[localLoc.x + offset][localLoc.y] = targetValue;
+				if(!applyTransform(ivec2(localLoc.x + offset, localLoc.y), currentValue, targetValue))
+				{
+					right = false;
+				}
 			}
 			else
 			{
@@ -747,7 +959,10 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 			uint valueLeft = localLoc.x - offset > 1 ? decisionInitialValue(cellDecision[localLoc.x - offset][localLoc.y]) : 0;
 			if (valueLeft == currentValue)
 			{
-				cellMaterial[localLoc.x - offset][localLoc.y] = targetValue;
+				if(!applyTransform(ivec2(localLoc.x - offset, localLoc.y), currentValue, targetValue))
+				{
+					left = false;
+				}
 			}
 			else
 			{
@@ -757,6 +972,52 @@ void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uin
 
 		propagation --;
 		offset ++;
+	}
+}
+
+bool applyTransform(ivec2 localLoc, uint currentValue, uint targetValue)
+{
+	if(currentValue == targetValue)
+	{
+		return false;
+	}
+
+	const bool srcPressureLiquid = isPressureLiquid(currentValue);
+	const bool dstPressureLiquid = isPressureLiquid(targetValue);
+	if(srcPressureLiquid)
+	{
+		const uint mass = cellMass[localLoc.x][localLoc.y];
+		if(dstPressureLiquid)
+		{
+			cellMaterial[localLoc.x][localLoc.y] = targetValue;
+			return true;
+		}
+
+		const bool solidTarget = materials[targetValue].isStatic != 0;
+		if(solidTarget && mass < M_FULL)
+		{
+			return false;
+		}
+
+		cellMaterial[localLoc.x][localLoc.y] = targetValue;
+		if(mass != 0u)
+		{
+			cellMass[localLoc.x][localLoc.y] = 0u;
+		}
+		return true;
+	}
+	else
+	{
+		cellMaterial[localLoc.x][localLoc.y] = targetValue;
+		if(dstPressureLiquid)
+		{
+			cellMass[localLoc.x][localLoc.y] = M_FULL;
+		}
+		else
+		{
+			cellMass[localLoc.x][localLoc.y] = 0u;
+		}
+		return true;
 	}
 }
 

@@ -14,6 +14,8 @@ const int CHUNK_HEIGHT = HEIGHT / EFFECTIVE_SIZE;
 const int SWIZZLED_WIDTH = WIDTH / 2;
 const int SWIZZLED_HEIGHT = HEIGHT / 2;
 
+#include "mass_utils.glsl"
+
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
 
 struct Entry
@@ -21,7 +23,7 @@ struct Entry
 	int isStatic;
 	int density;
 	int runoff;
-	int padding;
+	int flags;
 	vec4 color;
 };
 
@@ -29,8 +31,10 @@ struct Entry
 layout (push_constant) uniform PushConstants {
 	int forceClear;
 	int showSleepChunks;
+	int showMass;
 	int drawMaterialId;
 	int drawRadius;
+	int _pad0;
 	ivec2 mousePos;
 	uint boardToWrite;
 } pushConstants;
@@ -58,6 +62,16 @@ layout(binding = 4) buffer readonly SBoard2
 	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
 }board2;
 
+layout(binding = 5) buffer readonly SMass1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass1;
+
+layout(binding = 6) buffer readonly SMass2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass2;
+
 const uint G_MASK = 255 << 8;
 const uint B_MASK = 255;
 const vec4 DEBUG_COLOR = vec4(1.0, 0.5, 0.5, 0.0);
@@ -66,12 +80,18 @@ const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
 const uvec2 xDir = uvec2(1, 0);
 const uvec2 yDir = uvec2(0, 1);
 
+const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
+
 shared bool colorTweakPreTest;
 shared bool sleeping;
 
 bool testSquare(ivec2 upLeftCorner1, ivec2 downRightCorner1, ivec2 upLeftCorner2, ivec2 downRightCorner2);
 bool testCircle(ivec2 loc, ivec2 circleLoc, int radius);
 vec4 computeColor(ivec2 loc, vec4 color);
+uint readPackedMassWord(int index);
+uint readMassGlobal(ivec2 loc);
+bool isPressureLiquid(uint materialId);
+vec4 computeMassColor(uint materialId, uint mass);
 
 void main()
 {
@@ -123,8 +143,8 @@ void main()
 		return;
 	}
 
-    uvec2 swizzled = loc >> 1;
-    uint board_loc = swizzled.y + swizzled.x * SWIZZLED_HEIGHT;
+	    uvec2 swizzled = loc >> 1;
+	    uint board_loc = swizzled.y + swizzled.x * SWIZZLED_HEIGHT;
 	uint value = pushConstants.boardToWrite == 0 ? board1.data[board_loc] : board2.data[board_loc];
 	uvec4 unswizzledValue = (unswizzleVec & value) >> unswizzleOffset;
 
@@ -142,6 +162,14 @@ void main()
 	vec4 finalColor2 = computeColor(loc2, color2);
 	vec4 finalColor3 = computeColor(loc3, color3);
 	vec4 finalColor4 = computeColor(loc4, color4);
+
+	if (pushConstants.showMass == 1)
+	{
+		finalColor1 = computeMassColor(unswizzledValue.x, readMassGlobal(loc1));
+		finalColor2 = computeMassColor(unswizzledValue.y, readMassGlobal(loc2));
+		finalColor3 = computeMassColor(unswizzledValue.z, readMassGlobal(loc3));
+		finalColor4 = computeMassColor(unswizzledValue.w, readMassGlobal(loc4));
+	}
 
 	imageStore(outImage, loc1, finalColor1);
 	imageStore(outImage, loc2, finalColor2);
@@ -177,13 +205,54 @@ vec4 computeColor(ivec2 loc, vec4 color)
 	}
 }
 
+vec4 computeMassColor(uint materialId, uint mass)
+{
+	if (isPressureLiquid(materialId) == false)
+	{
+		return configuration.materials[materialId].color;
+	}
+	if (mass == 0u)
+	{
+		return vec4(0.0, 0.0, 0.0, 1.0);
+	}
+
+	const float fill = clamp(float(mass) / float(M_FULL), 0.0, 1.0);
+	const float compress = clamp(float(max(int(mass) - int(M_FULL), 0)) / float(M_MAX - M_FULL), 0.0, 1.0);
+
+	const vec3 base = vec3(0.02, 0.08, 0.18);
+	const vec3 filled = vec3(0.1, 0.85, 0.95);
+	const vec3 compressed = vec3(1.0, 0.35, 0.0);
+
+	vec3 color = mix(base, filled, fill);
+	color = mix(color, compressed, compress);
+
+	return vec4(color, 1.0);
+}
+
+bool isPressureLiquid(uint materialId)
+{
+	return (uint(configuration.materials[materialId].flags) & MATERIAL_FLAG_PRESSURE_LIQUID) != 0u;
+}
+
+uint readPackedMassWord(int index)
+{
+	return pushConstants.boardToWrite == 0 ? mass1.data[index] : mass2.data[index];
+}
+
+uint readMassGlobal(ivec2 loc)
+{
+	const uvec2 ms = massIndexShift(loc);
+	const uint word = readPackedMassWord(int(ms.x));
+	return packedU16Read(word, ms.y);
+}
+
 
 bool testSquare(ivec2 upLeftCorner1, ivec2 downRightCorner1, ivec2 upLeftCorner2, ivec2 downRightCorner2)
 {
    return !((downRightCorner1.x < upLeftCorner2.x)
-			|| (downRightCorner1.y < upLeftCorner2.y)
-			|| (downRightCorner2.x < upLeftCorner1.x)
-			|| (downRightCorner2.y < upLeftCorner1.y));
+				|| (downRightCorner1.y < upLeftCorner2.y)
+				|| (downRightCorner2.x < upLeftCorner1.x)
+				|| (downRightCorner2.y < upLeftCorner1.y));
 }
 
 bool testCircle(ivec2 loc, ivec2 circleLoc, int radius)

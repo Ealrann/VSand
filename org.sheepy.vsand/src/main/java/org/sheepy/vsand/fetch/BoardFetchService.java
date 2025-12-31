@@ -30,8 +30,13 @@ public final class BoardFetchService implements IAdapter
 
 	private boolean fetchInProgress = false;
 	private boolean fetchQueued = false;
+	private int expectedBoardIndex = -1;
+	private int remainingFetchCount = 0;
 
 	private byte[] lastBoard;
+	private byte[] lastMass;
+	private byte[] pendingBoard;
+	private byte[] pendingMass;
 
 	private BoardFetchService(final VSandApplication application)
 	{
@@ -90,20 +95,46 @@ public final class BoardFetchService implements IAdapter
 		if (fetchPipeline == null) return;
 
 		final int boardIndex = resolveTargetBoardIndex();
-		final boolean enabled = fetchPipeline.enableFetchBufferForBoardIndex(boardIndex);
-		if (enabled == false) return;
+		final int enabledCount = fetchPipeline.enableFetchBuffersForBoardIndex(boardIndex);
+		if (enabledCount == 0) return;
 
+		expectedBoardIndex = boardIndex;
+		remainingFetchCount = enabledCount;
+		pendingBoard = null;
+		pendingMass = null;
 		fetchInProgress = true;
 		fetchPipeline.enable();
 	}
 
-	public void onBufferFetched(int bufferIndex, ByteBuffer data)
+	public void onBoardFetched(int bufferIndex, ByteBuffer data)
 	{
+		onBufferFetched(bufferIndex, data, FetchedBufferType.BOARD);
+	}
+
+	public void onMassFetched(int bufferIndex, ByteBuffer data)
+	{
+		onBufferFetched(bufferIndex, data, FetchedBufferType.MASS);
+	}
+
+	private void onBufferFetched(final int bufferIndex, final ByteBuffer data, final FetchedBufferType bufferType)
+	{
+		if (fetchInProgress == false) return;
+		if (bufferIndex != expectedBoardIndex) return;
+
 		final byte[] copy = new byte[data.remaining()];
 		data.get(copy);
-		lastBoard = copy;
 
-		if (fetchInProgress == false) return;
+		switch (bufferType)
+		{
+			case BOARD -> pendingBoard = copy;
+			case MASS -> pendingMass = copy;
+		}
+
+		remainingFetchCount--;
+		if (remainingFetchCount > 0) return;
+
+		lastBoard = pendingBoard;
+		lastMass = pendingMass;
 
 		fetchInProgress = false;
 		fetchPipeline.disable();
@@ -119,10 +150,31 @@ public final class BoardFetchService implements IAdapter
 		return lastBoard;
 	}
 
+	public byte[] lastMass()
+	{
+		return lastMass;
+	}
+
+	/**
+	 * Triggers a fetch immediately (no cadence command), targeting the same board index as {@link #fetchRequestedChanged(Notification)}.
+	 * Intended for tooling (tests, headless runners).
+	 */
+	public boolean requestFetchNow()
+	{
+		if (fetchPipeline == null) return false;
+		if (fetchInProgress || fetchQueued) return false;
+
+		triggerFetchNow();
+		return true;
+	}
+
 	private int resolveTargetBoardIndex()
 	{
 		if (boardConstantBuffer == null) return 0;
-		return nextBoardIndex(boardConstantBuffer.currentBoardBuffer());
+
+		final int current = boardConstantBuffer.currentBoardBuffer();
+		final int speed = Math.max(1, application.speed());
+		return (speed & 1) == 0 ? current : nextBoardIndex(current);
 	}
 
 	private static int nextBoardIndex(int currentIndex)
@@ -130,7 +182,18 @@ public final class BoardFetchService implements IAdapter
 		return (currentIndex + 1) % 2;
 	}
 
-	private record FetchPipeline(CompositeTask task, PipelineBarrier barrier, FetchBuffer board1, FetchBuffer board2)
+	private enum FetchedBufferType
+	{
+		BOARD,
+		MASS
+	}
+
+	private record FetchPipeline(CompositeTask task,
+								 PipelineBarrier barrier,
+								 FetchBuffer board1,
+								 FetchBuffer board2,
+								 FetchBuffer mass1,
+								 FetchBuffer mass2)
 	{
 		private static FetchPipeline of(final CompositeTask task)
 		{
@@ -139,6 +202,8 @@ public final class BoardFetchService implements IAdapter
 			PipelineBarrier barrier = null;
 			FetchBuffer board1 = null;
 			FetchBuffer board2 = null;
+			FetchBuffer mass1 = null;
+			FetchBuffer mass2 = null;
 			for (final IPipelineTask subTask : task.tasks())
 			{
 				if (subTask instanceof PipelineBarrier pipelineBarrier)
@@ -155,10 +220,18 @@ public final class BoardFetchService implements IAdapter
 					{
 						board2 = fetchBuffer;
 					}
+					else if ("Fetch Mass 1".equals(fetchBuffer.name()))
+					{
+						mass1 = fetchBuffer;
+					}
+					else if ("Fetch Mass 2".equals(fetchBuffer.name()))
+					{
+						mass2 = fetchBuffer;
+					}
 				}
 			}
 
-			return new FetchPipeline(task, barrier, board1, board2);
+			return new FetchPipeline(task, barrier, board1, board2, mass1, mass2);
 		}
 
 		private void enable()
@@ -174,24 +247,38 @@ public final class BoardFetchService implements IAdapter
 
 			if (board1 != null) board1.enabled(false);
 			if (board2 != null) board2.enabled(false);
+			if (mass1 != null) mass1.enabled(false);
+			if (mass2 != null) mass2.enabled(false);
 		}
 
-		private boolean enableFetchBufferForBoardIndex(final int boardIndex)
+		private int enableFetchBuffersForBoardIndex(final int boardIndex)
 		{
-			boolean enabled = false;
+			int enabledCount = 0;
 			if (board1 != null)
 			{
 				final boolean shouldEnable = boardIndex == 0;
 				board1.enabled(shouldEnable);
-				enabled |= shouldEnable;
+				if (shouldEnable) enabledCount++;
 			}
 			if (board2 != null)
 			{
 				final boolean shouldEnable = boardIndex == 1;
 				board2.enabled(shouldEnable);
-				enabled |= shouldEnable;
+				if (shouldEnable) enabledCount++;
 			}
-			return enabled;
+			if (mass1 != null)
+			{
+				final boolean shouldEnable = boardIndex == 0;
+				mass1.enabled(shouldEnable);
+				if (shouldEnable) enabledCount++;
+			}
+			if (mass2 != null)
+			{
+				final boolean shouldEnable = boardIndex == 1;
+				mass2.enabled(shouldEnable);
+				if (shouldEnable) enabledCount++;
+			}
+			return enabledCount;
 		}
 	}
 

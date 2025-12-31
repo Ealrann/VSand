@@ -84,7 +84,7 @@ public final class VSandTestHarness
 
 	public void setBoardUpdateRepeatCount(final int repeatCount)
 	{
-		application.boardUpdateTask().repeatCount(repeatCount);
+		application.speed(repeatCount);
 	}
 
 	public Material material(final String name)
@@ -210,6 +210,19 @@ public final class VSandTestHarness
 		return FetchedBoard.fromSwizzledBytes(size.x(), size.y(), bytes);
 	}
 
+	public FetchedBoardAndMass fetchBoardAndMassAfterIterations(final long iterationsBeforeFetch, final long maxTotalIterations)
+	{
+		final var loop = new FetchLoop(application, fetchService, iterationsBeforeFetch, maxTotalIterations);
+		LilyLauncher.launch(application, loop);
+
+		final var boardBytes = fetchService.lastBoard();
+		final var massBytes = fetchService.lastMass();
+		assertNotNull(boardBytes, "Board must be fetched");
+		assertNotNull(massBytes, "Mass must be fetched");
+		return new FetchedBoardAndMass(FetchedBoard.fromSwizzledBytes(size.x(), size.y(), boardBytes),
+									   FetchedMass.fromSwizzledBytes(size.x(), size.y(), massBytes));
+	}
+
 	public List<FetchedBoard> fetchBoardsAtIterations(final long maxTotalIterations, final long... fetchIterations)
 	{
 		final var loop = new MultiFetchLoop(application, fetchService, fetchIterations, maxTotalIterations);
@@ -218,6 +231,17 @@ public final class VSandTestHarness
 		final var results = loop.results();
 		assertTrue(results.size() == fetchIterations.length,
 				   "Expected %d fetched boards but got %d".formatted(fetchIterations.length, results.size()));
+		return results;
+	}
+
+	public List<FetchedBoardAndMass> fetchBoardsAndMassAtIterations(final long maxTotalIterations, final long... fetchIterations)
+	{
+		final var loop = new MultiFetchStateLoop(application, fetchService, fetchIterations, maxTotalIterations);
+		LilyLauncher.launch(application, loop);
+
+		final var results = loop.results();
+		assertTrue(results.size() == fetchIterations.length,
+				   "Expected %d fetched states but got %d".formatted(fetchIterations.length, results.size()));
 		return results;
 	}
 
@@ -338,6 +362,79 @@ public final class VSandTestHarness
 				final var decoded = FetchedBoard.fromSwizzledBytes(application.size().x(), application.size().y(), fetched);
 				results.add(decoded);
 				lastSeenBoard = fetched;
+			}
+
+			if (results.size() == fetchAfterIterations.length || iteration >= maxIterations)
+			{
+				application.run(false);
+			}
+			iteration++;
+		}
+	}
+
+	public record FetchedBoardAndMass(FetchedBoard board, FetchedMass mass)
+	{
+	}
+
+	private static final class MultiFetchStateLoop implements Runnable
+	{
+		private final VSandApplication application;
+		private final BoardFetchService fetchService;
+		private final long[] fetchAfterIterations;
+		private final long maxIterations;
+		private final List<FetchedBoardAndMass> results = new ArrayList<>();
+
+		private IProcessAdapter boardProcessAdapter;
+		private boolean loaded = false;
+		private long iteration = 0;
+		private int nextFetchIndex = 0;
+		private byte[] lastSeenBoard = null;
+
+		private MultiFetchStateLoop(final VSandApplication application,
+									final BoardFetchService fetchService,
+									final long[] fetchAfterIterations,
+									final long maxIterations)
+		{
+			this.application = application;
+			this.fetchService = fetchService;
+			this.fetchAfterIterations = fetchAfterIterations;
+			this.maxIterations = maxIterations;
+		}
+
+		public List<FetchedBoardAndMass> results()
+		{
+			return results;
+		}
+
+		@Override
+		public void run()
+		{
+			if (loaded == false)
+			{
+				final var vulkanEngine = (VulkanEngine) application.engines().get(0);
+				final var boardProcess = (ComputeProcess) vulkanEngine.processes().get(0);
+				boardProcessAdapter = boardProcess.adaptNotNull(IProcessAdapter.class);
+				loaded = true;
+			}
+
+			if (nextFetchIndex < fetchAfterIterations.length && iteration + 1 == fetchAfterIterations[nextFetchIndex])
+			{
+				application.fetchRequested(true);
+				nextFetchIndex++;
+			}
+
+			boardProcessAdapter.run();
+
+			final var fetchedBoard = fetchService.lastBoard();
+			if (fetchedBoard != null && fetchedBoard != lastSeenBoard)
+			{
+				final var fetchedMass = fetchService.lastMass();
+				assertNotNull(fetchedMass, "Mass must be fetched");
+
+				final var decodedBoard = FetchedBoard.fromSwizzledBytes(application.size().x(), application.size().y(), fetchedBoard);
+				final var decodedMass = FetchedMass.fromSwizzledBytes(application.size().x(), application.size().y(), fetchedMass);
+				results.add(new FetchedBoardAndMass(decodedBoard, decodedMass));
+				lastSeenBoard = fetchedBoard;
 			}
 
 			if (results.size() == fetchAfterIterations.length || iteration >= maxIterations)
