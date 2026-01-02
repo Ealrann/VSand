@@ -184,7 +184,9 @@ void main()
 		if (matLeft == materialId || matLeft == 0u)
 		{
 			const bool emptyDest = matLeft == 0u;
-			if (emptyDest == false || countSameLiquidNeighborsExcludingSource(leftLoc, loc, materialId) >= 2u)
+			if (emptyDest == false
+				|| isSupported(leftLoc, materialId)
+				|| countSameLiquidNeighborsExcludingSource(leftLoc, loc, materialId) >= 2u)
 			{
 				if (isWinningSourceForDest(loc, leftLoc, 2u, 1u))
 				{
@@ -213,7 +215,9 @@ void main()
 		if (matRight == materialId || matRight == 0u)
 		{
 			const bool emptyDest = matRight == 0u;
-			if (emptyDest == false || countSameLiquidNeighborsExcludingSource(rightLoc, loc, materialId) >= 2u)
+			if (emptyDest == false
+				|| isSupported(rightLoc, materialId)
+				|| countSameLiquidNeighborsExcludingSource(rightLoc, loc, materialId) >= 2u)
 			{
 				if (isWinningSourceForDest(loc, rightLoc, 2u, 2u))
 				{
@@ -394,7 +398,9 @@ uint claimScoreForDestNeighbor(ivec2 srcLoc, ivec2 destLoc, uint dirPriority, ui
 	}
 	else if (d.y == 0 && abs(d.x) == 1)
 	{
-		if (destMat == 0u && countSameLiquidNeighborsExcludingSource(destLoc, srcLoc, srcMat) < 2u) return 0u;
+		if (destMat == 0u
+			&& isSupported(destLoc, srcMat) == false
+			&& countSameLiquidNeighborsExcludingSource(destLoc, srcLoc, srcMat) < 2u) return 0u;
 
 		const int diff = int(srcMass) - int(destMass);
 		if (diff > 0)

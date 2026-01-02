@@ -1,0 +1,6 @@
+# 64x64
+# Repro scenario for “boiling”/void bubbles inside a pooled liquid.
+# - Walls frame the board (so pooling happens).
+# - A large water square sits near the bottom, leaving open air at the top.
+frame Wall 2
+square Water 32 40 42

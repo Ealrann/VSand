@@ -172,9 +172,7 @@ public final class BoardFetchService implements IAdapter
 	{
 		if (boardConstantBuffer == null) return 0;
 
-		final int current = boardConstantBuffer.currentBoardBuffer();
-		final int speed = Math.max(1, application.speed());
-		return (speed & 1) == 0 ? current : nextBoardIndex(current);
+		return boardConstantBuffer.currentBoardBuffer();
 	}
 
 	private static int nextBoardIndex(int currentIndex)

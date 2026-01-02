@@ -12,6 +12,8 @@ import java.util.Objects;
 
 public final class BoardStateDumpLoop implements Runnable
 {
+	private static final int FETCH_ONLY_SPEED = 2;
+
 	private final VSandApplication application;
 	private final CompositePipeline simulationPipeline;
 	private final DumpConfig config;
@@ -103,9 +105,9 @@ public final class BoardStateDumpLoop implements Runnable
 		setSimulationEnabled(false);
 
 		final int originalSpeed = application.speed();
-		application.speed(ensureEven(originalSpeed));
+		application.speed(FETCH_ONLY_SPEED);
 
-		final var state = fetchStateAfterOneProcessRun();
+		final var state = fetchStateWithSimulationDisabled();
 		writer.writeFrame(0, 0, state.board, state.mass);
 		System.out.println("Wrote initial dump to: " + writer.outDir().toAbsolutePath());
 
@@ -123,16 +125,30 @@ public final class BoardStateDumpLoop implements Runnable
 			return;
 		}
 
-		setSimulationEnabled(true);
+		final int originalSpeed = application.speed();
 
-		final var state = fetchStateAfterOneProcessRun();
+		setSimulationEnabled(true);
+		application.speed(1);
+		for (int i = 0; i < config.speed(); i++)
+		{
+			computeProcessAdapter.run();
+		}
+
+		setSimulationEnabled(false);
+		application.speed(FETCH_ONLY_SPEED);
+		final var state = fetchStateWithSimulationDisabled();
+
 		final int simulatedTicks = frameIndex * config.speed();
 		writer.writeFrame(frameIndex, simulatedTicks, state.board, state.mass);
 		frameIndex++;
+
+		application.speed(originalSpeed);
 	}
 
-	private FetchedState fetchStateAfterOneProcessRun()
+	private FetchedState fetchStateWithSimulationDisabled()
 	{
+		setSimulationEnabled(false);
+
 		final var previousBoard = fetchService.lastBoard();
 		lastSeenBoard = previousBoard;
 		if (fetchService.requestFetchNow() == false)
@@ -149,7 +165,6 @@ public final class BoardStateDumpLoop implements Runnable
 			return new FetchedState(board, mass);
 		}
 
-		setSimulationEnabled(false);
 		for (int i = 0; i < 8; i++)
 		{
 			computeProcessAdapter.run();

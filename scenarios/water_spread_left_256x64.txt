@@ -1,0 +1,5 @@
+# 256x64
+# Mirror of water_spread_right_256x64.txt.
+frame Wall 2
+square Water 46 40 30
+

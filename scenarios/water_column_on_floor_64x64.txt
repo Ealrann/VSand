@@ -1,0 +1,12 @@
+# 64x64
+# Water column resting on a thin flat floor (Wall). Should quickly become a slope / spread laterally.
+frame Wall 1
+line Wall 1 52 62 52 1
+
+# Column starts in the right chunk (x in 48..63) so left-spread must cross the chunk boundary at x=48.
+square Water 56 12 10
+square Water 56 22 10
+square Water 56 32 10
+square Water 56 42 10
+square Water 56 46 10
+

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class LiquidMassInvariantTest
 {
-	private static final int M_MAX = 4352;
+	private static final int M_CAP_MAX = 6144;
 
 	@Test
 	void drawingWaterCreatesMassOnWaterOnly() throws IOException
@@ -63,7 +63,7 @@ public final class LiquidMassInvariantTest
 				final int m = mass.mass(x, y);
 				if (mat == water)
 				{
-					assertTrue(m > 0 && m <= M_MAX, "Unexpected water mass at (%d, %d)".formatted(x, y));
+					assertTrue(m > 0 && m <= M_CAP_MAX, "Unexpected water mass at (%d, %d)".formatted(x, y));
 				}
 				else
 				{

@@ -1,0 +1,8 @@
+# Large water pooling scenario (pressure liquids)
+# Intended for the headless state-dump runner.
+#
+# Target: a ~50×100 water column should spread into a wide pool.
+frame Wall 2
+# Use a thick line with rounded caps; coordinates chosen so the caps don't overwrite the wall frame.
+# For a vertical line, effective height ≈ |y2-y1| + thickness => 50 + 50 = 100.
+line Water 96 40 96 90 50

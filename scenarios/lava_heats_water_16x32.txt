@@ -1,0 +1,5 @@
+# 16x32
+# Matches LavaWaterSteamTest setup (for dump-runner debugging).
+frame Wall 1
+square Lava 8 9 12
+square Water 8 22 12

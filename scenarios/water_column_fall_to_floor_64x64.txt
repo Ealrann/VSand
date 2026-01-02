@@ -1,0 +1,11 @@
+# 64x64
+# Falling water column above a flat floor; useful to see when lateral flow starts (it should start right after contact/stacking).
+frame Wall 1
+line Wall 1 52 62 52 1
+
+# Column starts in mid-air (right chunk), with a gap above the floor.
+square Water 56 6 10
+square Water 56 16 10
+square Water 56 26 10
+square Water 56 36 10
+

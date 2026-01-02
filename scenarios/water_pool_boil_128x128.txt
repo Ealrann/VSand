@@ -1,0 +1,7 @@
+# 128x128
+# Pool-at-rest scenario to detect "boiling" (internal void bubbles) in pressure-liquids.
+# - Walls frame the board.
+# - A large water block touches the inner floor, leaving open air at the top.
+frame Wall 2
+# size=84 => half=42, centerY=83 => bottom=125 (just above the wall frame at y=126..127)
+square Water 64 83 84

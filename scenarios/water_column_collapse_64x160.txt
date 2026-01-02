@@ -1,0 +1,16 @@
+# 64x160
+# Thin floor + tall water column to verify the column settles (no sticky top residue).
+frame Wall 1
+line Wall 1 150 62 150 1
+
+# 10x100-ish water column (built from stacked squares so we don't paint into the floor).
+square Water 32 55 10
+square Water 32 65 10
+square Water 32 75 10
+square Water 32 85 10
+square Water 32 95 10
+square Water 32 105 10
+square Water 32 115 10
+square Water 32 125 10
+square Water 32 135 10
+square Water 32 144 10

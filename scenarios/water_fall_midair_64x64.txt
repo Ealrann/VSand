@@ -1,0 +1,4 @@
+# 64x64
+# Water starts in mid-air so we can observe free-fall behavior (no stretching / no thin residue).
+frame Wall 1
+square Water 32 16 24

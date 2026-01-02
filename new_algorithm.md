@@ -1,3 +1,5 @@
+> Companion / implementation notes: see `new_algorithm_answer.md` (what differs from this design doc in current VSand code).
+
 ## State model and invariants
 
 ### Fine grid (materials + liquids)
@@ -715,4 +717,3 @@ If you want a staged implementation that keeps risk low:
 4. Add air solver (Pass 4–5) and couple it via Pass 6.
 
 This yields: sand look unchanged, water levels quickly with pressure, airtight caves, explosions push particles — with conservative mass handling and without the underfilled-pool artifact.
-

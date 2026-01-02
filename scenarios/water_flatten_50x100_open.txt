@@ -1,0 +1,4 @@
+# 320x192
+# 50x100-ish water column, far from boundaries so we can observe pooling speed without side-wall interference.
+frame Wall 2
+line Water 80 40 80 90 50

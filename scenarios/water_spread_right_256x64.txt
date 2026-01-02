@@ -1,0 +1,5 @@
+# 256x64
+# Water starts near the right side; should spread left over time.
+frame Wall 2
+square Water 210 40 30
+
