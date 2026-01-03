@@ -97,28 +97,26 @@ void main()
 	const ivec2 loc = ivec2(gl_GlobalInvocationID.xy);
 	if (isOutsideBoard(loc)) return;
 
+	const int linearIndex = loc.x + loc.y * WIDTH;
+	fluxLeft.data[linearIndex] = 0u;
+
 	const ivec2 chunkLoc = ivec2(gl_WorkGroupID.xy);
 	if (shouldProcessChunk(chunkLoc) == false) return;
-
-	const int linearIndex = loc.x + loc.y * WIDTH;
 
 	const uint materialId = readMaterialGlobal(loc);
 	if (materialId == 0u || isPressureLiquid(materialId) == false)
 	{
-		fluxLeft.data[linearIndex] = 0u;
 		return;
 	}
 
 	const uint mass = readMassGlobal(loc);
 	if (mass == 0u)
 	{
-		fluxLeft.data[linearIndex] = 0u;
 		return;
 	}
 
 	if (isSupported(loc, materialId) == false)
 	{
-		fluxLeft.data[linearIndex] = 0u;
 		return;
 	}
 
@@ -127,6 +125,13 @@ void main()
 	const ivec2 leftLoc = loc + ivec2(-1, 0);
 	if (leftLoc.x >= 0)
 	{
+		const ivec2 leftChunkLoc = leftLoc / ivec2(WORKGROUP_SIZE_X, WORKGROUP_SIZE_Y);
+		if (shouldProcessChunk(leftChunkLoc) == false)
+		{
+			fluxLeft.data[linearIndex] = 0u;
+			return;
+		}
+
 		const uint matLeft = readMaterialGlobal(leftLoc);
 		if (matLeft == 0u || matLeft == materialId)
 		{
@@ -142,10 +147,17 @@ void main()
 				if (dp > 0)
 				{
 					const uint proposed = uint(dp) / H_HEAD_DIV;
-					const uint candidate = min(proposed, min(mass, capacity));
+					uint candidate = min(proposed, min(mass, capacity));
 					if (candidate >= MIN_FLOW)
 					{
-						flowLeft = candidate;
+						if (candidate == mass && isSurface(loc, materialId) == false)
+						{
+							candidate = mass > MIN_FLOW ? mass - MIN_FLOW : 0u;
+						}
+						if (candidate >= MIN_FLOW)
+						{
+							flowLeft = candidate;
+						}
 					}
 				}
 			}
@@ -261,4 +273,3 @@ uint readMassGlobal(ivec2 loc)
 	const uint word = readPackedMassWord(int(ms.x));
 	return packedU16Read(word, ms.y);
 }
-

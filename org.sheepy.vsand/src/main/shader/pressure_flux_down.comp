@@ -90,28 +90,26 @@ void main()
 	const ivec2 loc = ivec2(gl_GlobalInvocationID.xy);
 	if (isOutsideBoard(loc)) return;
 
+	const int linearIndex = loc.x + loc.y * WIDTH;
+	fluxDown.data[linearIndex] = 0u;
+
 	const ivec2 chunkLoc = ivec2(gl_WorkGroupID.xy);
 	if (shouldProcessChunk(chunkLoc) == false) return;
-
-	const int linearIndex = loc.x + loc.y * WIDTH;
 
 	const uint materialId = readMaterialGlobal(loc);
 	if (materialId == 0u || isPressureLiquid(materialId) == false)
 	{
-		fluxDown.data[linearIndex] = 0u;
 		return;
 	}
 
 	const uint mass = readMassGlobal(loc);
 	if (mass == 0u)
 	{
-		fluxDown.data[linearIndex] = 0u;
 		return;
 	}
 
 	if (isSupported(loc, materialId) == false)
 	{
-		fluxDown.data[linearIndex] = 0u;
 		return;
 	}
 
@@ -124,6 +122,9 @@ void main()
 	}
 	else
 	{
+		const ivec2 downChunkLoc = downLoc / ivec2(WORKGROUP_SIZE_X, WORKGROUP_SIZE_Y);
+		if (shouldProcessChunk(downChunkLoc) == false) return;
+
 		const uint matBelow = readMaterialGlobal(downLoc);
 		if (matBelow == 0u || matBelow == materialId)
 		{
@@ -227,4 +228,3 @@ uint readMassGlobal(ivec2 loc)
 	const uint word = readPackedMassWord(int(ms.x));
 	return packedU16Read(word, ms.y);
 }
-
