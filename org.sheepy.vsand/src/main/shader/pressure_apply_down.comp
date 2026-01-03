@@ -1,0 +1,282 @@
+#version 450
+
+#define WORKGROUP_SIZE_X 16
+#define WORKGROUP_SIZE_Y 16
+
+layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
+
+layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
+
+const int CHUNK_WIDTH = WIDTH / WORKGROUP_SIZE_X;
+const int CHUNK_HEIGHT = HEIGHT / WORKGROUP_SIZE_Y;
+
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
+
+#include "mass_utils.glsl"
+
+const int CHUNK_FLAG_SIM_ACTIVE = 1;
+const int CHUNK_FLAG_LIQUID_ACTIVE = 4;
+const int CHUNK_SIMULATION_MASK = CHUNK_FLAG_SIM_ACTIVE | CHUNK_FLAG_LIQUID_ACTIVE;
+
+const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	int flags;
+	vec4 color;
+};
+
+layout (push_constant) uniform PushConstants
+{
+	float random;
+	uint boardToWrite;
+} pushConstants;
+
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+} configuration;
+
+layout(binding = 2) buffer SChunks
+{
+	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
+} chunks;
+
+layout(binding = 3) buffer SBoard1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board1;
+
+layout(binding = 4) buffer SBoard2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board2;
+
+layout(binding = 5) buffer SMass1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass1;
+
+layout(binding = 6) buffer SMass2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass2;
+
+layout(binding = 7) buffer readonly SFluxDown
+{
+	uint data[];
+} fluxDown;
+
+shared uint cellMaterial[WORKGROUP_SIZE_X][WORKGROUP_SIZE_Y];
+shared uint cellMass[WORKGROUP_SIZE_X][WORKGROUP_SIZE_Y];
+shared uint updatedFlag;
+
+uint readPackedBoard(ivec2 swizzledLoc);
+uint readMaterialGlobal(ivec2 loc);
+uint readPackedMassWord(int index);
+uint readMassGlobal(ivec2 loc);
+void writePackedBoard(ivec2 swizzledLoc, uint value);
+void writePackedMassWord(int index, uint value);
+bool isOutsideBoard(ivec2 loc);
+bool isPressureLiquid(uint materialId);
+void markUpdated();
+bool isUpdated();
+void updateChunkState();
+bool shouldProcessChunk(ivec2 chunkLoc);
+bool isChunkActive(ivec2 chunkLoc);
+int chunkIndex(ivec2 chunkLoc);
+
+void main()
+{
+	const ivec2 loc = ivec2(gl_GlobalInvocationID.xy);
+	if (isOutsideBoard(loc)) return;
+
+	const ivec2 chunkLoc = ivec2(gl_WorkGroupID.xy);
+	if (gl_LocalInvocationIndex == 0)
+	{
+		updatedFlag = 0u;
+	}
+
+	barrier();
+
+	if (shouldProcessChunk(chunkLoc) == false) return;
+
+	const int linearIndex = loc.x + loc.y * WIDTH;
+	const uint outFlow = fluxDown.data[linearIndex];
+	const uint inFlow = loc.y > 0 ? fluxDown.data[linearIndex - WIDTH] : 0u;
+
+	uint materialId = readMaterialGlobal(loc);
+	const bool pressureLiquid = materialId != 0u && isPressureLiquid(materialId);
+
+	uint oldMass = pressureLiquid ? readMassGlobal(loc) : 0u;
+
+	int newMassInt = int(oldMass) + int(inFlow) - int(outFlow);
+	newMassInt = clamp(newMassInt, 0, int(M_CAP_MAX));
+	uint newMass = uint(newMassInt);
+
+	uint newMaterialId = materialId;
+	if (materialId == 0u)
+	{
+		if (newMass == 0u)
+		{
+			newMaterialId = 0u;
+		}
+		else
+		{
+			newMaterialId = readMaterialGlobal(loc + ivec2(0, -1));
+		}
+	}
+	else if (pressureLiquid)
+	{
+		if (newMass == 0u)
+		{
+			newMaterialId = 0u;
+		}
+	}
+	else
+	{
+		newMaterialId = materialId;
+		newMass = 0u;
+	}
+
+	if (newMaterialId == 0u)
+	{
+		newMass = 0u;
+	}
+
+	if (newMaterialId != materialId || abs(int(newMass) - int(oldMass)) >= int(MIN_FLOW))
+	{
+		markUpdated();
+	}
+
+	cellMaterial[gl_LocalInvocationID.x][gl_LocalInvocationID.y] = newMaterialId;
+	cellMass[gl_LocalInvocationID.x][gl_LocalInvocationID.y] = newMass;
+
+	barrier();
+
+	if ((gl_LocalInvocationID.x & 1) == 0 && (gl_LocalInvocationID.y & 1) == 0)
+	{
+		const ivec2 swizzledLoc = loc >> 1;
+
+		const uint value = cellMaterial[gl_LocalInvocationID.x][gl_LocalInvocationID.y]
+						| (cellMaterial[gl_LocalInvocationID.x + 1][gl_LocalInvocationID.y] << 8)
+						| (cellMaterial[gl_LocalInvocationID.x][gl_LocalInvocationID.y + 1] << 16)
+						| (cellMaterial[gl_LocalInvocationID.x + 1][gl_LocalInvocationID.y + 1] << 24);
+		writePackedBoard(swizzledLoc, value);
+
+		const int baseIndex = (swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y) * 2;
+		const uint massRow0 = (cellMass[gl_LocalInvocationID.x][gl_LocalInvocationID.y]         & PACKED_U16_MASK)
+							| ((cellMass[gl_LocalInvocationID.x + 1][gl_LocalInvocationID.y]     & PACKED_U16_MASK) << 16);
+		const uint massRow1 = (cellMass[gl_LocalInvocationID.x][gl_LocalInvocationID.y + 1]     & PACKED_U16_MASK)
+							| ((cellMass[gl_LocalInvocationID.x + 1][gl_LocalInvocationID.y + 1] & PACKED_U16_MASK) << 16);
+		writePackedMassWord(baseIndex, massRow0);
+		writePackedMassWord(baseIndex + 1, massRow1);
+	}
+
+	barrier();
+	updateChunkState();
+}
+
+void markUpdated()
+{
+	atomicOr(updatedFlag, 1u);
+}
+
+bool isUpdated()
+{
+	return updatedFlag != 0u;
+}
+
+void updateChunkState()
+{
+	if (gl_LocalInvocationIndex != 1)
+	{
+		return;
+	}
+
+	if (isUpdated() == false) return;
+	const int index = chunkIndex(ivec2(gl_WorkGroupID.xy));
+	chunks.data[index] |= 3;
+}
+
+bool isPressureLiquid(uint materialId)
+{
+	return (uint(configuration.materials[materialId].flags) & MATERIAL_FLAG_PRESSURE_LIQUID) != 0u;
+}
+
+int chunkIndex(ivec2 chunkLoc)
+{
+	return chunkLoc.x * CHUNK_HEIGHT + chunkLoc.y;
+}
+
+bool isChunkActive(ivec2 chunkLoc)
+{
+	return (chunks.data[chunkIndex(chunkLoc)] & CHUNK_SIMULATION_MASK) != 0;
+}
+
+bool shouldProcessChunk(ivec2 chunkLoc)
+{
+	if (isChunkActive(chunkLoc)) return true;
+
+	if (chunkLoc.x > 0 && isChunkActive(chunkLoc + ivec2(-1, 0))) return true;
+	if (chunkLoc.y > 0 && isChunkActive(chunkLoc + ivec2(0, -1))) return true;
+	if (chunkLoc.x < CHUNK_WIDTH - 1 && isChunkActive(chunkLoc + ivec2(1, 0))) return true;
+	if (chunkLoc.y < CHUNK_HEIGHT - 1 && isChunkActive(chunkLoc + ivec2(0, 1))) return true;
+
+	return false;
+}
+
+bool isOutsideBoard(ivec2 loc)
+{
+	return (loc.x < 0 || loc.y < 0 || loc.x >= WIDTH || loc.y >= HEIGHT);
+}
+
+uint readPackedBoard(ivec2 swizzledLoc)
+{
+	const int index = swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y;
+	return pushConstants.boardToWrite == 0 ? board2.data[index] : board1.data[index];
+}
+
+uint readMaterialGlobal(ivec2 loc)
+{
+	ivec2 swizzled = loc >> 1;
+	uint offset = ((loc.x & 1) | ((loc.y & 1) << 1)) << 3;
+	uint value = readPackedBoard(swizzled);
+	return (value >> offset) & 0xFFu;
+}
+
+uint readPackedMassWord(int index)
+{
+	return pushConstants.boardToWrite == 0 ? mass2.data[index] : mass1.data[index];
+}
+
+uint readMassGlobal(ivec2 loc)
+{
+	const uvec2 ms = massIndexShift(loc);
+	const uint word = readPackedMassWord(int(ms.x));
+	return packedU16Read(word, ms.y);
+}
+
+void writePackedBoard(ivec2 swizzledLoc, uint value)
+{
+	const int index = swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y;
+	if (pushConstants.boardToWrite == 0)
+		board1.data[index] = value;
+	else
+		board2.data[index] = value;
+}
+
+void writePackedMassWord(int index, uint value)
+{
+	if (pushConstants.boardToWrite == 0)
+		mass1.data[index] = value;
+	else
+		mass2.data[index] = value;
+}
+

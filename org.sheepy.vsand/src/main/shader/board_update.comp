@@ -282,9 +282,17 @@ void main()
 			const uint mass = cellMass[localLoc.x][localLoc.y];
 			if(mass != 0u && isSupportedForPressure(localLoc, value))
 			{
-				const int threshold = int(MIN_FLOW * PRESSURE_HORIZONTAL_DIV);
+				const int threshold = int(MIN_FLOW * H_HEAD_DIV);
 
 				const uint leftMat = cellMaterial[localLoc.x - 1][localLoc.y];
+				const uint rightMat = cellMaterial[localLoc.x + 1][localLoc.y];
+
+				const uint upMat = cellMaterial[localLoc.x][localLoc.y - 1];
+				if(upMat != value)
+				{
+					if(leftMat != value || rightMat != value) markLiquidActive();
+				}
+
 				if(leftMat == value)
 				{
 					const int diff = int(mass) - int(cellMass[localLoc.x - 1][localLoc.y]);
@@ -295,7 +303,6 @@ void main()
 					markLiquidActive();
 				}
 
-				const uint rightMat = cellMaterial[localLoc.x + 1][localLoc.y];
 				if(rightMat == value)
 				{
 					const int diff = int(mass) - int(cellMass[localLoc.x + 1][localLoc.y]);
@@ -306,7 +313,6 @@ void main()
 					markLiquidActive();
 				}
 
-				const uint upMat = cellMaterial[localLoc.x][localLoc.y - 1];
 				if(upMat == value)
 				{
 					const int diff = int(mass) - int(cellMass[localLoc.x][localLoc.y - 1]);

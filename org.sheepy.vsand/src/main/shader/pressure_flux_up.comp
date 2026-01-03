@@ -1,0 +1,226 @@
+#version 450
+
+#define WORKGROUP_SIZE_X 16
+#define WORKGROUP_SIZE_Y 16
+
+layout (local_size_x = WORKGROUP_SIZE_X, local_size_y = WORKGROUP_SIZE_Y, local_size_z = 1) in;
+
+layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
+
+const int CHUNK_WIDTH = WIDTH / WORKGROUP_SIZE_X;
+const int CHUNK_HEIGHT = HEIGHT / WORKGROUP_SIZE_Y;
+
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
+
+#include "mass_utils.glsl"
+
+const int CHUNK_FLAG_SIM_ACTIVE = 1;
+const int CHUNK_FLAG_LIQUID_ACTIVE = 4;
+const int CHUNK_SIMULATION_MASK = CHUNK_FLAG_SIM_ACTIVE | CHUNK_FLAG_LIQUID_ACTIVE;
+
+const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	int flags;
+	vec4 color;
+};
+
+layout (push_constant) uniform PushConstants
+{
+	float random;
+	uint boardToWrite;
+} pushConstants;
+
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+} configuration;
+
+layout(binding = 2) buffer SChunks
+{
+	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
+} chunks;
+
+layout(binding = 3) buffer readonly SBoard1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board1;
+
+layout(binding = 4) buffer readonly SBoard2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board2;
+
+layout(binding = 5) buffer readonly SMass1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass1;
+
+layout(binding = 6) buffer readonly SMass2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass2;
+
+layout(binding = 8) buffer SFluxUp
+{
+	uint data[];
+} fluxUp;
+
+uint readPackedBoard(ivec2 swizzledLoc);
+uint readMaterialGlobal(ivec2 loc);
+uint readPackedMassWord(int index);
+uint readMassGlobal(ivec2 loc);
+bool isOutsideBoard(ivec2 loc);
+bool isPressureLiquid(uint materialId);
+bool isSupported(ivec2 loc, uint materialId);
+bool shouldProcessChunk(ivec2 chunkLoc);
+bool isChunkActive(ivec2 chunkLoc);
+int chunkIndex(ivec2 chunkLoc);
+uint stableStateEq(uint totalMass);
+
+void main()
+{
+	const ivec2 loc = ivec2(gl_GlobalInvocationID.xy);
+	if (isOutsideBoard(loc)) return;
+
+	const ivec2 chunkLoc = ivec2(gl_WorkGroupID.xy);
+	if (shouldProcessChunk(chunkLoc) == false) return;
+
+	const int linearIndex = loc.x + loc.y * WIDTH;
+
+	const uint materialId = readMaterialGlobal(loc);
+	if (materialId == 0u || isPressureLiquid(materialId) == false)
+	{
+		fluxUp.data[linearIndex] = 0u;
+		return;
+	}
+
+	const uint mass = readMassGlobal(loc);
+	if (mass == 0u)
+	{
+		fluxUp.data[linearIndex] = 0u;
+		return;
+	}
+
+	if (isSupported(loc, materialId) == false)
+	{
+		fluxUp.data[linearIndex] = 0u;
+		return;
+	}
+
+	uint flowUp = 0u;
+
+	if (mass > M_FULL && loc.y > 0)
+	{
+		const ivec2 upLoc = loc + ivec2(0, -1);
+		const uint matUp = readMaterialGlobal(upLoc);
+		if (matUp == 0u || matUp == materialId)
+		{
+			const uint mUp = matUp == materialId ? readMassGlobal(upLoc) : 0u;
+			const uint desiredSelf = min(stableStateEq(mass + mUp), M_EQ_MAX);
+			if (mass > desiredSelf)
+			{
+				const uint proposed = mass - desiredSelf;
+				const uint capacityUp = M_CAP_MAX - mUp;
+				const uint candidate = min(proposed, capacityUp);
+				if (candidate >= MIN_FLOW)
+				{
+					flowUp = candidate;
+				}
+			}
+		}
+	}
+
+	fluxUp.data[linearIndex] = flowUp;
+}
+
+uint stableStateEq(uint totalMass)
+{
+	const uint maxCompress = M_EQ_MAX - M_FULL;
+	if (totalMass <= M_FULL) return M_FULL;
+	if (totalMass < (2u * M_FULL + maxCompress))
+	{
+		const uint numerator = (M_FULL * M_FULL) + (totalMass * maxCompress);
+		return numerator / (M_FULL + maxCompress);
+	}
+	return (totalMass + maxCompress) / 2u;
+}
+
+bool isSupported(ivec2 loc, uint materialId)
+{
+	if (loc.y + 1 >= HEIGHT) return false;
+
+	const ivec2 belowLoc = loc + ivec2(0, 1);
+	const uint belowMat = readMaterialGlobal(belowLoc);
+	if (belowMat == 0u) return false;
+
+	const int belowDensity = configuration.materials[belowMat].density;
+	const int currentDensity = configuration.materials[materialId].density;
+	return configuration.materials[belowMat].isStatic != 0 || belowDensity >= currentDensity;
+}
+
+bool shouldProcessChunk(ivec2 chunkLoc)
+{
+	if (isChunkActive(chunkLoc)) return true;
+
+	if (chunkLoc.x > 0 && isChunkActive(chunkLoc + ivec2(-1, 0))) return true;
+	if (chunkLoc.y > 0 && isChunkActive(chunkLoc + ivec2(0, -1))) return true;
+	if (chunkLoc.x < CHUNK_WIDTH - 1 && isChunkActive(chunkLoc + ivec2(1, 0))) return true;
+	if (chunkLoc.y < CHUNK_HEIGHT - 1 && isChunkActive(chunkLoc + ivec2(0, 1))) return true;
+
+	return false;
+}
+
+bool isPressureLiquid(uint materialId)
+{
+	return (uint(configuration.materials[materialId].flags) & MATERIAL_FLAG_PRESSURE_LIQUID) != 0u;
+}
+
+int chunkIndex(ivec2 chunkLoc)
+{
+	return chunkLoc.x * CHUNK_HEIGHT + chunkLoc.y;
+}
+
+bool isChunkActive(ivec2 chunkLoc)
+{
+	return (chunks.data[chunkIndex(chunkLoc)] & CHUNK_SIMULATION_MASK) != 0;
+}
+
+bool isOutsideBoard(ivec2 loc)
+{
+	return (loc.x < 0 || loc.y < 0 || loc.x >= WIDTH || loc.y >= HEIGHT);
+}
+
+uint readPackedBoard(ivec2 swizzledLoc)
+{
+	const int index = swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y;
+	return pushConstants.boardToWrite == 0 ? board2.data[index] : board1.data[index];
+}
+
+uint readMaterialGlobal(ivec2 loc)
+{
+	ivec2 swizzled = loc >> 1;
+	uint offset = ((loc.x & 1) | ((loc.y & 1) << 1)) << 3;
+	uint value = readPackedBoard(swizzled);
+	return (value >> offset) & 0xFFu;
+}
+
+uint readPackedMassWord(int index)
+{
+	return pushConstants.boardToWrite == 0 ? mass2.data[index] : mass1.data[index];
+}
+
+uint readMassGlobal(ivec2 loc)
+{
+	const uvec2 ms = massIndexShift(loc);
+	const uint word = readPackedMassWord(int(ms.x));
+	return packedU16Read(word, ms.y);
+}
+

@@ -2,10 +2,13 @@
 #define VSAND_MASS_UTILS_GLSL
 
 const uint M_FULL = 4096u;
-const uint M_MAX = 4352u;
+// Equilibrium max mass used by stable-state packing (small compressibility).
+const uint M_EQ_MAX = 4352u;
+// Absolute max mass used as a transport capacity clamp (temporary overfill to speed up pressure propagation).
+const uint M_CAP_MAX = 6144u;
 const uint M_EPS = 16u;
 const uint MIN_FLOW = 16u;
-const uint PRESSURE_HORIZONTAL_DIV = 2u;
+const uint H_HEAD_DIV = 4u;
 
 const uint PACKED_U16_MASK = 0xFFFFu;
 

@@ -217,7 +217,7 @@ vec4 computeMassColor(uint materialId, uint mass)
 	}
 
 	const float fill = clamp(float(mass) / float(M_FULL), 0.0, 1.0);
-	const float compress = clamp(float(max(int(mass) - int(M_FULL), 0)) / float(M_MAX - M_FULL), 0.0, 1.0);
+	const float compress = clamp(float(max(int(mass) - int(M_FULL), 0)) / float(M_EQ_MAX - M_FULL), 0.0, 1.0);
 
 	const vec3 base = vec3(0.02, 0.08, 0.18);
 	const vec3 filled = vec3(0.1, 0.85, 0.95);

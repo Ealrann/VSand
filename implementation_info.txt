@@ -1,0 +1,316 @@
+VSand — implementation info (simulation pipeline + shaders)
+==========================================================
+
+This file is a “why it exists” map of the current VSand compute pipeline and the key shaders.
+It is written for future agents/maintainers who need to debug/extend the simulation without
+re-learning the whole stack from scratch.
+
+Context docs to read first:
+- VSand/new_algorithm.md (original long-term plan)
+- VSand/new_algorithm_answer.md (what we actually implemented and why it diverged)
+- VSand/answer2.md (the sweep/head-driven pressure solver we implemented)
+- VSand/state-dump-runner.md (headless deterministic dump tool)
+
+
+1) Where things live
+-------------------
+
+Pipeline definition (LMF instance model):
+- VSand/org.sheepy.vsand/src/main/resources/Application.vsand.lm
+  This is the “source of truth” for buffers, descriptors, pipelines, task ordering and barriers.
+
+GLSL compute sources:
+- VSand/org.sheepy.vsand/src/main/shader/board_update.comp
+- VSand/org.sheepy.vsand/src/main/shader/draw.comp
+- VSand/org.sheepy.vsand/src/main/shader/board_to_pixel.comp
+- VSand/org.sheepy.vsand/src/main/shader/pressure_head.comp
+- VSand/org.sheepy.vsand/src/main/shader/pressure_flux_{down,up,left,right}.comp
+- VSand/org.sheepy.vsand/src/main/shader/pressure_apply_{down,up,left,right}.comp
+- VSand/org.sheepy.vsand/src/main/shader/mass_utils.glsl (shared constants + packing helpers)
+
+Compiled SPIR-V binaries (referenced by the LM pipelines):
+- VSand/org.sheepy.vsand/src/main/resources/*.comp.spv
+  If you edit a GLSL shader, you MUST recompile the matching .spv or VSand will still run the old shader.
+
+LMF “loaders” that size buffers / set dispatch sizes from the app board size:
+- VSand/org.sheepy.vsand/src/main/java/org/sheepy/vsand/loader/HeadBufferLoader.java
+- VSand/org.sheepy.vsand/src/main/java/org/sheepy/vsand/loader/PressureHeadDispatchTaskLoader.java
+
+CPU readback tools:
+- VSand/org.sheepy.vsand/src/main/java/org/sheepy/vsand/fetch/BoardFetchService.java
+- VSand/org.sheepy.vsand/src/main/java/org/sheepy/vsand/dump/BoardStateDumpLoop.java
+
+
+2) Board + liquid-mass representation
+------------------------------------
+
+Problem solved: we need pressure-enabled liquids (Water/Lava/Oil/Acid/…) to preserve total mass,
+compress under pressure, and transport over long distances (across chunks) without relying on
+per-cell “presence” only.
+
+Board (“material id”) storage:
+- 1 byte per cell (material id), packed in a swizzled 2×2 layout:
+  One uint stores 4 cells (2×2): each cell is 8 bits at offsets {0,8,16,24}.
+- Ping-pong buffers: “Board Buffer 1” and “Board Buffer 2”.
+
+Liquid mass storage:
+- u16 mass per cell, packed with the SAME swizzled indexing as the board:
+  a 2×2 block uses 2 uints (= 4×u16):
+  - row0: (x,y) and (x+1,y)
+  - row1: (x,y+1) and (x+1,y+1)
+- Ping-pong buffers: “Mass Buffer 1” and “Mass Buffer 2”.
+- Helpers live in VSand/org.sheepy.vsand/src/main/shader/mass_utils.glsl:
+  - massIndexShift(loc) -> (wordIndex, bitShift) in the packed u16 buffer
+  - packedU16Read/packedU16Write
+
+Mass constants (current tuning; see mass_utils.glsl):
+- M_FULL    = 4096   (one “full” liquid cell)
+- M_EQ_MAX  = 4352   (equilibrium cap used by stable-state packing; slight compressibility)
+- M_CAP_MAX = 6144   (transport cap used for temporary overfill; speeds up propagation)
+- MIN_FLOW  = 16     (flow quantization / noise floor)
+
+Why two maxima?
+- Problem solved: with only one max (≈ M_EQ_MAX), pressure propagation is too slow over long distances.
+  Allowing temporary overfill (M_CAP_MAX) lets horizontal/vertical transfers move more mass per sweep
+  while still converging toward the “equilibrium” distribution (M_EQ_MAX) over time.
+
+Material flag for “pressure liquid”:
+- Configuration Entry.flags bit 0 is MATERIAL_FLAG_PRESSURE_LIQUID.
+- Problem solved: many shaders need “is this a pressure-managed liquid?” without changing UBO layout
+  per-material again.
+
+
+3) Compute pipelines (Application.vsand.lm)
+------------------------------------------
+
+3.1 Draw pipeline (ComputePipeline "Draw" + draw.comp)
+
+Problem solved: apply user edits (brush strokes) on the GPU, cheaply and deterministically, while
+keeping invariants for the mass layer.
+
+What it does:
+- Writes material ids into the current board buffer (atomic bitfield updates on packed board).
+- Writes mass in the current mass buffer:
+  - if drawn material is a pressure-liquid -> liqMass = M_FULL
+  - else -> liqMass = 0
+- Marks the touched chunk as “active” (chunks.data[...] = 3) so Simulation will process it.
+
+Why it matters:
+- Without writing mass at draw time, newly drawn water would exist as “mat=Water but mass=0” which
+  breaks downstream assumptions and debug tooling.
+
+
+3.2 Simulation pipeline (CompositePipeline "Simulation")
+
+Problem solved: run the core cellular automaton (sand/powders/steam/reactions/free-fall) and then
+run a multi-pass pressure solver for supported liquids to pool/level properly.
+
+Ordering (high level):
+1) Board update (board_update.comp)
+2) Pressure sweeps (answer2 solver; multiple iterations per tick)
+
+Current per-tick sweep schedule (after Board update, in Application.vsand.lm):
+- Down, Right, Left, Up, Right, Left, Right, Left (head recomputed before each horizontal sweep)
+
+Chunk activation and performance:
+- board_update.comp and pressure shaders all use shouldProcessChunk():
+  process a chunk if it is active OR a neighbor is active (to allow cross-chunk interactions).
+- Chunks have flags for “simulation active” and “liquid active”.
+  Problem solved: avoid spending compute on fully sleeping regions, while still letting water
+  propagate across chunk boundaries when pressure pushes it.
+
+
+3.3 Fetch pipeline (Pipeline "Fetch" + CompositeTask "Fetch Board")
+
+Problem solved: read back the GPU board + mass buffers to CPU for:
+- unit tests (VSandTestHarness)
+- the headless state-dump runner (dumpRun)
+- ad-hoc debugging/analysis
+
+How it works:
+- A PipelineBarrier ensures GPU writes are visible to TRANSFER reads.
+- FetchBuffer tasks are enabled/disabled dynamically so we only fetch the currently “current” buffer
+  (board1 vs board2, mass1 vs mass2).
+
+Important gotcha:
+- The Fetch pipeline must NOT be nested inside the Simulation pipeline.
+  If it is, the dump runner may never observe a buffer change and will fail with
+  “Fetch did not complete (board unchanged)”.
+
+
+3.4 Board-to-pixel pipeline (ComputePipeline "Board to Pixel" + board_to_pixel.comp)
+
+Problem solved: render the simulation state into the storage image used by the Vulkan graphics pass,
+including debug overlays (sleeping chunks, draw preview cursor, and liquid mass view).
+
+Key debug toggles (push constants):
+- showSleepChunks: overlay sleeping chunks (existing shortcut “s” in the UI layer)
+- showMass: render mass instead of material colors (shortcut “m”)
+
+Mass visualization:
+- For pressure-liquids, board_to_pixel.comp maps mass to a gradient:
+  - low/empty -> dark blue
+  - filled (≈ M_FULL) -> cyan
+  - compressed (above M_FULL) -> orange/red
+  This is intentionally “debug-first”: it makes pressure hot-spots obvious.
+
+
+4) board_update.comp (core cellular automaton)
+---------------------------------------------
+
+Problem solved: keep the original VSand look/feel for:
+- granular materials (sand, powders)
+- reactions/transforms (water+lava etc.)
+- free-fall behavior (the visually pleasing “falling column” look)
+- chunk sleeping/activation logic
+
+How it interacts with the mass layer:
+- board_update.comp is still the “source of truth” for material movement when unsupported / falling.
+- When it moves/swaps cells, it must also move/swap liqMass consistently:
+  - if the resulting material is NOT pressure-liquid -> liqMass must be 0
+  - if it IS pressure-liquid -> keep/move the mass (subject to invariants)
+
+Why pressure doesn’t replace board_update:
+- The pressure solver is intentionally gated to supported cells to avoid “mid-air smear”.
+  Problem solved: maintain the nice CA free-fall look while still allowing fast pooling on the ground.
+
+
+5) Pressure solver (answer2: sweep + head-driven horizontal flow)
+----------------------------------------------------------------
+
+This replaced the earlier “claim-based flux/apply” pass which had a throughput bottleneck:
+each destination could accept only one incoming source per iteration, which made long-distance
+flattening very slow (especially across multiple chunks).
+
+Current design goal:
+- Fast enough pooling/leveling over long distances to “feel” like fluid,
+  while preserving CA-style falling and avoiding thin-film artifacts.
+
+5.1 pressure_head.comp (Head buffer pass)
+
+Problem solved: computing “hydrostatic head” for horizontal pressure gradients without doing an
+expensive per-cell vertical scan inside the horizontal flux shaders.
+
+What it does:
+- Runs 1 invocation per x column (local_size_x = 64).
+- Scans y from top to bottom.
+- For each cell, if it is a pressure-liquid with non-zero mass, it writes:
+  head[x,y] = sum(mass of contiguous same-liquid cells above and including (x,y)).
+- Resets the running sum when:
+  - material changes,
+  - material is not a pressure-liquid,
+  - mass == 0.
+
+How it’s used:
+- pressure_flux_left/right use head differences to decide lateral flow (dp).
+
+5.2 pressure_flux_down.comp / pressure_apply_down.comp
+
+Problem solved: fast vertical settling/compaction when supported (pool formation), while deleting
+mass that leaves the world.
+
+Down flux:
+- Only acts for pressure liquids AND only if isSupported(loc) is true.
+- Computes desired mass below using a stable-state packing function (stableStateEq) using M_EQ_MAX.
+- Outputs a flow (>= MIN_FLOW) into FluxDown buffer.
+- Special case: if y+1 is out of world -> output srcMass, so apply will delete it (“falls out = delete”).
+
+Down apply:
+- Applies a single directional flux (outDown / inFromAbove) to update mass.
+- Clamps result to M_CAP_MAX.
+- Creates/clears material deterministically:
+  - if oldMat == 0 and newMass > 0 -> material comes from the source neighbor (above)
+  - if pressure-liquid and newMass == 0 -> clear to empty
+- Marks chunk updated (chunks |= 3) so the region keeps simulating.
+
+5.3 pressure_flux_left/right.comp + pressure_apply_left/right.comp
+
+Problem solved: long-distance horizontal leveling driven by pressure/head differences, without the
+“single-winner claim” bottleneck.
+
+Horizontal flux (left/right):
+- Only acts for supported source cells (keeps free-fall CA look).
+- Uses head difference:
+  proposed = (srcHead - destHead) / H_HEAD_DIV
+  flow = min(proposed, srcMass, destCapacity)
+- Uses allowLateralIntoEmpty(...) to decide when it’s OK to create new liquid cells into empty space.
+  Problem solved: let pools grow quickly on flat ground, but avoid mid-air smearing / thin films.
+
+Horizontal apply (left/right):
+- Same apply pattern as Down: outflow - inflow, clamp to M_CAP_MAX, deterministic material creation
+  from the neighbor that provided inflow.
+
+5.4 pressure_flux_up.comp / pressure_apply_up.comp
+
+Problem solved: prevent “infinite compression” by allowing some upward redistribution after strong
+downward compaction and horizontal spreading.
+
+Notes:
+- Up is also gated by isSupported(). It is not intended to create rising “gas-like” behavior; it is
+  a relaxation step to converge toward equilibrium.
+
+
+6) Ping-pong and push-constant pitfalls (CRITICAL)
+--------------------------------------------------
+
+Board/mass ping-pong is controlled by push constants:
+- board_update uses BoardConstants (BoardConstantBufferAdapter) which flips buffers each tick.
+- pressure sweeps use SwapConstants (SwapConstantBufferAdapter) which flips buffers per sweep.
+
+Shader convention (important):
+- Most simulation shaders read from the “other” buffer and write to the buffer selected by boardToWrite.
+  Example in pressure_*:
+  - readPackedBoard(): boardToWrite==0 ? board2 : board1
+  - writePackedBoard(): boardToWrite==0 -> board1, else -> board2
+
+Problem solved:
+- Deterministic “read old / write new” behavior without in-place races.
+
+Gotcha:
+- SwapConstantBufferAdapter flips the board index on EVERY PushConstantBuffer call.
+  Therefore:
+  - If you insert an extra PushConstantBuffer between passes that are meant to share the same
+    read-state, you will accidentally flip buffers and read the wrong version.
+  - In the current LM pipeline, each “head + horizontal flux + horizontal apply” group must use
+    exactly ONE SwapConstants push (at the head pass). Flux/apply must reuse that boardToWrite.
+
+Descriptor/binding pitfall (also critical):
+- Vulkan binding numbers are derived from the *descriptor set ordering* in Application.vsand.lm.
+- The pressure shaders assume the following bindings (see pressure_*.comp):
+  0=Config, 2=Chunks, 3=Board1, 4=Board2, 5=Mass1, 6=Mass2, 7=FluxDown, 8=FluxUp, 9=FluxRight,
+  10=FluxLeft, 11=Head.
+- If you reorder descriptors in the “Pressure …” descriptorSets, you MUST update the GLSL bindings
+  (or vice-versa). A mismatch typically looks like “random” mass/board corruption.
+
+
+7) Recompiling shaders (GLSL -> SPIR-V)
+--------------------------------------
+
+Problem solved: Application.vsand.lm loads SPIR-V binaries (`*.comp.spv`). Editing GLSL alone does
+nothing until the SPIR-V is rebuilt.
+
+Current manual compilation (example for the pressure solver):
+- From repo root:
+  glslc -O -I VSand/org.sheepy.vsand/src/main/shader VSand/org.sheepy.vsand/src/main/shader/pressure_head.comp \
+    -o VSand/org.sheepy.vsand/src/main/resources/pressure_head.comp.spv
+
+(Repeat for the other pressure_* shaders you changed.)
+
+
+8) How to debug fluid issues quickly
+-----------------------------------
+
+Visual debug:
+- Press “m” to show mass (cyan ~= M_FULL, red/orange = compressed).
+- Press “s” to show sleeping chunks (chunk scheduling issues often look like “stuck” fluid).
+
+Deterministic state dumps:
+- Use the headless runner (see VSand/state-dump-runner.md):
+  ./gradlew -p VSand :org.sheepy.vsand:dumpRun --args="--size=320x192 --scenario=$PWD/VSand/scenarios/water_flatten_50x100_open.txt --frames=300 --speed=1 --seed=1234 --out=/tmp/vsand-dumps/case"
+- Inspect frame_NNNN.txt to compute quantitative metrics (spread width, height variance, total mass).
+
+Typical symptoms -> likely component:
+- “Water smears in mid-air” -> allowLateralIntoEmpty / isSupported gating too permissive
+- “Water pools but never levels across chunks” -> chunk flags / shouldProcessChunk / sweep count
+- “Mass disappears” -> apply passes not deleting/creating material consistently, or board_update clearing mass on swaps
+- “Mass attaches to solids/void” -> invariant broken in draw.comp or board_update.comp or apply passes
