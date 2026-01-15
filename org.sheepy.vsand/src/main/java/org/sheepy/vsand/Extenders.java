@@ -31,10 +31,6 @@ public final class Extenders implements IAdapterProvider
 					   Board2BufferLoader.class,
 					   Mass1BufferLoader.class,
 					   Mass2BufferLoader.class,
-					   FluxDownBufferLoader.class,
-					   FluxUpBufferLoader.class,
-					   FluxRightBufferLoader.class,
-					   FluxLeftBufferLoader.class,
 					   HeadBufferLoader.class,
 					   ChunkBufferLoader.class,
 						   BoardImageLoader.class,
@@ -56,8 +52,7 @@ public final class Extenders implements IAdapterProvider
 					   SecondaryDrawer.class,
 					   BoardUpdateDispatchTaskLoader.class,
 					   PressureHeadDispatchTaskLoader.class,
-					   PressureFluxDispatchTaskLoader.class,
-					   PressureApplyDispatchTaskLoader.class,
+					   PressureStepDispatchTaskLoader.class,
 					   BoardToPixelDispatchTaskLoader.class,
 					   DrawDispatchTaskLoader.class);
 	}

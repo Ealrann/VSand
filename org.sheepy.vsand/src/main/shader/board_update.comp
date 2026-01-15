@@ -280,50 +280,57 @@ void main()
 		if(value != 0u && isPressureLiquid(value))
 		{
 			const uint mass = cellMass[localLoc.x][localLoc.y];
-			if(mass != 0u && isSupportedForPressure(localLoc, value))
+			if(mass != 0u)
 			{
-				const int threshold = int(MIN_FLOW * H_HEAD_DIV);
-
-				const uint leftMat = cellMaterial[localLoc.x - 1][localLoc.y];
-				const uint rightMat = cellMaterial[localLoc.x + 1][localLoc.y];
-
-				const uint upMat = cellMaterial[localLoc.x][localLoc.y - 1];
-				if(upMat != value)
-				{
-					if(leftMat != value || rightMat != value) markLiquidActive();
-				}
-
-				if(leftMat == value)
-				{
-					const int diff = int(mass) - int(cellMass[localLoc.x - 1][localLoc.y]);
-					if(abs(diff) >= threshold) markLiquidActive();
-				}
-				else if(leftMat == 0u && mass > (M_FULL + MIN_FLOW))
-				{
-					markLiquidActive();
-				}
-
-				if(rightMat == value)
-				{
-					const int diff = int(mass) - int(cellMass[localLoc.x + 1][localLoc.y]);
-					if(abs(diff) >= threshold) markLiquidActive();
-				}
-				else if(rightMat == 0u && mass > (M_FULL + MIN_FLOW))
-				{
-					markLiquidActive();
-				}
-
-				if(upMat == value)
-				{
-					const int diff = int(mass) - int(cellMass[localLoc.x][localLoc.y - 1]);
-					if(abs(diff) >= threshold) markLiquidActive();
-				}
-
 				const uint downMat = cellMaterial[localLoc.x][localLoc.y + 1];
-				if(downMat == value)
+				if(downMat == 0u)
 				{
-					const int diff = int(mass) - int(cellMass[localLoc.x][localLoc.y + 1]);
-					if(abs(diff) >= threshold) markLiquidActive();
+					markLiquidActive();
+				}
+				else if(isSupportedForPressure(localLoc, value))
+				{
+					const int threshold = int(MIN_FLOW * H_HEAD_DIV);
+
+					const uint leftMat = cellMaterial[localLoc.x - 1][localLoc.y];
+					const uint rightMat = cellMaterial[localLoc.x + 1][localLoc.y];
+
+					const uint upMat = cellMaterial[localLoc.x][localLoc.y - 1];
+					if(upMat != value)
+					{
+						if(leftMat != value || rightMat != value) markLiquidActive();
+					}
+
+					if(leftMat == value)
+					{
+						const int diff = int(mass) - int(cellMass[localLoc.x - 1][localLoc.y]);
+						if(abs(diff) >= threshold) markLiquidActive();
+					}
+					else if(leftMat == 0u && mass > (M_FULL + MIN_FLOW))
+					{
+						markLiquidActive();
+					}
+
+					if(rightMat == value)
+					{
+						const int diff = int(mass) - int(cellMass[localLoc.x + 1][localLoc.y]);
+						if(abs(diff) >= threshold) markLiquidActive();
+					}
+					else if(rightMat == 0u && mass > (M_FULL + MIN_FLOW))
+					{
+						markLiquidActive();
+					}
+
+					if(upMat == value)
+					{
+						const int diff = int(mass) - int(cellMass[localLoc.x][localLoc.y - 1]);
+						if(abs(diff) >= threshold) markLiquidActive();
+					}
+
+					if(downMat == value)
+					{
+						const int diff = int(mass) - int(cellMass[localLoc.x][localLoc.y + 1]);
+						if(abs(diff) >= threshold) markLiquidActive();
+					}
 				}
 			}
 		}
@@ -596,12 +603,14 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 {
 	bool res = false;
 
-	uint currentValue = cellMaterial[localLoc.x][localLoc.y];
-	int density = materials[currentValue].density;
+	const uint currentValue = cellMaterial[localLoc.x][localLoc.y];
+	const bool pressureLiquid = isPressureLiquid(currentValue);
+	const int density = materials[currentValue].density;
 	uint valueDown = localLoc.y < WORKGROUP_SIZE - 1 ? cellMaterial[localLoc.x][localLoc.y + 1] : readMaterialGlobal(ivec2(loc.x, loc.y + 1));
 
 	bool wantToFallDown = materials[valueDown].isStatic == 0
 			&& density > materials[valueDown].density;
+	if (pressureLiquid && valueDown == 0u) wantToFallDown = false;
 	bool luck = false;
 	if (wantToFallDown)
 	{
@@ -614,6 +623,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 		res = true;
 	}
 
+	if (pressureLiquid) return res;
 	if(!wantToFallDown || !luck)
 	{
 		// If not falling down, we check the right/left move

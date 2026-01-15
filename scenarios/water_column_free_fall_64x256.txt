@@ -1,0 +1,5 @@
+# 64x256
+# Very tall free-falling water column (large gap to floor) to expose chunk-boundary / sleeping-chunk artifacts.
+frame Wall 1
+line Water 32 10 32 200 10
+

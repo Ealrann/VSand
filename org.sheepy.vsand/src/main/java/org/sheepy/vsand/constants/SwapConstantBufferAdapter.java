@@ -11,6 +11,7 @@ import org.sheepy.lily.vulkan.model.vulkanresource.ConstantBuffer;
 import org.sheepy.vsand.model.vsand.SwapConstantBuffer;
 
 import java.nio.ByteBuffer;
+import java.util.Locale;
 
 @ModelExtender(scope = SwapConstantBuffer.class)
 @Adapter
@@ -21,12 +22,14 @@ public final class SwapConstantBufferAdapter implements IConstantBufferUpdater
 	private static final int BOARD_INDEX_POSITION = Integer.BYTES;
 
 	private final SwapConstantBuffer swapConstantBuffer;
+	private final int directionBits;
 
 	private ByteBuffer buffer = null;
 
 	private SwapConstantBufferAdapter(final SwapConstantBuffer swapConstantBuffer)
 	{
 		this.swapConstantBuffer = swapConstantBuffer;
+		this.directionBits = directionBitsFromName(swapConstantBuffer.name());
 	}
 
 	@Load
@@ -48,13 +51,23 @@ public final class SwapConstantBufferAdapter implements IConstantBufferUpdater
 			boardConstantBuffer.currentBoardBuffer(nextIndex);
 		}
 
-		buffer.putFloat(0, 0f);
+		buffer.putFloat(0, Float.intBitsToFloat(directionBits));
 		buffer.putInt(BOARD_INDEX_POSITION, nextIndex);
 	}
 
 	private static int nextBoardIndex(final int currentIndex)
 	{
 		return (currentIndex + 1) % 2;
+	}
+
+	private static int directionBitsFromName(final String name)
+	{
+		if (name == null) return 0;
+		final var lower = name.toLowerCase(Locale.ROOT);
+		if (lower.contains("right")) return 1;
+		if (lower.contains("left")) return 2;
+		if (lower.contains("up")) return 3;
+		return 0;
 	}
 
 	@Dispose

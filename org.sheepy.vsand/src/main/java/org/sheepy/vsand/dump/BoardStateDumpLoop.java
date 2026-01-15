@@ -1,6 +1,7 @@
 package org.sheepy.vsand.dump;
 
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
+import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
 import org.sheepy.lily.vulkan.model.process.CompositePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.vulkan.VulkanEngine;
@@ -22,6 +23,7 @@ public final class BoardStateDumpLoop implements Runnable
 
 	private IProcessAdapter computeProcessAdapter;
 	private StateDumpWriter writer;
+	private AbstractPipeline fetchPipeline;
 
 	private boolean loaded = false;
 	private Phase phase = Phase.DRAIN_DRAW_QUEUE;
@@ -67,6 +69,8 @@ public final class BoardStateDumpLoop implements Runnable
 		final var vulkanEngine = (VulkanEngine) application.engines().getFirst();
 		final var computeProcess = (ComputeProcess) vulkanEngine.processes().getFirst();
 		computeProcessAdapter = computeProcess.adaptNotNull(IProcessAdapter.class);
+
+		fetchPipeline = findFetchPipeline(simulationPipeline);
 
 		try
 		{
@@ -182,16 +186,37 @@ public final class BoardStateDumpLoop implements Runnable
 
 	private void setSimulationEnabled(final boolean enabled)
 	{
-		if (simulationPipeline != null)
+		if (simulationPipeline == null) return;
+
+		simulationPipeline.record(true);
+
+		final var pipelines = simulationPipeline.pipelines();
+		if (pipelines == null || pipelines.isEmpty()) return;
+
+		if (enabled)
 		{
-			simulationPipeline.record(enabled);
+			pipelines.forEach(pipeline -> pipeline.record(true));
 		}
-		application.paused(!enabled);
+		else
+		{
+			pipelines.forEach(pipeline -> pipeline.record(pipeline == fetchPipeline));
+		}
 	}
 
 	private static int ensureEven(final int value)
 	{
 		return (value & 1) == 0 ? value : value + 1;
+	}
+
+	private static AbstractPipeline findFetchPipeline(final CompositePipeline simulationPipeline)
+	{
+		if (simulationPipeline == null) return null;
+
+		return simulationPipeline.pipelines()
+								 .stream()
+								 .filter(pipeline -> "Fetch".equals(pipeline.name()))
+								 .findFirst()
+								 .orElse(null);
 	}
 
 	private enum Phase

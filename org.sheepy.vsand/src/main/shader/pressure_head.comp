@@ -14,6 +14,7 @@ const int SWIZZLED_HEIGHT = HEIGHT / 2;
 #include "mass_utils.glsl"
 
 const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
+const uint HEAD_GROUNDED_BIT = 0x80000000u;
 
 struct Entry
 {
@@ -55,7 +56,7 @@ layout(binding = 6) buffer readonly SMass2
 	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
 } mass2;
 
-layout(binding = 11) buffer SHead
+layout(binding = 7) buffer SHead
 {
 	uint data[];
 } head;
@@ -65,11 +66,48 @@ uint readMaterialGlobal(ivec2 loc);
 uint readPackedMassWord(int index);
 uint readMassGlobal(ivec2 loc);
 bool isPressureLiquid(uint materialId);
+bool isSupportedBy(ivec2 belowLoc, uint belowMat, uint currentMat, uint belowIndex);
 
 void main()
 {
 	const int x = int(gl_GlobalInvocationID.x);
 	if (x >= WIDTH) return;
+
+	uint groundedMat = 0u;
+	uint groundedBit = 0u;
+	for (int y = HEIGHT - 1; y >= 0; --y)
+	{
+		const ivec2 loc = ivec2(x, y);
+		const uint mat = readMaterialGlobal(loc);
+		const uint mass = mat != 0u && isPressureLiquid(mat) ? readMassGlobal(loc) : 0u;
+		const int index = x + y * WIDTH;
+
+		if (mass == 0u)
+		{
+			groundedMat = 0u;
+			groundedBit = 0u;
+			head.data[index] = 0u;
+			continue;
+		}
+
+		if (mat != groundedMat)
+		{
+			groundedMat = mat;
+			groundedBit = 0u;
+			if (y + 1 < HEIGHT)
+			{
+				const ivec2 belowLoc = loc + ivec2(0, 1);
+				const uint belowMat = readMaterialGlobal(belowLoc);
+				const int belowIndex = x + (y + 1) * WIDTH;
+				if (isSupportedBy(belowLoc, belowMat, mat, belowIndex))
+				{
+					groundedBit = HEAD_GROUNDED_BIT;
+				}
+			}
+		}
+
+		head.data[index] = groundedBit;
+	}
 
 	uint sum = 0u;
 	uint currentMat = 0u;
@@ -97,7 +135,26 @@ void main()
 		}
 
 		sum += mass;
-		head.data[index] = sum;
+		head.data[index] = (head.data[index] & HEAD_GROUNDED_BIT) | sum;
+	}
+}
+
+bool isSupportedBy(ivec2 belowLoc, uint belowMat, uint currentMat, uint belowIndex)
+{
+	if (belowMat == 0u) return false;
+
+	const int belowDensity = configuration.materials[belowMat].density;
+	const int currentDensity = configuration.materials[currentMat].density;
+	const bool denseEnough = configuration.materials[belowMat].isStatic != 0 || belowDensity >= currentDensity;
+	if (denseEnough == false) return false;
+
+	if (isPressureLiquid(belowMat))
+	{
+		return (head.data[belowIndex] & HEAD_GROUNDED_BIT) != 0u;
+	}
+	else
+	{
+		return true;
 	}
 }
 
@@ -131,4 +188,3 @@ uint readMassGlobal(ivec2 loc)
 	const uint word = readPackedMassWord(int(ms.x));
 	return packedU16Read(word, ms.y);
 }
-

@@ -4,6 +4,8 @@ import org.sheepy.lily.core.api.util.DebugUtil;
 import org.sheepy.lily.vulkan.api.engine.IVulkanEngineAllocation;
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
 import org.sheepy.lily.vulkan.model.vulkan.VulkanEngine;
+import org.sheepy.lily.vulkan.model.process.AbstractPipeline;
+import org.sheepy.lily.vulkan.model.process.CompositePipeline;
 import org.sheepy.lily.vulkan.model.process.IPipelineTask;
 import org.sheepy.lily.vulkan.model.process.compute.ComputePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
@@ -95,14 +97,11 @@ public final class VSandMainLoop implements Runnable
 		final var vulkanEngine = (VulkanEngine) application.engines().get(0);
 		final var processes = vulkanEngine.processes();
 		final var boardProcess = (ComputeProcess) processes.get(0);
-		final var boardToPixelPipeline = boardProcess.pipelinePkg()
-												  .pipelines()
-												  .stream()
-												  .filter(ComputePipeline.class::isInstance)
-												  .map(ComputePipeline.class::cast)
-												  .filter(pipeline -> "Board to Pixel".equals(pipeline.name()))
-												  .findFirst()
-												  .orElseThrow();
+		final var boardToPixelPipeline = findBoardToPixelPipeline(boardProcess);
+		if (boardToPixelPipeline == null)
+		{
+			throw new IllegalStateException("Missing compute pipeline 'Board to Pixel' in VSand application model.");
+		}
 		boardProcessAdapter = boardProcess.adaptNotNull(IProcessAdapter.class);
 		boardImageBarrier = boardToPixelPipeline.taskPkgs().get(0).tasks().get(2);
 		final var graphicProcess = processes.size() > 1 ? (GraphicProcess) processes.get(1) : null;
@@ -122,6 +121,63 @@ public final class VSandMainLoop implements Runnable
 		{
 			System.out.println("VSand benchmark is running...");
 		}
+	}
+
+	private static ComputePipeline findBoardToPixelPipeline(final ComputeProcess boardProcess)
+	{
+		final var pipelinePkg = boardProcess.pipelinePkg();
+		if (pipelinePkg == null) return null;
+
+		final var pipelines = pipelinePkg.pipelines();
+		final var byName = findComputePipelineByName(pipelines, "Board to Pixel");
+		if (byName != null) return byName;
+
+		return findComputePipelineByShaderName(pipelines, "boardToPixel");
+	}
+
+	private static ComputePipeline findComputePipelineByName(final java.util.List<? extends AbstractPipeline> pipelines,
+															 final String name)
+	{
+		if (pipelines == null) return null;
+		for (final var pipeline : pipelines)
+		{
+			if (pipeline instanceof final ComputePipeline computePipeline)
+			{
+				if (name.equals(computePipeline.name()))
+				{
+					return computePipeline;
+				}
+			}
+			else if (pipeline instanceof final CompositePipeline compositePipeline)
+			{
+				final var nested = findComputePipelineByName(compositePipeline.pipelines(), name);
+				if (nested != null) return nested;
+			}
+		}
+		return null;
+	}
+
+	private static ComputePipeline findComputePipelineByShaderName(final java.util.List<? extends AbstractPipeline> pipelines,
+																   final String shaderName)
+	{
+		if (pipelines == null) return null;
+		for (final var pipeline : pipelines)
+		{
+			if (pipeline instanceof final ComputePipeline computePipeline)
+			{
+				final var shader = computePipeline.shader();
+				if (shader != null && shaderName.equals(shader.name()))
+				{
+					return computePipeline;
+				}
+			}
+			else if (pipeline instanceof final CompositePipeline compositePipeline)
+			{
+				final var nested = findComputePipelineByShaderName(compositePipeline.pipelines(), shaderName);
+				if (nested != null) return nested;
+			}
+		}
+		return null;
 	}
 
 	private void printBenchmarkResult()

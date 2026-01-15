@@ -30,10 +30,24 @@ public final class SteamCondensationTest
 		final int waterStart = countAll(boards.getFirst(), water);
 		final int steamStart = countAll(boards.getFirst(), steam);
 
-		for (final var board : boards)
+		for (int i = 0; i < boards.size(); i++)
 		{
+			final var board = boards.get(i);
 			final int emptyCount = countAll(board, empty);
-			assertEquals(0, emptyCount, "Expected no void to appear");
+			if (emptyCount != 0)
+			{
+				final var first = findFirst(board, empty);
+				final int x = first.x();
+				final int y = first.y();
+				final int up = y > 0 ? board.cell(x, y - 1) : -1;
+				final int down = y + 1 < board.height() ? board.cell(x, y + 1) : -1;
+				final int left = x > 0 ? board.cell(x - 1, y) : -1;
+				final int right = x + 1 < board.width() ? board.cell(x + 1, y) : -1;
+				assertEquals(0,
+							 emptyCount,
+							 "Expected no void to appear at iter %d (found %d at (%d, %d), up=%d, down=%d, left=%d, right=%d)"
+									 .formatted(checkpoints[i], emptyCount, x, y, up, down, left, right));
+			}
 		}
 
 		for (int i = 1; i < boards.size(); i++)
@@ -64,5 +78,23 @@ public final class SteamCondensationTest
 	{
 		return BoardAssertions.countInRect(board, 0, 0, board.width(), board.height(), materialIndex);
 	}
-}
 
+	private static CellPos findFirst(final FetchedBoard board, final int materialIndex)
+	{
+		for (int y = 0; y < board.height(); y++)
+		{
+			for (int x = 0; x < board.width(); x++)
+			{
+				if (board.cell(x, y) == materialIndex)
+				{
+					return new CellPos(x, y);
+				}
+			}
+		}
+		return new CellPos(-1, -1);
+	}
+
+	private record CellPos(int x, int y)
+	{
+	}
+}

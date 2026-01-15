@@ -6,20 +6,22 @@ import org.logoce.lmf.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.adapter.Load;
 import org.sheepy.lily.core.api.cadence.AutoLoad;
 import org.sheepy.lily.core.api.util.ModelUtil;
-import org.sheepy.lily.vulkan.model.vulkanresource.StaticBuffer;
+import org.sheepy.lily.vulkan.model.process.compute.DispatchTask;
 import org.sheepy.vsand.model.vsand.VSandApplication;
 
-@ModelExtender(scope = StaticBuffer.class, name = "Flux Up Buffer")
+@ModelExtender(scope = DispatchTask.class, name = "Pressure step")
 @Adapter(singleton = true)
 @AutoLoad
-public final class FluxUpBufferLoader implements IAdapter
+public final class PressureStepDispatchTaskLoader implements IAdapter
 {
 	@Load
-	private static void load(final StaticBuffer buffer)
+	private static void load(final DispatchTask task)
 	{
-		final var application = (VSandApplication) ModelUtil.getApplication(buffer);
+		final var application = (VSandApplication) ModelUtil.getApplication(task);
 		final var size = application.size();
-		buffer.size(size.x() * size.y() * Integer.BYTES);
+		task.workgroupCountX(size.x() / 16);
+		task.workgroupCountY(size.y() / 16);
+		task.workgroupCountZ(1);
 	}
 }
 
