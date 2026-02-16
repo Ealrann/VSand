@@ -1,0 +1,5 @@
+tasks.register('run') {
+	group = 'application'
+	description = 'Runs VSand from the repository root'
+	dependsOn gradle.includedBuild('VSand').task(':org.sheepy.vsand:run')
+}
