@@ -9,21 +9,22 @@ import org.sheepy.lily.core.api.util.ModelUtil;
 import org.sheepy.lily.vulkan.model.process.compute.DispatchTask;
 import org.sheepy.vsand.model.vsand.VSandApplication;
 
-@ModelExtender(scope = DispatchTask.class, name = "Pressure head")
+@ModelExtender(scope = DispatchTask.class, name = "Mass update")
 @Adapter(singleton = true)
 @AutoLoad
-public final class PressureHeadDispatchTaskLoader implements IAdapter
+public class MassUpdateDispatchTaskLoader implements IAdapter
 {
-	private static final int WORKGROUP_SIZE_X = 64;
-
 	@Load
-	private static void load(final DispatchTask task)
+	private static void load(DispatchTask task)
 	{
 		final var application = (VSandApplication) ModelUtil.getApplication(task);
 		final var size = application.size();
-		task.workgroupCountX((size.x() + WORKGROUP_SIZE_X - 1) / WORKGROUP_SIZE_X);
-		task.workgroupCountY(1);
+
+		final int chunkWidth = (int) Math.floor(size.x() / 16.);
+		final int chunkHeight = (int) Math.floor(size.y() / 16.);
+
+		task.workgroupCountX(chunkWidth);
+		task.workgroupCountY(chunkHeight);
 		task.workgroupCountZ(1);
 	}
 }
-

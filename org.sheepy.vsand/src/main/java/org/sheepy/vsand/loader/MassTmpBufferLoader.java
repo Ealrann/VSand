@@ -6,22 +6,21 @@ import org.logoce.lmf.core.api.extender.ModelExtender;
 import org.sheepy.lily.core.api.adapter.Load;
 import org.sheepy.lily.core.api.cadence.AutoLoad;
 import org.sheepy.lily.core.api.util.ModelUtil;
-import org.sheepy.lily.vulkan.model.process.compute.DispatchTask;
+import org.sheepy.lily.vulkan.model.vulkanresource.StaticBuffer;
 import org.sheepy.vsand.model.vsand.VSandApplication;
 
-@ModelExtender(scope = DispatchTask.class, name = "Pressure step")
+@ModelExtender(scope = StaticBuffer.class, name = "Mass Buffer Tmp")
 @Adapter(singleton = true)
 @AutoLoad
-public final class PressureStepDispatchTaskLoader implements IAdapter
+public final class MassTmpBufferLoader implements IAdapter
 {
 	@Load
-	private static void load(final DispatchTask task)
+	private static void load(final StaticBuffer buffer)
 	{
-		final var application = (VSandApplication) ModelUtil.getApplication(task);
+		final var application = (VSandApplication) ModelUtil.getApplication(buffer);
 		final var size = application.size();
-		task.workgroupCountX(size.x() / 16);
-		task.workgroupCountY(size.y() / 16);
-		task.workgroupCountZ(1);
+		final int sizeBytes = size.x() * size.y() * Short.BYTES;
+		buffer.size(sizeBytes);
 	}
 }
 

@@ -1,0 +1,387 @@
+#version 450
+
+#define WORKGROUP_SIZE 8
+
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
+
+layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
+
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
+const int CHUNK_WIDTH = WIDTH / 16;
+const int CHUNK_HEIGHT = HEIGHT / 16;
+
+#include "mass_utils.glsl"
+
+const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
+const int CHUNK_FLAG_SIM_ACTIVE = 1;
+const int CHUNK_FLAG_RENDER_DIRTY = 2;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	int flags;
+	vec4 color;
+};
+
+layout (push_constant) uniform PushConstants
+{
+	uint boardToWrite;
+	uint step;
+} pushConstants;
+
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+} configuration;
+
+layout(binding = 1) buffer readonly SBoard1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board1;
+
+layout(binding = 2) buffer readonly SBoard2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board2;
+
+layout(binding = 3) buffer SMass1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass1;
+
+layout(binding = 4) buffer SMass2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass2;
+
+layout(binding = 5) buffer SMassTmp
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} massTmp;
+
+layout(binding = 6) buffer SChunks
+{
+	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
+} chunks;
+
+const uvec4 unswizzleVec = uvec4(0xFF, 0xFF00, 0xFF0000, 0xFF000000);
+const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
+
+shared uint chunkChanged;
+
+uint readPackedBoard(ivec2 swizzledLoc);
+uint readMaterialGlobal(ivec2 loc);
+bool isPressureLiquid(uint materialId);
+
+uint readPackedMassWordSrc(int index);
+uint readMassGlobal(ivec2 loc);
+void writePackedMassWordDest(int index, uint value);
+
+int stableStateBottom(int totalMass);
+int flowVertical(int mUpper, int mLower);
+int flowHorizontal(int mHere, int mNeighbor);
+int computeNewMass(ivec2 loc);
+bool isOutsideBoard(ivec2 loc);
+
+void main()
+{
+	const uint chunkLoc = gl_WorkGroupID.y + gl_WorkGroupID.x * uint(CHUNK_HEIGHT);
+	if (gl_LocalInvocationIndex == 0)
+	{
+		chunkChanged = 0u;
+	}
+
+	barrier();
+
+	const ivec2 swizzledLoc = ivec2(gl_WorkGroupID.xy) * WORKGROUP_SIZE + ivec2(gl_LocalInvocationID.xy);
+
+	const int baseIndex = (swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y) * 2;
+	const int x0 = swizzledLoc.x << 1;
+	const int y0 = swizzledLoc.y << 1;
+
+	const uint srcRow0 = readPackedMassWordSrc(baseIndex);
+	const uint srcRow1 = readPackedMassWordSrc(baseIndex + 1);
+
+	const int m00 = computeNewMass(ivec2(x0, y0));
+	const int m10 = computeNewMass(ivec2(x0 + 1, y0));
+	const int m01 = computeNewMass(ivec2(x0, y0 + 1));
+	const int m11 = computeNewMass(ivec2(x0 + 1, y0 + 1));
+
+	const uint packedRow0 = (uint(m00) & PACKED_U16_MASK) | ((uint(m10) & PACKED_U16_MASK) << 16);
+	const uint packedRow1 = (uint(m01) & PACKED_U16_MASK) | ((uint(m11) & PACKED_U16_MASK) << 16);
+
+	if (packedRow0 != srcRow0 || packedRow1 != srcRow1)
+	{
+		atomicOr(chunkChanged, 1u);
+	}
+
+	writePackedMassWordDest(baseIndex, packedRow0);
+	writePackedMassWordDest(baseIndex + 1, packedRow1);
+
+	barrier();
+
+	if (gl_LocalInvocationIndex == 0 && chunkChanged != 0u)
+	{
+		atomicOr(chunks.data[int(chunkLoc)], CHUNK_FLAG_SIM_ACTIVE | CHUNK_FLAG_RENDER_DIRTY);
+	}
+}
+
+int computeNewMass(ivec2 loc)
+{
+	if (isOutsideBoard(loc)) return 0;
+
+	const uint mat = readMaterialGlobal(loc);
+	if (isPressureLiquid(mat) == false) return 0;
+
+	const int mHere = int(readMassGlobal(loc));
+
+	const uint step = pushConstants.step & 3u;
+	if (step == 0u)
+	{
+		int outDown = 0;
+		{
+			const ivec2 downLoc = loc + ivec2(0, 1);
+			if (isOutsideBoard(downLoc) == false)
+			{
+				const uint downMat = readMaterialGlobal(downLoc);
+				if (downMat == mat)
+				{
+					const int mDown = int(readMassGlobal(downLoc));
+					outDown = max(flowVertical(mHere, mDown), 0);
+				}
+			}
+		}
+
+		int inFromUp = 0;
+		{
+			const ivec2 upLoc = loc + ivec2(0, -1);
+			if (isOutsideBoard(upLoc) == false)
+			{
+				const uint upMat = readMaterialGlobal(upLoc);
+				if (upMat == mat)
+				{
+					const int mUp = int(readMassGlobal(upLoc));
+					inFromUp = max(flowVertical(mUp, mHere), 0);
+				}
+			}
+		}
+
+		return clamp(mHere - outDown + inFromUp, 0, int(M_CAP_MAX));
+	}
+	else if (step == 1u)
+	{
+		int outRight = 0;
+		{
+			const ivec2 rightLoc = loc + ivec2(1, 0);
+			if (isOutsideBoard(rightLoc) == false)
+			{
+				const uint rightMat = readMaterialGlobal(rightLoc);
+				if (rightMat == mat)
+				{
+					const int mRight = int(readMassGlobal(rightLoc));
+					outRight = max(flowHorizontal(mHere, mRight), 0);
+				}
+			}
+		}
+
+		int inFromLeft = 0;
+		{
+			const ivec2 leftLoc = loc + ivec2(-1, 0);
+			if (isOutsideBoard(leftLoc) == false)
+			{
+				const uint leftMat = readMaterialGlobal(leftLoc);
+				if (leftMat == mat)
+				{
+					const int mLeft = int(readMassGlobal(leftLoc));
+					inFromLeft = max(flowHorizontal(mLeft, mHere), 0);
+				}
+			}
+		}
+
+		return clamp(mHere - outRight + inFromLeft, 0, int(M_CAP_MAX));
+	}
+	else if (step == 2u)
+	{
+		int outLeft = 0;
+		{
+			const ivec2 leftLoc = loc + ivec2(-1, 0);
+			if (isOutsideBoard(leftLoc) == false)
+			{
+				const uint leftMat = readMaterialGlobal(leftLoc);
+				if (leftMat == mat)
+				{
+					const int mLeft = int(readMassGlobal(leftLoc));
+					outLeft = max(flowHorizontal(mHere, mLeft), 0);
+				}
+			}
+		}
+
+		int inFromRight = 0;
+		{
+			const ivec2 rightLoc = loc + ivec2(1, 0);
+			if (isOutsideBoard(rightLoc) == false)
+			{
+				const uint rightMat = readMaterialGlobal(rightLoc);
+				if (rightMat == mat)
+				{
+					const int mRight = int(readMassGlobal(rightLoc));
+					inFromRight = max(flowHorizontal(mRight, mHere), 0);
+				}
+			}
+		}
+
+		return clamp(mHere - outLeft + inFromRight, 0, int(M_CAP_MAX));
+	}
+	else
+	{
+		int outUp = 0;
+		{
+			const ivec2 upLoc = loc + ivec2(0, -1);
+			if (isOutsideBoard(upLoc) == false)
+			{
+				const uint upMat = readMaterialGlobal(upLoc);
+				if (upMat == mat)
+				{
+					const int mUp = int(readMassGlobal(upLoc));
+					outUp = max(-flowVertical(mUp, mHere), 0);
+				}
+			}
+		}
+
+		int inFromDown = 0;
+		{
+			const ivec2 downLoc = loc + ivec2(0, 1);
+			if (isOutsideBoard(downLoc) == false)
+			{
+				const uint downMat = readMaterialGlobal(downLoc);
+				if (downMat == mat)
+				{
+					const int mDown = int(readMassGlobal(downLoc));
+					inFromDown = max(-flowVertical(mHere, mDown), 0);
+				}
+			}
+		}
+
+		return clamp(mHere - outUp + inFromDown, 0, int(M_CAP_MAX));
+	}
+}
+
+int flowHorizontal(int mHere, int mNeighbor)
+{
+	const int flow = (mHere - mNeighbor) / int(H_HEAD_DIV);
+	if (abs(flow) < int(MIN_FLOW)) return 0;
+
+	if (flow > 0)
+	{
+		const int maxFlow = min(mHere, int(M_CAP_MAX) - mNeighbor);
+		return min(flow, maxFlow);
+	}
+	else
+	{
+		const int maxFlow = min(mNeighbor, int(M_CAP_MAX) - mHere);
+		return -min(-flow, maxFlow);
+	}
+}
+
+int flowVertical(int mUpper, int mLower)
+{
+	const int totalMass = mUpper + mLower;
+	const int desiredLower = stableStateBottom(totalMass);
+	int flow = desiredLower - mLower;
+	if (abs(flow) < int(MIN_FLOW)) return 0;
+
+	if (flow > 0)
+	{
+		const int maxFlow = min(mUpper, int(M_CAP_MAX) - mLower);
+		return min(flow, maxFlow);
+	}
+	else
+	{
+		const int maxFlow = min(mLower, int(M_CAP_MAX) - mUpper);
+		return -min(-flow, maxFlow);
+	}
+}
+
+int stableStateBottom(int totalMass)
+{
+	if (totalMass <= int(M_FULL)) return totalMass;
+
+	const int maxMass = int(M_FULL);
+	const int maxCompress = int(M_EQ_MAX - M_FULL);
+
+	if (totalMass < 2 * maxMass + maxCompress)
+	{
+		const int numerator = maxMass * maxMass + totalMass * maxCompress;
+		const int denominator = maxMass + maxCompress;
+		return numerator / denominator;
+	}
+	else
+	{
+		return (totalMass + maxCompress) / 2;
+	}
+}
+
+bool isPressureLiquid(uint materialId)
+{
+	return (uint(configuration.materials[materialId].flags) & MATERIAL_FLAG_PRESSURE_LIQUID) != 0u;
+}
+
+uint readPackedBoard(ivec2 swizzledLoc)
+{
+	const int index = swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y;
+	return pushConstants.boardToWrite == 0 ? board1.data[index] : board2.data[index];
+}
+
+uint readMaterialGlobal(ivec2 loc)
+{
+	ivec2 swizzled = loc >> 1;
+	uint offset = ((loc.x & 1) | ((loc.y & 1) << 1)) << 3;
+	uint value = readPackedBoard(swizzled);
+
+	return ((value >> offset) & 0xFFu);
+}
+
+uint readPackedMassWordSrc(int index)
+{
+	if ((pushConstants.step & 1u) == 0u)
+	{
+		return pushConstants.boardToWrite == 0u ? mass1.data[index] : mass2.data[index];
+	}
+	else
+	{
+		return massTmp.data[index];
+	}
+}
+
+uint readMassGlobal(ivec2 loc)
+{
+	const uvec2 ms = massIndexShift(loc);
+	const uint word = readPackedMassWordSrc(int(ms.x));
+	return packedU16Read(word, ms.y);
+}
+
+void writePackedMassWordDest(int index, uint value)
+{
+	if ((pushConstants.step & 1u) == 0u)
+	{
+		massTmp.data[index] = value;
+	}
+	else if (pushConstants.boardToWrite == 0u)
+	{
+		mass1.data[index] = value;
+	}
+	else
+	{
+		mass2.data[index] = value;
+	}
+}
+
+bool isOutsideBoard(ivec2 loc)
+{
+	return (loc.x < 0 || loc.y < 0 || loc.x >= WIDTH || loc.y >= HEIGHT);
+}

@@ -2,475 +2,196 @@
 	(engines=VulkanEngine
 		(resourcePkg
 			(resources=MemoryChunk
-				(parts=StaticImage name="Board Image" initialLayout=TRANSFER_SRC_OPTIMAL fillWithZero=true size="1248;672" usages=TRANSFER_SRC,STORAGE,TRANSFER_DST)
-			)
-		)
+				(parts=StaticImage name="Board Image" initialLayout=TRANSFER_SRC_OPTIMAL fillWithZero=true size="1248;672" usages=TRANSFER_SRC,STORAGE,TRANSFER_DST)))
 		(processes=ComputeProcess name="Board Compute" resetAllowed=true
 			(resourcePkg
 				(resources=Shader name=draw stage=COMPUTE_BIT
 					(file=StringModuleResource name="" path=draw.comp.spv moduleName=org.sheepy.vsand)
 					(constants name=MaterialCount size=4)
 					(constants name=Width constantId=1 size=4)
-					(constants name=Height constantId=2 size=4)
-				)
+					(constants name=Height constantId=2 size=4))
 				(resources=Shader name=boardUpdate stage=COMPUTE_BIT
 					(file=StringModuleResource name="" path=board_update.comp.spv moduleName=org.sheepy.vsand)
 					(constants name=MaterialCount size=4)
 					(constants name=Width constantId=1 size=4)
-					(constants name=Height constantId=2 size=4)
-				)
-				(resources=Shader name=pressureHead stage=COMPUTE_BIT
-					(file=StringModuleResource name="" path=pressure_head.comp.spv moduleName=org.sheepy.vsand)
+					(constants name=Height constantId=2 size=4))
+				(resources=Shader name=boardToPixel stage=COMPUTE_BIT
+					(file=StringModuleResource name="" path=board_to_pixel.comp.spv moduleName=org.sheepy.vsand)
 					(constants name=MaterialCount size=4)
 					(constants name=Width constantId=1 size=4)
-					(constants name=Height constantId=2 size=4)
-				)
-				(resources=Shader name=pressureStep stage=COMPUTE_BIT
-					(file=StringModuleResource name="" path=pressure_step.comp.spv moduleName=org.sheepy.vsand)
+					(constants name=Height constantId=2 size=4))
+				(Shader name=massSeed stage=COMPUTE_BIT
+					(file=StringModuleResource name="" path=mass_seed.comp.spv moduleName=org.sheepy.vsand)
 					(constants name=MaterialCount size=4)
 					(constants name=Width constantId=1 size=4)
-					(constants name=Height constantId=2 size=4)
-				)
-					(resources=Shader name=boardToPixel stage=COMPUTE_BIT
-						(file=StringModuleResource name="" path=board_to_pixel.comp.spv moduleName=org.sheepy.vsand)
-						(constants name=MaterialCount size=4)
-						(constants name=Width constantId=1 size=4)
-						(constants name=Height constantId=2 size=4)
-					)
-					(resources=BoardConstantBuffer name=BoardConstants)
-					(resources=SwapConstantBuffer name="SwapConstants Down" boardConstantBuffer=@BoardConstants)
-					(resources=SwapConstantBuffer name="SwapConstants Right" boardConstantBuffer=@BoardConstants)
-					(resources=SwapConstantBuffer name="SwapConstants Left" boardConstantBuffer=@BoardConstants)
-					(resources=SwapConstantBuffer name="SwapConstants Up" boardConstantBuffer=@BoardConstants)
-					(resources=ConstantBuffer name=SpecializationData)
-					(resources=MemoryChunk
-						(parts=BufferMemory name=Board
-							(buffers=StaticBuffer name="Board Buffer 1" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
-							(buffers=StaticBuffer name="Board Buffer 2" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
-							(buffers=StaticBuffer name="Mass Buffer 1" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
-							(buffers=StaticBuffer name="Mass Buffer 2" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
-							(buffers=StaticBuffer name="Head Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
-							(buffers=StaticBuffer name="Chunk Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
-					)
+					(constants name=Height constantId=2 size=4))
+				(Shader name=massUpdate stage=COMPUTE_BIT
+					(file=StringModuleResource name="" path=mass_update.comp.spv moduleName=org.sheepy.vsand)
+					(constants name=MaterialCount size=4)
+					(constants name=Width constantId=1 size=4)
+					(constants name=Height constantId=2 size=4))
+				(resources=BoardConstantBuffer name=BoardConstants)
+				(resources=ConstantBuffer name=SpecializationData)
+				(resources=MemoryChunk
+					(parts=BufferMemory name=Board
+						(buffers=StaticBuffer name="Board Buffer 1" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+						(buffers=StaticBuffer name="Board Buffer 2" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+						(buffers=StaticBuffer name="Mass Buffer 1" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+						(buffers=StaticBuffer name="Mass Buffer 2" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+						(StaticBuffer name="Mass Buffer Tmp" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT)
+						(buffers=StaticBuffer name="Chunk Buffer" initWithZero=true usages=STORAGE_BUFFER_BIT,TRANSFER_DST_BIT,TRANSFER_SRC_BIT))
 					(parts=BufferMemory name=Data
 						(buffers=DataBuffer name=Configuration usages=UNIFORM_BUFFER_BIT,TRANSFER_DST_BIT)
-						(buffers=DataBuffer name=Transformation usages=UNIFORM_BUFFER_BIT,TRANSFER_DST_BIT)
-					)
-				)
-			)
+						(buffers=DataBuffer name=Transformation usages=UNIFORM_BUFFER_BIT,TRANSFER_DST_BIT))))
 			(descriptorPkg
 				(descriptors=BufferDescriptor name=Chunk type=STORAGE_BUFFER buffer="@Chunk Buffer" shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Board1 type=STORAGE_BUFFER buffer="@Board Buffer 1" shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Board2 type=STORAGE_BUFFER buffer="@Board Buffer 2" shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Mass1 type=STORAGE_BUFFER buffer="@Mass Buffer 1" shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Mass2 type=STORAGE_BUFFER buffer="@Mass Buffer 2" shaderStages=COMPUTE_BIT)
-				(descriptors=BufferDescriptor name=Head type=STORAGE_BUFFER buffer="@Head Buffer" shaderStages=COMPUTE_BIT)
+				(BufferDescriptor name=MassTmp type=STORAGE_BUFFER buffer="@Mass Buffer Tmp" shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Config type=UNIFORM_BUFFER buffer=@Configuration shaderStages=COMPUTE_BIT)
 				(descriptors=BufferDescriptor name=Transfo type=UNIFORM_BUFFER buffer=@Transformation shaderStages=COMPUTE_BIT)
-				(descriptors=ImageDescriptor name=BoardImage type=STORAGE_IMAGE images="@Board Image" shaderStages=COMPUTE_BIT)
-			)
+				(descriptors=ImageDescriptor name=BoardImage type=STORAGE_IMAGE images="@Board Image" shaderStages=COMPUTE_BIT))
 			(descriptorPool)
 			(executionManager=ComputeExecutionManager waitForExecution=/engines.0/processes.0/executionManager waitedBy=/engines.0/processes.1/executionManager,/engines.0/processes.0/executionManager)
 			(pipelinePkg
 				(pipelines=ComputePipeline name=Draw record=false specializationData=@SpecializationData layout=@Draw shader=@draw
 					(resourcePkg
-						(resources=DrawConstantBuffer name=DrawConstants boardConstantBuffer=@BoardConstants)
-					)
+						(resources=DrawConstantBuffer name=DrawConstants boardConstantBuffer=@BoardConstants))
 					(taskPkgs
 						(tasks=BindDescriptorSets descriptorSets=@Draw bindPoint=COMPUTE)
 						(tasks=PushConstantBuffer name="" buffer=@DrawConstants stages=COMPUTE_BIT)
 						(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 							(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT dstAccessMask=SHADER_WRITE_BIT
-								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-							)
-						)
-						(tasks=DispatchTask name=Draw workgroupCountX=78 workgroupCountY=44)
-					)
+								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")))
+						(tasks=DispatchTask name=Draw workgroupCountX=78 workgroupCountY=44))
 					(descriptorPool
-						(descriptorSets name=Draw descriptors=@Chunk,@Board1,@Board2,@Config,@Mass1,@Mass2)
-					)
-					(pushConstantRanges size=72 stages=COMPUTE_BIT)
-				)
+						(descriptorSets name=Draw descriptors=@Chunk,@Board1,@Board2,@Config,@Mass1,@Mass2))
+					(pushConstantRanges size=72 stages=COMPUTE_BIT))
 				(pipelines=CompositePipeline name=Simulation repeat=1
 					(pipelines=ComputePipeline name="Board Update" specializationData=@SpecializationData layout="@Update Board Common" shader=@boardUpdate
 						(taskPkgs
 							(tasks=BindDescriptorSets descriptorSets="@Update Board Common" bindPoint=COMPUTE)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-								)
-							)
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")))
 							(tasks=CompositeTask name="Update Board"
 								(tasks=PushConstantBuffer buffer=@BoardConstants stages=COMPUTE_BIT)
 								(tasks=DispatchTask name="Board update" workgroupCountX=78 workgroupCountY=44)
 								(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 									(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-										(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-									)
-								)
-							)
-						)
+										(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")))))
 						(descriptorPool
-							(descriptorSets name="Update Board Common" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Step Down" specializationData=@SpecializationData layout="@Pressure Step" shader=@pressureStep
+							(descriptorSets name="Update Board Common" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2))
+						(pushConstantRanges size=8 stages=COMPUTE_BIT))
+					(ComputePipeline name="Mass Seed" specializationData=@SpecializationData layout="@Mass Seed" shader=@massSeed
 						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Step" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Head Buffer")
-								)
-							)
-							(tasks=PushConstantBuffer buffer="@SwapConstants Down" stages=COMPUTE_BIT)
-							(tasks=DispatchTask name="Pressure step" workgroupCountX=78 workgroupCountY=44)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Step" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Head Right" specializationData=@SpecializationData layout="@Pressure Head" shader=@pressureHead
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Head" bindPoint=COMPUTE)
+							(tasks=BindDescriptorSets descriptorSets="@Mass Seed" bindPoint=COMPUTE)
+							(tasks=PushConstantBuffer buffer=@PixelConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Mass seed" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2")
-								)
-							)
-							(tasks=PushConstantBuffer buffer="@SwapConstants Right" stages=COMPUTE_BIT)
-							(tasks=DispatchTask name="Pressure head" workgroupCountX=20 workgroupCountY=1)
+									(buffers buffers="@Mass Buffer 1","@Mass Buffer 2"))))
+						(descriptorPool
+							(descriptorSets name="Mass Seed" descriptors=@Config,@Board1,@Board2,@Mass1,@Mass2))
+						(pushConstantRanges size=36 stages=COMPUTE_BIT))
+					(ComputePipeline name="Mass Update" specializationData=@SpecializationData layout="@Mass Update" shader=@massUpdate
+						(resourcePkg
+							(resources=ConstantBuffer name=MassConstants))
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Mass Update" bindPoint=COMPUTE)
+							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Head Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Head" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Step Right" specializationData=@SpecializationData layout="@Pressure Step" shader=@pressureStep
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Step" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Head Buffer")
-								)
-							)
-							(tasks=DispatchTask name="Pressure step" workgroupCountX=78 workgroupCountY=44)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Step" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Head Left" specializationData=@SpecializationData layout="@Pressure Head" shader=@pressureHead
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Head" bindPoint=COMPUTE)
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
+							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2")
-								)
-							)
-							(tasks=PushConstantBuffer buffer="@SwapConstants Left" stages=COMPUTE_BIT)
-							(tasks=DispatchTask name="Pressure head" workgroupCountX=20 workgroupCountY=1)
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
+							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Head Buffer")
-								)
-							)
-						)
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
+							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1))
 						(descriptorPool
-							(descriptorSets name="Pressure Head" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Step Left" specializationData=@SpecializationData layout="@Pressure Step" shader=@pressureStep
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Step" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Head Buffer")
-								)
-							)
-							(tasks=DispatchTask name="Pressure step" workgroupCountX=78 workgroupCountY=44)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Step" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Step Up" specializationData=@SpecializationData layout="@Pressure Step" shader=@pressureStep
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Step" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Head Buffer")
-								)
-							)
-							(tasks=PushConstantBuffer buffer="@SwapConstants Up" stages=COMPUTE_BIT)
-							(tasks=DispatchTask name="Pressure step" workgroupCountX=78 workgroupCountY=44)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Step" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Step Down 2" specializationData=@SpecializationData layout="@Pressure Step" shader=@pressureStep
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Step" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Head Buffer")
-								)
-							)
-							(tasks=PushConstantBuffer buffer="@SwapConstants Down" stages=COMPUTE_BIT)
-							(tasks=DispatchTask name="Pressure step" workgroupCountX=78 workgroupCountY=44)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Step" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Head Right 2" specializationData=@SpecializationData layout="@Pressure Head" shader=@pressureHead
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Head" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2")
-								)
-							)
-							(tasks=PushConstantBuffer buffer="@SwapConstants Right" stages=COMPUTE_BIT)
-							(tasks=DispatchTask name="Pressure head" workgroupCountX=20 workgroupCountY=1)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Head Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Head" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Step Right 2" specializationData=@SpecializationData layout="@Pressure Step" shader=@pressureStep
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Step" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Head Buffer")
-								)
-							)
-							(tasks=DispatchTask name="Pressure step" workgroupCountX=78 workgroupCountY=44)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Step" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Head Left 2" specializationData=@SpecializationData layout="@Pressure Head" shader=@pressureHead
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Head" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2")
-								)
-							)
-							(tasks=PushConstantBuffer buffer="@SwapConstants Left" stages=COMPUTE_BIT)
-							(tasks=DispatchTask name="Pressure head" workgroupCountX=20 workgroupCountY=1)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(buffers buffers="@Head Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Head" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Step Left 2" specializationData=@SpecializationData layout="@Pressure Step" shader=@pressureStep
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Step" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Head Buffer")
-								)
-							)
-							(tasks=DispatchTask name="Pressure step" workgroupCountX=78 workgroupCountY=44)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Step" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-					(pipelines=ComputePipeline name="Pressure Step Up 2" specializationData=@SpecializationData layout="@Pressure Step" shader=@pressureStep
-						(taskPkgs
-							(tasks=BindDescriptorSets descriptorSets="@Pressure Step" bindPoint=COMPUTE)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer","@Head Buffer")
-								)
-							)
-							(tasks=PushConstantBuffer buffer="@SwapConstants Up" stages=COMPUTE_BIT)
-							(tasks=DispatchTask name="Pressure step" workgroupCountX=78 workgroupCountY=44)
-							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-								(barriers=BufferBarrier srcAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT,SHADER_WRITE_BIT
-									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-								)
-							)
-						)
-						(descriptorPool
-							(descriptorSets name="Pressure Step" descriptors=@Config,@Transfo,@Chunk,@Board1,@Board2,@Mass1,@Mass2,@Head)
-						)
-						(pushConstantRanges size=8 stages=COMPUTE_BIT)
-					)
-				(pipelines=Pipeline name="Fetch"
+							(descriptorSets name="Mass Update" descriptors=@Config,@Board1,@Board2,@Mass1,@Mass2,@MassTmp,@Chunk))
+						(pushConstantRanges size=8 stages=COMPUTE_BIT))
+					(pipelines=Pipeline name="Fetch"
 						(taskPkgs
 							(tasks=CompositeTask name="Fetch Board" enabled=false
-						(tasks=PipelineBarrier name="Fetch Barrier" srcStage=COMPUTE_SHADER_BIT dstStage=TRANSFER_BIT
-							(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=TRANSFER_READ_BIT
-								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-							)
-						)
-						(tasks=FetchBuffer name="Fetch Board 1"
-							(bufferReference=BufferReference buffers="@Board Buffer 1")
-						)
-						(tasks=FetchBuffer name="Fetch Board 2"
-							(bufferReference=BufferReference buffers="@Board Buffer 2")
-						)
-						(tasks=FetchBuffer name="Fetch Mass 1"
-							(bufferReference=BufferReference buffers="@Mass Buffer 1")
-						)
-						(tasks=FetchBuffer name="Fetch Mass 2"
-							(bufferReference=BufferReference buffers="@Mass Buffer 2")
-						)
-					)
-				)
-			)
-				(pipelines=ComputePipeline name="Board to Pixel" specializationData=@SpecializationData layout="@Board to Pixel" shader=@boardToPixel
-					(resourcePkg
-						(resources=PixelConstantBuffer name=PixelConstants boardConstantBuffer=@BoardConstants)
-					)
-					(taskPkgs
-						(tasks=BindDescriptorSets descriptorSets="@Board to Pixel" bindPoint=COMPUTE)
-						(tasks=PushConstantBuffer name="" buffer=@PixelConstants stages=COMPUTE_BIT)
-						(tasks=PipelineBarrier srcStage=TRANSFER_BIT dstStage=COMPUTE_SHADER_BIT
-							(barriers=ImageBarrier dstLayout=GENERAL image="@Board Image" srcAccessMask=TRANSFER_READ_BIT dstAccessMask=SHADER_WRITE_BIT)
-						)
-						(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
-							(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-								(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")
-							)
-						)
-						(tasks=DispatchTask name=BoardToPixel workgroupCountX=78 workgroupCountY=44)
-					)
-					(descriptorPool
-						(descriptorSets name="Board to Pixel" descriptors=@BoardImage,@Config,@Chunk,@Board1,@Board2,@Mass1,@Mass2)
-					)
-					(pushConstantRanges size=36 stages=COMPUTE_BIT)
-				)
-			)
-			)
-				(configuration)
-		)
+								(tasks=PipelineBarrier name="Fetch Barrier" srcStage=COMPUTE_SHADER_BIT dstStage=TRANSFER_BIT
+									(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=TRANSFER_READ_BIT
+										(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")))
+								(tasks=FetchBuffer name="Fetch Board 1"
+									(bufferReference=BufferReference buffers="@Board Buffer 1"))
+								(tasks=FetchBuffer name="Fetch Board 2"
+									(bufferReference=BufferReference buffers="@Board Buffer 2"))
+								(tasks=FetchBuffer name="Fetch Mass 1"
+									(bufferReference=BufferReference buffers="@Mass Buffer 1"))
+								(tasks=FetchBuffer name="Fetch Mass 2"
+									(bufferReference=BufferReference buffers="@Mass Buffer 2")))))
+					(pipelines=ComputePipeline name="Board to Pixel" specializationData=@SpecializationData layout="@Board to Pixel" shader=@boardToPixel
+						(resourcePkg
+							(resources=PixelConstantBuffer name=PixelConstants boardConstantBuffer=@BoardConstants))
+						(taskPkgs
+							(tasks=BindDescriptorSets descriptorSets="@Board to Pixel" bindPoint=COMPUTE)
+							(tasks=PushConstantBuffer name="" buffer=@PixelConstants stages=COMPUTE_BIT)
+							(tasks=PipelineBarrier srcStage=TRANSFER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=ImageBarrier dstLayout=GENERAL image="@Board Image" srcAccessMask=TRANSFER_READ_BIT dstAccessMask=SHADER_WRITE_BIT))
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(buffers buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")))
+							(tasks=DispatchTask name=BoardToPixel workgroupCountX=78 workgroupCountY=44))
+						(descriptorPool
+							(descriptorSets name="Board to Pixel" descriptors=@BoardImage,@Config,@Chunk,@Board1,@Board2,@Mass1,@Mass2))
+						(pushConstantRanges size=36 stages=COMPUTE_BIT))))
+			(configuration))
 		(processes=GraphicProcess resetAllowed=true
 			(descriptorPool)
 			(executionManager=GraphicExecutionManager waitForExecution=/engines.0/processes.0/executionManager)
 			(configuration acquireWaitStage=COMPUTE_SHADER_BIT
 				(swapchainConfiguration requiredSwapImageCount=2 allowingAccessFromCompute=true swapImageUsages=COLOR_ATTACHMENT,TRANSFER_DST
-					(colorAttachment name=Swapchain stencilLoadOp=DONT_CARE stencilStoreOp=DONT_CARE initialLayout=TRANSFER_DST_OPTIMAL finalLayout=PRESENT_SRC_KHR clearValue="0.0;0.0;0.0;0.0")
-				)
+					(colorAttachment name=Swapchain stencilLoadOp=DONT_CARE stencilStoreOp=DONT_CARE initialLayout=TRANSFER_DST_OPTIMAL finalLayout=PRESENT_SRC_KHR clearValue="0.0;0.0;0.0;0.0"))
 				(framebufferConfiguration)
 				(surface
-					(colorDomain)
-				)
+					(colorDomain))
 				(renderPass)
-				(imageViews)
-			)
-			(attachmentPkg)
-		)
-	)
+				(imageViews))
+			(attachmentPkg)))
 	(engines=OpenALEngine
 		(resourcePkg
 			(resources=SoundContinuous name=Sand attackMs=500 decayMs=6000
-				(file=StringModuleResource path=sand.ogg moduleName=org.sheepy.vsand)
-			)
+				(file=StringModuleResource path=sand.ogg moduleName=org.sheepy.vsand))
 			(resources=SoundContinuous name=Water attackMs=700 decayMs=4700
-				(file=StringModuleResource path=water.ogg moduleName=org.sheepy.vsand)
-			)
+				(file=StringModuleResource path=water.ogg moduleName=org.sheepy.vsand))
 			(resources=SoundContinuous name=Lava attackMs=500 decayMs=2500
-				(file=StringModuleResource path=lava.ogg moduleName=org.sheepy.vsand)
-			)
+				(file=StringModuleResource path=lava.ogg moduleName=org.sheepy.vsand))
 			(resources=SoundContinuous name=Fire attackMs=500 decayMs=1780
-				(file=StringModuleResource path=fire.ogg moduleName=org.sheepy.vsand)
-			)
+				(file=StringModuleResource path=fire.ogg moduleName=org.sheepy.vsand))
 			(resources=SoundContinuous name=Steam attackMs=1000 decayMs=2000
-				(file=StringModuleResource path=steam.ogg moduleName=org.sheepy.vsand)
-			)
-		)
-	)
+				(file=StringModuleResource path=steam.ogg moduleName=org.sheepy.vsand))))
 	(scene resizeable=true size="1248;704"
 		(compositors=BackgroundImage sampling=Nearest srcImage="@Board Image" dstImage=/engines.0/processes.1/configuration/swapchainConfiguration/colorAttachment)
-			(compositors=UI currentUIPage=/scene/compositors.1/uiPages.0 dstImage=/engines.0/processes.1/configuration/swapchainConfiguration/colorAttachment
-				(uiPages name=Main
-					(panels=Panel name=Config horizontalRelative=RIGHT width=220 height=90
-						(controls=DynamicRowLayout)
-						(controls=VariableLabel text=Speed
-							(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#speed target=/)
-					)
+		(compositors=UI currentUIPage=/scene/compositors.1/uiPages.0 dstImage=/engines.0/processes.1/configuration/swapchainConfiguration/colorAttachment
+			(uiPages name=Main
+				(panels=Panel name=Config horizontalRelative=RIGHT width=220 height=90
+					(controls=DynamicRowLayout)
+					(controls=VariableLabel text=Speed
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#speed target=/))
 					(controls=Slider minValue=1 maxValue=32
-						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#speed target=/)
-					)
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#speed target=/))
 					(controls=VariableLabel text="Brush Size"
-						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#brushSize target=/)
-					)
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#brushSize target=/))
 					(controls=Slider minValue=1 maxValue=8
-						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#brushSize target=/)
-					)
-				)
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#brushSize target=/)))
 				(panels=SelectorPanel name="Primary Material" position="34;0" verticalRelative=MIDDLE horizontalRelative=RIGHT buttonSizePx=28 selectionR=229 selectionG=57 selectionB=53 printLabels=true autoHideLabels=false
 					(variableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#mainMaterial target=/)
-					(inputProvider=InputMaterialProvider materials=/materials)
-				)
+					(inputProvider=InputMaterialProvider materials=/materials))
 				(panels=Panel name=Controls width=300 height=265 showTitle=true minimizable=true minimized=true
 					(controls=DynamicRowLayout columnCount=2)
 					(controls=Label text="Primary material")
@@ -493,24 +214,15 @@
 					(controls=Label)
 					(controls=DynamicRowLayout)
 					(controls=VariableLabel text=Version
-						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#version target=/)
-					)
-					(controls=Label text="https://github.com/ealrann/VSand")
-				)
+						(variableResolver=DirectVariableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#version target=/))
+					(controls=Label text="https://github.com/ealrann/VSand"))
 				(panels=SelectorPanel name="Secondary Material" position="0;0" verticalRelative=MIDDLE horizontalRelative=RIGHT buttonSizePx=28 selectionR=3 selectionG=155 selectionB=229
 					(variableResolver variableDefinition=org.sheepy.vsand.model.VSand#VSandApplication#secondaryMaterial target=/)
-					(inputProvider=InputMaterialProvider materials=/materials)
-				)
-			)
+					(inputProvider=InputMaterialProvider materials=/materials)))
 			(fontPkg
 				(fonts name=Default
 					(tables name=Fira charTables=Base
-						(file=StringModuleResource path=FiraSans-Regular.ttf moduleName=org.sheepy.vsand)
-					)
-				)
-			)
-		)
-	)
+						(file=StringModuleResource path=FiraSans-Regular.ttf moduleName=org.sheepy.vsand))))))
 	(materials
 		(materials name=Void runoff=60)
 		(materials name=Sand density=5 runoff=1 r=244 g=244 b=67 paintSound=/engines.1/resourcePkg/resources.0)
@@ -538,8 +250,7 @@
 		(materials name=Sparkle r=255 g=251 b=224 userFriendly=false)
 		(materials name=HotWax density=1 runoff=3 r=231 g=254 b=254 userFriendly=false)
 		(materials name=Acid density=4 runoff=30 r=35 g=245 b=130)
-		(materials name=AcidVapor density=-2 runoff=30 g=255 b=200 userFriendly=false)
-	)
+		(materials name=AcidVapor density=-2 runoff=30 g=255 b=200 userFriendly=false))
 	(transformations
 		(transformations=Transformation probability=950 target=/materials/materials.14 reactant=/materials/materials.5 catalyst=/materials/materials.14)
 		(transformations=Transformation probability=200 target=/materials/materials.11 reactant=/materials/materials.0 catalyst=/materials/materials.11)
@@ -549,13 +260,11 @@
 		(transformations=Transformation probability=200 isStaticTransformation=true target=/materials/materials.3 reactant=/materials/materials.4)
 		(transformations=MultipleTransformation probability=440 target=/materials/materials.8 name="[Water] + Heat = [Steam]"
 			(reactants materials=/materials/materials.5,/materials/materials.7,/materials/materials.6)
-			(catalysts materials=/materials/materials.11,/materials/materials.13,/materials/materials.12,/materials/materials.23)
-		)
+			(catalysts materials=/materials/materials.11,/materials/materials.13,/materials/materials.12,/materials/materials.23))
 		(transformations=Transformation probability=350 isStaticTransformation=true target=/materials/materials.7 reactant=/materials/materials.6)
 		(transformations=MultipleTransformation probability=50 target=/materials/materials.5 name="[SnowHard] + [All] = [Water]"
 			(reactants materials=/materials/materials.7)
-			(catalysts materials=/materials/materials.7,/materials/materials.6 filterMode=true)
-		)
+			(catalysts materials=/materials/materials.7,/materials/materials.6 filterMode=true))
 		(transformations=Transformation probability=90 target=/materials/materials.5 reactant=/materials/materials.8)
 		(transformations=Transformation probability=250 target=/materials/materials.5 reactant=/materials/materials.8 catalyst=/materials/materials.7)
 		(transformations=Transformation probability=250 target=/materials/materials.9 reactant=/materials/materials.2 catalyst=/materials/materials.5)
@@ -598,41 +307,33 @@
 		(transformations=Transformation probability=450 target=/materials/materials.13 reactant=/materials/materials.23)
 		(transformations=MultipleTransformation probability=350 target=/materials/materials.11 name="[All] + [Sparkle] = [Fire]"
 			(reactants materials=/materials/materials.11,/materials/materials.13,/materials/materials.12 filterMode=true)
-			(catalysts materials=/materials/materials.23)
-		)
+			(catalysts materials=/materials/materials.23))
 		(transformations=Transformation probability=1000 propagation=5 target=/materials/materials.13 reactant=/materials/materials.0 catalyst=/materials/materials.23)
 		(transformations=Transformation probability=50 propagation=3 target=/materials/materials.26 reactant=/materials/materials.25 catalyst=/materials/materials.0)
 		(transformations=Transformation probability=560 target=/materials/materials.25 reactant=/materials/materials.26)
 		(transformations=MultipleTransformation probability=160 target=/materials/materials.0 name="[Acid] + [All] = [Void]"
 			(reactants materials=/materials/materials.25,/materials/materials.26)
-			(catalysts materials=/materials/materials.25,/materials/materials.0,/materials/materials.26,/materials/materials.1,/materials/materials.5,/materials/materials.8 filterMode=true)
-		)
+			(catalysts materials=/materials/materials.25,/materials/materials.0,/materials/materials.26,/materials/materials.1,/materials/materials.5,/materials/materials.8 filterMode=true))
 		(transformations=MultipleTransformation probability=150 target=/materials/materials.0 name="[All] + [Acid] = [Void]"
 			(reactants materials=/materials/materials.0,/materials/materials.25,/materials/materials.26,/materials/materials.1,/materials/materials.8,/materials/materials.5,/materials/materials.4,/materials/materials.2,/materials/materials.9,/materials/materials.10,/materials/materials.14 filterMode=true)
-			(catalysts materials=/materials/materials.25,/materials/materials.26)
-		)
+			(catalysts materials=/materials/materials.25,/materials/materials.26))
 		(transformations=MultipleTransformation probability=200 target=/materials/materials.8 name="[Wet] + [Acid] = [Vapor]"
 			(reactants materials=/materials/materials.2,/materials/materials.4,/materials/materials.14)
-			(catalysts materials=/materials/materials.25,/materials/materials.26)
-		)
+			(catalysts materials=/materials/materials.25,/materials/materials.26))
 		(transformations=MultipleTransformation probability=200 target=/materials/materials.0 name="[Dry] + [Acid] = [Vapor]"
 			(reactants materials=/materials/materials.4,/materials/materials.2)
-			(catalysts materials=/materials/materials.25,/materials/materials.26)
-		)
+			(catalysts materials=/materials/materials.25,/materials/materials.26))
 		(transformations=MultipleTransformation probability=4 target=/materials/materials.0 name="[Acid] + [Wall] = [Void]"
 			(reactants materials=/materials/materials.25,/materials/materials.26)
-			(catalysts materials=/materials/materials.3)
-		)
+			(catalysts materials=/materials/materials.3))
 		(transformations=MultipleTransformation probability=35 target=/materials/materials.0 name="[Wall] + [Acid] = [Void]"
 			(reactants materials=/materials/materials.3)
-			(catalysts materials=/materials/materials.25,/materials/materials.26)
-		)
+			(catalysts materials=/materials/materials.25,/materials/materials.26))
 		(transformations=Transformation probability=220 target=/materials/materials.19 reactant=/materials/materials.18)
 		(transformations=Transformation probability=175 target=/materials/materials.18 reactant=/materials/materials.19)
 		(transformations=MultipleTransformation probability=235 target=/materials/materials.11 name="[All] + [Lava] = [Fire]"
 			(reactants materials=/materials/materials.18,/materials/materials.19,/materials/materials.0,/materials/materials.11,/materials/materials.13,/materials/materials.12,/materials/materials.23 filterMode=true)
-			(catalysts materials=/materials/materials.18,/materials/materials.19)
-		)
+			(catalysts materials=/materials/materials.18,/materials/materials.19))
 		(transformations=Transformation probability=200 target=/materials/materials.11 reactant=/materials/materials.0 catalyst=/materials/materials.19)
 		(transformations=Transformation probability=450 target=/materials/materials.18 reactant=/materials/materials.19 catalyst=/materials/materials.18)
 		(transformations=Transformation probability=300 target=/materials/materials.16 reactant=/materials/materials.15 catalyst=/materials/materials.18)
@@ -645,21 +346,16 @@
 		(transformations=Transformation probability=260 target=/materials/materials.0 reactant=/materials/materials.5 catalyst=/materials/materials.18)
 		(transformations=MultipleTransformation probability=350 target=/materials/materials.8 name="[Snow] + [Lava] = [Steam]"
 			(reactants materials=/materials/materials.6,/materials/materials.7)
-			(catalysts materials=/materials/materials.18,/materials/materials.19)
-		)
+			(catalysts materials=/materials/materials.18,/materials/materials.19))
 		(transformations=Transformation probability=500 target=/materials/materials.8 reactant=/materials/materials.5 catalyst=/materials/materials.19)
 		(transformations=MultipleTransformation probability=50 target=/materials/materials.0 name="[LavaBoiling] + [Water] = [Void]"
 			(reactants materials=/materials/materials.19)
-			(catalysts materials=/materials/materials.5,/materials/materials.6,/materials/materials.7)
-		)
+			(catalysts materials=/materials/materials.5,/materials/materials.6,/materials/materials.7))
 		(transformations=Transformation probability=200 target=/materials/materials.0 reactant=/materials/materials.18 catalyst=/materials/materials.5)
 		(transformations=MultipleTransformation probability=240 target=/materials/materials.0 name="[Lava] + [Snow] = [Void]"
 			(reactants materials=/materials/materials.18)
-			(catalysts materials=/materials/materials.6,/materials/materials.7)
-		)
+			(catalysts materials=/materials/materials.6,/materials/materials.7))
 		(transformations=MultipleTransformation probability=300 target=/materials/materials.5 name="[Snow] + [Fire] = [Water]"
 			(reactants materials=/materials/materials.6,/materials/materials.7)
-			(catalysts materials=/materials/materials.11,/materials/materials.13,/materials/materials.12,/materials/materials.16)
-		)
-	)
+			(catalysts materials=/materials/materials.11,/materials/materials.13,/materials/materials.12,/materials/materials.16)))
 )

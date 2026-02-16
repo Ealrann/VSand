@@ -1,0 +1,142 @@
+#version 450
+
+#define WORKGROUP_SIZE 8
+
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
+
+layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
+
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
+
+#include "mass_utils.glsl"
+
+const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	int flags;
+	vec4 color;
+};
+
+layout (push_constant) uniform PushConstants
+{
+	int forceClear;
+	int showSleepChunks;
+	int showMass;
+	int drawMaterialId;
+	int drawRadius;
+	int _pad0;
+	ivec2 mousePos;
+	uint boardToWrite;
+} pushConstants;
+
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+} configuration;
+
+layout(binding = 1) buffer readonly SBoard1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board1;
+
+layout(binding = 2) buffer readonly SBoard2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board2;
+
+layout(binding = 3) buffer SMass1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass1;
+
+layout(binding = 4) buffer SMass2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass2;
+
+const uvec4 unswizzleVec = uvec4(0xFF, 0xFF00, 0xFF0000, 0xFF000000);
+const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
+
+uint readPackedBoard(ivec2 swizzledLoc);
+uint readMaterialGlobal(ivec2 loc);
+uint readPackedMassWord(int index);
+void writePackedMassWord(int index, uint value);
+bool isPressureLiquid(uint materialId);
+
+void main()
+{
+	const ivec2 swizzledLoc = ivec2(gl_WorkGroupID.xy) * WORKGROUP_SIZE + ivec2(gl_LocalInvocationID.xy);
+
+	const int baseIndex = (swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y) * 2;
+	const int x0 = swizzledLoc.x << 1;
+	const int y0 = swizzledLoc.y << 1;
+
+	const uint mat00 = readMaterialGlobal(ivec2(x0, y0));
+	const uint mat10 = readMaterialGlobal(ivec2(x0 + 1, y0));
+	const uint mat01 = readMaterialGlobal(ivec2(x0, y0 + 1));
+	const uint mat11 = readMaterialGlobal(ivec2(x0 + 1, y0 + 1));
+
+	const uint prevRow0 = readPackedMassWord(baseIndex);
+	const uint prevRow1 = readPackedMassWord(baseIndex + 1);
+
+	const uint prev00 = packedU16Read(prevRow0, 0u);
+	const uint prev10 = packedU16Read(prevRow0, 16u);
+	const uint prev01 = packedU16Read(prevRow1, 0u);
+	const uint prev11 = packedU16Read(prevRow1, 16u);
+
+	const bool pressed00 = y0 > 0 && readMaterialGlobal(ivec2(x0, y0 - 1)) == mat00;
+	const bool pressed10 = y0 > 0 && readMaterialGlobal(ivec2(x0 + 1, y0 - 1)) == mat10;
+	const bool pressed01 = mat00 == mat01;
+	const bool pressed11 = mat10 == mat11;
+
+	const uint mass00 = isPressureLiquid(mat00) ? (pressed00 ? (prev00 != 0u ? prev00 : M_FULL) : M_FULL) : 0u;
+	const uint mass10 = isPressureLiquid(mat10) ? (pressed10 ? (prev10 != 0u ? prev10 : M_FULL) : M_FULL) : 0u;
+	const uint mass01 = isPressureLiquid(mat01) ? (pressed01 ? (prev01 != 0u ? prev01 : M_FULL) : M_FULL) : 0u;
+	const uint mass11 = isPressureLiquid(mat11) ? (pressed11 ? (prev11 != 0u ? prev11 : M_FULL) : M_FULL) : 0u;
+
+	const uint packedRow0 = (mass00 & PACKED_U16_MASK) | ((mass10 & PACKED_U16_MASK) << 16);
+	const uint packedRow1 = (mass01 & PACKED_U16_MASK) | ((mass11 & PACKED_U16_MASK) << 16);
+
+	writePackedMassWord(baseIndex, packedRow0);
+	writePackedMassWord(baseIndex + 1, packedRow1);
+}
+
+bool isPressureLiquid(uint materialId)
+{
+	return (uint(configuration.materials[materialId].flags) & MATERIAL_FLAG_PRESSURE_LIQUID) != 0u;
+}
+
+uint readPackedBoard(ivec2 swizzledLoc)
+{
+	const int index = swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y;
+	return pushConstants.boardToWrite == 0 ? board1.data[index] : board2.data[index];
+}
+
+uint readMaterialGlobal(ivec2 loc)
+{
+	ivec2 swizzled = loc >> 1;
+	uint offset = ((loc.x & 1) | ((loc.y & 1) << 1)) << 3;
+	uint value = readPackedBoard(swizzled);
+
+	return ((value >> offset) & 0xFFu);
+}
+
+uint readPackedMassWord(int index)
+{
+	return pushConstants.boardToWrite == 0 ? mass1.data[index] : mass2.data[index];
+}
+
+void writePackedMassWord(int index, uint value)
+{
+	if (pushConstants.boardToWrite == 0)
+		mass1.data[index] = value;
+	else
+		mass2.data[index] = value;
+}

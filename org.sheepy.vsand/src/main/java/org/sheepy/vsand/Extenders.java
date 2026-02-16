@@ -4,8 +4,8 @@ import org.logoce.lmf.core.api.extender.IAdapter;
 import org.logoce.lmf.core.api.extender.IAdapterProvider;
 import org.sheepy.vsand.constants.BoardConstantBufferAdapter;
 import org.sheepy.vsand.constants.DrawConstantBufferAdapter;
+import org.sheepy.vsand.constants.MassConstantBufferAdapter;
 import org.sheepy.vsand.constants.PixelConstantBufferAdapter;
-import org.sheepy.vsand.constants.SwapConstantBufferAdapter;
 import org.sheepy.vsand.draw.DrawCircleAdapter;
 import org.sheepy.vsand.draw.DrawLineAdapter;
 import org.sheepy.vsand.draw.DrawSquareAdapter;
@@ -31,12 +31,11 @@ public final class Extenders implements IAdapterProvider
 					   Board2BufferLoader.class,
 					   Mass1BufferLoader.class,
 					   Mass2BufferLoader.class,
-					   HeadBufferLoader.class,
+					   MassTmpBufferLoader.class,
 					   ChunkBufferLoader.class,
 						   BoardImageLoader.class,
 						   TransformationBufferLoader.class,
 						   BoardConstantBufferAdapter.class,
-						   SwapConstantBufferAdapter.class,
 						   DrawConstantBufferAdapter.class,
 						   PixelConstantBufferAdapter.class,
 						   DrawCircleAdapter.class,
@@ -49,12 +48,13 @@ public final class Extenders implements IAdapterProvider
 					   BoardBufferFetchConsumer.class,
 					   InputManager.class,
 					   PrimaryDrawer.class,
-					   SecondaryDrawer.class,
+						   SecondaryDrawer.class,
 					   BoardUpdateDispatchTaskLoader.class,
-					   PressureHeadDispatchTaskLoader.class,
-					   PressureStepDispatchTaskLoader.class,
-					   BoardToPixelDispatchTaskLoader.class,
-					   DrawDispatchTaskLoader.class);
+						   BoardToPixelDispatchTaskLoader.class,
+						   DrawDispatchTaskLoader.class,
+						   MassUpdateDispatchTaskLoader.class,
+						   MassSeedDispatchTaskLoader.class,
+						   MassConstantBufferAdapter.class);
 	}
 
 	@Override

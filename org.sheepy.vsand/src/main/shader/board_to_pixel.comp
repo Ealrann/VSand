@@ -165,10 +165,10 @@ void main()
 
 	if (pushConstants.showMass == 1)
 	{
-		finalColor1 = computeMassColor(unswizzledValue.x, readMassGlobal(loc1));
-		finalColor2 = computeMassColor(unswizzledValue.y, readMassGlobal(loc2));
-		finalColor3 = computeMassColor(unswizzledValue.z, readMassGlobal(loc3));
-		finalColor4 = computeMassColor(unswizzledValue.w, readMassGlobal(loc4));
+		finalColor1 = computeColor(loc1, computeMassColor(unswizzledValue.x, readMassGlobal(loc1)));
+		finalColor2 = computeColor(loc2, computeMassColor(unswizzledValue.y, readMassGlobal(loc2)));
+		finalColor3 = computeColor(loc3, computeMassColor(unswizzledValue.z, readMassGlobal(loc3)));
+		finalColor4 = computeColor(loc4, computeMassColor(unswizzledValue.w, readMassGlobal(loc4)));
 	}
 
 	imageStore(outImage, loc1, finalColor1);
