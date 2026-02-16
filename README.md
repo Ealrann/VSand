@@ -55,37 +55,28 @@ Here some materials you can find in the game:
 
 ### Contribution
 
-Feel free to add a new issues if you want to see new things in the game, or if you find a bug.
+Feel free to open an issue if you want to suggest a feature or report a bug.
 
-If you want to contribute to the project, or simply run the program from the source: 
+If you want to contribute to the project, or simply run it from source:
 
 #### 1. JDK
-You need to setup a JDK 17 (Right now, I'm using the [Eclipse Temurin](https://github.com/adoptium/temurin17-binaries/releases/tag/jdk-17.0.5%2B8)).
+You need to setup a JDK 25 (for example, [Eclipse Temurin](https://adoptium.net/)).
 
-#### 2. Github Token
-You need to configure a github token with `Read package` capability. Follow [these steps to create a github token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). Then, put your github name and token into a file `<USER_HOME>/.gradle/gradle.properties`:
-```
-github.username=
-github.token=
-```
+#### 2. Clone the repository
+Clone from the `root` branch, because it is preconfigured with the correct submodule layout and references:
 
-#### 3. Clone the repository
-Finally, you can clone the repository using:
-
-```
+```shell
 git clone --recursive --single-branch --branch root https://github.com/Ealrann/VSand.git
 ```
 
-#### 4. Run the game
-To launch the game:
-```shell script
-# Go to the VSand project directory
+#### 3. Run the game
+From the VSand project directory:
+```shell
 cd VSand/VSand/
-# Use gradle to run it
 ./gradlew run
 ```
 
-To update an existing repository, go back to the root directory (The one containing the submodules *Lily-core*, *Lily-vulkan*, and *VSand*), and use:
+To update an existing clone, go back to the root directory (the one containing the submodules *Lily-core*, *Lily-vulkan*, *lmf*, and *VSand*), and use:
 ```
 git pull --rebase --recurse-submodules
 ```
