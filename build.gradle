@@ -4,7 +4,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath group: 'org.mini2Dx', name: 'butler', version: '2.1.0'
+		classpath "org.mini2Dx:butler:2.1.0"
 	}
 }
 
@@ -23,7 +23,7 @@ subprojects {
 	repositories {
 		mavenLocal()
 		mavenCentral()
-		maven { url "https://central.sonatype.com/repository/maven-snapshots" }
-		maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+		maven { url = "https://central.sonatype.com/repository/maven-snapshots" }
+		maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
 	}
 }
