@@ -9,4 +9,4 @@
 	url = https://github.com/Ealrann/VSand.git
 [submodule "lmf"]
 	path = lmf
-	url = git@github.com:Ealrann/lmf.git
+	url = https://github.com/Ealrann/lmf.git
