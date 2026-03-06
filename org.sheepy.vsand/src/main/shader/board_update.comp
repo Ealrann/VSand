@@ -128,6 +128,7 @@ const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
 const ivec4 farBorderLoc   = ivec4(0, 0, WORKGROUP_SIZE - 1, WORKGROUP_SIZE - 1);
 const ivec4 closeBorderLoc = ivec4(1, 1, WORKGROUP_SIZE - 2, WORKGROUP_SIZE - 2);
 const ivec4 innerBorderLoc = ivec4(2, 2, WORKGROUP_SIZE - 3, WORKGROUP_SIZE - 3);
+const int PRESSURE_REAR_LOOKBACK = 3;
 
 
 bool chooseTo(ivec2 loc, ivec2 localLoc);
@@ -158,6 +159,7 @@ void writeBackBoard(ivec2 loc, ivec2 localLoc, bool invalid, bool evenCell, bool
 void updateChunkState();
 bool isPressureLiquid(uint materialId);
 bool applyTransform(ivec2 localLoc, uint currentValue, uint targetValue);
+bool hasRearPressure(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, uint currentMass, int density);
 
 /**
  * Here, we will choose one favourite destination.
@@ -513,15 +515,25 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 				{
 					const bool canMoveLeft = materials[valueLeft].density < density && materials[valueLeft].isStatic == 0;
 					const bool canMoveRight = materials[valueRight].density < density && materials[valueRight].isStatic == 0;
+					const uint currentMass = cellMassSrc[localLoc.x][localLoc.y];
 					uint downMass = 0u;
 					if (valueDown == currentValue)
 					{
 						downMass = localLoc.y < WORKGROUP_SIZE - 1 ? cellMassSrc[localLoc.x][localLoc.y + 1] : readMassGlobal(loc + ivec2(0, 1));
 					}
 					const bool pushedFromBelow = valueDown == currentValue && downMass > (M_FULL + M_EPS);
+					const bool supportedByOtherMaterial = valueDown != currentValue
+							&& (materials[valueDown].isStatic == 1 || materials[valueDown].density >= density);
 					const bool allowLevelFlow = isPressed
-							|| cellMassSrc[localLoc.x][localLoc.y] > (M_FULL + M_EPS)
+							|| currentMass > (M_FULL + M_EPS)
 							|| pushedFromBelow;
+					bool allowLevelFlowLeft = allowLevelFlow;
+					bool allowLevelFlowRight = allowLevelFlow;
+					if (supportedByOtherMaterial)
+					{
+						allowLevelFlowLeft = allowLevelFlowLeft || hasRearPressure(loc, localLoc, 1, currentValue, currentMass, density);
+						allowLevelFlowRight = allowLevelFlowRight || hasRearPressure(loc, localLoc, -1, currentValue, currentMass, density);
+					}
 
 				const int BIG_SCORE = 0x7FFFFFFF;
 				bool left = false;
@@ -547,7 +559,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 							left = true;
 							scoreLeft = 0;
 						}
-						else if (allowLevelFlow)
+						else if (allowLevelFlowLeft)
 						{
 							left = true;
 							if (leftDownValue == currentValue)
@@ -561,7 +573,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 							}
 						}
 					}
-					else if (allowLevelFlow)
+					else if (allowLevelFlowLeft)
 					{
 						left = true;
 						scoreLeft = 1 + int(M_CAP_MAX);
@@ -585,7 +597,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 							right = true;
 							scoreRight = 0;
 						}
-						else if (allowLevelFlow)
+						else if (allowLevelFlowRight)
 						{
 							right = true;
 							if (rightDownValue == currentValue)
@@ -599,7 +611,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 							}
 						}
 					}
-					else if (allowLevelFlow)
+					else if (allowLevelFlowRight)
 					{
 						right = true;
 						scoreRight = 1 + int(M_CAP_MAX);
@@ -626,24 +638,24 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 									targetValue = valueLeft;
 								}
 							}
-							else
+						else
+						{
+							const int diff = scoreRight - scoreLeft;
+							if (abs(diff) > int(M_EPS))
 							{
-								const int diff = scoreRight - scoreLeft;
-								if (abs(diff) > int(M_EPS))
+								if (diff < 0)
 								{
-									if (diff < 0)
-									{
-										tag = TO_RIGHT;
-										targetValue = valueRight;
-									}
-									else
-									{
-										tag = TO_LEFT;
-										targetValue = valueLeft;
-									}
+									tag = TO_RIGHT;
+									targetValue = valueRight;
+								}
+								else
+								{
+									tag = TO_LEFT;
+									targetValue = valueLeft;
 								}
 							}
 						}
+					}
 						else if (right)
 						{
 							tag = TO_RIGHT;
@@ -1048,6 +1060,38 @@ bool applyTransform(ivec2 localLoc, uint currentValue, uint targetValue)
 		cellMass[localLoc.x][localLoc.y] = 0u;
 	}
 	return true;
+}
+
+bool hasRearPressure(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, uint currentMass, int density)
+{
+	for (int offset = 1; offset <= PRESSURE_REAR_LOOKBACK; offset++)
+	{
+		const ivec2 rearLoc = loc + ivec2(dir * offset, 0);
+		if (isOutsideBoard(rearLoc))
+		{
+			break;
+		}
+
+		const ivec2 rearLocal = localLoc + ivec2(dir * offset, 0);
+		const bool rearInLocal = rearLocal.x >= 0 && rearLocal.x < WORKGROUP_SIZE;
+		const uint rearValue = rearInLocal ? cellMaterial[rearLocal.x][rearLocal.y] : readMaterialGlobal(rearLoc);
+		if (rearValue != currentValue)
+		{
+			if (materials[rearValue].isStatic == 1 || materials[rearValue].density >= density)
+			{
+				break;
+			}
+			continue;
+		}
+
+		const uint rearMass = rearInLocal ? cellMassSrc[rearLocal.x][rearLocal.y] : readMassGlobal(rearLoc);
+		if (rearMass > (currentMass + uint(offset) * M_EPS))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity)

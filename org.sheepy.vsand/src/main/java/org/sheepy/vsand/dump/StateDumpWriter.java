@@ -72,10 +72,21 @@ public final class StateDumpWriter
 				   .append(" name=").append(materialName)
 				   .append(" cells=").append(entry.cellCount)
 				   .append(" mass=").append(entry.massSum);
+			if (entry.cellCount > 0)
+			{
+				builder.append(" bbox=")
+					   .append(entry.minX).append(',').append(entry.minY)
+					   .append("..")
+					   .append(entry.maxX).append(',').append(entry.maxY)
+					   .append(" span=").append(entry.maxX - entry.minX + 1).append('x').append(entry.maxY - entry.minY + 1)
+					   .append(" avgX=").append(formatAverage(entry.sumX, entry.cellCount))
+					   .append(" avgY=").append(formatAverage(entry.sumY, entry.cellCount));
+			}
 			if (entry.massSum > 0)
 			{
 				builder.append(" minMass=").append(entry.minMass)
-					   .append(" maxMass=").append(entry.maxMass);
+					   .append(" maxMass=").append(entry.maxMass)
+					   .append(" avgMass=").append(formatAverage(entry.massSum, entry.cellCount));
 			}
 			builder.append('\n');
 		}
@@ -170,6 +181,12 @@ public final class StateDumpWriter
 
 				final var entry = perMaterial[materialId];
 				entry.cellCount++;
+				entry.sumX += x;
+				entry.sumY += y;
+				entry.minX = Math.min(entry.minX, x);
+				entry.maxX = Math.max(entry.maxX, x);
+				entry.minY = Math.min(entry.minY, y);
+				entry.maxY = Math.max(entry.maxY, y);
 				entry.massSum += m;
 				if (m != 0)
 				{
@@ -192,6 +209,13 @@ public final class StateDumpWriter
 		return "%04X".formatted(value & 0xFFFF);
 	}
 
+	private static String formatAverage(final long sum, final int count)
+	{
+		if (count == 0) return "n/a";
+
+		return "%.2f".formatted((double) sum / count);
+	}
+
 	private record Stats(long totalMass, int nonEmptyCells, int nonZeroMassCells, java.util.List<StatsEntry> perMaterial)
 	{
 	}
@@ -201,6 +225,12 @@ public final class StateDumpWriter
 		private final int materialId;
 		private int cellCount = 0;
 		private long massSum = 0;
+		private long sumX = 0;
+		private long sumY = 0;
+		private int minX = Integer.MAX_VALUE;
+		private int maxX = Integer.MIN_VALUE;
+		private int minY = Integer.MAX_VALUE;
+		private int maxY = Integer.MIN_VALUE;
 		private int minMass = Integer.MAX_VALUE;
 		private int maxMass = Integer.MIN_VALUE;
 

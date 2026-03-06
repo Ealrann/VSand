@@ -1,0 +1,4 @@
+# 256x64
+# Water starts near the right side above a flat floor only; should spread left over time.
+line Wall 0 62 255 62 1
+square Water 210 40 30

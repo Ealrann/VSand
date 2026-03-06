@@ -21,12 +21,13 @@ public final class MassConstantBufferAdapter implements IConstantBufferUpdater
 {
 	private static final int BYTE_SIZE = 2 * Integer.BYTES;
 	private static final int STEP_POSITION = Integer.BYTES;
+	private static final int[] STEP_SEQUENCE = { 0, 1, 2, 1, 2, 3 };
 
 	private final ConstantBuffer constantBuffer;
 	private final BoardConstantBuffer boardConstantBuffer;
 
 	private ByteBuffer buffer = null;
-	private int step = 0;
+	private int stepIndex = 0;
 
 	private MassConstantBufferAdapter(final ConstantBuffer constantBuffer)
 	{
@@ -58,7 +59,7 @@ public final class MassConstantBufferAdapter implements IConstantBufferUpdater
 	public void beforePush(final ConstantBuffer constantBuffer)
 	{
 		buffer.putInt(0, boardConstantBuffer.currentBoardBuffer());
-		buffer.putInt(STEP_POSITION, step);
-		step = (step + 1) & 3;
+		buffer.putInt(STEP_POSITION, STEP_SEQUENCE[stepIndex]);
+		stepIndex = (stepIndex + 1) % STEP_SEQUENCE.length;
 	}
 }

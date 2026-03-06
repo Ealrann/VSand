@@ -99,8 +99,18 @@
 					(ComputePipeline name="Mass Update" specializationData=@SpecializationData layout="@Mass Update" shader=@massUpdate
 						(resourcePkg
 							(resources=ConstantBuffer name=MassConstants))
-						(taskPkgs
+						(TaskPkg
 							(tasks=BindDescriptorSets descriptorSets="@Mass Update" bindPoint=COMPUTE)
+							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
+							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
 							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
 							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT

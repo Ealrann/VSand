@@ -1,0 +1,4 @@
+# 256x64
+# Symmetry check on a flat floor only.
+line Wall 0 62 255 62 1
+square Water 128 40 30
