@@ -9,6 +9,7 @@ import org.sheepy.lily.core.api.cadence.AutoLoad;
 import org.logoce.lmf.core.api.extender.IAdapter;
 import org.logoce.lmf.core.api.extender.ModelExtender;
 import org.sheepy.lily.vulkan.model.vulkanresource.DataBuffer;
+import org.sheepy.vsand.analysis.LiquidMaterials;
 import org.sheepy.vsand.model.vsand.Material;
 import org.sheepy.vsand.model.vsand.VSandApplication;
 
@@ -64,13 +65,6 @@ public final class ConfigurationBufferLoader implements IAdapter
 
 	private static boolean isPressureLiquid(final Material material)
 	{
-		final var name = material.name();
-		if (name == null) return false;
-
-		return switch (name)
-		{
-			case "Water", "LiquidWax", "Lava", "LavaBoiling", "Petrol", "PetrolFire", "HotWax", "Acid" -> true;
-			default -> false;
-		};
+		return LiquidMaterials.isPressureLiquid(material);
 	}
 }

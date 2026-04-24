@@ -1,9 +1,11 @@
 package org.sheepy.vsand.testutil;
 
+import org.sheepy.vsand.analysis.MaterialGrid;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public record FetchedBoard(int width, int height, int[] packedSwizzled)
+public record FetchedBoard(int width, int height, int[] packedSwizzled) implements MaterialGrid
 {
 	public static FetchedBoard fromSwizzledBytes(final int width, final int height, final byte[] swizzledBytes)
 	{
@@ -29,6 +31,12 @@ public record FetchedBoard(int width, int height, int[] packedSwizzled)
 
 	public int cell(final int x, final int y)
 	{
+		return materialAt(x, y);
+	}
+
+	@Override
+	public int materialAt(final int x, final int y)
+	{
 		final int swizzledHeight = height / 2;
 		final int swizzledX = x >> 1;
 		final int swizzledY = y >> 1;
@@ -38,4 +46,3 @@ public record FetchedBoard(int width, int height, int[] packedSwizzled)
 		return (value >> offset) & 0xFF;
 	}
 }
-

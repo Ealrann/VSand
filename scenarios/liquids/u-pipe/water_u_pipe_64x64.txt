@@ -1,0 +1,14 @@
+# 64x64
+# Representative U-pipe diagnostic. Duplicate and replace Water to inspect
+# another pressure-managed liquid manually.
+frame Wall 1
+
+# U pipe walls.
+line Wall 16 10 16 54 2
+line Wall 24 10 24 46 2
+line Wall 40 10 40 46 2
+line Wall 48 10 48 54 2
+line Wall 16 54 48 54 2
+
+# Higher fill in the left arm. The right arm should rise if pressure propagates.
+line Water 20 16 20 50 5

@@ -1,0 +1,6 @@
+# 64x64
+# Representative spread/flattening diagnostic. Duplicate and replace Water
+# to inspect another pressure-managed liquid manually.
+frame Wall 1
+line Wall 1 56 62 56 1
+line Water 20 10 20 42 16

@@ -1,9 +1,11 @@
 package org.sheepy.vsand.testutil;
 
+import org.sheepy.vsand.analysis.MassGrid;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public record FetchedMass(int width, int height, int[] packedSwizzled)
+public record FetchedMass(int width, int height, int[] packedSwizzled) implements MassGrid
 {
 	public static FetchedMass fromSwizzledBytes(final int width, final int height, final byte[] swizzledBytes)
 	{
@@ -29,6 +31,12 @@ public record FetchedMass(int width, int height, int[] packedSwizzled)
 
 	public int mass(final int x, final int y)
 	{
+		return massAt(x, y);
+	}
+
+	@Override
+	public int massAt(final int x, final int y)
+	{
 		final int swizzledHeight = height / 2;
 		final int swizzledX = x >> 1;
 		final int swizzledY = y >> 1;
@@ -41,4 +49,3 @@ public record FetchedMass(int width, int height, int[] packedSwizzled)
 		return (word >> shift) & 0xFFFF;
 	}
 }
-

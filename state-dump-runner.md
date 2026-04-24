@@ -52,6 +52,8 @@ line Water 32 4 32 14 5
 
 The output directory contains:
 - `metadata.txt`: size, scenario path, seed, and the material id ↔ name mapping.
+- `liquid_metrics.csv`: one compact per-frame row per pressure-managed liquid.
+- `liquid_columns.csv`: per-frame column metrics for columns containing pressure-managed liquid.
 - `frame_XXXX.txt`: per-frame human-readable dump (stats + grids).
 - `frame_XXXX.board.swz.bin` / `frame_XXXX.mass.swz.bin` (unless `--no-raw`): raw GPU buffer contents in the VSand swizzled packing.
 
@@ -66,6 +68,16 @@ The output directory contains:
   - `mat=XX name=... cells=... mass=... minMass=... maxMass=...`
 - `matHex`: a `WxH` grid of 2-digit hex material ids (`00` = empty)
 - `massHex`: a `WxH` grid of 4-digit hex masses (`0000` = no mass)
+
+### Liquid metrics
+
+`liquid_metrics.csv` is the fastest file to inspect when comparing solver changes. It includes:
+- mass/cell counts (`totalMass`, `cells`, `partialCells`, `fullCells`, `overfullCells`)
+- shape information (`bbox*`, `avgX`, `avgY`, `leftExtent`, `rightExtent`)
+- bottom-connected surface profile metrics (`surfaceMin`, `surfaceMax`, `surfaceRange`)
+- diagnostic counts (`surfaceCells`, `voidBelowCells`, `isolatedCells`)
+
+`liquid_columns.csv` adds one row per non-empty liquid column with `bottomHeight`, column mass, and per-column partial/full cell counts.
 
 ## Implementation
 

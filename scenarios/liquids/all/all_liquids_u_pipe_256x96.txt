@@ -1,0 +1,67 @@
+# 256x96
+# One U-pipe per pressure-managed liquid.
+frame Wall 1
+
+# Water
+line Wall 4 18 4 78 1
+line Wall 10 18 10 66 1
+line Wall 22 18 22 66 1
+line Wall 28 18 28 78 1
+line Wall 4 78 28 78 1
+line Water 7 26 7 74 4
+
+# LiquidWax
+line Wall 36 18 36 78 1
+line Wall 42 18 42 66 1
+line Wall 54 18 54 66 1
+line Wall 60 18 60 78 1
+line Wall 36 78 60 78 1
+line LiquidWax 39 26 39 74 4
+
+# Lava
+line Wall 68 18 68 78 1
+line Wall 74 18 74 66 1
+line Wall 86 18 86 66 1
+line Wall 92 18 92 78 1
+line Wall 68 78 92 78 1
+line Lava 71 26 71 74 4
+
+# LavaBoiling
+line Wall 100 18 100 78 1
+line Wall 106 18 106 66 1
+line Wall 118 18 118 66 1
+line Wall 124 18 124 78 1
+line Wall 100 78 124 78 1
+line LavaBoiling 103 26 103 74 4
+
+# Petrol
+line Wall 132 18 132 78 1
+line Wall 138 18 138 66 1
+line Wall 150 18 150 66 1
+line Wall 156 18 156 78 1
+line Wall 132 78 156 78 1
+line Petrol 135 26 135 74 4
+
+# PetrolFire
+line Wall 164 18 164 78 1
+line Wall 170 18 170 66 1
+line Wall 182 18 182 66 1
+line Wall 188 18 188 78 1
+line Wall 164 78 188 78 1
+line PetrolFire 167 26 167 74 4
+
+# HotWax
+line Wall 196 18 196 78 1
+line Wall 202 18 202 66 1
+line Wall 214 18 214 66 1
+line Wall 220 18 220 78 1
+line Wall 196 78 220 78 1
+line HotWax 199 26 199 74 4
+
+# Acid
+line Wall 228 18 228 78 1
+line Wall 234 18 234 66 1
+line Wall 246 18 246 66 1
+line Wall 252 18 252 78 1
+line Wall 228 78 252 78 1
+line Acid 231 26 231 74 4

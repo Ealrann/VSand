@@ -1,0 +1,20 @@
+# 256x96
+# One isolated spread bay per pressure-managed liquid.
+frame Wall 1
+
+line Wall 32 1 32 94 1
+line Wall 64 1 64 94 1
+line Wall 96 1 96 94 1
+line Wall 128 1 128 94 1
+line Wall 160 1 160 94 1
+line Wall 192 1 192 94 1
+line Wall 224 1 224 94 1
+
+line Water 16 18 16 78 7
+line LiquidWax 48 18 48 78 7
+line Lava 80 18 80 78 7
+line LavaBoiling 112 18 112 78 7
+line Petrol 144 18 144 78 7
+line PetrolFire 176 18 176 78 7
+line HotWax 208 18 208 78 7
+line Acid 240 18 240 78 7

@@ -12,6 +12,7 @@ module org.sheepy.vsand {
         requires logoce.lmf.core.loader;
 
 	exports org.sheepy.vsand;
+	exports org.sheepy.vsand.analysis;
 	exports org.sheepy.vsand.logic;
 	exports org.sheepy.vsand.fetch;
 

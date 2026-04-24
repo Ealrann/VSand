@@ -1,5 +1,11 @@
 package org.sheepy.vsand.dump;
 
+import org.sheepy.vsand.analysis.ColumnMetrics;
+import org.sheepy.vsand.analysis.LiquidMaterials;
+import org.sheepy.vsand.analysis.LiquidMetrics;
+import org.sheepy.vsand.analysis.LiquidStateAnalyzer;
+import org.sheepy.vsand.analysis.MassGrid;
+import org.sheepy.vsand.analysis.MaterialGrid;
 import org.sheepy.vsand.model.vsand.Materials;
 import org.sheepy.vsand.model.vsand.VSandApplication;
 
@@ -9,13 +15,17 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
+import java.util.Locale;
 
 public final class StateDumpWriter
 {
 	private final DumpConfig config;
 	private final VSandApplication application;
 	private final Path outDir;
+	private final Path liquidMetricsPath;
+	private final Path liquidColumnsPath;
 	private final int nameWidth;
 
 	public StateDumpWriter(final VSandApplication application, final DumpConfig config) throws IOException
@@ -23,10 +33,13 @@ public final class StateDumpWriter
 		this.config = config;
 		this.application = application;
 		this.outDir = config.outDir();
+		this.liquidMetricsPath = outDir.resolve("liquid_metrics.csv");
+		this.liquidColumnsPath = outDir.resolve("liquid_columns.csv");
 		this.nameWidth = Math.max(4, String.valueOf(config.frames()).length());
 
 		Files.createDirectories(outDir);
 		writeMetadata();
+		writeLiquidMetricHeaders();
 	}
 
 	public Path outDir()
@@ -51,6 +64,7 @@ public final class StateDumpWriter
 		final var mass = SwizzledMass.decode(config.size().x(), config.size().y(), swizzledMass);
 
 		final var stats = computeStats(board, mass);
+		writeLiquidMetrics(frameIndex, simulatedTicks, board, mass);
 
 		final var builder = new StringBuilder(64 * 1024);
 		builder.append("frame=").append(frameIndex)
@@ -119,6 +133,133 @@ public final class StateDumpWriter
 			builder.append(hex8(i)).append(' ').append(material.name()).append('\n');
 		}
 		Files.writeString(outDir.resolve("metadata.txt"), builder, StandardCharsets.UTF_8);
+	}
+
+	private void writeLiquidMetricHeaders() throws IOException
+	{
+		final var metricHeader = "frame,ticks,materialId,materialName,totalMass,cells,nonZeroMassCells,zeroMassCells,"
+				+ "partialCells,fullCells,overfullCells,surfaceCells,voidBelowCells,isolatedCells,"
+				+ "bboxMinX,bboxMinY,bboxMaxX,bboxMaxY,bboxWidth,bboxHeight,avgX,avgY,"
+				+ "profileBottomY,surfaceMin,surfaceMax,surfaceRange,leftExtent,rightExtent\n";
+		final var columnHeader = "frame,ticks,materialId,materialName,x,cells,mass,nonZeroMassCells,zeroMassCells,"
+				+ "partialCells,fullCells,overfullCells,minY,maxY,bottomHeight\n";
+
+		Files.writeString(liquidMetricsPath,
+						  metricHeader,
+						  StandardCharsets.UTF_8,
+						  StandardOpenOption.CREATE,
+						  StandardOpenOption.TRUNCATE_EXISTING);
+		Files.writeString(liquidColumnsPath,
+						  columnHeader,
+						  StandardCharsets.UTF_8,
+						  StandardOpenOption.CREATE,
+						  StandardOpenOption.TRUNCATE_EXISTING);
+	}
+
+	private void writeLiquidMetrics(final int frameIndex,
+									final int simulatedTicks,
+									final SwizzledBoard board,
+									final SwizzledMass mass) throws IOException
+	{
+		final var materials = application.materials();
+		if (materials == null) return;
+
+		final var metricsBuilder = new StringBuilder(2048);
+		final var columnsBuilder = new StringBuilder(8192);
+		final var materialList = materials.materials();
+		for (int materialId = 0; materialId < materialList.size(); materialId++)
+		{
+			final var material = materialList.get(materialId);
+			if (LiquidMaterials.isPressureLiquid(material) == false) continue;
+
+			final var materialName = material.name();
+			final var metrics = LiquidStateAnalyzer.analyze(board, mass, materialId, materialName);
+			appendMetricsRow(metricsBuilder, frameIndex, simulatedTicks, metrics);
+			for (final var column : metrics.columnProfile().liquidColumns())
+			{
+				appendColumnRow(columnsBuilder, frameIndex, simulatedTicks, metrics, column);
+			}
+		}
+
+		Files.writeString(liquidMetricsPath,
+						  metricsBuilder,
+						  StandardCharsets.UTF_8,
+						  StandardOpenOption.CREATE,
+						  StandardOpenOption.APPEND);
+		if (columnsBuilder.isEmpty() == false)
+		{
+			Files.writeString(liquidColumnsPath,
+							  columnsBuilder,
+							  StandardCharsets.UTF_8,
+							  StandardOpenOption.CREATE,
+							  StandardOpenOption.APPEND);
+		}
+	}
+
+	private static void appendMetricsRow(final StringBuilder builder,
+										 final int frameIndex,
+										 final int simulatedTicks,
+										 final LiquidMetrics metrics)
+	{
+		builder.append(frameIndex).append(',')
+			   .append(simulatedTicks).append(',')
+			   .append(metrics.materialId()).append(',')
+			   .append(csv(metrics.materialName())).append(',')
+			   .append(metrics.totalMass()).append(',')
+			   .append(metrics.cellCount()).append(',')
+			   .append(metrics.nonZeroMassCells()).append(',')
+			   .append(metrics.zeroMassCells()).append(',')
+			   .append(metrics.partialCells()).append(',')
+			   .append(metrics.fullCells()).append(',')
+			   .append(metrics.overfullCells()).append(',')
+			   .append(metrics.surfaceCells()).append(',')
+			   .append(metrics.voidBelowCells()).append(',')
+			   .append(metrics.isolatedCells()).append(',')
+			   .append(metrics.minX()).append(',')
+			   .append(metrics.minY()).append(',')
+			   .append(metrics.maxX()).append(',')
+			   .append(metrics.maxY()).append(',')
+			   .append(metrics.bboxWidth()).append(',')
+			   .append(metrics.bboxHeight()).append(',')
+			   .append(formatDouble(metrics.averageX())).append(',')
+			   .append(formatDouble(metrics.averageY())).append(',')
+			   .append(metrics.columnProfile().bottomY()).append(',')
+			   .append(metrics.columnProfile().minBottomHeight()).append(',')
+			   .append(metrics.columnProfile().maxBottomHeight()).append(',')
+			   .append(metrics.columnProfile().bottomHeightRange()).append(',')
+			   .append(metrics.columnProfile().leftExtent()).append(',')
+			   .append(metrics.columnProfile().rightExtent()).append('\n');
+	}
+
+	private static void appendColumnRow(final StringBuilder builder,
+										final int frameIndex,
+										final int simulatedTicks,
+										final LiquidMetrics metrics,
+										final ColumnMetrics column)
+	{
+		builder.append(frameIndex).append(',')
+			   .append(simulatedTicks).append(',')
+			   .append(metrics.materialId()).append(',')
+			   .append(csv(metrics.materialName())).append(',')
+			   .append(column.x()).append(',')
+			   .append(column.cellCount()).append(',')
+			   .append(column.mass()).append(',')
+			   .append(column.nonZeroMassCells()).append(',')
+			   .append(column.zeroMassCells()).append(',')
+			   .append(column.partialCells()).append(',')
+			   .append(column.fullCells()).append(',')
+			   .append(column.overfullCells()).append(',')
+			   .append(column.minY()).append(',')
+			   .append(column.maxY()).append(',')
+			   .append(column.bottomHeight()).append('\n');
+	}
+
+	private static String csv(final String value)
+	{
+		if (value == null) return "";
+		if (value.indexOf(',') < 0 && value.indexOf('"') < 0 && value.indexOf('\n') < 0) return value;
+
+		return '"' + value.replace("\"", "\"\"") + '"';
 	}
 
 	private String materialName(final int materialId)
@@ -213,7 +354,14 @@ public final class StateDumpWriter
 	{
 		if (count == 0) return "n/a";
 
-		return "%.2f".formatted((double) sum / count);
+		return formatDouble((double) sum / count);
+	}
+
+	private static String formatDouble(final double value)
+	{
+		if (Double.isNaN(value)) return "NaN";
+
+		return String.format(Locale.ROOT, "%.2f", value);
 	}
 
 	private record Stats(long totalMass, int nonEmptyCells, int nonZeroMassCells, java.util.List<StatsEntry> perMaterial)
@@ -240,7 +388,7 @@ public final class StateDumpWriter
 		}
 	}
 
-	public record SwizzledBoard(int width, int height, int swizzledHeight, int[] packed)
+	public record SwizzledBoard(int width, int height, int swizzledHeight, int[] packed) implements MaterialGrid
 	{
 		public static SwizzledBoard decode(final int width, final int height, final byte[] swizzledBytes)
 		{
@@ -264,6 +412,7 @@ public final class StateDumpWriter
 			return new SwizzledBoard(width, height, swizzledHeight, packed);
 		}
 
+		@Override
 		public int materialAt(final int x, final int y)
 		{
 			final int swizzledX = x >> 1;
@@ -275,7 +424,7 @@ public final class StateDumpWriter
 		}
 	}
 
-	public record SwizzledMass(int width, int height, int swizzledHeight, int[] packed)
+	public record SwizzledMass(int width, int height, int swizzledHeight, int[] packed) implements MassGrid
 	{
 		public static SwizzledMass decode(final int width, final int height, final byte[] swizzledBytes)
 		{
@@ -299,6 +448,7 @@ public final class StateDumpWriter
 			return new SwizzledMass(width, height, swizzledHeight, packed);
 		}
 
+		@Override
 		public int massAt(final int x, final int y)
 		{
 			final int swizzledX = x >> 1;
