@@ -1,0 +1,7 @@
+# 96x64
+# Slope-flow diagnostic used to inspect chunk-boundary artifacts.
+# The water body should slide down the wall slope without persistent stair-step
+# voids or bottom air aligned with 16x16 chunk boundaries.
+frame Wall 1
+line Wall 8 22 88 54 3
+line Water 18 4 38 4 26

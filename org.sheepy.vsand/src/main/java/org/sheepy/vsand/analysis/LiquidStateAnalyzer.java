@@ -6,6 +6,7 @@ import java.util.List;
 public final class LiquidStateAnalyzer
 {
 	public static final int M_FULL = 4096;
+	private static final int CHUNK_SIZE = 16;
 
 	private LiquidStateAnalyzer()
 	{
@@ -35,6 +36,7 @@ public final class LiquidStateAnalyzer
 		checkSameSize(board, mass);
 
 		final var accumulator = accumulate(board, mass, materialId);
+		final var seamVoidPockets = countChunkSeamVoidPockets(board, materialId);
 		final var profile = buildColumnProfile(board, mass, materialId, clamp(profileBottomY, 0, board.height() - 1));
 
 		if (accumulator.hasLiquid() == false)
@@ -50,11 +52,13 @@ public final class LiquidStateAnalyzer
 									 0,
 									 0,
 									 0,
-										 0,
-										 0,
-										 0,
-										 -1,
-										 -1,
+									 0,
+									 0,
+									 0,
+									 0,
+									 0,
+									 -1,
+									 -1,
 									 -1,
 									 -1,
 									 Double.NaN,
@@ -76,6 +80,8 @@ public final class LiquidStateAnalyzer
 								 accumulator.surfaceCells,
 								 accumulator.voidBelowCells,
 								 accumulator.isolatedCells,
+								 seamVoidPockets.horizontal(),
+								 seamVoidPockets.vertical(),
 								 accumulator.minX,
 								 accumulator.minY,
 								 accumulator.maxX,
@@ -101,6 +107,38 @@ public final class LiquidStateAnalyzer
 			}
 		}
 		return accumulator;
+	}
+
+	private static SeamVoidPockets countChunkSeamVoidPockets(final MaterialGrid board, final int materialId)
+	{
+		int horizontal = 0;
+		int vertical = 0;
+		for (int y = 1; y < board.height() - 1; y++)
+		{
+			for (int x = 1; x < board.width() - 1; x++)
+			{
+				if (board.materialAt(x, y) != 0) continue;
+
+				if (isChunkBoundaryNeighbor(y)
+						&& board.materialAt(x, y - 1) == materialId
+						&& board.materialAt(x, y + 1) == materialId)
+				{
+					horizontal++;
+				}
+				if (isChunkBoundaryNeighbor(x)
+						&& board.materialAt(x - 1, y) == materialId
+						&& board.materialAt(x + 1, y) == materialId)
+				{
+					vertical++;
+				}
+			}
+		}
+		return new SeamVoidPockets(horizontal, vertical);
+	}
+
+	private static boolean isChunkBoundaryNeighbor(final int coordinate)
+	{
+		return coordinate > 0 && (coordinate % CHUNK_SIZE == 0 || (coordinate + 1) % CHUNK_SIZE == 0);
 	}
 
 	private static ColumnProfile buildColumnProfile(final MaterialGrid board,
@@ -202,6 +240,10 @@ public final class LiquidStateAnalyzer
 	private static int clamp(final int value, final int min, final int max)
 	{
 		return Math.max(min, Math.min(max, value));
+	}
+
+	private record SeamVoidPockets(int horizontal, int vertical)
+	{
 	}
 
 	private static final class Accumulator

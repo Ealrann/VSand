@@ -139,6 +139,7 @@ public final class StateDumpWriter
 	{
 		final var metricHeader = "frame,ticks,materialId,materialName,totalMass,cells,nonZeroMassCells,zeroMassCells,"
 				+ "partialCells,fullCells,overfullCells,surfaceCells,voidBelowCells,isolatedCells,"
+				+ "horizontalChunkSeamVoidPockets,verticalChunkSeamVoidPockets,"
 				+ "bboxMinX,bboxMinY,bboxMaxX,bboxMaxY,bboxWidth,bboxHeight,avgX,avgY,"
 				+ "profileBottomY,surfaceMin,surfaceMax,surfaceRange,leftExtent,rightExtent\n";
 		final var columnHeader = "frame,ticks,materialId,materialName,x,cells,mass,nonZeroMassCells,zeroMassCells,"
@@ -215,6 +216,8 @@ public final class StateDumpWriter
 			   .append(metrics.surfaceCells()).append(',')
 			   .append(metrics.voidBelowCells()).append(',')
 			   .append(metrics.isolatedCells()).append(',')
+			   .append(metrics.horizontalChunkSeamVoidPockets()).append(',')
+			   .append(metrics.verticalChunkSeamVoidPockets()).append(',')
 			   .append(metrics.minX()).append(',')
 			   .append(metrics.minY()).append(',')
 			   .append(metrics.maxX()).append(',')

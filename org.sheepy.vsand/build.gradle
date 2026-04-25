@@ -105,6 +105,8 @@ tasks.register('dumpRun', JavaExec) {
 
 test {
 	useJUnitPlatform()
+	maxParallelForks = 1
+	forkEvery = 1
 }
 
 // Temporary: https://github.com/gradle/gradle/issues/890#issuecomment-613427968

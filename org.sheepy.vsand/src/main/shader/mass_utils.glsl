@@ -9,6 +9,7 @@ const uint M_CAP_MAX = 6144u;
 const uint M_EPS = 16u;
 const uint MIN_FLOW = 1u;
 const uint H_HEAD_DIV = 4u;
+const uint H_PIPE_HEAD_DIV = 2u;
 
 const uint PACKED_U16_MASK = 0xFFFFu;
 

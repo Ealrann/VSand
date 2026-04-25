@@ -1,6 +1,7 @@
 package org.sheepy.vsand.testutil;
 
 import org.joml.Vector2i;
+import org.logoce.lmf.core.api.util.ModelUtil;
 import org.sheepy.lily.core.api.LilyLauncher;
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
 import org.sheepy.lily.vulkan.model.process.CompositePipeline;
@@ -60,6 +61,7 @@ public final class VSandTestHarness
 		{
 			app.scene().size(new Vector2i(size));
 		}
+		makeHeadless(app);
 		return new VSandTestHarness(app, size);
 	}
 
@@ -263,6 +265,20 @@ public final class VSandTestHarness
 						  .map(BoardConstantBuffer.class::cast)
 						  .findFirst()
 						  .orElse(null);
+	}
+
+	private static void makeHeadless(final VSandApplication application)
+	{
+		application.scene(null);
+
+		final var vulkanEngine = (VulkanEngine) application.engines().getFirst();
+		if (vulkanEngine.processes().size() > 1)
+		{
+			ModelUtil.delete(vulkanEngine.processes().get(1));
+		}
+
+		final var computeProcess = (ComputeProcess) vulkanEngine.processes().getFirst();
+		computeProcess.resetAllowed(true);
 	}
 
 	private static CompositePipeline findSimulationPipeline(final VSandApplication application)

@@ -129,26 +129,50 @@ const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
 const ivec4 farBorderLoc   = ivec4(0, 0, WORKGROUP_SIZE - 1, WORKGROUP_SIZE - 1);
 const ivec4 closeBorderLoc = ivec4(1, 1, WORKGROUP_SIZE - 2, WORKGROUP_SIZE - 2);
 const ivec4 innerBorderLoc = ivec4(2, 2, WORKGROUP_SIZE - 3, WORKGROUP_SIZE - 3);
+
+// Bounded pressure-assist controls. These helpers are local, conservative
+// visible-particle shifts; normal falling/swapping remains the primary movement.
 const int PRESSURE_REAR_LOOKBACK = 16;
 const int PRESSURE_COLUMN_LOOKBACK = 24;
+const int PRESSURE_SETTLED_SUPPORT_LOOKBACK = 48;
 const int PRESSURE_PIPE_WALL_LOOKUP = 10;
 const int PRESSURE_ROW_SHIFT_MAX = 8;
+const int PRESSURE_STACK_LOOKUP = 6;
+const int PRESSURE_SURFACE_LOOKUP = 8;
+const int PRESSURE_PIPE_WALL_VERTICAL_LOOKUP = 2;
 
 
 bool chooseTo(ivec2 loc, ivec2 localLoc);
 bool acceptFrom(ivec2 loc, ivec2 localLoc);
 bool swap(ivec2 loc, ivec2 localLoc);
-bool pressureLift(ivec2 loc, ivec2 localLoc);
-bool pressureDisplace(ivec2 loc, ivec2 localLoc);
-bool pressureDisplaceToward(ivec2 loc, ivec2 localLoc, int dir);
-bool lockPressureShiftSegment(int y, int fromX, int toX, uint claim);
+bool tryPressureSurfaceStep(ivec2 loc, ivec2 localLoc);
+bool tryPressureRowShift(ivec2 loc, ivec2 localLoc);
+bool tryPressureRowShiftToward(ivec2 loc, ivec2 localLoc, int dir);
+bool lockPressureDrain(int y, int fromX, int toX, int stackX, int stackTopY, uint claim);
+void releasePressureDrain(int y, int fromX, int toX, int stackX, int stackTopY, uint claim);
+bool claimPressureCell(ivec2 claimLocal, bool required, uint claim);
+void releasePressureCell(ivec2 claimLocal, bool required, uint claim);
+void drainPressureStackIntoSource(ivec2 sourceLocal, int topY, uint targetValue, uint targetMass, uint liquidValue);
+bool isHorizontalPressureOutlet(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
+bool isVerticalPressureOutlet(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
+bool isBulkInterior(ivec2 loc, ivec2 localLoc, uint liquidValue);
+bool isSettledPressureLiquid(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
+bool hasPressureSupportBelow(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
+bool hasOpenSurfaceAbove(ivec2 loc, ivec2 localLoc, uint liquidValue);
+int stackHeightAbove(ivec2 loc, ivec2 localLoc, uint liquidValue);
+int pressureStackTopY(ivec2 sourceLocal, uint liquidValue);
+bool canDrainPressureStack(ivec2 sourceLocal, uint liquidValue);
+bool canLeavePressureSourceHole(ivec2 loc, ivec2 localLoc, int dir, uint liquidValue);
+bool canUseFallbackPressureSource(ivec2 loc, ivec2 localLoc, int dir, uint liquidValue);
 bool transformation(ivec2 loc, ivec2 localLoc, bool moved);
 int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity);
+bool isInsideLocal(ivec2 localLoc);
 bool isOutsideBoard(ivec2 loc);
 uint readPackedBoard(ivec2 swizzledLoc);
 void writePackedBoard(ivec2 swizzledLoc, uint value);
 	void loadCellMaterial2x2FromGlobal(ivec2 loc, ivec2 localLoc);
 	void loadCellMass2x2FromGlobal(ivec2 loc, ivec2 localLoc);
+	uint readMaterial(ivec2 loc, ivec2 localLoc);
 	uint readMaterialGlobal(ivec2 loc);
 	uint readMassGlobal(ivec2 loc);
 	uint readPackedMassWord(ivec2 swizzledLoc, int row);
@@ -172,6 +196,8 @@ bool canMovePressureUp(ivec2 loc, ivec2 localLoc, uint currentValue, int density
 bool hasColumnPressureBelow(ivec2 loc, ivec2 localLoc, uint currentValue, uint currentMass);
 bool isInPressurePipe(ivec2 loc, ivec2 localLoc, uint currentValue, int density);
 bool hasPipeWall(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, int density);
+bool isPressureBarrier(uint materialId, int density);
+bool hasVerticalPipeWallAt(ivec2 wallLoc, ivec2 wallLocal, int density);
 
 /**
  * Here, we will choose one favourite destination.
@@ -249,7 +275,7 @@ void main()
 	bool lifted = false;
 	if(activeCell && !closeBorder && !farBorder)
 	{
-		lifted = pressureLift(loc, localLoc);
+		lifted = tryPressureSurfaceStep(loc, localLoc);
 		if (lifted)
 		{
 			markUpdated();
@@ -259,10 +285,15 @@ void main()
 
 	barrier();
 
+	pressureShiftClaim[localLoc.x][localLoc.y] = 0u;
+
+
+	barrier();
+
 	bool displaced = false;
 	if(activeCell && !closeBorder && !farBorder)
 	{
-		displaced = pressureDisplace(loc, localLoc);
+		displaced = tryPressureRowShift(loc, localLoc);
 		if (displaced)
 		{
 			markUpdated();
@@ -272,6 +303,10 @@ void main()
 
 	barrier();
 
+	pressureShiftClaim[localLoc.x][localLoc.y] = 0u;
+
+
+	barrier();
 
 	if(!closeBorder && !farBorder)
 	{
@@ -423,6 +458,14 @@ bool isOutsideBoard(ivec2 loc)
 	return (loc.x < 0 || loc.y < 0 || loc.x >= WIDTH || loc.y >= HEIGHT);
 }
 
+bool isInsideLocal(ivec2 localLoc)
+{
+	return localLoc.x >= 0
+			&& localLoc.y >= 0
+			&& localLoc.x < WORKGROUP_SIZE
+			&& localLoc.y < WORKGROUP_SIZE;
+}
+
 uint readPackedBoard(ivec2 swizzledLoc)
 {
 	const int index = swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y;
@@ -497,6 +540,15 @@ uint readMaterialGlobal(ivec2 loc)
 	return ((value >> offset) & 0xFFu);
 }
 
+uint readMaterial(ivec2 loc, ivec2 localLoc)
+{
+	if (isOutsideBoard(loc))
+	{
+		return 0u;
+	}
+	return isInsideLocal(localLoc) ? cellMaterial[localLoc.x][localLoc.y] : readMaterialGlobal(loc);
+}
+
 uint readMassGlobal(ivec2 loc)
 {
 	if (isOutsideBoard(loc)) return 0u;
@@ -549,12 +601,14 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 			uint valueUp = localLoc.y > 0 ? cellMaterial[localLoc.x][localLoc.y - 1] : readMaterialGlobal(ivec2(loc.x, loc.y - 1));
 			bool isPressed = valueUp == currentValue;
 			const bool pressureLiquid = isPressureLiquid(currentValue);
+			const bool settledPressureLiquid = pressureLiquid && isSettledPressureLiquid(loc, localLoc, currentValue, density);
 
 				if (pressureLiquid)
 				{
 					const bool canMoveLeft = materials[valueLeft].density < density && materials[valueLeft].isStatic == 0;
 					const bool canMoveRight = materials[valueRight].density < density && materials[valueRight].isStatic == 0;
-					const bool canMoveUp = materials[valueUp].density < density
+					const bool canMoveUp = settledPressureLiquid
+							&& materials[valueUp].density < density
 							&& materials[valueUp].isStatic == 0
 							&& valueUp != currentValue
 							&& canMovePressureUp(loc, localLoc, currentValue, density);
@@ -565,16 +619,16 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 						downMass = localLoc.y < WORKGROUP_SIZE - 1 ? cellMassSrc[localLoc.x][localLoc.y + 1] : readMassGlobal(loc + ivec2(0, 1));
 					}
 					const bool supportedBySameLiquid = valueDown == currentValue;
-					const bool pushedFromBelow = valueDown == currentValue && downMass > (M_FULL + M_EPS);
+					const bool pushedFromBelow = settledPressureLiquid && valueDown == currentValue && downMass > (M_FULL + M_EPS);
 					const bool supportedByOtherMaterial = valueDown != currentValue
 							&& (materials[valueDown].isStatic == 1 || materials[valueDown].density >= density);
 					const bool allowLevelFlow = supportedBySameLiquid
 							|| supportedByOtherMaterial
 							|| isPressed
-							|| currentMass > (M_FULL + M_EPS)
+							|| (settledPressureLiquid && currentMass > (M_FULL + M_EPS))
 							|| pushedFromBelow;
-					const bool pressureFromLeft = hasRearPressure(loc, localLoc, -1, currentValue, currentMass, density);
-					const bool pressureFromRight = hasRearPressure(loc, localLoc, 1, currentValue, currentMass, density);
+					const bool pressureFromLeft = settledPressureLiquid && hasRearPressure(loc, localLoc, -1, currentValue, currentMass, density);
+					const bool pressureFromRight = settledPressureLiquid && hasRearPressure(loc, localLoc, 1, currentValue, currentMass, density);
 					const bool allowLevelFlowLeft = allowLevelFlow || pressureFromRight;
 					const bool allowLevelFlowRight = allowLevelFlow || pressureFromLeft;
 
@@ -980,21 +1034,16 @@ bool swap(ivec2 loc, ivec2 localLoc)
 	return res;
 }
 
-bool pressureLift(ivec2 loc, ivec2 localLoc)
+bool tryPressureSurfaceStep(ivec2 loc, ivec2 localLoc)
 {
-	if (localLoc.y <= 1 || localLoc.y >= WORKGROUP_SIZE - 2)
+	if (localLoc.y <= 1 || localLoc.y >= WORKGROUP_SIZE - 3)
 	{
 		return false;
 	}
 
 	const uint targetValue = cellMaterial[localLoc.x][localLoc.y];
-	const int targetDensity = materials[targetValue].density;
-	if (materials[targetValue].isStatic == 1)
-	{
-		return false;
-	}
-
 	const ivec2 belowLocal = localLoc + ivec2(0, 1);
+	const ivec2 belowLoc = loc + ivec2(0, 1);
 	const uint liquidValue = cellMaterial[belowLocal.x][belowLocal.y];
 	if (isPressureLiquid(liquidValue) == false)
 	{
@@ -1002,65 +1051,55 @@ bool pressureLift(ivec2 loc, ivec2 localLoc)
 	}
 
 	const int liquidDensity = materials[liquidValue].density;
-	if (targetDensity >= liquidDensity)
+	if (isSettledPressureLiquid(belowLoc, belowLocal, liquidValue, liquidDensity) == false)
+	{
+		return false;
+	}
+	if (isVerticalPressureOutlet(loc, localLoc, liquidValue, liquidDensity) == false)
 	{
 		return false;
 	}
 
-	const uint aboveValue = cellMaterial[localLoc.x][localLoc.y - 1];
-	if (aboveValue == liquidValue)
+	const uint sourceMass = cellMassSrc[belowLocal.x][belowLocal.y];
+	const bool massPressure = sourceMass > M_FULL;
+	const bool columnPressure = hasColumnPressureBelow(belowLoc, belowLocal, liquidValue, sourceMass);
+	const bool lateralPressure = hasRearPressure(belowLoc, belowLocal, -1, liquidValue, sourceMass, liquidDensity)
+			|| hasRearPressure(belowLoc, belowLocal, 1, liquidValue, sourceMass, liquidDensity);
+	if (massPressure == false && columnPressure == false && lateralPressure == false)
 	{
 		return false;
 	}
-	if (isInPressurePipe(loc, localLoc, liquidValue, liquidDensity) == false)
+
+	const uint claim = uint(localLoc.y * WORKGROUP_SIZE + localLoc.x + 1);
+	if (claimPressureCell(localLoc, true, claim) == false)
 	{
 		return false;
 	}
-
-	int sourceY = belowLocal.y;
-	bool hasPressure = false;
-	for (int offset = 1; offset <= PRESSURE_COLUMN_LOOKBACK; offset++)
+	if (claimPressureCell(belowLocal, true, claim) == false)
 	{
-		const ivec2 scanLocal = localLoc + ivec2(0, offset);
-		if (scanLocal.y >= WORKGROUP_SIZE - 2)
-		{
-			break;
-		}
-
-		const ivec2 scanLoc = loc + ivec2(0, offset);
-		const uint scanValue = cellMaterial[scanLocal.x][scanLocal.y];
-		if (scanValue != liquidValue)
-		{
-			break;
-		}
-
-		sourceY = scanLocal.y;
-		const uint scanMass = cellMassSrc[scanLocal.x][scanLocal.y];
-		if (hasRearPressure(scanLoc, scanLocal, -1, liquidValue, scanMass, liquidDensity)
-				|| hasRearPressure(scanLoc, scanLocal, 1, liquidValue, scanMass, liquidDensity))
-		{
-			hasPressure = true;
-		}
+		releasePressureCell(localLoc, true, claim);
+		return false;
 	}
-	const int liftLength = sourceY - localLoc.y;
-	if (hasPressure == false || liftLength <= 0 || liftLength > 12)
+	if (cellMaterial[localLoc.x][localLoc.y] != targetValue
+			|| cellMaterial[belowLocal.x][belowLocal.y] != liquidValue
+			|| isSettledPressureLiquid(belowLoc, belowLocal, liquidValue, liquidDensity) == false
+			|| isVerticalPressureOutlet(loc, localLoc, liquidValue, liquidDensity) == false)
 	{
+		releasePressureCell(belowLocal, true, claim);
+		releasePressureCell(localLoc, true, claim);
 		return false;
 	}
 
 	const uint targetMass = cellMass[localLoc.x][localLoc.y];
-	for (int y = localLoc.y; y < sourceY; y++)
-	{
-		cellMaterial[localLoc.x][y] = cellMaterial[localLoc.x][y + 1];
-		cellMass[localLoc.x][y] = cellMass[localLoc.x][y + 1];
-	}
-	cellMaterial[localLoc.x][sourceY] = targetValue;
-	cellMass[localLoc.x][sourceY] = isPressureLiquid(targetValue) ? min(targetMass, M_CAP_MAX) : 0u;
-
+	const uint liftedMass = cellMass[belowLocal.x][belowLocal.y];
+	cellMaterial[localLoc.x][localLoc.y] = liquidValue;
+	cellMass[localLoc.x][localLoc.y] = min(liftedMass, M_CAP_MAX);
+	cellMaterial[belowLocal.x][belowLocal.y] = targetValue;
+	cellMass[belowLocal.x][belowLocal.y] = isPressureLiquid(targetValue) ? min(targetMass, M_CAP_MAX) : 0u;
 	return true;
 }
 
-bool pressureDisplace(ivec2 loc, ivec2 localLoc)
+bool tryPressureRowShift(ivec2 loc, ivec2 localLoc)
 {
 	const uint targetValue = cellMaterial[localLoc.x][localLoc.y];
 	if (materials[targetValue].isStatic == 1)
@@ -1071,24 +1110,28 @@ bool pressureDisplace(ivec2 loc, ivec2 localLoc)
 	const bool leftFirst = random(uvec4(loc, floatBitsToUint(pushConstants.random), 4)) < 0.50;
 	if (leftFirst)
 	{
-		if (pressureDisplaceToward(loc, localLoc, 1))
+		if (tryPressureRowShiftToward(loc, localLoc, 1))
 		{
 			return true;
 		}
-		return pressureDisplaceToward(loc, localLoc, -1);
+		return tryPressureRowShiftToward(loc, localLoc, -1);
 	}
 	else
 	{
-		if (pressureDisplaceToward(loc, localLoc, -1))
+		if (tryPressureRowShiftToward(loc, localLoc, -1))
 		{
 			return true;
 		}
-		return pressureDisplaceToward(loc, localLoc, 1);
+		return tryPressureRowShiftToward(loc, localLoc, 1);
 	}
 }
 
-bool pressureDisplaceToward(ivec2 loc, ivec2 localLoc, int dir)
+bool tryPressureRowShiftToward(ivec2 loc, ivec2 localLoc, int dir)
 {
+	// Conservative row pressure move:
+	// - the destination must be a valid outlet;
+	// - the source must be same-liquid, supported from below, and pressurized;
+	// - the claimed cells cover both the shifted row and any drained vertical stack.
 	const ivec2 rearLocal = localLoc - ivec2(dir, 0);
 	const ivec2 frontLocal = localLoc + ivec2(dir, 0);
 	if (rearLocal.x <= 1 || rearLocal.x >= WORKGROUP_SIZE - 2
@@ -1103,13 +1146,9 @@ bool pressureDisplaceToward(ivec2 loc, ivec2 localLoc, int dir)
 	{
 		return false;
 	}
-	if (targetValue != 0u)
-	{
-		return false;
-	}
 
 	const int liquidDensity = materials[liquidValue].density;
-	if (materials[targetValue].density >= liquidDensity)
+	if (isHorizontalPressureOutlet(loc, localLoc, liquidValue, liquidDensity) == false)
 	{
 		return false;
 	}
@@ -1120,22 +1159,16 @@ bool pressureDisplaceToward(ivec2 loc, ivec2 localLoc, int dir)
 		return false;
 	}
 
-	const ivec2 downLocal = localLoc + ivec2(0, 1);
-	if (downLocal.y >= WORKGROUP_SIZE - 1)
-	{
-		return false;
-	}
-	const uint downValue = cellMaterial[downLocal.x][downLocal.y];
-	const bool supportedTarget = downValue == liquidValue
-			|| materials[downValue].isStatic == 1
-			|| materials[downValue].density >= liquidDensity;
-	if (supportedTarget == false)
-	{
-		return false;
-	}
-
-	int sourceX = rearLocal.x;
+	int sourceX = localLoc.x;
+	int fallbackSourceX = localLoc.x;
+	int fallbackOffset = 0;
+	int bestSourceScore = -1;
+	int bestSourceOffset = 0;
 	bool hasPressure = false;
+	const uint targetMass = cellMass[localLoc.x][localLoc.y];
+
+	// Prefer a source that can be drained cleanly. The fallback keeps flow moving
+	// only when it is near the best source or safely away from horizontal chunk seams.
 	for (int offset = 1; offset <= PRESSURE_ROW_SHIFT_MAX; offset++)
 	{
 		const ivec2 scanLocal = localLoc - ivec2(dir * offset, 0);
@@ -1150,41 +1183,125 @@ bool pressureDisplaceToward(ivec2 loc, ivec2 localLoc, int dir)
 			break;
 		}
 
-		sourceX = scanLocal.x;
 		const ivec2 scanLoc = loc - ivec2(dir * offset, 0);
+		const bool supportedHere = hasPressureSupportBelow(scanLoc, scanLocal, liquidValue, liquidDensity);
+		if (supportedHere == false)
+		{
+			continue;
+		}
+
+		fallbackSourceX = scanLocal.x;
+		fallbackOffset = offset;
 		const uint scanMass = cellMassSrc[scanLocal.x][scanLocal.y];
-		const ivec2 scanUpLocal = scanLocal + ivec2(0, -1);
-		const bool stackedHere = scanUpLocal.y >= 0 && cellMaterial[scanUpLocal.x][scanUpLocal.y] == liquidValue;
-		if (stackedHere
-				|| scanMass > M_FULL + (M_EPS << 2)
-				|| hasRearPressure(scanLoc, scanLocal, -dir, liquidValue, scanMass, liquidDensity))
+		const int stackHeight = stackHeightAbove(scanLoc, scanLocal, liquidValue);
+		const bool stackedHere = canDrainPressureStack(scanLocal, liquidValue);
+		const bool massPressure = scanMass > targetMass + (M_EPS << 4)
+				&& scanMass > M_FULL + (M_EPS << 1);
+		const bool rearPressure = hasRearPressure(scanLoc, scanLocal, -dir, liquidValue, scanMass, liquidDensity);
+		if (stackedHere || massPressure || rearPressure)
 		{
 			hasPressure = true;
+			if (canLeavePressureSourceHole(scanLoc, scanLocal, dir, liquidValue))
+			{
+				const int sourceScore = (stackedHere ? 4096 : 0)
+						+ offset * 64
+						+ stackHeight * 8
+						+ (massPressure ? 64 : 0)
+						+ (rearPressure ? 32 : 0);
+				if (sourceScore > bestSourceScore)
+				{
+					sourceX = scanLocal.x;
+					bestSourceScore = sourceScore;
+					bestSourceOffset = offset;
+				}
+			}
 		}
 	}
-	if (hasPressure == false || sourceX == localLoc.x)
+	if (hasPressure == false)
 	{
 		return false;
 	}
-	const uint claim = uint(localLoc.y * WORKGROUP_SIZE + localLoc.x + 1);
-	if (lockPressureShiftSegment(localLoc.y, localLoc.x, sourceX, claim) == false)
+	if (sourceX == localLoc.x || bestSourceOffset + 2 < fallbackOffset)
+	{
+		const ivec2 fallbackLocal = ivec2(fallbackSourceX, localLoc.y);
+		const ivec2 fallbackLoc = ivec2(loc.x + fallbackSourceX - localLoc.x, loc.y);
+		if (fallbackSourceX == localLoc.x)
+		{
+			return false;
+		}
+		if (canUseFallbackPressureSource(fallbackLoc, fallbackLocal, dir, liquidValue))
+		{
+			sourceX = fallbackSourceX;
+		}
+		else if (sourceX == localLoc.x)
+		{
+			return false;
+		}
+	}
+	if (sourceX == localLoc.x)
 	{
 		return false;
 	}
 
-	const uint targetMass = cellMass[localLoc.x][localLoc.y];
+	const ivec2 supportLoc = loc + ivec2(0, 1);
+	const ivec2 supportLocal = localLoc + ivec2(0, 1);
+	const uint supportValue = readMaterial(supportLoc, supportLocal);
+	const bool lockSupport = isPressureLiquid(supportValue);
+	const ivec2 sourceLocal = ivec2(sourceX, localLoc.y);
+	const int sourceTopY = canDrainPressureStack(sourceLocal, liquidValue)
+			? pressureStackTopY(sourceLocal, liquidValue)
+			: sourceLocal.y;
+	const uint claim = uint(localLoc.y * WORKGROUP_SIZE + localLoc.x + 1);
+	if (lockPressureDrain(localLoc.y, localLoc.x, sourceX, sourceX, sourceTopY, claim) == false)
+	{
+		return false;
+	}
+	if (claimPressureCell(supportLocal, lockSupport, claim) == false)
+	{
+		releasePressureDrain(localLoc.y, min(localLoc.x, sourceX), max(localLoc.x, sourceX), sourceX, sourceTopY, claim);
+		return false;
+	}
+	if (cellMaterial[localLoc.x][localLoc.y] != targetValue
+			|| cellMaterial[rearLocal.x][rearLocal.y] != liquidValue
+			|| hasPressureSupportBelow(ivec2(loc.x + sourceX - localLoc.x, loc.y), ivec2(sourceX, localLoc.y), liquidValue, liquidDensity) == false
+			|| isHorizontalPressureOutlet(loc, localLoc, liquidValue, liquidDensity) == false
+			|| (lockSupport && cellMaterial[supportLocal.x][supportLocal.y] != supportValue))
+	{
+		releasePressureCell(supportLocal, lockSupport, claim);
+		releasePressureDrain(localLoc.y, min(localLoc.x, sourceX), max(localLoc.x, sourceX), sourceX, sourceTopY, claim);
+		return false;
+	}
+
 	for (int x = localLoc.x; x != sourceX; x -= dir)
 	{
 		cellMaterial[x][localLoc.y] = cellMaterial[x - dir][localLoc.y];
 		cellMass[x][localLoc.y] = cellMass[x - dir][localLoc.y];
 	}
-	cellMaterial[sourceX][localLoc.y] = targetValue;
-	cellMass[sourceX][localLoc.y] = isPressureLiquid(targetValue) ? min(targetMass, M_CAP_MAX) : 0u;
+	drainPressureStackIntoSource(ivec2(sourceX, localLoc.y), sourceTopY, targetValue, targetMass, liquidValue);
 
 	return true;
 }
 
-bool lockPressureShiftSegment(int y, int fromX, int toX, uint claim)
+void drainPressureStackIntoSource(ivec2 sourceLocal, int topY, uint targetValue, uint targetMass, uint liquidValue)
+{
+	if (topY < sourceLocal.y)
+	{
+		for (int y = sourceLocal.y; y > topY; y--)
+		{
+			cellMaterial[sourceLocal.x][y] = cellMaterial[sourceLocal.x][y - 1];
+			cellMass[sourceLocal.x][y] = cellMass[sourceLocal.x][y - 1];
+		}
+		cellMaterial[sourceLocal.x][topY] = targetValue;
+		cellMass[sourceLocal.x][topY] = isPressureLiquid(targetValue) ? min(targetMass, M_CAP_MAX) : 0u;
+	}
+	else
+	{
+		cellMaterial[sourceLocal.x][sourceLocal.y] = targetValue;
+		cellMass[sourceLocal.x][sourceLocal.y] = isPressureLiquid(targetValue) ? min(targetMass, M_CAP_MAX) : 0u;
+	}
+}
+
+bool lockPressureDrain(int y, int fromX, int toX, int stackX, int stackTopY, uint claim)
 {
 	const int startX = min(fromX, toX);
 	const int endX = max(fromX, toX);
@@ -1193,14 +1310,56 @@ bool lockPressureShiftSegment(int y, int fromX, int toX, uint claim)
 		const uint oldClaim = atomicCompSwap(pressureShiftClaim[x][y], 0u, claim);
 		if (oldClaim != 0u && oldClaim != claim)
 		{
-			for (int releaseX = startX; releaseX < x; releaseX++)
-			{
-				atomicCompSwap(pressureShiftClaim[releaseX][y], claim, 0u);
-			}
+			releasePressureDrain(y, startX, x - 1, stackX, y, claim);
 			return false;
 		}
 	}
+
+	for (int stackY = stackTopY; stackY <= y; stackY++)
+	{
+		const uint oldClaim = atomicCompSwap(pressureShiftClaim[stackX][stackY], 0u, claim);
+		if (oldClaim != 0u && oldClaim != claim)
+		{
+			releasePressureDrain(y, startX, endX, stackX, stackTopY, claim);
+			return false;
+		}
+	}
+
 	return true;
+}
+
+void releasePressureDrain(int y, int fromX, int toX, int stackX, int stackTopY, uint claim)
+{
+	if (fromX <= toX)
+	{
+		for (int x = fromX; x <= toX; x++)
+		{
+			atomicCompSwap(pressureShiftClaim[x][y], claim, 0u);
+		}
+	}
+	for (int stackY = stackTopY; stackY <= y; stackY++)
+	{
+		atomicCompSwap(pressureShiftClaim[stackX][stackY], claim, 0u);
+	}
+}
+
+bool claimPressureCell(ivec2 claimLocal, bool required, uint claim)
+{
+	if (required == false)
+	{
+		return true;
+	}
+
+	const uint oldClaim = atomicCompSwap(pressureShiftClaim[claimLocal.x][claimLocal.y], 0u, claim);
+	return oldClaim == 0u || oldClaim == claim;
+}
+
+void releasePressureCell(ivec2 claimLocal, bool required, uint claim)
+{
+	if (required)
+	{
+		atomicCompSwap(pressureShiftClaim[claimLocal.x][claimLocal.y], claim, 0u);
+	}
 }
 
 void transformPropagate(ivec2 localLoc, uint currentValue, uint targetValue, uint propagation);
@@ -1359,6 +1518,264 @@ bool applyTransform(ivec2 localLoc, uint currentValue, uint targetValue)
 	return true;
 }
 
+bool isHorizontalPressureOutlet(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity)
+{
+	if (isOutsideBoard(loc))
+	{
+		return false;
+	}
+	if (readMaterial(loc, localLoc) != 0u)
+	{
+		return false;
+	}
+	if (isBulkInterior(loc, localLoc, liquidValue))
+	{
+		return false;
+	}
+
+	const ivec2 downLoc = loc + ivec2(0, 1);
+	if (isOutsideBoard(downLoc))
+	{
+		return false;
+	}
+
+	const ivec2 downLocal = localLoc + ivec2(0, 1);
+	const uint downValue = readMaterial(downLoc, downLocal);
+	return downValue == liquidValue
+			|| materials[downValue].isStatic == 1
+			|| materials[downValue].density >= liquidDensity;
+}
+
+bool isVerticalPressureOutlet(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity)
+{
+	if (isOutsideBoard(loc))
+	{
+		return false;
+	}
+	if (readMaterial(loc, localLoc) != 0u)
+	{
+		return false;
+	}
+
+	const ivec2 belowLoc = loc + ivec2(0, 1);
+	if (isOutsideBoard(belowLoc))
+	{
+		return false;
+	}
+
+	const ivec2 belowLocal = localLoc + ivec2(0, 1);
+	if (readMaterial(belowLoc, belowLocal) != liquidValue)
+	{
+		return false;
+	}
+	if (isBulkInterior(loc, localLoc, liquidValue))
+	{
+		return false;
+	}
+	if (hasOpenSurfaceAbove(loc, localLoc, liquidValue) == false)
+	{
+		return false;
+	}
+
+	return isInPressurePipe(loc, localLoc, liquidValue, liquidDensity);
+}
+
+bool isBulkInterior(ivec2 loc, ivec2 localLoc, uint liquidValue)
+{
+	const ivec2 upLoc = loc + ivec2(0, -1);
+	const ivec2 downLoc = loc + ivec2(0, 1);
+	const ivec2 leftLoc = loc + ivec2(-1, 0);
+	const ivec2 rightLoc = loc + ivec2(1, 0);
+	if (isOutsideBoard(upLoc) || isOutsideBoard(downLoc) || isOutsideBoard(leftLoc) || isOutsideBoard(rightLoc))
+	{
+		return false;
+	}
+
+	const uint upValue = readMaterial(upLoc, localLoc + ivec2(0, -1));
+	const uint downValue = readMaterial(downLoc, localLoc + ivec2(0, 1));
+	const uint leftValue = readMaterial(leftLoc, localLoc + ivec2(-1, 0));
+	const uint rightValue = readMaterial(rightLoc, localLoc + ivec2(1, 0));
+	return upValue == liquidValue
+			&& downValue == liquidValue
+			&& leftValue == liquidValue
+			&& rightValue == liquidValue;
+}
+
+bool isSettledPressureLiquid(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity)
+{
+	if (readMaterial(loc, localLoc) != liquidValue)
+	{
+		return false;
+	}
+
+	for (int offset = 1; offset <= PRESSURE_SETTLED_SUPPORT_LOOKBACK; offset++)
+	{
+		const ivec2 scanLoc = loc + ivec2(0, offset);
+		if (isOutsideBoard(scanLoc))
+		{
+			return true;
+		}
+
+		const ivec2 scanLocal = localLoc + ivec2(0, offset);
+		const uint scanValue = readMaterial(scanLoc, scanLocal);
+		if (scanValue == liquidValue)
+		{
+			continue;
+		}
+		return isPressureBarrier(scanValue, liquidDensity);
+	}
+
+	return false;
+}
+
+bool hasPressureSupportBelow(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity)
+{
+	if (readMaterial(loc, localLoc) != liquidValue)
+	{
+		return false;
+	}
+
+	for (int offset = 1; offset <= PRESSURE_SETTLED_SUPPORT_LOOKBACK; offset++)
+	{
+		const ivec2 scanLoc = loc + ivec2(0, offset);
+		if (isOutsideBoard(scanLoc))
+		{
+			return true;
+		}
+
+		const uint scanValue = readMaterial(scanLoc, localLoc + ivec2(0, offset));
+		if (scanValue == liquidValue)
+		{
+			continue;
+		}
+		if (isPressureBarrier(scanValue, liquidDensity))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool hasOpenSurfaceAbove(ivec2 loc, ivec2 localLoc, uint liquidValue)
+{
+	bool sawVoid = false;
+	for (int offset = 1; offset <= PRESSURE_SURFACE_LOOKUP; offset++)
+	{
+		const ivec2 scanLoc = loc + ivec2(0, -offset);
+		if (isOutsideBoard(scanLoc))
+		{
+			return true;
+		}
+
+		const uint scanValue = readMaterial(scanLoc, localLoc + ivec2(0, -offset));
+		if (scanValue == 0u)
+		{
+			sawVoid = true;
+			continue;
+		}
+		if (scanValue == liquidValue)
+		{
+			return false;
+		}
+		if (materials[scanValue].isStatic == 1 || materials[scanValue].density >= materials[liquidValue].density)
+		{
+			return false;
+		}
+		return false;
+	}
+
+	return sawVoid;
+}
+
+int stackHeightAbove(ivec2 loc, ivec2 localLoc, uint liquidValue)
+{
+	int height = 0;
+	for (int offset = 1; offset <= PRESSURE_STACK_LOOKUP; offset++)
+	{
+		const ivec2 scanLoc = loc + ivec2(0, -offset);
+		if (isOutsideBoard(scanLoc))
+		{
+			break;
+		}
+
+		const uint scanValue = readMaterial(scanLoc, localLoc + ivec2(0, -offset));
+		if (scanValue != liquidValue)
+		{
+			break;
+		}
+		height++;
+	}
+	return height;
+}
+
+int pressureStackTopY(ivec2 sourceLocal, uint liquidValue)
+{
+	int topY = sourceLocal.y;
+	for (int offset = 1; offset <= PRESSURE_STACK_LOOKUP; offset++)
+	{
+		const int scanY = sourceLocal.y - offset;
+		if (scanY <= 1)
+		{
+			break;
+		}
+		if (cellMaterial[sourceLocal.x][scanY] != liquidValue)
+		{
+			break;
+		}
+		topY = scanY;
+	}
+	return topY;
+}
+
+bool canDrainPressureStack(ivec2 sourceLocal, uint liquidValue)
+{
+	const int topY = pressureStackTopY(sourceLocal, liquidValue);
+	if (topY == sourceLocal.y)
+	{
+		return false;
+	}
+	if (topY <= 2 && cellMaterial[sourceLocal.x][topY - 1] == liquidValue)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool canLeavePressureSourceHole(ivec2 loc, ivec2 localLoc, int dir, uint liquidValue)
+{
+	if (canDrainPressureStack(localLoc, liquidValue))
+	{
+		return true;
+	}
+	if (localLoc.y <= 2 || localLoc.y >= WORKGROUP_SIZE - 3)
+	{
+		return false;
+	}
+
+	const ivec2 backLoc = loc - ivec2(dir, 0);
+	if (isOutsideBoard(backLoc))
+	{
+		return true;
+	}
+
+	const uint backValue = readMaterial(backLoc, localLoc - ivec2(dir, 0));
+	if (backValue != liquidValue)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool canUseFallbackPressureSource(ivec2 loc, ivec2 localLoc, int dir, uint liquidValue)
+{
+	return canLeavePressureSourceHole(loc, localLoc, dir, liquidValue)
+			|| (localLoc.x > 2
+					&& localLoc.y > 2
+					&& localLoc.x < WORKGROUP_SIZE - 3
+					&& localLoc.y < WORKGROUP_SIZE - 3);
+}
+
 bool hasRearPressure(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, uint currentMass, int density)
 {
 	for (int offset = 1; offset <= PRESSURE_REAR_LOOKBACK; offset++)
@@ -1408,7 +1825,11 @@ bool hasRearPressure(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, uint
 
 bool canMovePressureUp(ivec2 loc, ivec2 localLoc, uint currentValue, int density)
 {
-	if (isInPressurePipe(loc + ivec2(0, -1), localLoc + ivec2(0, -1), currentValue, density) == false) return false;
+	if (isSettledPressureLiquid(loc, localLoc, currentValue, density) == false) return false;
+
+	const ivec2 targetLoc = loc + ivec2(0, -1);
+	const ivec2 targetLocal = localLoc + ivec2(0, -1);
+	if (isVerticalPressureOutlet(targetLoc, targetLocal, currentValue, density) == false) return false;
 
 	const uint currentMass = cellMassSrc[localLoc.x][localLoc.y];
 	const ivec2 downLoc = loc + ivec2(0, 1);
@@ -1480,19 +1901,43 @@ bool hasPipeWall(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, int dens
 		}
 
 		const ivec2 wallLocal = localLoc + ivec2(dir * offset, 0);
-		const bool wallInLocal = wallLocal.x >= 0 && wallLocal.x < WORKGROUP_SIZE;
+		const bool wallInLocal = isInsideLocal(wallLocal);
 		const uint wallValue = wallInLocal ? cellMaterial[wallLocal.x][wallLocal.y] : readMaterialGlobal(wallLoc);
 		if (wallValue == currentValue)
 		{
 			continue;
 		}
-		if (materials[wallValue].isStatic == 1 || materials[wallValue].density >= density)
+		if (isPressureBarrier(wallValue, density))
 		{
-			return true;
+			return hasVerticalPipeWallAt(wallLoc, wallLocal, density);
 		}
 	}
 
 	return false;
+}
+
+bool isPressureBarrier(uint materialId, int density)
+{
+	return materials[materialId].isStatic == 1 || materials[materialId].density >= density;
+}
+
+bool hasVerticalPipeWallAt(ivec2 wallLoc, ivec2 wallLocal, int density)
+{
+	for (int offset = -PRESSURE_PIPE_WALL_VERTICAL_LOOKUP; offset <= PRESSURE_PIPE_WALL_VERTICAL_LOOKUP; offset++)
+	{
+		const ivec2 scanLoc = wallLoc + ivec2(0, offset);
+		if (isOutsideBoard(scanLoc))
+		{
+			return true;
+		}
+
+		const uint scanValue = readMaterial(scanLoc, wallLocal + ivec2(0, offset));
+		if (isPressureBarrier(scanValue, density) == false)
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 int checkFree(ivec2 loc, in ivec2 localLoc, int runoff, int dir, int srcDensity)

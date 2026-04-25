@@ -18,6 +18,7 @@ const int CHUNK_HEIGHT = HEIGHT / 16;
 const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
 const int CHUNK_FLAG_SIM_ACTIVE = 1;
 const int CHUNK_FLAG_RENDER_DIRTY = 2;
+const int MASS_PIPE_WALL_LOOKUP = 10;
 
 struct Entry
 {
@@ -84,9 +85,12 @@ void writePackedMassWordDest(int index, uint value);
 
 int stableStateBottom(int totalMass);
 int flowVertical(int mUpper, int mLower);
-int flowHorizontal(int mHere, int mNeighbor);
+int flowHorizontal(ivec2 hereLoc, ivec2 neighborLoc, uint materialId, int mHere, int mNeighbor);
 int computeNewMass(ivec2 loc);
 bool isOutsideBoard(ivec2 loc);
+bool isInMassPressurePipe(ivec2 loc, uint materialId);
+bool hasMassPipeWall(ivec2 loc, int dir, uint materialId, int density);
+bool isPressureBarrier(uint materialId, int density);
 
 void main()
 {
@@ -184,7 +188,7 @@ int computeNewMass(ivec2 loc)
 				if (rightMat == mat)
 				{
 					const int mRight = int(readMassGlobal(rightLoc));
-					outRight = max(flowHorizontal(mHere, mRight), 0);
+					outRight = max(flowHorizontal(loc, rightLoc, mat, mHere, mRight), 0);
 				}
 			}
 		}
@@ -198,7 +202,7 @@ int computeNewMass(ivec2 loc)
 				if (leftMat == mat)
 				{
 					const int mLeft = int(readMassGlobal(leftLoc));
-					inFromLeft = max(flowHorizontal(mLeft, mHere), 0);
+					inFromLeft = max(flowHorizontal(leftLoc, loc, mat, mLeft, mHere), 0);
 				}
 			}
 		}
@@ -216,7 +220,7 @@ int computeNewMass(ivec2 loc)
 				if (leftMat == mat)
 				{
 					const int mLeft = int(readMassGlobal(leftLoc));
-					outLeft = max(flowHorizontal(mHere, mLeft), 0);
+					outLeft = max(flowHorizontal(loc, leftLoc, mat, mHere, mLeft), 0);
 				}
 			}
 		}
@@ -230,7 +234,7 @@ int computeNewMass(ivec2 loc)
 				if (rightMat == mat)
 				{
 					const int mRight = int(readMassGlobal(rightLoc));
-					inFromRight = max(flowHorizontal(mRight, mHere), 0);
+					inFromRight = max(flowHorizontal(rightLoc, loc, mat, mRight, mHere), 0);
 				}
 			}
 		}
@@ -271,9 +275,12 @@ int computeNewMass(ivec2 loc)
 	}
 }
 
-int flowHorizontal(int mHere, int mNeighbor)
+int flowHorizontal(ivec2 hereLoc, ivec2 neighborLoc, uint materialId, int mHere, int mNeighbor)
 {
-	const int flow = (mHere - mNeighbor) / int(H_HEAD_DIV);
+	const bool pipeLike = isInMassPressurePipe(hereLoc, materialId)
+			|| isInMassPressurePipe(neighborLoc, materialId);
+	const int headDivisor = pipeLike ? int(H_PIPE_HEAD_DIV) : int(H_HEAD_DIV);
+	const int flow = (mHere - mNeighbor) / headDivisor;
 	if (abs(flow) < int(MIN_FLOW)) return 0;
 
 	if (flow > 0)
@@ -286,6 +293,40 @@ int flowHorizontal(int mHere, int mNeighbor)
 		const int maxFlow = min(mNeighbor, int(M_CAP_MAX) - mHere);
 		return -min(-flow, maxFlow);
 	}
+}
+
+bool isInMassPressurePipe(ivec2 loc, uint materialId)
+{
+	const int density = configuration.materials[materialId].density;
+	return hasMassPipeWall(loc, -1, materialId, density)
+			&& hasMassPipeWall(loc, 1, materialId, density);
+}
+
+bool hasMassPipeWall(ivec2 loc, int dir, uint materialId, int density)
+{
+	for (int offset = 1; offset <= MASS_PIPE_WALL_LOOKUP; offset++)
+	{
+		const ivec2 wallLoc = loc + ivec2(dir * offset, 0);
+		if (isOutsideBoard(wallLoc))
+		{
+			return true;
+		}
+
+		const uint wallValue = readMaterialGlobal(wallLoc);
+		if (wallValue == materialId)
+		{
+			continue;
+		}
+		return isPressureBarrier(wallValue, density);
+	}
+
+	return false;
+}
+
+bool isPressureBarrier(uint materialId, int density)
+{
+	return configuration.materials[materialId].isStatic == 1
+			|| configuration.materials[materialId].density >= density;
 }
 
 int flowVertical(int mUpper, int mLower)

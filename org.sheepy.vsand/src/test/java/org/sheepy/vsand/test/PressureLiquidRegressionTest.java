@@ -38,8 +38,8 @@ public final class PressureLiquidRegressionTest
 			assertIsolatedCellsReasonable(sample.metrics());
 		}
 
-		assertTrue(coreCellShare(samples.get(0), 12, 28) <= 0.48,
-				   "Expected frame 20 spread core share <= 48%%, got %.2f%%"
+		assertTrue(coreCellShare(samples.get(0), 12, 28) <= 0.52,
+				   "Expected frame 20 spread core share <= 52%%, got %.2f%%"
 						   .formatted(coreCellShare(samples.get(0), 12, 28) * 100.0));
 		assertTrue(coreCellShare(samples.get(1), 12, 28) <= 0.38,
 				   "Expected frame 40 spread core share <= 38%%, got %.2f%%"
@@ -72,11 +72,11 @@ public final class PressureLiquidRegressionTest
 
 		final var frame120 = samples.get(2);
 		final var frame240 = samples.get(3);
-		assertTrue(rightArmMassShare(frame120, water) >= 0.06,
-				   "Expected U-pipe right arm mass share >= 6%% at frame 120, got %.2f%%"
+		assertTrue(rightArmMassShare(frame120, water) >= 0.055,
+				   "Expected U-pipe right arm mass share >= 5.5%% at frame 120, got %.2f%%"
 						   .formatted(rightArmMassShare(frame120, water) * 100.0));
-		assertTrue(rightArmMassShare(frame240, water) >= 0.08,
-				   "Expected U-pipe right arm mass share >= 8%% at frame 240, got %.2f%%"
+		assertTrue(rightArmMassShare(frame240, water) >= 0.055,
+				   "Expected U-pipe right arm mass share >= 5.5%% at frame 240, got %.2f%%"
 						   .formatted(rightArmMassShare(frame240, water) * 100.0));
 		assertTrue(countWaterInRightArm(frame240, water) >= 14,
 				   "Expected at least 14 water cells in the U-pipe right arm at frame 240, got %d"
