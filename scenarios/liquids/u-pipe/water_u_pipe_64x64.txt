@@ -5,8 +5,9 @@ frame Wall 1
 
 # U pipe walls.
 line Wall 16 10 16 54 2
-line Wall 24 10 24 46 2
-line Wall 40 10 40 46 2
+square Wall 32 17 14
+square Wall 32 31 14
+square Wall 32 43 14
 line Wall 48 10 48 54 2
 line Wall 16 54 48 54 2
 

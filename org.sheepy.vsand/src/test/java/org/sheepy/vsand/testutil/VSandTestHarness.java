@@ -3,6 +3,7 @@ package org.sheepy.vsand.testutil;
 import org.joml.Vector2i;
 import org.sheepy.lily.core.api.LilyLauncher;
 import org.sheepy.lily.vulkan.api.process.IProcessAdapter;
+import org.sheepy.lily.vulkan.model.process.CompositePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.vulkan.VulkanEngine;
 import org.sheepy.vsand.VSandApplicationLauncher;
@@ -85,6 +86,11 @@ public final class VSandTestHarness
 	public void setBoardUpdateRepeatCount(final int repeatCount)
 	{
 		application.speed(repeatCount);
+		final var simulationPipeline = findSimulationPipeline(application);
+		if (simulationPipeline != null)
+		{
+			simulationPipeline.repeat(repeatCount);
+		}
 	}
 
 	public Material material(final String name)
@@ -255,6 +261,16 @@ public final class VSandTestHarness
 		return application.streamTree()
 						  .filter(BoardConstantBuffer.class::isInstance)
 						  .map(BoardConstantBuffer.class::cast)
+						  .findFirst()
+						  .orElse(null);
+	}
+
+	private static CompositePipeline findSimulationPipeline(final VSandApplication application)
+	{
+		return application.streamTree()
+						  .filter(CompositePipeline.class::isInstance)
+						  .map(CompositePipeline.class::cast)
+						  .filter(pipeline -> "Simulation".equals(pipeline.name()))
 						  .findFirst()
 						  .orElse(null);
 	}
