@@ -81,7 +81,7 @@ bool isBulkInterior(ivec2 loc, ivec2 localLoc, uint liquidValue)
 			&& rightValue == liquidValue;
 }
 
-bool isSettledPressureLiquid(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity)
+bool hasPressureSupportBelow(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity, bool allowGaps)
 {
 	if (readMaterial(loc, localLoc) != liquidValue)
 	{
@@ -102,39 +102,27 @@ bool isSettledPressureLiquid(ivec2 loc, ivec2 localLoc, uint liquidValue, int li
 		{
 			continue;
 		}
-		return isPressureBarrier(scanValue, liquidDensity);
+		if (isPressureBarrier(scanValue, liquidDensity))
+		{
+			return true;
+		}
+		if (allowGaps == false)
+		{
+			return false;
+		}
 	}
 
 	return false;
 }
 
-bool hasPressureSupportBelow(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity)
+bool isSupportedSettledPressureLiquid(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity)
 {
-	if (readMaterial(loc, localLoc) != liquidValue)
-	{
-		return false;
-	}
+	return hasPressureSupportBelow(loc, localLoc, liquidValue, liquidDensity, false);
+}
 
-	for (int offset = 1; offset <= PRESSURE_SETTLED_SUPPORT_LOOKBACK; offset++)
-	{
-		const ivec2 scanLoc = loc + ivec2(0, offset);
-		if (isOutsideBoard(scanLoc))
-		{
-			return true;
-		}
-
-		const uint scanValue = readMaterial(scanLoc, localLoc + ivec2(0, offset));
-		if (scanValue == liquidValue)
-		{
-			continue;
-		}
-		if (isPressureBarrier(scanValue, liquidDensity))
-		{
-			return true;
-		}
-	}
-
-	return false;
+bool hasReachablePressureSupportBelow(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity)
+{
+	return hasPressureSupportBelow(loc, localLoc, liquidValue, liquidDensity, true);
 }
 
 bool hasOpenSurfaceAbove(ivec2 loc, ivec2 localLoc, uint liquidValue)
@@ -305,7 +293,7 @@ bool hasRearPressure(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, uint
 
 bool canMovePressureUp(ivec2 loc, ivec2 localLoc, uint currentValue, int density)
 {
-	if (isSettledPressureLiquid(loc, localLoc, currentValue, density) == false) return false;
+	if (isSupportedSettledPressureLiquid(loc, localLoc, currentValue, density) == false) return false;
 
 	const ivec2 targetLoc = loc + ivec2(0, -1);
 	const ivec2 targetLocal = localLoc + ivec2(0, -1);

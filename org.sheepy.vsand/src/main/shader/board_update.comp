@@ -169,8 +169,8 @@ void drainPressureStackIntoSource(ivec2 sourceLocal, int topY, uint targetValue,
 bool isHorizontalPressureOutlet(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
 bool isVerticalPressureOutlet(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
 bool isBulkInterior(ivec2 loc, ivec2 localLoc, uint liquidValue);
-bool isSettledPressureLiquid(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
-bool hasPressureSupportBelow(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
+bool isSupportedSettledPressureLiquid(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
+bool hasReachablePressureSupportBelow(ivec2 loc, ivec2 localLoc, uint liquidValue, int liquidDensity);
 bool hasOpenSurfaceAbove(ivec2 loc, ivec2 localLoc, uint liquidValue);
 int stackHeightAbove(ivec2 loc, ivec2 localLoc, uint liquidValue);
 int pressureStackTopY(ivec2 sourceLocal, uint liquidValue);
@@ -614,7 +614,7 @@ bool chooseTo(ivec2 loc, ivec2 localLoc)
 			uint valueUp = localLoc.y > 0 ? cellMaterial[localLoc.x][localLoc.y - 1] : readMaterialGlobal(ivec2(loc.x, loc.y - 1));
 			bool isPressed = valueUp == currentValue;
 			const bool pressureLiquid = isPressureLiquid(currentValue);
-			const bool settledPressureLiquid = pressureLiquid && isSettledPressureLiquid(loc, localLoc, currentValue, density);
+			const bool settledPressureLiquid = pressureLiquid && isSupportedSettledPressureLiquid(loc, localLoc, currentValue, density);
 
 				if (pressureLiquid)
 				{

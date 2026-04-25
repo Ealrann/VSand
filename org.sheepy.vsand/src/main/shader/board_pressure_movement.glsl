@@ -15,7 +15,7 @@ bool tryPressureSurfaceStep(ivec2 loc, ivec2 localLoc)
 	}
 
 	const int liquidDensity = materials[liquidValue].density;
-	if (isSettledPressureLiquid(belowLoc, belowLocal, liquidValue, liquidDensity) == false)
+	if (isSupportedSettledPressureLiquid(belowLoc, belowLocal, liquidValue, liquidDensity) == false)
 	{
 		return false;
 	}
@@ -46,7 +46,7 @@ bool tryPressureSurfaceStep(ivec2 loc, ivec2 localLoc)
 	}
 	if (cellMaterial[localLoc.x][localLoc.y] != targetValue
 			|| cellMaterial[belowLocal.x][belowLocal.y] != liquidValue
-			|| isSettledPressureLiquid(belowLoc, belowLocal, liquidValue, liquidDensity) == false
+			|| isSupportedSettledPressureLiquid(belowLoc, belowLocal, liquidValue, liquidDensity) == false
 			|| isVerticalPressureOutlet(loc, localLoc, liquidValue, liquidDensity) == false)
 	{
 		releasePressureCell(belowLocal, true, claim);
@@ -148,7 +148,7 @@ bool tryPressureRowShiftToward(ivec2 loc, ivec2 localLoc, int dir)
 		}
 
 		const ivec2 scanLoc = loc - ivec2(dir * offset, 0);
-		const bool supportedHere = hasPressureSupportBelow(scanLoc, scanLocal, liquidValue, liquidDensity);
+		const bool supportedHere = hasReachablePressureSupportBelow(scanLoc, scanLocal, liquidValue, liquidDensity);
 		if (supportedHere == false)
 		{
 			continue;
@@ -228,7 +228,7 @@ bool tryPressureRowShiftToward(ivec2 loc, ivec2 localLoc, int dir)
 	}
 	if (cellMaterial[localLoc.x][localLoc.y] != targetValue
 			|| cellMaterial[rearLocal.x][rearLocal.y] != liquidValue
-			|| hasPressureSupportBelow(ivec2(loc.x + sourceX - localLoc.x, loc.y), ivec2(sourceX, localLoc.y), liquidValue, liquidDensity) == false
+			|| hasReachablePressureSupportBelow(ivec2(loc.x + sourceX - localLoc.x, loc.y), ivec2(sourceX, localLoc.y), liquidValue, liquidDensity) == false
 			|| isHorizontalPressureOutlet(loc, localLoc, liquidValue, liquidDensity) == false
 			|| (lockSupport && cellMaterial[supportLocal.x][supportLocal.y] != supportValue))
 	{

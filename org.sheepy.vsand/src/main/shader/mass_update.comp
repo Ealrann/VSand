@@ -86,6 +86,12 @@ void writePackedMassWordDest(int index, uint value);
 int stableStateBottom(int totalMass);
 int flowVertical(int mUpper, int mLower);
 int flowHorizontal(ivec2 hereLoc, ivec2 neighborLoc, uint materialId, int mHere, int mNeighbor);
+ivec2 massFlowDirection(uint step);
+int computeDirectionalMass(ivec2 loc, uint materialId, int mHere, ivec2 direction);
+int positiveOutgoingMassFlow(ivec2 loc, uint materialId, int mHere, ivec2 direction);
+int positiveIncomingMassFlow(ivec2 loc, uint materialId, int mHere, ivec2 direction);
+int positiveMassFlow(ivec2 fromLoc, ivec2 toLoc, uint materialId, int fromMass, int toMass);
+int signedMassFlow(ivec2 fromLoc, ivec2 toLoc, uint materialId, int fromMass, int toMass);
 int computeNewMass(ivec2 loc);
 bool isOutsideBoard(ivec2 loc);
 bool isInMassPressurePipe(ivec2 loc, uint materialId);
@@ -145,133 +151,60 @@ int computeNewMass(ivec2 loc)
 	const int mHere = int(readMassGlobal(loc));
 
 	const uint step = pushConstants.step & 3u;
-	if (step == 0u)
+	return computeDirectionalMass(loc, mat, mHere, massFlowDirection(step));
+}
+
+ivec2 massFlowDirection(uint step)
+{
+	if (step == 0u) return ivec2(0, 1);
+	if (step == 1u) return ivec2(1, 0);
+	if (step == 2u) return ivec2(-1, 0);
+	return ivec2(0, -1);
+}
+
+int computeDirectionalMass(ivec2 loc, uint materialId, int mHere, ivec2 direction)
+{
+	const int outgoingMass = positiveOutgoingMassFlow(loc, materialId, mHere, direction);
+	const int incomingMass = positiveIncomingMassFlow(loc, materialId, mHere, direction);
+	return clamp(mHere - outgoingMass + incomingMass, 0, int(M_CAP_MAX));
+}
+
+int positiveOutgoingMassFlow(ivec2 loc, uint materialId, int mHere, ivec2 direction)
+{
+	const ivec2 targetLoc = loc + direction;
+	if (isOutsideBoard(targetLoc)) return 0;
+	if (readMaterialGlobal(targetLoc) != materialId) return 0;
+
+	const int targetMass = int(readMassGlobal(targetLoc));
+	return positiveMassFlow(loc, targetLoc, materialId, mHere, targetMass);
+}
+
+int positiveIncomingMassFlow(ivec2 loc, uint materialId, int mHere, ivec2 direction)
+{
+	const ivec2 sourceLoc = loc - direction;
+	if (isOutsideBoard(sourceLoc)) return 0;
+	if (readMaterialGlobal(sourceLoc) != materialId) return 0;
+
+	const int sourceMass = int(readMassGlobal(sourceLoc));
+	return positiveMassFlow(sourceLoc, loc, materialId, sourceMass, mHere);
+}
+
+int positiveMassFlow(ivec2 fromLoc, ivec2 toLoc, uint materialId, int fromMass, int toMass)
+{
+	return max(signedMassFlow(fromLoc, toLoc, materialId, fromMass, toMass), 0);
+}
+
+int signedMassFlow(ivec2 fromLoc, ivec2 toLoc, uint materialId, int fromMass, int toMass)
+{
+	if (fromLoc.x == toLoc.x)
 	{
-		int outDown = 0;
-		{
-			const ivec2 downLoc = loc + ivec2(0, 1);
-			if (isOutsideBoard(downLoc) == false)
-			{
-				const uint downMat = readMaterialGlobal(downLoc);
-				if (downMat == mat)
-				{
-					const int mDown = int(readMassGlobal(downLoc));
-					outDown = max(flowVertical(mHere, mDown), 0);
-				}
-			}
-		}
-
-		int inFromUp = 0;
-		{
-			const ivec2 upLoc = loc + ivec2(0, -1);
-			if (isOutsideBoard(upLoc) == false)
-			{
-				const uint upMat = readMaterialGlobal(upLoc);
-				if (upMat == mat)
-				{
-					const int mUp = int(readMassGlobal(upLoc));
-					inFromUp = max(flowVertical(mUp, mHere), 0);
-				}
-			}
-		}
-
-		return clamp(mHere - outDown + inFromUp, 0, int(M_CAP_MAX));
-	}
-	else if (step == 1u)
-	{
-		int outRight = 0;
-		{
-			const ivec2 rightLoc = loc + ivec2(1, 0);
-			if (isOutsideBoard(rightLoc) == false)
-			{
-				const uint rightMat = readMaterialGlobal(rightLoc);
-				if (rightMat == mat)
-				{
-					const int mRight = int(readMassGlobal(rightLoc));
-					outRight = max(flowHorizontal(loc, rightLoc, mat, mHere, mRight), 0);
-				}
-			}
-		}
-
-		int inFromLeft = 0;
-		{
-			const ivec2 leftLoc = loc + ivec2(-1, 0);
-			if (isOutsideBoard(leftLoc) == false)
-			{
-				const uint leftMat = readMaterialGlobal(leftLoc);
-				if (leftMat == mat)
-				{
-					const int mLeft = int(readMassGlobal(leftLoc));
-					inFromLeft = max(flowHorizontal(leftLoc, loc, mat, mLeft, mHere), 0);
-				}
-			}
-		}
-
-		return clamp(mHere - outRight + inFromLeft, 0, int(M_CAP_MAX));
-	}
-	else if (step == 2u)
-	{
-		int outLeft = 0;
-		{
-			const ivec2 leftLoc = loc + ivec2(-1, 0);
-			if (isOutsideBoard(leftLoc) == false)
-			{
-				const uint leftMat = readMaterialGlobal(leftLoc);
-				if (leftMat == mat)
-				{
-					const int mLeft = int(readMassGlobal(leftLoc));
-					outLeft = max(flowHorizontal(loc, leftLoc, mat, mHere, mLeft), 0);
-				}
-			}
-		}
-
-		int inFromRight = 0;
-		{
-			const ivec2 rightLoc = loc + ivec2(1, 0);
-			if (isOutsideBoard(rightLoc) == false)
-			{
-				const uint rightMat = readMaterialGlobal(rightLoc);
-				if (rightMat == mat)
-				{
-					const int mRight = int(readMassGlobal(rightLoc));
-					inFromRight = max(flowHorizontal(rightLoc, loc, mat, mRight, mHere), 0);
-				}
-			}
-		}
-
-		return clamp(mHere - outLeft + inFromRight, 0, int(M_CAP_MAX));
+		return toLoc.y > fromLoc.y
+				? flowVertical(fromMass, toMass)
+				: -flowVertical(toMass, fromMass);
 	}
 	else
 	{
-		int outUp = 0;
-		{
-			const ivec2 upLoc = loc + ivec2(0, -1);
-			if (isOutsideBoard(upLoc) == false)
-			{
-				const uint upMat = readMaterialGlobal(upLoc);
-				if (upMat == mat)
-				{
-					const int mUp = int(readMassGlobal(upLoc));
-					outUp = max(-flowVertical(mUp, mHere), 0);
-				}
-			}
-		}
-
-		int inFromDown = 0;
-		{
-			const ivec2 downLoc = loc + ivec2(0, 1);
-			if (isOutsideBoard(downLoc) == false)
-			{
-				const uint downMat = readMaterialGlobal(downLoc);
-				if (downMat == mat)
-				{
-					const int mDown = int(readMassGlobal(downLoc));
-					inFromDown = max(-flowVertical(mHere, mDown), 0);
-				}
-			}
-		}
-
-		return clamp(mHere - outUp + inFromDown, 0, int(M_CAP_MAX));
+		return flowHorizontal(fromLoc, toLoc, materialId, fromMass, toMass);
 	}
 }
 
