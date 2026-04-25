@@ -1,6 +1,6 @@
 bool tryPressureSurfaceStep(ivec2 loc, ivec2 localLoc)
 {
-	if (localLoc.y <= 1 || localLoc.y >= WORKGROUP_SIZE - 3)
+	if (localLoc.y < PRESSURE_LOCAL_SAFE_MIN || localLoc.y >= PRESSURE_LOCAL_SAFE_MAX_EXCLUSIVE)
 	{
 		return false;
 	}
@@ -98,8 +98,8 @@ bool tryPressureRowShiftToward(ivec2 loc, ivec2 localLoc, int dir)
 	// - the claimed cells cover both the shifted row and any drained vertical stack.
 	const ivec2 rearLocal = localLoc - ivec2(dir, 0);
 	const ivec2 frontLocal = localLoc + ivec2(dir, 0);
-	if (rearLocal.x <= 1 || rearLocal.x >= WORKGROUP_SIZE - 2
-			|| frontLocal.x <= 0 || frontLocal.x >= WORKGROUP_SIZE - 1)
+	if (rearLocal.x < PRESSURE_ROW_SCAN_MIN_X || rearLocal.x >= PRESSURE_ROW_SCAN_MAX_EXCLUSIVE_X
+			|| frontLocal.x < PRESSURE_ROW_FRONT_MIN_X || frontLocal.x >= PRESSURE_ROW_FRONT_MAX_EXCLUSIVE_X)
 	{
 		return false;
 	}
@@ -136,7 +136,7 @@ bool tryPressureRowShiftToward(ivec2 loc, ivec2 localLoc, int dir)
 	for (int offset = 1; offset <= PRESSURE_ROW_SHIFT_MAX; offset++)
 	{
 		const ivec2 scanLocal = localLoc - ivec2(dir * offset, 0);
-		if (scanLocal.x <= 1 || scanLocal.x >= WORKGROUP_SIZE - 2)
+		if (scanLocal.x < PRESSURE_ROW_SCAN_MIN_X || scanLocal.x >= PRESSURE_ROW_SCAN_MAX_EXCLUSIVE_X)
 		{
 			break;
 		}
@@ -167,11 +167,12 @@ bool tryPressureRowShiftToward(ivec2 loc, ivec2 localLoc, int dir)
 			hasPressure = true;
 			if (canLeavePressureSourceHole(scanLoc, scanLocal, dir, liquidValue))
 			{
-				const int sourceScore = (stackedHere ? 4096 : 0)
-						+ offset * 64
-						+ stackHeight * 8
-						+ (massPressure ? 64 : 0)
-						+ (rearPressure ? 32 : 0);
+				// Stack drainage dominates; distance then favors pulling from deeper in the pressurized row.
+				const int sourceScore = (stackedHere ? PRESSURE_SOURCE_SCORE_DRAINABLE_STACK : 0)
+						+ offset * PRESSURE_SOURCE_SCORE_DISTANCE_STEP
+						+ stackHeight * PRESSURE_SOURCE_SCORE_STACK_HEIGHT_STEP
+						+ (massPressure ? PRESSURE_SOURCE_SCORE_MASS_GRADIENT : 0)
+						+ (rearPressure ? PRESSURE_SOURCE_SCORE_REAR_PUSH : 0);
 				if (sourceScore > bestSourceScore)
 				{
 					sourceX = scanLocal.x;
@@ -185,7 +186,7 @@ bool tryPressureRowShiftToward(ivec2 loc, ivec2 localLoc, int dir)
 	{
 		return false;
 	}
-	if (sourceX == localLoc.x || bestSourceOffset + 2 < fallbackOffset)
+	if (sourceX == localLoc.x || bestSourceOffset + PRESSURE_FALLBACK_SOURCE_LAG < fallbackOffset)
 	{
 		const ivec2 fallbackLocal = ivec2(fallbackSourceX, localLoc.y);
 		const ivec2 fallbackLoc = ivec2(loc.x + fallbackSourceX - localLoc.x, loc.y);

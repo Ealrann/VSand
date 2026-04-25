@@ -195,7 +195,7 @@ int pressureStackTopY(ivec2 sourceLocal, uint liquidValue)
 	for (int offset = 1; offset <= PRESSURE_STACK_LOOKUP; offset++)
 	{
 		const int scanY = sourceLocal.y - offset;
-		if (scanY <= 1)
+		if (scanY < PRESSURE_LOCAL_SAFE_MIN)
 		{
 			break;
 		}
@@ -215,7 +215,7 @@ bool canDrainPressureStack(ivec2 sourceLocal, uint liquidValue)
 	{
 		return false;
 	}
-	if (topY <= 2 && cellMaterial[sourceLocal.x][topY - 1] == liquidValue)
+	if (topY <= PRESSURE_LOCAL_SAFE_MIN && cellMaterial[sourceLocal.x][topY - 1] == liquidValue)
 	{
 		return false;
 	}
@@ -228,7 +228,7 @@ bool canLeavePressureSourceHole(ivec2 loc, ivec2 localLoc, int dir, uint liquidV
 	{
 		return true;
 	}
-	if (localLoc.y <= 2 || localLoc.y >= WORKGROUP_SIZE - 3)
+	if (localLoc.y <= PRESSURE_LOCAL_SAFE_MIN || localLoc.y >= PRESSURE_LOCAL_SAFE_MAX_EXCLUSIVE)
 	{
 		return false;
 	}
@@ -250,10 +250,10 @@ bool canLeavePressureSourceHole(ivec2 loc, ivec2 localLoc, int dir, uint liquidV
 bool canUseFallbackPressureSource(ivec2 loc, ivec2 localLoc, int dir, uint liquidValue)
 {
 	return canLeavePressureSourceHole(loc, localLoc, dir, liquidValue)
-			|| (localLoc.x > 2
-					&& localLoc.y > 2
-					&& localLoc.x < WORKGROUP_SIZE - 3
-					&& localLoc.y < WORKGROUP_SIZE - 3);
+			|| (localLoc.x >= PRESSURE_FALLBACK_INTERIOR_MIN
+					&& localLoc.y >= PRESSURE_FALLBACK_INTERIOR_MIN
+					&& localLoc.x < PRESSURE_LOCAL_SAFE_MAX_EXCLUSIVE
+					&& localLoc.y < PRESSURE_LOCAL_SAFE_MAX_EXCLUSIVE);
 }
 
 bool hasRearPressure(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, uint currentMass, int density)

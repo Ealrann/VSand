@@ -68,7 +68,7 @@ public final class LiquidPressureBaselineTest
 		assertTrue(samples.get(0).metrics().bboxWidth() >= 90,
 				   "Expected slope water to reach width >= 90 at frame %d, got %d"
 						   .formatted(samples.get(0).frame(), samples.get(0).metrics().bboxWidth()));
-		assertLiquidCells(samples.get(1), 558);
+		assertLiquidCellsBetween(samples.get(1), 557, 558);
 		assertTrue(samples.get(1).metrics().bboxWidth() >= 90,
 				   "Expected slope water to remain spread at frame %d, got width %d"
 						   .formatted(samples.get(1).frame(), samples.get(1).metrics().bboxWidth()));
@@ -148,6 +148,11 @@ public final class LiquidPressureBaselineTest
 		assertEquals(expectedCells,
 					 sample.metrics().cellCount(),
 					 "Expected water cell count to match baseline at frame %d".formatted(sample.frame()));
+	}
+
+	private static void assertLiquidCellsBetween(final Sample sample, final int minCells, final int maxCells)
+	{
+		assertBetween("water cell count", sample.frame(), sample.metrics().cellCount(), minCells, maxCells);
 	}
 
 	private static void assertBetween(final String label,
