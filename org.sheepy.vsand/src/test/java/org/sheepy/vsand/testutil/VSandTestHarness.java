@@ -8,6 +8,7 @@ import org.sheepy.lily.vulkan.model.process.CompositePipeline;
 import org.sheepy.lily.vulkan.model.process.compute.ComputeProcess;
 import org.sheepy.lily.vulkan.model.vulkan.VulkanEngine;
 import org.sheepy.vsand.VSandApplicationLauncher;
+import org.sheepy.vsand.dump.Scenario;
 import org.sheepy.vsand.fetch.BoardFetchService;
 import org.sheepy.vsand.model.vsand.BoardConstantBuffer;
 import org.sheepy.vsand.model.vsand.DrawCircle;
@@ -17,6 +18,7 @@ import org.sheepy.vsand.model.vsand.Material;
 import org.sheepy.vsand.model.vsand.VSandApplication;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +95,11 @@ public final class VSandTestHarness
 		{
 			simulationPipeline.repeat(repeatCount);
 		}
+	}
+
+	public void applyScenario(final Path scenarioPath) throws IOException
+	{
+		Scenario.parse(scenarioPath).applyTo(application);
 	}
 
 	public Material material(final String name)

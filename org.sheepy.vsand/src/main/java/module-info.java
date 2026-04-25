@@ -13,6 +13,7 @@ module org.sheepy.vsand {
 
 	exports org.sheepy.vsand;
 	exports org.sheepy.vsand.analysis;
+	exports org.sheepy.vsand.dump;
 	exports org.sheepy.vsand.logic;
 	exports org.sheepy.vsand.fetch;
 
