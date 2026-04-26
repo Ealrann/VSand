@@ -244,6 +244,33 @@ bool canUseFallbackPressureSource(ivec2 loc, ivec2 localLoc, int dir, uint liqui
 					&& localLoc.y < PRESSURE_LOCAL_SAFE_MAX_EXCLUSIVE);
 }
 
+bool isOverfullPressureMass(uint mass, uint minOverfull)
+{
+	return mass > M_FULL + minOverfull;
+}
+
+bool hasPressureMassGradient(uint sourceMass, uint targetMass, uint minDelta)
+{
+	return sourceMass > targetMass + minDelta;
+}
+
+bool hasPressureMassSignal(uint sourceMass, uint targetMass, uint minDelta, uint minOverfull)
+{
+	return hasPressureMassGradient(sourceMass, targetMass, minDelta)
+			|| isOverfullPressureMass(sourceMass, minOverfull);
+}
+
+bool hasStrongPressureMassSignal(uint sourceMass, uint targetMass, uint minDelta, uint minOverfull)
+{
+	return hasPressureMassGradient(sourceMass, targetMass, minDelta)
+			&& isOverfullPressureMass(sourceMass, minOverfull);
+}
+
+bool hasRearMassPressure(uint rearMass, uint currentMass, int offset)
+{
+	return rearMass > currentMass + uint(offset) * PRESSURE_REAR_MASS_DELTA_STEP;
+}
+
 bool hasRearPressure(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, uint currentMass, int density)
 {
 	for (int offset = 1; offset <= PRESSURE_REAR_LOOKBACK; offset++)
@@ -267,7 +294,7 @@ bool hasRearPressure(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, uint
 		}
 
 		const uint rearMass = rearInLocal ? cellMassSrc[rearLocal.x][rearLocal.y] : readMassGlobal(rearLoc);
-		if (rearMass > (currentMass + uint(offset) * M_EPS))
+		if (hasRearMassPressure(rearMass, currentMass, offset))
 		{
 			return true;
 		}
@@ -291,39 +318,6 @@ bool hasRearPressure(ivec2 loc, ivec2 localLoc, int dir, uint currentValue, uint
 	return false;
 }
 
-bool canMovePressureUp(ivec2 loc, ivec2 localLoc, uint currentValue, int density)
-{
-	if (isSupportedSettledPressureLiquid(loc, localLoc, currentValue, density) == false) return false;
-
-	const ivec2 targetLoc = loc + ivec2(0, -1);
-	const ivec2 targetLocal = localLoc + ivec2(0, -1);
-	if (isVerticalPressureOutlet(targetLoc, targetLocal, currentValue, density) == false) return false;
-
-	const uint currentMass = cellMassSrc[localLoc.x][localLoc.y];
-	const ivec2 downLoc = loc + ivec2(0, 1);
-	if (isOutsideBoard(downLoc) == false)
-	{
-		const ivec2 downLocal = localLoc + ivec2(0, 1);
-		const bool downInLocal = downLocal.y >= 0 && downLocal.y < WORKGROUP_SIZE;
-		const uint downValue = downInLocal ? cellMaterial[downLocal.x][downLocal.y] : readMaterialGlobal(downLoc);
-		if (downValue == currentValue)
-		{
-			const uint downMass = downInLocal ? cellMassSrc[downLocal.x][downLocal.y] : readMassGlobal(downLoc);
-			if (downMass > currentMass + (M_EPS << 1)) return true;
-		}
-	}
-
-	if (hasColumnPressureBelow(loc, localLoc, currentValue, currentMass))
-	{
-		return true;
-	}
-
-	const bool strongMass = currentMass > M_EQ_MAX + M_EPS;
-	const bool lateralPressure = hasRearPressure(loc, localLoc, -1, currentValue, currentMass, density)
-			|| hasRearPressure(loc, localLoc, 1, currentValue, currentMass, density);
-	return strongMass && lateralPressure;
-}
-
 bool hasColumnPressureBelow(ivec2 loc, ivec2 localLoc, uint currentValue, uint currentMass)
 {
 	for (int offset = 2; offset <= PRESSURE_COLUMN_LOOKBACK; offset++)
@@ -343,7 +337,7 @@ bool hasColumnPressureBelow(ivec2 loc, ivec2 localLoc, uint currentValue, uint c
 		}
 
 		const uint scanMass = scanInLocal ? cellMassSrc[scanLocal.x][scanLocal.y] : readMassGlobal(scanLoc);
-		if (scanMass > currentMass + (M_EPS << 1) || scanMass > M_FULL + (M_EPS << 2))
+		if (hasPressureMassSignal(scanMass, currentMass, PRESSURE_COLUMN_MASS_DELTA, PRESSURE_COLUMN_OVERFULL_MASS))
 		{
 			return true;
 		}

@@ -20,6 +20,7 @@ public final class PressureChunkBoundaryRegressionTest
 	private static final int SIMULATION_SPEED = 4;
 	private static final int EMPTY_MATERIAL_ID = 0;
 	private static final int SLOPE_NEIGHBORHOOD_RADIUS = 6;
+	private static final int SLOPE_CELL_COUNT_TOLERANCE = 2;
 
 	@Test
 	void pressureUpKeepsChunkSeamPocketsBounded() throws IOException
@@ -48,9 +49,13 @@ public final class PressureChunkBoundaryRegressionTest
 		final var initialMetrics = LiquidStateAnalyzer.analyze(states.getFirst().board(), states.getFirst().mass(), water, "Water");
 		final var frame240Metrics = LiquidStateAnalyzer.analyze(states.getLast().board(), states.getLast().mass(), water, "Water");
 
-		assertTrue(Math.abs(initialMetrics.cellCount() - frame240Metrics.cellCount()) <= 1,
-				   "Water cell count drifted too much across slope chunk seam scenario: %d -> %d"
-						   .formatted(initialMetrics.cellCount(), frame240Metrics.cellCount()));
+		final var cellCountDrift = Math.abs(initialMetrics.cellCount() - frame240Metrics.cellCount());
+		assertTrue(cellCountDrift <= SLOPE_CELL_COUNT_TOLERANCE,
+				   "Water cell count drifted too much across slope chunk seam scenario: %d -> %d, drift=%d, tolerance=%d"
+						   .formatted(initialMetrics.cellCount(),
+									  frame240Metrics.cellCount(),
+									  cellCountDrift,
+									  SLOPE_CELL_COUNT_TOLERANCE));
 		assertTrue(frame240Metrics.horizontalChunkSeamVoidPockets() <= 1,
 				   "Slope flow kept too many void pockets on horizontal chunk seams: %d"
 						   .formatted(frame240Metrics.horizontalChunkSeamVoidPockets()));

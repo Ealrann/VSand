@@ -81,6 +81,9 @@ public final class PressureLiquidRegressionTest
 		assertTrue(countWaterInRightArm(frame240, water) >= 14,
 				   "Expected at least 14 water cells in the U-pipe right arm at frame 240, got %d"
 						   .formatted(countWaterInRightArm(frame240, water)));
+		assertTrue(countRightArmWaterOverVoid(frame240, water) <= 2,
+				   "Expected at most 2 right-arm water cells over void at frame 240, got %d"
+						   .formatted(countRightArmWaterOverVoid(frame240, water)));
 	}
 
 	private static VSandTestHarness waterSpreadHarness() throws IOException
@@ -153,6 +156,22 @@ public final class PressureLiquidRegressionTest
 			for (int x = 42; x <= 46; x++)
 			{
 				if (sample.board().cell(x, y) == water)
+				{
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	private static int countRightArmWaterOverVoid(final Sample sample, final int water)
+	{
+		int count = 0;
+		for (int y = 0; y < sample.board().height() - 1; y++)
+		{
+			for (int x = 42; x <= 46; x++)
+			{
+				if (sample.board().cell(x, y) == water && sample.board().cell(x, y + 1) == 0)
 				{
 					count++;
 				}
