@@ -1,4 +1,5 @@
 .gradle/
+.mako-dev/
 .metadata
 *.class
 bin/
@@ -12,4 +13,3 @@ javacore.*
 *.dmp
 *.trc
 out/
-
