@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class LiquidMassInvariantTest
 {
-	private static final int M_CAP_MAX = 6144;
+	private static final int M_CAP_MAX = 32768;
 
 	@Test
 	void drawingWaterCreatesMassOnWaterOnly() throws IOException

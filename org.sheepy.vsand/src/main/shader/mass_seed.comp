@@ -92,19 +92,14 @@ void main()
 	const uint prev01 = packedU16Read(prevRow1, 0u);
 	const uint prev11 = packedU16Read(prevRow1, 16u);
 
-	const bool pressed00 = y0 > 0 && readMaterialGlobal(ivec2(x0, y0 - 1)) == mat00;
-	const bool pressed10 = y0 > 0 && readMaterialGlobal(ivec2(x0 + 1, y0 - 1)) == mat10;
-	const bool pressed01 = mat00 == mat01;
-	const bool pressed11 = mat10 == mat11;
-	const bool supported00 = mat00 == mat01;
-	const bool supported10 = mat10 == mat11;
-	const bool supported01 = (y0 + 2) < HEIGHT && readMaterialGlobal(ivec2(x0, y0 + 2)) == mat01;
-	const bool supported11 = (y0 + 2) < HEIGHT && readMaterialGlobal(ivec2(x0 + 1, y0 + 2)) == mat11;
-
-	const uint mass00 = isPressureLiquid(mat00) ? ((pressed00 || supported00) ? seededMass(prev00) : M_FULL) : 0u;
-	const uint mass10 = isPressureLiquid(mat10) ? ((pressed10 || supported10) ? seededMass(prev10) : M_FULL) : 0u;
-	const uint mass01 = isPressureLiquid(mat01) ? ((pressed01 || supported01) ? seededMass(prev01) : M_FULL) : 0u;
-	const uint mass11 = isPressureLiquid(mat11) ? ((pressed11 || supported11) ? seededMass(prev11) : M_FULL) : 0u;
+	// Mass rides with its particle: only newly created liquid cells
+	// (mass == 0, e.g. just drawn) are seeded. Topping up falling or partial
+	// cells would create mass out of nothing and keep feeding the pressure
+	// field forever.
+	const uint mass00 = isPressureLiquid(mat00) ? seededMass(prev00) : 0u;
+	const uint mass10 = isPressureLiquid(mat10) ? seededMass(prev10) : 0u;
+	const uint mass01 = isPressureLiquid(mat01) ? seededMass(prev01) : 0u;
+	const uint mass11 = isPressureLiquid(mat11) ? seededMass(prev11) : 0u;
 
 	const uint packedRow0 = (mass00 & PACKED_U16_MASK) | ((mass10 & PACKED_U16_MASK) << 16);
 	const uint packedRow1 = (mass01 & PACKED_U16_MASK) | ((mass11 & PACKED_U16_MASK) << 16);

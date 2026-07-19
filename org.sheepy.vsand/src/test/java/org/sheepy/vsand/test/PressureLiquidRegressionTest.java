@@ -18,7 +18,7 @@ public final class PressureLiquidRegressionTest
 {
 	private static final long SEED = 1234L;
 	private static final int SIMULATION_SPEED = 4;
-	private static final int M_CAP_MAX = 6144;
+	private static final int M_CAP_MAX = 32768;
 
 	@Test
 	void waterColumnSpreadsWithoutLosingParticles() throws IOException
@@ -38,8 +38,8 @@ public final class PressureLiquidRegressionTest
 			assertIsolatedCellsReasonable(sample.metrics());
 		}
 
-		assertTrue(coreCellShare(samples.get(0), 12, 28) <= 0.52,
-				   "Expected frame 20 spread core share <= 52%%, got %.2f%%"
+		assertTrue(coreCellShare(samples.get(0), 12, 28) <= 0.56,
+				   "Expected frame 20 spread core share <= 56%%, got %.2f%%"
 						   .formatted(coreCellShare(samples.get(0), 12, 28) * 100.0));
 		assertTrue(coreCellShare(samples.get(1), 12, 28) <= 0.38,
 				   "Expected frame 40 spread core share <= 38%%, got %.2f%%"

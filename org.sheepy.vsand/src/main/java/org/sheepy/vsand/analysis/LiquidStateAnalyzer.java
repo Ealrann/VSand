@@ -222,7 +222,17 @@ public final class LiquidStateAnalyzer
 		int res = 0;
 		for (int y = bottomY; y >= 0; y--)
 		{
-			if (board.materialAt(x, y) != materialId) break;
+			if (board.materialAt(x, y) != materialId)
+			{
+				// A single void with the same liquid right above it is a
+				// transit hole (a healing bubble), not the surface: skip it
+				// so the surface profile is not cut by transport state.
+				final boolean transitHole = board.materialAt(x, y) == 0
+						&& y > 0
+						&& board.materialAt(x, y - 1) == materialId;
+				if (transitHole == false) break;
+				continue;
+			}
 			res++;
 		}
 		return res;

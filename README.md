@@ -1,96 +1,135 @@
 # Vulkanized Sand
-Rewrite of the [**Falling Sand**](https://en.wikipedia.org/wiki/Falling-sand_game) game with Vulkan ([LWJGL3](https://www.lwjgl.org/)).
 
-Since that kind of game requires a lot of computing power, I wanted to exploit the graphic card capabilities to process and to display the particles (*parallel computing*).
+VSand is a [falling-sand](https://en.wikipedia.org/wiki/Falling-sand_game)
+game whose simulation and display run through Vulkan
+([LWJGL 3](https://www.lwjgl.org/)).
+
+Since that kind of game requires substantial compute power, the simulation
+uses the graphics card to process and display particles in parallel.
 
 License GPL-3.0. Feel free to redistribute (please let me know).
-Since version 1.2, the VSand releases contain an [OpenJDK with OpenJ9](https://www.eclipse.org/openj9/).
 
-Since v1.2.2, you can launch the game in *benchmark* mode, with or without window (*headless*). This mode run a predefined scene as fast as possible (no v-sync wait), for a fixed number of frames, and will then compute a score based on the duration.
+Some historical releases bundled an OpenJDK/OpenJ9 runtime. The current
+`jlink` build uses the active JDK's `java.home`, so the runtime vendor is
+the one selected by the builder rather than a project-wide guarantee.
 
-### Requirements
+Since v1.2.2, the game also has a benchmark mode, with a window or headless.
+It runs a predefined scene without waiting for v-sync, for a fixed number of
+frames, then computes a duration-based score.
 
-To launch the game, you only need to intall a recent [graphic driver](https://www.howtogeek.com/135976/how-to-update-your-graphics-drivers-for-maximum-gaming-performance/), with [Vulkan 1.0 compatibility](https://en.wikipedia.org/wiki/Vulkan_(API)#Compatibility).
+## Architecture
 
-### Download
+VSand is the end-to-end consumer of the Logoce stack:
+
+- `org.sheepy.vsand/src/main/model/VSand.lm` defines the game metamodel.
+- `org.sheepy.vsand/src/main/resources/Application.vsand.lm` is the main
+  application instance: engines, compute/graphic pipelines, GPU resources,
+  materials, transformations, scene, and UI.
+- Java `@ModelExtender` classes implement game-specific services and bind
+  named model objects to buffer content, dispatch sizes, input, and behavior.
+- Lily-vulkan allocations materialize the modeled Vulkan/OpenAL resources.
+- Compute shaders under `org.sheepy.vsand/src/main/shader` implement drawing,
+  board simulation, liquid pressure, and board-to-image conversion.
+
+Read [../ARCHITECTURE.md](../ARCHITECTURE.md) for adapter/allocation discovery
+and the complete launch loop. Focused implementation references include:
+
+- [doc/board-update-algorithm.md](doc/board-update-algorithm.md)
+- [doc/liquid-pressure.md](doc/liquid-pressure.md)
+- [doc/liquid-pressure-baseline.md](doc/liquid-pressure-baseline.md)
+- [state-dump-runner.md](state-dump-runner.md)
+
+Other root-level algorithm Markdown files are design/experiment history. Treat
+the current shaders, `Application.vsand.lm`, and the focused documents above
+as the source of truth, and re-check historical notes before implementing
+from them.
+
+## Requirements
+
+To launch a packaged game, install a recent graphics driver with
+[Vulkan 1.0 compatibility](https://en.wikipedia.org/wiki/Vulkan_(API)#Compatibility).
+A source build additionally requires JDK 25.
+
+## Download
 
 You can find the last release for free on [itch.io](https://ealrann.itch.io/vsand).
 
-### Any problem?
+## Any problem?
 
-The game run smoothly on my computers, but I cannot test it on every existing configurations. If you find any problem (game doesn´t start, crash, particles don´t move...), please consider opening an issue, or directly contact me.
+The game cannot be tested on every hardware and driver configuration. If it
+does not start, crashes, or particles do not move, please open an issue or
+contact the author.
 
-### Game
+## Game
 
 Here some materials you can find in the game:
 
-#### Sand
+### Sand
 ![Sand](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/sand.gif)
 
-#### Water
+### Water
 ![Water](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/water.gif)
 
-#### Plant
+### Plant
 ![Plant](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/plant.gif)
 ![Plant1](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/plant2.gif)
 ![Plant2](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/plant_fire.gif)
 
-#### Wax
+### Wax
 ![Wax](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/wax.gif)
 
-#### Fuel
+### Fuel
 ![Fuel](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/Fuel.gif)
 
-#### Lava
+### Lava
 ![Lava](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/lava.gif)
 
-#### Petrol
+### Petrol
 ![Petrol](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/Petrol.gif)
 
-#### Concrete
+### Concrete
 ![Concrete](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/concrete.gif)
 
-#### Dirt
+### Dirt
 ![Dirt](https://raw.githubusercontent.com/Ealrann/VSand/master/doc/image/dirt.gif)
 
-### Contribution
+## Development
 
 Feel free to open an issue if you want to suggest a feature or report a bug.
 
-If you want to contribute to the project, or simply run it from source:
-
-#### 1. JDK
-You need to setup a JDK 25 (for example, [Eclipse Temurin](https://adoptium.net/)).
-
-#### 2. Clone the repository
-Clone from the `root` branch, because it is preconfigured with the correct submodule layout and references:
+The current source layout is a Gradle composite with sibling `lmf`,
+`Lily-core`, `Lily-vulkan`, and `VSand` builds. From the composite
+workspace root:
 
 ```shell
-git clone --recursive --single-branch --branch root https://github.com/Ealrann/VSand.git
+./gradlew -p VSand :org.sheepy.vsand:run
+./gradlew -p VSand test
 ```
 
-#### 3. Run the game
-From the VSand project directory:
+Build a packaged runtime image with:
+
 ```shell
-cd VSand/VSand/
-./gradlew run
+./gradlew -p VSand :org.sheepy.vsand:jlink
 ```
 
-To update an existing clone, go back to the root directory (the one containing the submodules *Lily-core*, *Lily-vulkan*, *lmf*, and *VSand*), and use:
-```
-git pull --rebase --recurse-submodules
-```
+## Frameworks and APIs
 
-### Frameworks/API used
-#### Graphic
+### Graphics
+
 - [**LWJGL 3**](https://www.lwjgl.org/)
 - [**JOML**](https://github.com/JOML-CI/JOML)
 - [**Vulkan**](https://www.khronos.org/vulkan/)
 - [**Nuklear**](https://github.com/vurtun/nuklear)
-#### Design/Code
-- [**EMF** (Eclipse Modeling Framework)](https://www.eclipse.org/modeling/emf/)
-- [**Java** (especially jigsaw)](https://openjdk.java.net/projects/jigsaw/)
-#### Build
+
+### Design and code
+
+- [**LMF**](../lmf/README.md), the textual modeling framework used by the
+  application, engine, and game models
+- [**Lily-core**](../Lily-core/README.md), the application runtime
+- [**Lily-vulkan**](../Lily-vulkan/README.md), the Vulkan/OpenAL backend
+- **Java 25** and JPMS
+
+### Build
+
 - [**Gradle**](https://gradle.org/)
-- [**Java9-modularity**](https://github.com/java9-modularity/gradle-modules-plugin)
 - [**JLink**](https://docs.oracle.com/javase/9/tools/jlink.htm)

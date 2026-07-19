@@ -6,6 +6,7 @@ import org.sheepy.vsand.constants.BoardConstantBufferAdapter;
 import org.sheepy.vsand.constants.DrawConstantBufferAdapter;
 import org.sheepy.vsand.constants.MassConstantBufferAdapter;
 import org.sheepy.vsand.constants.PixelConstantBufferAdapter;
+import org.sheepy.vsand.constants.PressureConstantBufferAdapter;
 import org.sheepy.vsand.draw.DrawCircleAdapter;
 import org.sheepy.vsand.draw.DrawLineAdapter;
 import org.sheepy.vsand.draw.DrawSquareAdapter;
@@ -54,7 +55,9 @@ public final class Extenders implements IAdapterProvider
 						   DrawDispatchTaskLoader.class,
 						   MassUpdateDispatchTaskLoader.class,
 						   MassSeedDispatchTaskLoader.class,
-						   MassConstantBufferAdapter.class);
+						   PressureApplyDispatchTaskLoader.class,
+						   MassConstantBufferAdapter.class,
+						   PressureConstantBufferAdapter.class);
 	}
 
 	@Override

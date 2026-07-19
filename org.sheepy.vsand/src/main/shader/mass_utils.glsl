@@ -1,15 +1,20 @@
 #ifndef VSAND_MASS_UTILS_GLSL
 #define VSAND_MASS_UTILS_GLSL
 
+// Mass of a nominal full liquid cell.
 const uint M_FULL = 4096u;
-// Equilibrium max mass used by stable-state packing (small compressibility).
-const uint M_EQ_MAX = 4352u;
-// Absolute max mass used as a transport capacity clamp (temporary overfill to speed up pressure propagation).
-const uint M_CAP_MAX = 6144u;
+// Hydrostatic mass gradient per cell of depth: at rest, a cell holds
+// M_GRADIENT more mass than the cell above it. The mass field is a pressure
+// signal, not a conserved volume.
+const uint M_GRADIENT = 256u;
+// Transport/storage cap. Must be well above M_FULL so the field can represent
+// deep hydrostatic heads ((M_CAP_MAX - M_FULL) / M_GRADIENT cells, ~112).
+const uint M_CAP_MAX = 32768u;
 const uint M_EPS = 16u;
-const uint MIN_FLOW = 1u;
-const uint H_HEAD_DIV = 4u;
-const uint H_PIPE_HEAD_DIV = 2u;
+// Smallest mass a liquid cell may be drained to by the relaxation: a fully
+// drained cell would be re-seeded as a new cell (mass creation out of
+// nothing) and the board has no way to remove the visual cell anyway.
+const uint MIN_LIQUID_MASS = M_GRADIENT;
 
 const uint PACKED_U16_MASK = 0xFFFFu;
 

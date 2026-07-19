@@ -30,6 +30,11 @@
 					(constants name=MaterialCount size=4)
 					(constants name=Width constantId=1 size=4)
 					(constants name=Height constantId=2 size=4))
+				(Shader name=pressureApply stage=COMPUTE_BIT
+					(file=StringModuleResource name="" path=pressure_apply.comp.spv moduleName=org.sheepy.vsand)
+					(constants name=MaterialCount size=4)
+					(constants name=Width constantId=1 size=4)
+					(constants name=Height constantId=2 size=4))
 				(resources=BoardConstantBuffer name=BoardConstants)
 				(resources=ConstantBuffer name=SpecializationData)
 				(resources=MemoryChunk
@@ -105,32 +110,63 @@
 							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp","@Chunk Buffer")))
 							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
 							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp","@Chunk Buffer")))
 							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
 							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp","@Chunk Buffer")))
 							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
 							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp","@Chunk Buffer")))
 							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
 							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1)
 							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
 								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
-									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp",/engines.0/processes.0/resourcePkg/resources.7/parts.0/buffers.5)))
+									(BufferReference buffers="@Mass Buffer 1","@Mass Buffer 2","@Mass Buffer Tmp","@Chunk Buffer")))
 							(tasks=PushConstantBuffer buffer=@MassConstants stages=COMPUTE_BIT)
 							(tasks=DispatchTask name="Mass update" workgroupCountX=1 workgroupCountY=1))
 						(descriptorPool
 							(descriptorSets name="Mass Update" descriptors=@Config,@Board1,@Board2,@Mass1,@Mass2,@MassTmp,@Chunk))
 						(pushConstantRanges size=8 stages=COMPUTE_BIT))
+					(ComputePipeline name="Pressure Apply" specializationData=@SpecializationData layout="@Pressure Apply" shader=@pressureApply
+						(resourcePkg
+							(resources=ConstantBuffer name=PressureConstants))
+						(TaskPkg
+							(tasks=BindDescriptorSets descriptorSets="@Pressure Apply" bindPoint=COMPUTE)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(BufferReference buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")))
+							(tasks=PushConstantBuffer buffer=@PressureConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Pressure apply" workgroupCountX=1 workgroupCountY=1)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(BufferReference buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")))
+							(tasks=PushConstantBuffer buffer=@PressureConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Pressure apply" workgroupCountX=1 workgroupCountY=1)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(BufferReference buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")))
+							(tasks=PushConstantBuffer buffer=@PressureConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Pressure apply" workgroupCountX=1 workgroupCountY=1)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(BufferReference buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer")))
+							(tasks=PushConstantBuffer buffer=@PressureConstants stages=COMPUTE_BIT)
+							(tasks=DispatchTask name="Pressure apply" workgroupCountX=1 workgroupCountY=1)
+							(tasks=PipelineBarrier srcStage=COMPUTE_SHADER_BIT dstStage=COMPUTE_SHADER_BIT
+								(barriers=BufferBarrier srcAccessMask=SHADER_WRITE_BIT dstAccessMask=SHADER_READ_BIT
+									(BufferReference buffers="@Board Buffer 1","@Board Buffer 2","@Mass Buffer 1","@Mass Buffer 2","@Chunk Buffer"))))
+						(descriptorPool
+							(descriptorSets name="Pressure Apply" descriptors=@Config,@Chunk,@Board1,@Board2,@Mass1,@Mass2))
+						(pushConstantRanges size=16 stages=COMPUTE_BIT))
 					(pipelines=Pipeline name="Fetch"
 						(taskPkgs
 							(tasks=CompositeTask name="Fetch Board" enabled=false

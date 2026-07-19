@@ -1,0 +1,806 @@
+#version 450
+
+// Particle-level pressure transport for pressure liquids, applied after the
+// mass field has been relaxed (see mass_update.comp). Cell count is strictly
+// conserved: both operations are pure shifts.
+//
+// Phase LIFT (0): vertical column lift. When the pressure at the bottom of
+// a resting liquid column exceeds the column's weight by Q_LIFT and the
+// column top is a true surface (open sky), the column is extruded one cell
+// upward; the displaced void is inserted at the bottom of the column. This
+// is the operation that makes a U-pipe arm rise and pool edges level upward.
+//
+// Phase PULL (1): horizontal segment pull. A supported void adjacent to a
+// pressurized or stacked liquid row segment swallows it by one cell; the
+// hole reappears at the segment's far end, preferring a cell with open sky
+// (a surface) so holes exit the liquid body as fast as possible. This is the
+// operation that refills lift holes and drains liquid bodies sideways.
+//
+// Both phases run as separate dispatches: each reads a consistent snapshot
+// and writes the other board/mass buffer, so every invocation can evaluate
+// any operation it overlaps with deterministically (same inputs, same
+// result), without claims, shared memory or chunk-locality limits. Every
+// cell is written (copy-through), which keeps the two board buffers coherent.
+//
+// LIFT reads board[w] and writes board[1-w]; PULL reads board[1-w] and
+// writes board[w] back, so after both phases the final state is in board[w],
+// exactly where the next tick expects it.
+
+#define WORKGROUP_SIZE 8
+
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
+
+layout (constant_id = 0) const int MATERIAL_COUNT = 1;
+layout (constant_id = 1) const int WIDTH = 1;
+layout (constant_id = 2) const int HEIGHT = 1;
+
+const int SWIZZLED_WIDTH = WIDTH / 2;
+const int SWIZZLED_HEIGHT = HEIGHT / 2;
+const int CHUNK_WIDTH = WIDTH / 16;
+const int CHUNK_HEIGHT = HEIGHT / 16;
+
+#include "mass_utils.glsl"
+
+const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
+const int CHUNK_FLAG_SIM_ACTIVE = 1;
+const int CHUNK_FLAG_RENDER_DIRTY = 2;
+
+const uint PHASE_LIFT = 0u;
+const uint PHASE_PULL = 1u;
+
+// Max length of a lifted column (run + outlet). Bounds the redundant
+// per-cell column scans; columns longer than this cannot lift.
+const int LIFT_MAX = 48;
+// Max length of a pulled row segment.
+const int PULL_MAX = 24;
+// Overpressure (above the hydrostatic reference of the run's two deepest
+// cells) required before a column lifts. Must stay above the mass noise
+// produced by particle movement (about one M_GRADIENT).
+const uint Q_LIFT = 320u;
+// Extra overpressure required per cell of run length (see the margin
+// comment in liftTriggersForRun).
+const uint Q_LIFT_PER_CELL = 16u;
+// How far a buoyant bubble (void with the same liquid above and below) warps
+// upward per LIFT pass. The body in between is identical liquid, so only the
+// bubble visibly moves; rising at gravity pace (1 cell/tick) would leave
+// landing-era bubbles wandering inside pools for hundreds of ticks.
+const int BUBBLE_FLOAT_MAX = 6;
+
+struct Entry
+{
+	int isStatic;
+	int density;
+	int runoff;
+	int flags;
+	vec4 color;
+};
+
+layout (push_constant) uniform PushConstants
+{
+	uint boardToWrite;
+	uint phase;
+	uint seed;
+	uint _pad;
+} pushConstants;
+
+layout(binding = 0) uniform SConfiguration
+{
+	Entry materials[MATERIAL_COUNT];
+} configuration;
+
+layout(binding = 1) buffer SChunks
+{
+	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
+} chunks;
+
+layout(binding = 2) buffer SBoard1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board1;
+
+layout(binding = 3) buffer SBoard2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT];
+} board2;
+
+layout(binding = 4) buffer SMass1
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass1;
+
+layout(binding = 5) buffer SMass2
+{
+	uint data[SWIZZLED_WIDTH * SWIZZLED_HEIGHT * 2];
+} mass2;
+
+shared uint chunkChanged;
+
+struct CellState
+{
+	uint material;
+	uint mass;
+};
+
+bool isOutsideBoard(ivec2 loc);
+bool srcIsFirstBoard();
+uint readPackedBoardSrc(ivec2 swizzledLoc);
+void writePackedBoardDst(ivec2 swizzledLoc, uint value);
+uint readPackedMassWordSrc(int index);
+void writePackedMassWordDst(int index, uint value);
+uint readMaterial(ivec2 loc);
+uint readMass(ivec2 loc);
+bool isPressureLiquid(uint materialId);
+bool isBarrierFor(uint materialId, int density);
+CellState newCellState(ivec2 loc);
+CellState liftNewState(ivec2 loc, CellState current);
+CellState pullNewState(ivec2 loc, CellState current);
+int pullTieBreak(int y);
+int bubbleFloatDistance(ivec2 voidLoc, uint liquidValue);
+bool isBubbleWarpSource(ivec2 loc, uint liquidValue);
+bool isUnderShortSky(ivec2 loc);
+bool isUnderOpenSky(ivec2 loc);
+bool liftTriggersForRun(ivec2 topLoc, uint liquidValue);
+uint liftRunBottomMass(ivec2 topLoc, uint liquidValue);
+bool isEligiblePullSource(ivec2 loc);
+bool isConveyableHole(ivec2 voidLoc, uint liquidValue);
+int pullEatDirection(ivec2 voidLoc);
+int pullSegmentEnd(ivec2 nearLoc, int awayDir, uint liquidValue, out bool triggered);
+bool pullWinsRun(ivec2 voidLoc, int eatDir, uint liquidValue);
+
+void main()
+{
+	const uint chunkIndex = gl_WorkGroupID.y + gl_WorkGroupID.x * uint(CHUNK_HEIGHT);
+	if (gl_LocalInvocationIndex == 0)
+	{
+		chunkChanged = 0u;
+	}
+
+	barrier();
+
+	const ivec2 swizzledLoc = ivec2(gl_WorkGroupID.xy) * WORKGROUP_SIZE + ivec2(gl_LocalInvocationID.xy);
+	const int baseIndex = (swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y) * 2;
+	const int x0 = swizzledLoc.x << 1;
+	const int y0 = swizzledLoc.y << 1;
+
+	if (isOutsideBoard(ivec2(x0, y0)))
+	{
+		return;
+	}
+
+	const uint srcBoard = readPackedBoardSrc(swizzledLoc);
+	const uint srcMassRow0 = readPackedMassWordSrc(baseIndex);
+	const uint srcMassRow1 = readPackedMassWordSrc(baseIndex + 1);
+
+	const CellState s00 = newCellState(ivec2(x0, y0));
+	const CellState s10 = newCellState(ivec2(x0 + 1, y0));
+	const CellState s01 = newCellState(ivec2(x0, y0 + 1));
+	const CellState s11 = newCellState(ivec2(x0 + 1, y0 + 1));
+
+	const uint dstBoard = s00.material | (s10.material << 8) | (s01.material << 16) | (s11.material << 24);
+	const uint dstMassRow0 = (s00.mass & PACKED_U16_MASK) | ((s10.mass & PACKED_U16_MASK) << 16);
+	const uint dstMassRow1 = (s01.mass & PACKED_U16_MASK) | ((s11.mass & PACKED_U16_MASK) << 16);
+
+	writePackedBoardDst(swizzledLoc, dstBoard);
+	writePackedMassWordDst(baseIndex, dstMassRow0);
+	writePackedMassWordDst(baseIndex + 1, dstMassRow1);
+
+	if (dstBoard != srcBoard || dstMassRow0 != srcMassRow0 || dstMassRow1 != srcMassRow1)
+	{
+		atomicOr(chunkChanged, 1u);
+	}
+
+	barrier();
+
+	if (gl_LocalInvocationIndex == 0 && chunkChanged != 0u)
+	{
+		atomicOr(chunks.data[int(chunkIndex)], CHUNK_FLAG_SIM_ACTIVE | CHUNK_FLAG_RENDER_DIRTY);
+	}
+}
+
+CellState newCellState(ivec2 loc)
+{
+	const uint material = readMaterial(loc);
+	const CellState current = CellState(material, isPressureLiquid(material) ? readMass(loc) : 0u);
+
+	return pushConstants.phase == PHASE_LIFT ? liftNewState(loc, current) : pullNewState(loc, current);
+}
+
+// ---------------------------------------------------------------------------
+// Phase LIFT
+// ---------------------------------------------------------------------------
+
+// The lift trigger for the column run whose top cell is topLoc: the run must
+// rest on a barrier within LIFT_MAX cells and hold at least 2 cells (a
+// single cell would only hop up and fall back). The pressure condition is
+// evaluated at the bottom of the run — the two deepest cells must exceed
+// the weight of the column above them by Q_LIFT — because that is where
+// pressure from a connected body arrives first (a U-pipe arm receives it
+// from the channel below, a low pool column through the floor rows), so the
+// trigger does not wait for the signal to climb the column. Requiring two
+// cells filters single-cell transients: a lift is a 1-cell (4096 mass)
+// impulse and firing on noise would churn forever.
+bool liftTriggersForRun(ivec2 topLoc, uint liquidValue)
+{
+	const int density = configuration.materials[liquidValue].density;
+	uint massAbove = 0u;
+	uint massBottom = readMass(topLoc);
+	int length = 1;
+
+	for (int offset = 1; offset < LIFT_MAX; offset++)
+	{
+		const ivec2 scanLoc = topLoc + ivec2(0, offset);
+		const bool outside = isOutsideBoard(scanLoc);
+		const uint scanValue = outside ? 0u : readMaterial(scanLoc);
+		if (outside || scanValue != liquidValue)
+		{
+			if (length < 2)
+			{
+				return false;
+			}
+			if (outside == false && isBarrierFor(scanValue, density) == false)
+			{
+				return false;
+			}
+			// The margin scales with the run length: a settled column's
+			// equilibrium sits exactly Q_LIFT below the plain reference (the
+			// surface anchor's fixed point), and the field noise from row
+			// equalization grows with depth — without the slope, deep pools
+			// flicker across the trigger and "boil" pointless full-depth
+			// lifts.
+			const uint margin = Q_LIFT + uint(length) * Q_LIFT_PER_CELL;
+			const uint refBottom = M_FULL + uint(length - 1) * M_GRADIENT + margin;
+			const uint refAbove = M_FULL + uint(length - 2) * M_GRADIENT + margin;
+			return massBottom >= refBottom && massAbove >= refAbove;
+		}
+		massAbove = massBottom;
+		massBottom = readMass(scanLoc);
+		length++;
+	}
+
+	return false;
+}
+
+// A bubble is a void with the same pressure liquid directly above and below
+// (floor-supported holes belong to the pull conveyor instead). It warps to
+// the highest same-liquid cell within BUBBLE_FLOAT_MAX above it; returns 0
+// when this void is not a bubble. When the scan stops at another bubble,
+// the warp lands one cell short, keeping a liquid spacer: bubbles stacking
+// directly on each other could no longer float and would jam into chains.
+int bubbleFloatDistance(ivec2 voidLoc, uint liquidValue)
+{
+	const ivec2 belowLoc = voidLoc + ivec2(0, 1);
+	if (isOutsideBoard(belowLoc) || readMaterial(belowLoc) != liquidValue)
+	{
+		return 0;
+	}
+
+	int rise = 0;
+	for (int offset = 1; offset <= BUBBLE_FLOAT_MAX; offset++)
+	{
+		const ivec2 scanLoc = voidLoc - ivec2(0, offset);
+		if (isOutsideBoard(scanLoc))
+		{
+			return rise;
+		}
+		if (readMaterial(scanLoc) != liquidValue)
+		{
+			const ivec2 aboveStopLoc = scanLoc - ivec2(0, 1);
+			const bool stoppedAtBubble = readMaterial(scanLoc) == 0u
+					&& isOutsideBoard(aboveStopLoc) == false
+					&& readMaterial(aboveStopLoc) == liquidValue;
+			return stoppedAtBubble ? max(rise - 1, 0) : rise;
+		}
+		rise = offset;
+	}
+	return rise;
+}
+
+// True when a bubble warping up lands exactly on this liquid cell.
+bool isBubbleWarpSource(ivec2 loc, uint liquidValue)
+{
+	for (int offset = 1; offset <= BUBBLE_FLOAT_MAX; offset++)
+	{
+		const ivec2 scanLoc = loc + ivec2(0, offset);
+		if (isOutsideBoard(scanLoc))
+		{
+			return false;
+		}
+		const uint scanValue = readMaterial(scanLoc);
+		if (scanValue == liquidValue)
+		{
+			continue;
+		}
+		if (scanValue != 0u)
+		{
+			return false;
+		}
+		return bubbleFloatDistance(scanLoc, liquidValue) == offset;
+	}
+	return false;
+}
+
+// True when the two cells above loc are void: enough sky to tell a surface
+// exit from a passing 1-cell bubble, without letting splash strays higher
+// up veto it (the stack-drain erosion of a churning slope must keep going).
+bool isUnderShortSky(ivec2 loc)
+{
+	for (int offset = 1; offset <= 2; offset++)
+	{
+		const ivec2 scanLoc = loc - ivec2(0, offset);
+		if (isOutsideBoard(scanLoc))
+		{
+			return true;
+		}
+		if (readMaterial(scanLoc) != 0u)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+// True when only void sits above loc (within a small lookup): the cell is
+// part of an open surface rather than an enclosed channel or body interior.
+bool isUnderOpenSky(ivec2 loc)
+{
+	for (int offset = 1; offset <= 6; offset++)
+	{
+		const ivec2 scanLoc = loc - ivec2(0, offset);
+		if (isOutsideBoard(scanLoc))
+		{
+			return true;
+		}
+		if (readMaterial(scanLoc) != 0u)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+// Mass of the last same-liquid cell of the column run below topLoc.
+uint liftRunBottomMass(ivec2 topLoc, uint liquidValue)
+{
+	uint bottomMass = readMass(topLoc);
+	for (int offset = 1; offset < LIFT_MAX; offset++)
+	{
+		const ivec2 scanLoc = topLoc + ivec2(0, offset);
+		if (isOutsideBoard(scanLoc) || readMaterial(scanLoc) != liquidValue)
+		{
+			break;
+		}
+		bottomMass = readMass(scanLoc);
+	}
+	return bottomMass;
+}
+
+CellState liftNewState(ivec2 loc, CellState current)
+{
+	if (current.material == 0u)
+	{
+		const ivec2 belowLoc = loc + ivec2(0, 1);
+		if (isOutsideBoard(belowLoc))
+		{
+			return current;
+		}
+		const uint belowValue = readMaterial(belowLoc);
+
+		// Buoyant bubble: warp toward the surface by swapping with the
+		// highest same-liquid cell within BUBBLE_FLOAT_MAX.
+		if (isPressureLiquid(belowValue))
+		{
+			const int rise = bubbleFloatDistance(loc, belowValue);
+			if (rise > 0)
+			{
+				const ivec2 swapLoc = loc - ivec2(0, rise);
+				return CellState(belowValue, min(readMass(swapLoc), M_CAP_MAX));
+			}
+		}
+
+		// Outlet candidate: become the new top of the lifted column. It is
+		// born with the mass of the voided bottom cell (exact conservation):
+		// the interior of the converged column stays untouched, and the
+		// inherited overpressure surfaces where the anchor and the row
+		// equalization absorb it instead of re-firing the bottom trigger.
+		// Only true surfaces are extruded: lifting into an interior hole
+		// would bubble it upward through the body (bubbles float and the
+		// pull conveys floor holes instead).
+		if (isPressureLiquid(belowValue) && isUnderOpenSky(loc) && liftTriggersForRun(belowLoc, belowValue))
+		{
+			// Re-gauge to the destination: carrying the bottom's deep
+			// pressure to an open surface would make the fresh cell
+			// re-trigger lifts and pulls. The destroyed excess is
+			// replenished by the surface anchor on the source side.
+			return CellState(belowValue, min(liftRunBottomMass(belowLoc, belowValue), M_FULL));
+		}
+		return current;
+	}
+
+	if (isPressureLiquid(current.material) == false)
+	{
+		return current;
+	}
+
+	// Warp source: a bubble below me lands here; I take its place.
+	if (isBubbleWarpSource(loc, current.material))
+	{
+		return CellState(0u, 0u);
+	}
+
+	// Run member candidate: find the top of my column run; the run lifts only
+	// if the cell above the top is a void outlet and the trigger holds.
+	const uint liquidValue = current.material;
+	ivec2 topLoc = loc;
+	for (int offset = 1; offset < LIFT_MAX; offset++)
+	{
+		const ivec2 scanLoc = loc + ivec2(0, -offset);
+		if (isOutsideBoard(scanLoc) || readMaterial(scanLoc) != liquidValue)
+		{
+			break;
+		}
+		topLoc = scanLoc;
+	}
+
+	const ivec2 outletLoc = topLoc + ivec2(0, -1);
+	if (isOutsideBoard(outletLoc) || readMaterial(outletLoc) != 0u || isUnderOpenSky(outletLoc) == false)
+	{
+		return current;
+	}
+	if ((loc.y - topLoc.y) + 1 >= LIFT_MAX)
+	{
+		// My distance to the top reached the scan cap: the run may be longer
+		// than what other members can see, so nobody lifts it.
+		return current;
+	}
+	if (liftTriggersForRun(topLoc, liquidValue) == false)
+	{
+		return current;
+	}
+
+	const ivec2 belowLoc = loc + ivec2(0, 1);
+	const uint belowValue = isOutsideBoard(belowLoc) ? 0u : readMaterial(belowLoc);
+	if (belowValue != liquidValue)
+	{
+		// Bottom of the run: the displaced void is inserted here.
+		return CellState(0u, 0u);
+	}
+
+	// Interior run cell: the cell "moving up" into my place holds the same
+	// liquid, so nothing changes — keeping my mass leaves the relaxed field
+	// untouched and the next lift can trigger without re-convergence delay.
+	return current;
+}
+
+// ---------------------------------------------------------------------------
+// Phase PULL
+// ---------------------------------------------------------------------------
+
+int pullTieBreak(int y)
+{
+	const uint hash = (uint(y) * 2654435761u) ^ pushConstants.seed;
+	return ((hash ^ (hash >> 16)) & 1u) == 0u ? 1 : -1;
+}
+
+bool isSupportedVoid(ivec2 loc)
+{
+	const ivec2 belowLoc = loc + ivec2(0, 1);
+	return isOutsideBoard(belowLoc) || readMaterial(belowLoc) != 0u;
+}
+
+// A hole is conveyed laterally only while it sits on a barrier (the floor
+// crawl that routes lift holes back to the pressure source). A hole with
+// liquid below is a buoyant bubble: pulling it sideways would make it
+// migrate toward the higher-pressure bulk and wander there; gravity pops it
+// straight up instead.
+bool isConveyableHole(ivec2 voidLoc, uint liquidValue)
+{
+	const ivec2 belowLoc = voidLoc + ivec2(0, 1);
+	if (isOutsideBoard(belowLoc))
+	{
+		return true;
+	}
+	const uint belowValue = readMaterial(belowLoc);
+	if (belowValue == 0u || belowValue == liquidValue)
+	{
+		return false;
+	}
+	return isBarrierFor(belowValue, configuration.materials[liquidValue].density);
+}
+
+// A cell a void may eat: a pressure liquid that is not free-falling.
+bool isEligiblePullSource(ivec2 loc)
+{
+	if (isOutsideBoard(loc) || isPressureLiquid(readMaterial(loc)) == false)
+	{
+		return false;
+	}
+	const ivec2 belowLoc = loc + ivec2(0, 1);
+	return isOutsideBoard(belowLoc) || readMaterial(belowLoc) != 0u;
+}
+
+// The side a void eats from: the neighbor under the higher pressure, so a
+// hole left by a column lift is always refilled from the pressurized side
+// instead of letting gravity undo the lift on an unlucky random pick.
+// Returns -1 (eats its left neighbor), +1 (right), or 0 (no pull).
+int pullEatDirection(ivec2 voidLoc)
+{
+	if (isSupportedVoid(voidLoc) == false)
+	{
+		return 0;
+	}
+
+	const ivec2 leftLoc = voidLoc + ivec2(-1, 0);
+	const ivec2 rightLoc = voidLoc + ivec2(1, 0);
+	const bool leftEligible = isEligiblePullSource(leftLoc);
+	const bool rightEligible = isEligiblePullSource(rightLoc);
+
+	if (leftEligible == false && rightEligible == false) return 0;
+	if (rightEligible == false) return -1;
+	if (leftEligible == false) return 1;
+
+	const uint leftMass = readMass(leftLoc);
+	const uint rightMass = readMass(rightLoc);
+	if (leftMass != rightMass)
+	{
+		return leftMass > rightMass ? -1 : 1;
+	}
+	return pullTieBreak(voidLoc.y);
+}
+
+// Walks the segment starting at nearLoc (the cell adjacent to the pulled
+// void) away from the void, and returns its length. The segment ends at the
+// first cell with open sky above it (so the hole surfaces immediately), at
+// the end of the liquid run, or at PULL_MAX. The segment is allowed to move
+// when it is fed by genuine overpressure (depth-corrected), or when it
+// drains a stacked cell while ending at open sky (surface leveling); the
+// latter keeps holes out of the bulk interior.
+int pullSegmentEnd(ivec2 nearLoc, int awayDir, uint liquidValue, out bool triggered)
+{
+	bool stacked = false;
+	bool endsAtOpenSky = false;
+	int length = 0;
+
+	for (int offset = 0; offset < PULL_MAX; offset++)
+	{
+		const ivec2 scanLoc = nearLoc + ivec2(awayDir * offset, 0);
+		if (isOutsideBoard(scanLoc) || readMaterial(scanLoc) != liquidValue)
+		{
+			break;
+		}
+		length = offset + 1;
+
+		const ivec2 aboveLoc = scanLoc + ivec2(0, -1);
+		const uint aboveValue = isOutsideBoard(aboveLoc) ? 0u : readMaterial(aboveLoc);
+		if (aboveValue == liquidValue)
+		{
+			// Only a stack of 2+ counts: single-cell ripples are below the
+			// leveling resolution, and draining them just churns the
+			// surface forever.
+			const ivec2 above2Loc = scanLoc + ivec2(0, -2);
+			if (isOutsideBoard(above2Loc) == false && readMaterial(above2Loc) == liquidValue)
+			{
+				stacked = true;
+			}
+		}
+		else if (aboveValue == 0u && offset > 0 && isUnderShortSky(scanLoc))
+		{
+			// Genuine sky (not just a 1-cell bubble passing above): the hole
+			// can exit here.
+			endsAtOpenSky = true;
+			break;
+		}
+	}
+
+	const bool drainsToSurface = stacked && endsAtOpenSky;
+	triggered = length > 0 && drainsToSurface;
+	return length;
+}
+
+// Two voids flanking one liquid run may both want to eat it. The void whose
+// eaten neighbor holds the higher pressure wins; ties go to the lower x.
+// All evaluations are pure functions of the snapshot, so every overlapping
+// invocation reaches the same verdict.
+bool pullWinsRun(ivec2 voidLoc, int eatDir, uint liquidValue)
+{
+	const ivec2 nearLoc = voidLoc + ivec2(eatDir, 0);
+
+	for (int offset = 1; offset <= 2 * PULL_MAX; offset++)
+	{
+		const ivec2 scanLoc = nearLoc + ivec2(eatDir * offset, 0);
+		if (isOutsideBoard(scanLoc))
+		{
+			return true;
+		}
+		const uint scanValue = readMaterial(scanLoc);
+		if (scanValue == liquidValue)
+		{
+			continue;
+		}
+		if (scanValue != 0u)
+		{
+			return true;
+		}
+
+		// Competing void at the other end of the run.
+		const ivec2 otherLoc = scanLoc;
+		if (pullEatDirection(otherLoc) != -eatDir)
+		{
+			return true;
+		}
+		const uint myMass = readMass(nearLoc);
+		const uint otherMass = readMass(otherLoc + ivec2(-eatDir, 0));
+		if (myMass != otherMass)
+		{
+			return myMass > otherMass;
+		}
+		return voidLoc.x < otherLoc.x;
+	}
+
+	return true;
+}
+
+CellState pullNewState(ivec2 loc, CellState current)
+{
+	if (current.material == 0u)
+	{
+		const int eatDir = pullEatDirection(loc);
+		if (eatDir == 0)
+		{
+			return current;
+		}
+		const ivec2 nearLoc = loc + ivec2(eatDir, 0);
+		const uint nearValue = readMaterial(nearLoc);
+		bool triggered;
+		pullSegmentEnd(nearLoc, eatDir, nearValue, triggered);
+		// An enclosed hole sitting on a barrier is transport debt: refilling
+		// it is always right, no pressure trigger needed.
+		triggered = triggered || (isUnderOpenSky(loc) == false && isConveyableHole(loc, nearValue));
+		if (triggered && pullWinsRun(loc, eatDir, nearValue))
+		{
+			// Re-gauge open-frontier fills to the surface value: importing
+			// deep pressure there would lift-hop the advancing front instead
+			// of spreading it. Enclosed fills (channels, hole healing) keep
+			// the conveyed pressure.
+			const uint cap = isUnderOpenSky(loc) ? M_FULL : M_CAP_MAX;
+			return CellState(nearValue, min(readMass(nearLoc), cap));
+		}
+		return current;
+	}
+
+	if (isPressureLiquid(current.material) == false)
+	{
+		return current;
+	}
+
+	// Segment member candidate: a void on either side may eat my run.
+	const uint liquidValue = current.material;
+	for (int side = 0; side < 2; side++)
+	{
+		const int toVoid = side == 0 ? 1 : -1;
+		int voidDistance = 0;
+		for (int offset = 1; offset <= PULL_MAX; offset++)
+		{
+			const ivec2 scanLoc = loc + ivec2(toVoid * offset, 0);
+			if (isOutsideBoard(scanLoc))
+			{
+				break;
+			}
+			const uint scanValue = readMaterial(scanLoc);
+			if (scanValue == liquidValue)
+			{
+				continue;
+			}
+			if (scanValue == 0u)
+			{
+				voidDistance = offset;
+			}
+			break;
+		}
+		if (voidDistance == 0)
+		{
+			continue;
+		}
+
+		const ivec2 voidLoc = loc + ivec2(toVoid * voidDistance, 0);
+		if (pullEatDirection(voidLoc) != -toVoid)
+		{
+			continue;
+		}
+
+		const ivec2 nearLoc = voidLoc + ivec2(-toVoid, 0);
+		bool triggered;
+		const int segmentLength = pullSegmentEnd(nearLoc, -toVoid, liquidValue, triggered);
+		triggered = triggered || (isUnderOpenSky(voidLoc) == false && isConveyableHole(voidLoc, liquidValue));
+		if (triggered == false || voidDistance > segmentLength)
+		{
+			continue;
+		}
+		if (pullWinsRun(voidLoc, -toVoid, liquidValue) == false)
+		{
+			continue;
+		}
+
+		if (voidDistance == segmentLength)
+		{
+			// Far end of the segment: the hole lands here.
+			return CellState(0u, 0u);
+		}
+		// Interior segment cell: take the state of my neighbor away from the
+		// void.
+		const ivec2 rearLoc = loc + ivec2(-toVoid, 0);
+		return CellState(liquidValue, min(readMass(rearLoc), M_CAP_MAX));
+	}
+
+	return current;
+}
+
+// ---------------------------------------------------------------------------
+// Buffers and helpers
+// ---------------------------------------------------------------------------
+
+bool isOutsideBoard(ivec2 loc)
+{
+	return (loc.x < 0 || loc.y < 0 || loc.x >= WIDTH || loc.y >= HEIGHT);
+}
+
+bool isPressureLiquid(uint materialId)
+{
+	return (uint(configuration.materials[materialId].flags) & MATERIAL_FLAG_PRESSURE_LIQUID) != 0u;
+}
+
+bool isBarrierFor(uint materialId, int density)
+{
+	return configuration.materials[materialId].isStatic == 1
+			|| configuration.materials[materialId].density >= density;
+}
+
+// LIFT reads the freshly written board (board[w]); PULL reads LIFT's output.
+bool srcIsFirstBoard()
+{
+	const bool writeIsFirst = pushConstants.boardToWrite == 0u;
+	return pushConstants.phase == PHASE_LIFT ? writeIsFirst : !writeIsFirst;
+}
+
+uint readPackedBoardSrc(ivec2 swizzledLoc)
+{
+	const int index = swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y;
+	return srcIsFirstBoard() ? board1.data[index] : board2.data[index];
+}
+
+void writePackedBoardDst(ivec2 swizzledLoc, uint value)
+{
+	const int index = swizzledLoc.x * SWIZZLED_HEIGHT + swizzledLoc.y;
+	if (srcIsFirstBoard())
+		board2.data[index] = value;
+	else
+		board1.data[index] = value;
+}
+
+uint readPackedMassWordSrc(int index)
+{
+	return srcIsFirstBoard() ? mass1.data[index] : mass2.data[index];
+}
+
+void writePackedMassWordDst(int index, uint value)
+{
+	if (srcIsFirstBoard())
+		mass2.data[index] = value;
+	else
+		mass1.data[index] = value;
+}
+
+uint readMaterial(ivec2 loc)
+{
+	const ivec2 swizzled = loc >> 1;
+	const uint offset = ((loc.x & 1) | ((loc.y & 1) << 1)) << 3;
+	const uint value = readPackedBoardSrc(swizzled);
+
+	return ((value >> offset) & 0xFFu);
+}
+
+uint readMass(ivec2 loc)
+{
+	const uvec2 ms = massIndexShift(loc);
+	const uint word = readPackedMassWordSrc(int(ms.x));
+	return packedU16Read(word, ms.y);
+}

@@ -182,7 +182,8 @@ If multiple model rules write to the same `(catalyst, reactant)` matrix entry, t
 
 ## 3) Pipeline scheduling (what runs each frame)
 
-From `Application.vsand.lm`, the compute process contains three compute pipelines:
+From `Application.vsand.lm`, the compute process contains these pipelines
+(the mass/pressure stages are described in `doc/liquid-pressure.md`):
 
 1) **Draw** (`draw.comp`)
    - Runs only when there are draw commands in the queue.
@@ -190,11 +191,14 @@ From `Application.vsand.lm`, the compute process contains three compute pipeline
    - Sets affected chunks to state `3` (active + render-dirty).
 
 2) **Step / Update Board** (`board_update.comp`)
-   - This is the simulation tick.
-   - It is wrapped in a `CompositeTask` with a variable `repeatCount` (“speed”), so multiple steps can be executed per frame.
+   - This is the simulation tick (movement + transformations).
+   - The whole `Simulation` composite pipeline repeats `speed` times per frame.
    - Each repeat pushes 2 values via push constants:
      - a random seed (`float`)
      - the destination board index (`uint boardToWrite`)
+   - It is followed each tick by `mass_seed.comp`, six `mass_update.comp`
+     passes (hydrostatic pressure field) and four `pressure_apply.comp`
+     dispatches (column lift + segment pull); see `doc/liquid-pressure.md`.
 
 3) **Board to Pixel** (`board_to_pixel.comp`)
    - Rasterizes the current board buffer to an output storage image (the displayed “board image”).

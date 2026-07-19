@@ -21,7 +21,21 @@ public final class MassConstantBufferAdapter implements IConstantBufferUpdater
 {
 	private static final int BYTE_SIZE = 2 * Integer.BYTES;
 	private static final int STEP_POSITION = Integer.BYTES;
-	private static final int[] STEP_SEQUENCE = { 0, 1, 2, 1, 2, 3 };
+
+	// Pass encoding for mass_update.comp: bits 0..3 = mode (0/1 pack pairs,
+	// 2 row equalize, 3 column profile), bit 4 = buffer parity (must
+	// alternate), bits 8..15 = row segment offset. Alternating exact column
+	// profiles and row equalizations converge the field like an
+	// alternating-direction solver.
+	private static final int ROW_EQUALIZE = 2;
+	private static final int COLUMN_PROFILE = 3;
+	private static final int PARITY = 16;
+	private static final int[] STEP_SEQUENCE = { COLUMN_PROFILE,
+												 ROW_EQUALIZE | PARITY,
+												 COLUMN_PROFILE,
+												 ROW_EQUALIZE | PARITY | (16 << 8),
+												 COLUMN_PROFILE,
+												 ROW_EQUALIZE | PARITY | (8 << 8) };
 
 	private final ConstantBuffer constantBuffer;
 	private final BoardConstantBuffer boardConstantBuffer;

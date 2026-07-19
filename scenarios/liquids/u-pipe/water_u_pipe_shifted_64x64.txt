@@ -1,0 +1,16 @@
+# 64x64
+# Seam-hypothesis variant: same U-pipe as water_u_pipe_64x64 shifted up 6 cells.
+# If the right arm stalls at the y=47/48 chunk seam again (instead of a fixed
+# height above the channel), the column lift is seam-blocked.
+frame Wall 1
+
+# U pipe walls.
+line Wall 16 4 16 48 2
+square Wall 32 11 14
+square Wall 32 25 14
+square Wall 32 37 14
+line Wall 48 4 48 48 2
+line Wall 16 48 48 48 2
+
+# Higher fill in the left arm.
+line Water 20 10 20 44 5

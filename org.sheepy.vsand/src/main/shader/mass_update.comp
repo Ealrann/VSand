@@ -1,5 +1,18 @@
 #version 450
 
+// Relaxes the liquid mass field toward a hydrostatic equilibrium:
+// at rest, mass(x, y) == mass(x, y-1) + M_GRADIENT inside each liquid body,
+// so the mass field encodes pressure head and can drive particle-level
+// pressure moves (see pressure_apply.comp).
+//
+// Two pass families, selected by push constant:
+// - COLUMN_PROFILE: exact hydrostatic profile per resting vertical run.
+// - ROW_EQUALIZE: per-row segment equalization (mass teleports inside a
+//   bounded same-liquid resting segment), which propagates pressure laterally
+//   ~SEGMENT cells per pass instead of diffusing 1 cell per pass.
+// Alternating the two behaves like an alternating-direction solver and
+// converges the field in a few passes.
+
 #define WORKGROUP_SIZE 8
 
 layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1) in;
@@ -18,7 +31,36 @@ const int CHUNK_HEIGHT = HEIGHT / 16;
 const uint MATERIAL_FLAG_PRESSURE_LIQUID = 1u;
 const int CHUNK_FLAG_SIM_ACTIVE = 1;
 const int CHUNK_FLAG_RENDER_DIRTY = 2;
-const int MASS_PIPE_WALL_LOOKUP = 10;
+
+// Pass modes (bits 0..3 of pushConstants.step).
+// ROW_EQUALIZE equalizes bounded same-liquid resting row segments (cells at
+// one height in a connected body are at one pressure), propagating pressure
+// laterally ~SEGMENT cells per pass.
+const uint MASS_PASS_ROW_EQUALIZE = 2u;
+// COLUMN_PROFILE imposes the exact hydrostatic profile (slope M_GRADIENT,
+// conservative) on each resting vertical run in a single pass; iterative
+// pairwise packing converges too slowly against the constant stirring of
+// particle movement.
+const uint MASS_PASS_COLUMN_PROFILE = 3u;
+// Longest run profiled as one unit (longer columns split into windows).
+const int COLUMN_PROFILE_MAX = 48;
+// Bit 4: buffer parity (0: main -> tmp, 1: tmp -> main).
+const uint MASS_PASS_PARITY_BIT = 16u;
+// Bits 8..15: segment offset for ROW_EQUALIZE.
+const uint MASS_PASS_OFFSET_SHIFT = 8u;
+
+const int ROW_SEGMENT_SIZE = 32;
+// Resting cells with open sky above are the boundary condition of the
+// pressure field: they relax toward M_FULL, which anchors the gauge
+// globally ("surface mass == M_FULL" means atmospheric pressure), so the
+// pressure triggers can use absolute thresholds. The anchor is asymmetric:
+// refill is instant (it never pushes above M_FULL, so it cannot mask real
+// overpressure, and a rate limit would leave deep pools mass-deficient for
+// hundreds of ticks — a long transient during which every mass-coupled
+// behavior churns), while draining is slow so that pressure arriving at an
+// outlet surface can accumulate above M_FULL and fire the lift instead of
+// being swallowed by its own boundary condition.
+const uint SURFACE_DRAIN_RATE = 16u;
 
 struct Entry
 {
@@ -70,33 +112,23 @@ layout(binding = 6) buffer SChunks
 	int data[CHUNK_WIDTH * CHUNK_HEIGHT];
 } chunks;
 
-const uvec4 unswizzleVec = uvec4(0xFF, 0xFF00, 0xFF0000, 0xFF000000);
-const uvec4 unswizzleOffset = uvec4(0, 8, 16, 24);
-
 shared uint chunkChanged;
 
 uint readPackedBoard(ivec2 swizzledLoc);
 uint readMaterialGlobal(ivec2 loc);
 bool isPressureLiquid(uint materialId);
+bool isOutsideBoard(ivec2 loc);
 
 uint readPackedMassWordSrc(int index);
 uint readMassGlobal(ivec2 loc);
 void writePackedMassWordDest(int index, uint value);
 
-int stableStateBottom(int totalMass);
-int flowVertical(int mUpper, int mLower);
-int flowHorizontal(ivec2 hereLoc, ivec2 neighborLoc, uint materialId, int mHere, int mNeighbor);
-ivec2 massFlowDirection(uint step);
-int computeDirectionalMass(ivec2 loc, uint materialId, int mHere, ivec2 direction);
-int positiveOutgoingMassFlow(ivec2 loc, uint materialId, int mHere, ivec2 direction);
-int positiveIncomingMassFlow(ivec2 loc, uint materialId, int mHere, ivec2 direction);
-int positiveMassFlow(ivec2 fromLoc, ivec2 toLoc, uint materialId, int fromMass, int toMass);
-int signedMassFlow(ivec2 fromLoc, ivec2 toLoc, uint materialId, int fromMass, int toMass);
+uint passMode();
+uint rowSegmentOffset();
 int computeNewMass(ivec2 loc);
-bool isOutsideBoard(ivec2 loc);
-bool isInMassPressurePipe(ivec2 loc, uint materialId);
-bool hasMassPipeWall(ivec2 loc, int dir, uint materialId, int density);
-bool isPressureBarrier(uint materialId, int density);
+int columnProfile(ivec2 loc, uint materialId, int mHere);
+int rowEqualize(ivec2 loc, uint materialId, int mHere);
+bool isRestingCell(ivec2 loc, uint materialId, int density);
 
 void main()
 {
@@ -141,6 +173,16 @@ void main()
 	}
 }
 
+uint passMode()
+{
+	return pushConstants.step & 15u;
+}
+
+uint rowSegmentOffset()
+{
+	return (pushConstants.step >> MASS_PASS_OFFSET_SHIFT) & 255u;
+}
+
 int computeNewMass(ivec2 loc)
 {
 	if (isOutsideBoard(loc)) return 0;
@@ -149,155 +191,205 @@ int computeNewMass(ivec2 loc)
 	if (isPressureLiquid(mat) == false) return 0;
 
 	const int mHere = int(readMassGlobal(loc));
+	const uint mode = passMode();
 
-	const uint step = pushConstants.step & 3u;
-	return computeDirectionalMass(loc, mat, mHere, massFlowDirection(step));
+	if (mode == MASS_PASS_COLUMN_PROFILE) return columnProfile(loc, mat, mHere);
+	return rowEqualize(loc, mat, mHere);
 }
 
-ivec2 massFlowDirection(uint step)
+// Imposes the conservative hydrostatic profile on my vertical run window:
+// cells get base + M_GRADIENT * index (top to bottom), with the topmost
+// cells pinned at MIN_LIQUID_MASS when the run does not hold enough mass
+// for a full profile. Every member computes identical window bounds and
+// totals, so the redistribution is exact. Runs whose (window) bottom rests
+// on a void are falling or above a transit hole: their masses stay frozen.
+// The run top with open sky is the field's boundary condition (see the
+// surface anchor comment above).
+int columnProfile(ivec2 loc, uint materialId, int mHere)
 {
-	if (step == 0u) return ivec2(0, 1);
-	if (step == 1u) return ivec2(1, 0);
-	if (step == 2u) return ivec2(-1, 0);
-	return ivec2(0, -1);
-}
-
-int computeDirectionalMass(ivec2 loc, uint materialId, int mHere, ivec2 direction)
-{
-	const int outgoingMass = positiveOutgoingMassFlow(loc, materialId, mHere, direction);
-	const int incomingMass = positiveIncomingMassFlow(loc, materialId, mHere, direction);
-	return clamp(mHere - outgoingMass + incomingMass, 0, int(M_CAP_MAX));
-}
-
-int positiveOutgoingMassFlow(ivec2 loc, uint materialId, int mHere, ivec2 direction)
-{
-	const ivec2 targetLoc = loc + direction;
-	if (isOutsideBoard(targetLoc)) return 0;
-	if (readMaterialGlobal(targetLoc) != materialId) return 0;
-
-	const int targetMass = int(readMassGlobal(targetLoc));
-	return positiveMassFlow(loc, targetLoc, materialId, mHere, targetMass);
-}
-
-int positiveIncomingMassFlow(ivec2 loc, uint materialId, int mHere, ivec2 direction)
-{
-	const ivec2 sourceLoc = loc - direction;
-	if (isOutsideBoard(sourceLoc)) return 0;
-	if (readMaterialGlobal(sourceLoc) != materialId) return 0;
-
-	const int sourceMass = int(readMassGlobal(sourceLoc));
-	return positiveMassFlow(sourceLoc, loc, materialId, sourceMass, mHere);
-}
-
-int positiveMassFlow(ivec2 fromLoc, ivec2 toLoc, uint materialId, int fromMass, int toMass)
-{
-	return max(signedMassFlow(fromLoc, toLoc, materialId, fromMass, toMass), 0);
-}
-
-int signedMassFlow(ivec2 fromLoc, ivec2 toLoc, uint materialId, int fromMass, int toMass)
-{
-	if (fromLoc.x == toLoc.x)
+	int topY = loc.y;
+	bool topIsRunTop = true;
+	for (int offset = 1; offset <= COLUMN_PROFILE_MAX; offset++)
 	{
-		return toLoc.y > fromLoc.y
-				? flowVertical(fromMass, toMass)
-				: -flowVertical(toMass, fromMass);
+		const ivec2 scanLoc = loc - ivec2(0, offset);
+		if (isOutsideBoard(scanLoc) || readMaterialGlobal(scanLoc) != materialId)
+		{
+			break;
+		}
+		if (offset == COLUMN_PROFILE_MAX)
+		{
+			// The run extends beyond the window cap upward: I belong to a
+			// lower window whose members cannot agree on bounds.
+			topIsRunTop = false;
+			break;
+		}
+		topY = scanLoc.y;
 	}
-	else
+	if (topIsRunTop == false)
 	{
-		return flowHorizontal(fromLoc, toLoc, materialId, fromMass, toMass);
+		return mHere;
 	}
+
+	int bottomY = loc.y;
+	for (int y = loc.y + 1; y - topY < COLUMN_PROFILE_MAX; y++)
+	{
+		const ivec2 scanLoc = ivec2(loc.x, y);
+		if (isOutsideBoard(scanLoc) || readMaterialGlobal(scanLoc) != materialId)
+		{
+			break;
+		}
+		bottomY = y;
+	}
+
+	const ivec2 belowBottomLoc = ivec2(loc.x, bottomY + 1);
+	if (isOutsideBoard(belowBottomLoc) == false)
+	{
+		const uint belowValue = readMaterialGlobal(belowBottomLoc);
+		const bool runContinues = belowValue == materialId;
+		const bool restsOnBarrier = configuration.materials[belowValue].isStatic == 1
+				|| configuration.materials[belowValue].density >= configuration.materials[materialId].density;
+		if (runContinues == false && restsOnBarrier == false)
+		{
+			// A single void with the same liquid right below it is a transit
+			// hole (a healing bubble inside the body), not free fall: the
+			// run above it must keep being profiled and anchored, otherwise
+			// one bubble freezes and starves its whole column, the local
+			// gauge collapses, and the resulting churn breeds more bubbles
+			// ("boiling"). Voids resting on walls (lee pockets under flowing
+			// water) stay frozen: pressurizing across them only churns.
+			const ivec2 below2Loc = ivec2(loc.x, bottomY + 2);
+			const bool transitHole = belowValue == 0u
+					&& isOutsideBoard(below2Loc) == false
+					&& readMaterialGlobal(below2Loc) == materialId;
+			if (transitHole == false)
+			{
+				return mHere;
+			}
+		}
+	}
+
+	const int length = bottomY - topY + 1;
+	const ivec2 aboveTopLoc = ivec2(loc.x, topY - 1);
+	const bool skyAboveTop = isOutsideBoard(aboveTopLoc) || readMaterialGlobal(aboveTopLoc) == 0u;
+	if (length == 1)
+	{
+		if (skyAboveTop)
+		{
+			return mHere + max(int(M_FULL) - mHere, -int(SURFACE_DRAIN_RATE));
+		}
+		return mHere;
+	}
+
+	int total = 0;
+	for (int y = topY; y <= bottomY; y++)
+	{
+		total += int(readMassGlobal(ivec2(loc.x, y)));
+	}
+
+	// Pin the topmost cells at MIN_LIQUID_MASS until the rest can hold a
+	// full-slope profile.
+	const int gradient = int(M_GRADIENT);
+	const int minMass = int(MIN_LIQUID_MASS);
+	int pinned = 0;
+	int base = 0;
+	for (; pinned < length - 1; pinned++)
+	{
+		const int cells = length - pinned;
+		base = (total - pinned * minMass) / cells - gradient * (cells - 1) / 2;
+		if (base >= minMass)
+		{
+			break;
+		}
+	}
+	if (pinned == length - 1)
+	{
+		base = total - pinned * minMass;
+	}
+
+	const int cells = length - pinned;
+	const int distributed = pinned * minMass + cells * base + gradient * cells * (cells - 1) / 2;
+	const int remainder = total - distributed;
+
+	const int index = loc.y - topY;
+	int result = index < pinned ? minMass : base + gradient * (index - pinned);
+	if (remainder > 0 && index < remainder)
+	{
+		result += 1;
+	}
+	else if (remainder < 0 && index < -remainder)
+	{
+		result -= 1;
+	}
+	result = clamp(result, 0, int(M_CAP_MAX));
+
+	if (index == 0 && skyAboveTop)
+	{
+		result += max(int(M_FULL) - result, -int(SURFACE_DRAIN_RATE));
+	}
+
+	return result;
 }
 
-int flowHorizontal(ivec2 hereLoc, ivec2 neighborLoc, uint materialId, int mHere, int mNeighbor)
-{
-	const bool pipeLike = isInMassPressurePipe(hereLoc, materialId)
-			|| isInMassPressurePipe(neighborLoc, materialId);
-	const int headDivisor = pipeLike ? int(H_PIPE_HEAD_DIV) : int(H_HEAD_DIV);
-	const int flow = (mHere - mNeighbor) / headDivisor;
-	if (abs(flow) < int(MIN_FLOW)) return 0;
-
-	if (flow > 0)
-	{
-		const int maxFlow = min(mHere, int(M_CAP_MAX) - mNeighbor);
-		return min(flow, maxFlow);
-	}
-	else
-	{
-		const int maxFlow = min(mNeighbor, int(M_CAP_MAX) - mHere);
-		return -min(-flow, maxFlow);
-	}
-}
-
-bool isInMassPressurePipe(ivec2 loc, uint materialId)
+// Cells at the same height inside a connected resting liquid body are at the
+// same pressure: equalize the segment to its mean. Segments are bounded by
+// absolute windows (so every member computes identical bounds) and shifted
+// by a per-pass offset so consecutive passes couple neighboring windows.
+int rowEqualize(ivec2 loc, uint materialId, int mHere)
 {
 	const int density = configuration.materials[materialId].density;
-	return hasMassPipeWall(loc, -1, materialId, density)
-			&& hasMassPipeWall(loc, 1, materialId, density);
+	if (isRestingCell(loc, materialId, density) == false)
+	{
+		return mHere;
+	}
+
+	const int offset = int(rowSegmentOffset());
+	const int windowKey = (loc.x + offset) / ROW_SEGMENT_SIZE;
+
+	int sum = mHere;
+	int count = 1;
+	int leftmostX = loc.x;
+
+	for (int x = loc.x - 1; x >= 0; x--)
+	{
+		if ((x + offset) / ROW_SEGMENT_SIZE != windowKey) break;
+		const ivec2 scanLoc = ivec2(x, loc.y);
+		if (readMaterialGlobal(scanLoc) != materialId) break;
+		if (isRestingCell(scanLoc, materialId, density) == false) break;
+		sum += int(readMassGlobal(scanLoc));
+		count++;
+		leftmostX = x;
+	}
+	for (int x = loc.x + 1; x < WIDTH; x++)
+	{
+		if ((x + offset) / ROW_SEGMENT_SIZE != windowKey) break;
+		const ivec2 scanLoc = ivec2(x, loc.y);
+		if (readMaterialGlobal(scanLoc) != materialId) break;
+		if (isRestingCell(scanLoc, materialId, density) == false) break;
+		sum += int(readMassGlobal(scanLoc));
+		count++;
+	}
+
+	if (count == 1) return mHere;
+
+	const int mean = sum / count;
+	const int remainder = sum - mean * count;
+	const int rank = loc.x - leftmostX;
+	return mean + (rank < remainder ? 1 : 0);
 }
 
-bool hasMassPipeWall(ivec2 loc, int dir, uint materialId, int density)
+// A cell takes part in lateral pressure exchange only when it rests on
+// something that can hold it: same liquid, a static material, or a denser
+// material. Falling liquid keeps its mass untouched.
+bool isRestingCell(ivec2 loc, uint materialId, int density)
 {
-	for (int offset = 1; offset <= MASS_PIPE_WALL_LOOKUP; offset++)
-	{
-		const ivec2 wallLoc = loc + ivec2(dir * offset, 0);
-		if (isOutsideBoard(wallLoc))
-		{
-			return true;
-		}
+	const ivec2 belowLoc = loc + ivec2(0, 1);
+	if (isOutsideBoard(belowLoc)) return true;
 
-		const uint wallValue = readMaterialGlobal(wallLoc);
-		if (wallValue == materialId)
-		{
-			continue;
-		}
-		return isPressureBarrier(wallValue, density);
-	}
+	const uint belowMat = readMaterialGlobal(belowLoc);
+	if (belowMat == materialId) return true;
 
-	return false;
-}
-
-bool isPressureBarrier(uint materialId, int density)
-{
-	return configuration.materials[materialId].isStatic == 1
-			|| configuration.materials[materialId].density >= density;
-}
-
-int flowVertical(int mUpper, int mLower)
-{
-	const int totalMass = mUpper + mLower;
-	const int desiredLower = stableStateBottom(totalMass);
-	int flow = desiredLower - mLower;
-	if (abs(flow) < int(MIN_FLOW)) return 0;
-
-	if (flow > 0)
-	{
-		const int maxFlow = min(mUpper, int(M_CAP_MAX) - mLower);
-		return min(flow, maxFlow);
-	}
-	else
-	{
-		const int maxFlow = min(mLower, int(M_CAP_MAX) - mUpper);
-		return -min(-flow, maxFlow);
-	}
-}
-
-int stableStateBottom(int totalMass)
-{
-	if (totalMass <= int(M_FULL)) return totalMass;
-
-	const int maxMass = int(M_FULL);
-	const int maxCompress = int(M_EQ_MAX - M_FULL);
-
-	if (totalMass < 2 * maxMass + maxCompress)
-	{
-		const int numerator = maxMass * maxMass + totalMass * maxCompress;
-		const int denominator = maxMass + maxCompress;
-		return numerator / denominator;
-	}
-	else
-	{
-		return (totalMass + maxCompress) / 2;
-	}
+	return configuration.materials[belowMat].isStatic == 1
+			|| configuration.materials[belowMat].density >= density;
 }
 
 bool isPressureLiquid(uint materialId)
@@ -322,7 +414,7 @@ uint readMaterialGlobal(ivec2 loc)
 
 uint readPackedMassWordSrc(int index)
 {
-	if ((pushConstants.step & 1u) == 0u)
+	if ((pushConstants.step & MASS_PASS_PARITY_BIT) == 0u)
 	{
 		return pushConstants.boardToWrite == 0u ? mass1.data[index] : mass2.data[index];
 	}
@@ -341,7 +433,7 @@ uint readMassGlobal(ivec2 loc)
 
 void writePackedMassWordDest(int index, uint value)
 {
-	if ((pushConstants.step & 1u) == 0u)
+	if ((pushConstants.step & MASS_PASS_PARITY_BIT) == 0u)
 	{
 		massTmp.data[index] = value;
 	}

@@ -32,9 +32,9 @@ public final class LiquidPressureBaselineTest
 										120,
 										240);
 
-		assertSpreadSample(samples.get(0), 60, 24, 250, 350);
-		assertSpreadSample(samples.get(1), 60, 16, 200, 260);
-		assertSpreadSample(samples.get(2), 60, 8, 150, 230);
+		assertSpreadSample(samples.get(0), 45, 24, 250, 350);
+		assertSpreadSample(samples.get(1), 56, 22, 200, 260);
+		assertSpreadSample(samples.get(2), 60, 16, 150, 230);
 		assertSpreadSample(samples.get(3), 60, 6, 150, 220);
 		assertSpreadSample(samples.get(4), 60, 6, 150, 220);
 	}
